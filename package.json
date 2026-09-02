@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "create-vite": "^9.2.0",
+    "lucide-react": "^1.39.0"
+  }
+}
