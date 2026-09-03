@@ -63,8 +63,8 @@ const MUSICAL_INSTRUMENTS = [
 
 const RACES = [
   { id: "umano", name: "Umano", family: "Umano", subraceName: "Umano", size: "Medio", speed: 30, dark: false, bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 }, traits: ["Una lingua aggiuntiva a scelta"], blurb: "Versatile e ambizioso, l'umano si trova in ogni angolo del mondo.", proficiencyChoices: [{ key: "razza-umano-lingua", label: "Lingua aggiuntiva", type: "language", count: 1, options: LANGUAGES }] },
-  { id: "nano-colline", name: "Nano delle Colline", family: "Nano", subraceName: "Delle Colline", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, wis: 1 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico al combattimento: competenza con ascia bipenne, ascia, martello leggero, martello da guerra", "Robustezza nanica: +1 PF per livello"], blurb: "Robusto e resistente, con una salute fuori dal comune.", bonusProficiencies: { weapons: ["Ascia bipenne", "Ascia", "Martello leggero", "Martello da guerra"] }, proficiencyChoices: [{ key: "razza-nano-strumenti", label: "Strumenti da artigiano", type: "tool", count: 1, options: ["Strumenti da fabbro", "Forniture da birraio", "Strumenti da muratore"] }] },
-  { id: "nano-montagne", name: "Nano delle Montagne", family: "Nano", subraceName: "Delle Montagne", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, str: 2 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico al combattimento: competenza con ascia bipenne, ascia, martello leggero, martello da guerra", "Addestramento nanico alle armature: competenza nelle armature leggere e medie"], blurb: "Un nano temprato dalle fortezze e dalla guerra.", bonusProficiencies: { armor: ["Armatura leggera", "Armatura media"], weapons: ["Ascia bipenne", "Ascia", "Martello leggero", "Martello da guerra"] }, proficiencyChoices: [{ key: "razza-nano-strumenti", label: "Strumenti da artigiano", type: "tool", count: 1, options: ["Strumenti da fabbro", "Forniture da birraio", "Strumenti da muratore"] }] },
+  { id: "nano-colline", name: "Nano delle Colline", family: "Nano", subraceName: "Delle Colline", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, wis: 1 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico al combattimento: competenza con ascia da battaglia, ascia da lancio, martello leggero, martello da guerra", "Robustezza nanica: +1 PF per livello"], blurb: "Robusto e resistente, con una salute fuori dal comune.", bonusProficiencies: { weapons: ["Ascia da battaglia", "Ascia da lancio", "Martello leggero", "Martello da guerra"] }, proficiencyChoices: [{ key: "razza-nano-strumenti", label: "Strumenti da artigiano", type: "tool", count: 1, options: ["Strumenti da fabbro", "Forniture da birraio", "Strumenti da muratore"] }] },
+  { id: "nano-montagne", name: "Nano delle Montagne", family: "Nano", subraceName: "Delle Montagne", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, str: 2 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico al combattimento: competenza con ascia da battaglia, ascia da lancio, martello leggero, martello da guerra", "Addestramento nanico alle armature: competenza nelle armature leggere e medie"], blurb: "Un nano temprato dalle fortezze e dalla guerra.", bonusProficiencies: { armor: ["Armatura leggera", "Armatura media"], weapons: ["Ascia da battaglia", "Ascia da lancio", "Martello leggero", "Martello da guerra"] }, proficiencyChoices: [{ key: "razza-nano-strumenti", label: "Strumenti da artigiano", type: "tool", count: 1, options: ["Strumenti da fabbro", "Forniture da birraio", "Strumenti da muratore"] }] },
   { id: "alto-elfo", name: "Alto Elfo", family: "Elfo", subraceName: "Alto Elfo", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, int: 1 }, traits: ["Retaggio fatato: vantaggio ai TS contro l'incantamento; la magia non può farti addormentare", "Sensi acuti: competenza in Percezione", "Trance: 4 ore di meditazione equivalgono a 8 ore di sonno", "Trucchetto: un trucchetto dalla lista del mago", "Addestramento alle armi elfiche"], blurb: "Elfo istruito e incline alla magia arcana.", bonusProficiencies: { skills: ["Percezione"], weapons: ["Spade lunghe", "Spade corte", "Archi corti", "Archi lunghi"] } },
   { id: "elfo-boschi", name: "Elfo dei Boschi", family: "Elfo", subraceName: "Dei Boschi", size: "Medio", speed: 35, dark: true, bonuses: { dex: 2, wis: 1 }, traits: ["Retaggio fatato", "Sensi acuti: competenza in Percezione", "Trance", "Addestramento alle armi elfiche", "Maschera della natura: può tentare di nascondersi con copertura naturale leggera"], blurb: "Elfo legato alla foresta e alla vita selvaggia.", bonusProficiencies: { skills: ["Percezione"], weapons: ["Spade lunghe", "Spade corte", "Archi corti", "Archi lunghi"] } },
   { id: "drow", name: "Drow", family: "Elfo", subraceName: "Drow", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, cha: 1 }, traits: ["Retaggio fatato", "Sensi acuti: competenza in Percezione", "Trance", "Addestramento alle armi drow", "Sensibilità alla luce solare", "Magia drow: Luci danzanti; poi Faerie Fire e Oscurità ai livelli previsti"], blurb: "Elfo del Sottosuolo, dotato di potente magia innata.", bonusProficiencies: { skills: ["Percezione"], weapons: ["Spade corte", "Rapiere", "Balestre a mano"] } },
@@ -91,6 +91,7 @@ const CLASSES = [
   {
     id: "barbaro", name: "Barbaro", hitDie: 12, primary: "Forza", saves: ["Forza", "Costituzione"],
     armor: "Armature leggere e medie, scudi", weapons: "Armi semplici e da guerra",
+    weaponProficiency: { simple: true, martial: true },
     skillChoices: 2, skillOptions: ["Addestrare Animali", "Atletica", "Intimidire", "Natura", "Percezione", "Sopravvivenza"],
     equipment: ["Un'ascia bipenne oppure un'arma da mischia da guerra", "Due asce da lancio", "Uno zaino da esploratore", "Quattro giavellotti"],
     blurb: "Canalizza una furia primordiale che lo rende inarrestabile in battaglia.",
@@ -98,6 +99,7 @@ const CLASSES = [
   {
     id: "bardo", name: "Bardo", hitDie: 8, primary: "Carisma", saves: ["Destrezza", "Carisma"],
     armor: "Armature leggere", weapons: "Armi semplici, spade lunghe, rapiere, spade corte, balestre a mano",
+    weaponProficiency: { simple: true, specific: ["spada-lunga", "rapiera", "spada-corta", "balestra-a-mano"] },
     skillChoices: 3, skillOptions: ["Acrobazia", "Addestrare Animali", "Arcano", "Atletica", "Inganno", "Indagare", "Intimidire", "Intrattenere", "Intuizione", "Medicina", "Natura", "Percezione", "Persuasione", "Religione", "Rapidità di Mano", "Furtività", "Sopravvivenza", "Storia"],
     equipment: ["Una spada corta oppure un'arma semplice", "Uno strumento musicale a scelta", "Uno zaino da intrattenitore", "Un'armatura di cuoio e un pugnale"],
     blurb: "Intreccia musica e magia per ispirare alleati e disarmare nemici.",
@@ -105,6 +107,7 @@ const CLASSES = [
   {
     id: "chierico", name: "Chierico", hitDie: 8, primary: "Saggezza", saves: ["Saggezza", "Carisma"],
     armor: "Armature leggere e medie, scudi", weapons: "Armi semplici",
+    weaponProficiency: { simple: true },
     skillChoices: 2, skillOptions: ["Storia", "Intuizione", "Medicina", "Persuasione", "Religione"],
     equipment: ["Una mazza oppure una spada corta", "Un'armatura a scaglie o di cuoio", "Una balestra leggera con 20 quadrelli oppure un'arma semplice", "Uno zaino da religioso, uno scudo e un simbolo sacro"],
     blurb: "Canalizza il potere divino della propria fede a beneficio dei compagni.",
@@ -112,6 +115,7 @@ const CLASSES = [
   {
     id: "druido", name: "Druido", hitDie: 8, primary: "Saggezza", saves: ["Intelligenza", "Saggezza"],
     armor: "Armature leggere e medie non metalliche, scudi non metallici", weapons: "Bastoni, pugnali, dardi, giavellotti, mazze, falcetti, fionde, lance",
+    weaponProficiency: { specific: ["bastone", "pugnale", "giavellotto", "mazza", "falcetto", "fionda", "lancia"] },
     skillChoices: 2, skillOptions: ["Arcano", "Addestrare Animali", "Intuizione", "Medicina", "Natura", "Percezione", "Religione", "Sopravvivenza"],
     equipment: ["Uno scudo di legno oppure un'arma semplice", "Un falcetto oppure un'arma da mischia semplice", "Un'armatura di cuoio, un set da erborista e un focus druidico"],
     blurb: "Custode della natura selvaggia, capace di assumerne le forme.",
@@ -119,6 +123,7 @@ const CLASSES = [
   {
     id: "guerriero", name: "Guerriero", hitDie: 10, primary: "Forza o Destrezza", saves: ["Forza", "Costituzione"],
     armor: "Tutte le armature, scudi", weapons: "Armi semplici e da guerra",
+    weaponProficiency: { simple: true, martial: true },
     skillChoices: 2, skillOptions: ["Acrobazia", "Addestrare Animali", "Atletica", "Storia", "Intuizione", "Intimidire", "Percezione", "Sopravvivenza"],
     equipment: ["Un'armatura a maglia oppure un'armatura leggera", "Un'arma da mischia da guerra con uno scudo, oppure due armi da mischia da guerra", "Una balestra leggera con 20 quadrelli oppure due asce da lancio", "Uno zaino da esploratore o da dungeon"],
     blurb: "Maestro delle armi e delle tattiche di combattimento in ogni forma.",
@@ -126,6 +131,7 @@ const CLASSES = [
   {
     id: "ladro", name: "Ladro", hitDie: 8, primary: "Destrezza", saves: ["Destrezza", "Intelligenza"],
     armor: "Armature leggere", weapons: "Armi semplici, balestre a mano, spade corte, spade lunghe, rapiere",
+    weaponProficiency: { simple: true, specific: ["balestra-a-mano", "spada-corta", "spada-lunga", "rapiera"] },
     skillChoices: 4, skillOptions: ["Acrobazia", "Atletica", "Inganno", "Intuizione", "Intimidire", "Indagare", "Percezione", "Rapidità di Mano", "Furtività", "Persuasione"],
     equipment: ["Una spada corta oppure una spada lunga", "Un arco corto con faretra da 20 frecce oppure una spada corta", "Uno zaino da ladro, un'armatura di cuoio, due pugnali e strumenti da scasso"],
     blurb: "Agile ed elusivo, colpisce nei punti deboli prima di sparire nell'ombra.",
@@ -133,6 +139,7 @@ const CLASSES = [
   {
     id: "mago", name: "Mago", hitDie: 6, primary: "Intelligenza", saves: ["Intelligenza", "Saggezza"],
     armor: "Nessuna", weapons: "Pugnali, dardi, fionde, bastoni, balestre leggere",
+    weaponProficiency: { specific: ["pugnale", "fionda", "bastone", "balestra-leggera"] },
     skillChoices: 2, skillOptions: ["Arcano", "Storia", "Intuizione", "Indagare", "Medicina", "Religione"],
     equipment: ["Un bastone oppure un pugnale", "Una borsa di componenti oppure un focus arcano", "Uno zaino da studioso e un libro degli incantesimi"],
     blurb: "Studioso dell'arcano, plasma la realtà attraverso la conoscenza magica.",
@@ -140,6 +147,7 @@ const CLASSES = [
   {
     id: "monaco", name: "Monaco", hitDie: 8, primary: "Destrezza e Saggezza", saves: ["Forza", "Destrezza"],
     armor: "Nessuna", weapons: "Armi semplici, spade corte",
+    weaponProficiency: { simple: true, specific: ["spada-corta"] },
     skillChoices: 2, skillOptions: ["Acrobazia", "Atletica", "Storia", "Intuizione", "Religione", "Furtività"],
     equipment: ["Una spada corta oppure un'arma semplice", "Dieci dardi oppure uno zaino da esploratore", "Uno zaino da religioso e un set di attrezzi o uno strumento musicale"],
     blurb: "Disciplina corpo e spirito fino a trasformarli in un'arma perfetta.",
@@ -147,6 +155,7 @@ const CLASSES = [
   {
     id: "paladino", name: "Paladino", hitDie: 10, primary: "Forza e Carisma", saves: ["Saggezza", "Carisma"],
     armor: "Tutte le armature, scudi", weapons: "Armi semplici e da guerra",
+    weaponProficiency: { simple: true, martial: true },
     skillChoices: 2, skillOptions: ["Atletica", "Intuizione", "Intimidire", "Medicina", "Persuasione", "Religione"],
     equipment: ["Un'arma da mischia da guerra con uno scudo, oppure due armi da mischia da guerra", "Cinque giavellotti oppure un'arma da mischia semplice", "Uno zaino da religioso, un'armatura pesante e un simbolo sacro"],
     blurb: "Ha giurato un voto sacro e lo difende con spada e devozione.",
@@ -154,6 +163,7 @@ const CLASSES = [
   {
     id: "ranger", name: "Ranger", hitDie: 10, primary: "Destrezza e Saggezza", saves: ["Forza", "Destrezza"],
     armor: "Armature leggere e medie, scudi", weapons: "Armi semplici e da guerra",
+    weaponProficiency: { simple: true, martial: true },
     skillChoices: 3, skillOptions: ["Addestrare Animali", "Atletica", "Intuizione", "Indagare", "Natura", "Percezione", "Furtività", "Sopravvivenza"],
     equipment: ["Un'armatura a scaglie o di cuoio", "Due spade corte oppure due armi da mischia semplici", "Uno zaino da esploratore, un arco lungo e una faretra da 20 frecce"],
     blurb: "Cacciatore ed esploratore, legge i segni della natura selvaggia.",
@@ -161,6 +171,7 @@ const CLASSES = [
   {
     id: "stregone", name: "Stregone", hitDie: 6, primary: "Carisma", saves: ["Costituzione", "Carisma"],
     armor: "Nessuna", weapons: "Pugnali, dardi, fionde, bastoni, balestre leggere",
+    weaponProficiency: { specific: ["pugnale", "fionda", "bastone", "balestra-leggera"] },
     skillChoices: 2, skillOptions: ["Arcano", "Inganno", "Intuizione", "Intimidire", "Persuasione", "Religione"],
     equipment: ["Una balestra leggera con 20 quadrelli oppure un'arma semplice", "Una borsa di componenti oppure un focus arcano", "Uno zaino da studioso e due pugnali"],
     blurb: "La magia scorre nel suo sangue, innata e a tratti incontrollabile.",
@@ -168,6 +179,7 @@ const CLASSES = [
   {
     id: "warlock", name: "Warlock", hitDie: 8, primary: "Carisma", saves: ["Saggezza", "Carisma"],
     armor: "Armature leggere", weapons: "Armi semplici",
+    weaponProficiency: { simple: true },
     skillChoices: 2, skillOptions: ["Arcano", "Inganno", "Storia", "Intimidire", "Indagare", "Natura", "Religione"],
     equipment: ["Una balestra leggera con 20 quadrelli oppure un'arma semplice", "Una borsa di componenti oppure un focus arcano, e uno zaino da studioso", "Un'armatura di cuoio e due pugnali"],
     blurb: "Ha stretto un patto con un'entità di potere immenso e oscuro.",
@@ -244,6 +256,25 @@ const MULTICLASS_PROFICIENCIES = {
   ranger: "Armature leggere, armi semplici e da guerra, una competenza in un'abilità dalla lista del Ranger.",
   stregone: "Nessuna competenza aggiuntiva.",
   warlock: "Armature leggere, armi semplici.",
+};
+
+// Versione strutturata (solo armi) della tabella sopra, usata per calcolare davvero il bonus di
+// competenza sui tiri per colpire quando la classe è quella secondaria da multiclasse: a
+// differenza della classe primaria, il multiclasse concede competenze ridotte (PHB 2014, "Tabella
+// Competenze Multiclasse"). null = nessuna competenza con le armi concessa dal multiclasse.
+const MULTICLASS_WEAPON_PROFICIENCY = {
+  barbaro: { simple: true, martial: true },
+  bardo: null,
+  chierico: null,
+  druido: null,
+  guerriero: { simple: true, martial: true },
+  ladro: null,
+  mago: null,
+  monaco: { simple: true, specific: ["spada-corta"] },
+  paladino: { simple: true, martial: true },
+  ranger: { simple: true, martial: true },
+  stregone: null,
+  warlock: { simple: true },
 };
 
 // Classi il cui multiclasse concede una competenza extra in un'abilità (a scelta dalla lista della classe).
@@ -556,6 +587,7 @@ const SUBCLASSES = {
     {
       id: "tradizione", name: "Collegio della Tradizione",
       blurb: "Colleziona storie, segreti e conoscenze da ogni angolo del mondo.",
+      proficiencyChoices: [{ key: "sub-bardo-tradizione-abilita", label: "Abilità (Competenze Bonus)", type: "skill", count: 3, options: Object.keys(SKILL_ABILITY) }],
       features: [
         { level: 3, name: "Competenze Bonus", desc: "Ottieni competenza in 3 abilità a tua scelta." },
         { level: 3, name: "Parole Taglienti", desc: "Come reazione, usi un dado di Ispirazione Bardica per sottrarre il risultato al tiro per colpire, alla prova di caratteristica o al tiro per i danni di una creatura entro 18 m che puoi sentire." },
@@ -566,6 +598,7 @@ const SUBCLASSES = {
     {
       id: "valore", name: "Collegio del Valore",
       blurb: "Porta le storie eroiche direttamente sul campo di battaglia, spada in mano.",
+      bonusProficiencies: { armor: ["Armatura media", "Scudi"], weapons: ["Armi da guerra"] },
       features: [
         { level: 3, name: "Competenze Bonus", desc: "Ottieni competenza con armature medie, scudi e armi da guerra." },
         { level: 3, name: "Ispirazione in Combattimento", desc: "Una creatura che ha un tuo dado di Ispirazione Bardica può usarlo per aggiungerlo a un tiro per i danni con arma, oppure come reazione per aggiungerlo alla propria CA contro un attacco che altrimenti la colpirebbe." },
@@ -1156,6 +1189,76 @@ function getGrantedProficiencies(draft) {
     skills: [...skills], armor: [...armor], weapons: [...weapons],
     tools: [...tools], languages: [...languages], other: [...other],
   };
+}
+
+// Mappa nomi (anche plurali) → id del catalogo armi, per riconoscere le armi nominate per esteso
+// nelle competenze bonus di razza/sottoclasse (es. "Spade lunghe" deve corrispondere a "spada-lunga").
+const WEAPON_NAME_TO_ID = {
+  "bastone": "bastone", "bastoni": "bastone",
+  "pugnale": "pugnale", "pugnali": "pugnale",
+  "ascia da lancio": "ascia-da-lancio", "asce da lancio": "ascia-da-lancio",
+  "giavellotto": "giavellotto", "giavellotti": "giavellotto",
+  "mazza": "mazza", "mazze": "mazza",
+  "falcetto": "falcetto", "falcetti": "falcetto",
+  "lancia": "lancia", "lance": "lancia",
+  "arco corto": "arco-corto", "archi corti": "arco-corto",
+  "balestra leggera": "balestra-leggera", "balestre leggere": "balestra-leggera",
+  "fionda": "fionda", "fionde": "fionda",
+  "spada corta": "spada-corta", "spade corte": "spada-corta",
+  "spada lunga": "spada-lunga", "spade lunghe": "spada-lunga",
+  "rapiera": "rapiera", "rapiere": "rapiera",
+  "ascia bipenne": "ascia-bipenne", "asce bipenni": "ascia-bipenne",
+  "spadone": "spadone", "spadoni": "spadone",
+  "ascia da battaglia": "ascia-da-battaglia", "asce da battaglia": "ascia-da-battaglia",
+  "martello da guerra": "martello-da-guerra", "martelli da guerra": "martello-da-guerra",
+  "alabarda": "alabarda", "alabarde": "alabarda",
+  "arco lungo": "arco-lungo", "archi lunghi": "arco-lungo",
+  "balestra pesante": "balestra-pesante", "balestre pesanti": "balestra-pesante",
+  "balestra a mano": "balestra-a-mano", "balestre a mano": "balestra-a-mano",
+};
+
+// Una competenza bonus testuale (razza/sottoclasse) può coprire un'intera categoria ("Armi da
+// guerra" / "Armi semplici") oppure un'arma specifica nominata per esteso.
+function bonusGrantsWeapon(bonusWeaponsList, item) {
+  return (bonusWeaponsList || []).some((label) => {
+    const norm = label.trim().toLowerCase();
+    if (norm === "armi da guerra") return item.tier === "guerra";
+    if (norm === "armi semplici") return item.tier === "semplice";
+    return WEAPON_NAME_TO_ID[norm] === item.id;
+  });
+}
+
+function classGrantsWeapon(weaponProficiency, item) {
+  if (!weaponProficiency) return false;
+  if (weaponProficiency.simple && item.tier === "semplice") return true;
+  if (weaponProficiency.martial && item.tier === "guerra") return true;
+  return (weaponProficiency.specific || []).includes(item.id);
+}
+
+// Competenza reale con una data arma, usata per decidere se il bonus di competenza va aggiunto
+// al tiro per colpire: combina classe primaria (piena), classe secondaria da multiclasse (ridotta,
+// tabella PHB), razza e sottoclasse (mai ridotte dal multiclasse, quindi controllate anche per
+// l'eventuale classe secondaria).
+function isProficientWithWeapon(draft, item) {
+  if (!item || item.category !== "arma") return true;
+  const cls = CLASSES.find((c) => c.id === draft.classId);
+  if (classGrantsWeapon(cls?.weaponProficiency, item)) return true;
+
+  const race = RACES.find((r) => r.id === draft.raceId);
+  if (bonusGrantsWeapon(race?.bonusProficiencies?.weapons, item)) return true;
+
+  const subclass = cls ? getSubclass(cls.id, getChosenSubclassId(draft, cls.id)) : null;
+  if (bonusGrantsWeapon(subclass?.bonusProficiencies?.weapons, item)) return true;
+
+  const mc = draft.multiclass && draft.multiclass.classId ? draft.multiclass : null;
+  if (mc) {
+    if (classGrantsWeapon(MULTICLASS_WEAPON_PROFICIENCY[mc.classId], item)) return true;
+    const mcCls = CLASSES.find((c) => c.id === mc.classId);
+    const mcSubclass = mcCls ? getSubclass(mcCls.id, getChosenSubclassId(mc, mcCls.id)) : null;
+    if (bonusGrantsWeapon(mcSubclass?.bonusProficiencies?.weapons, item)) return true;
+  }
+
+  return false;
 }
 
 const CUSTOM_BACKGROUND_ID = "personalizzato";
@@ -2081,27 +2184,27 @@ const DRUID_CIRCLES = [
 ];
 
 const EQUIPMENT_CATALOG = [
-  { id: "bastone", name: "Bastone", category: "arma", damage: "1d4", damageType: "contundente", hands: "una mano", properties: ["Versatile (1d6)"] },
-  { id: "pugnale", name: "Pugnale", category: "arma", damage: "1d4", damageType: "perforante", hands: "una mano", properties: ["Leggera", "Finezza", "Da lancio (6/18 m)"] },
-  { id: "ascia-da-lancio", name: "Ascia da Lancio", category: "arma", damage: "1d6", damageType: "tagliente", hands: "una mano", properties: ["Leggera", "Da lancio (6/18 m)"] },
-  { id: "giavellotto", name: "Giavellotto", category: "arma", damage: "1d6", damageType: "perforante", hands: "una mano", properties: ["Da lancio (9/36 m)"] },
-  { id: "mazza", name: "Mazza", category: "arma", damage: "1d6", damageType: "contundente", hands: "una mano", properties: [] },
-  { id: "falcetto", name: "Falcetto", category: "arma", damage: "1d4", damageType: "tagliente", hands: "una mano", properties: ["Leggera"] },
-  { id: "lancia", name: "Lancia", category: "arma", damage: "1d6", damageType: "perforante", hands: "una mano", properties: ["Versatile (1d8)", "Da lancio (6/18 m)"] },
-  { id: "arco-corto", name: "Arco Corto", category: "arma", damage: "1d6", damageType: "perforante", hands: "due mani", properties: ["Munizioni (24/96 m)"] },
-  { id: "balestra-leggera", name: "Balestra Leggera", category: "arma", damage: "1d8", damageType: "perforante", hands: "due mani", properties: ["Munizioni (24/96 m)", "Ricarica"] },
-  { id: "fionda", name: "Fionda", category: "arma", damage: "1d4", damageType: "contundente", hands: "una mano", properties: ["Munizioni (9/36 m)"] },
-  { id: "spada-corta", name: "Spada Corta", category: "arma", damage: "1d6", damageType: "perforante", hands: "una mano", properties: ["Leggera", "Finezza"] },
-  { id: "spada-lunga", name: "Spada Lunga", category: "arma", damage: "1d8", damageType: "tagliente", hands: "una mano", properties: ["Versatile (1d10)"] },
-  { id: "rapiera", name: "Rapiera", category: "arma", damage: "1d8", damageType: "perforante", hands: "una mano", properties: ["Finezza"] },
-  { id: "ascia-bipenne", name: "Ascia Bipenne", category: "arma", damage: "1d12", damageType: "tagliente", hands: "due mani", properties: ["Pesante"] },
-  { id: "spadone", name: "Spadone", category: "arma", damage: "2d6", damageType: "tagliente", hands: "due mani", properties: ["Pesante"] },
-  { id: "ascia-da-battaglia", name: "Ascia da Battaglia", category: "arma", damage: "1d8", damageType: "tagliente", hands: "una mano", properties: ["Versatile (1d10)"] },
-  { id: "martello-da-guerra", name: "Martello da Guerra", category: "arma", damage: "1d8", damageType: "contundente", hands: "una mano", properties: ["Versatile (1d10)"] },
-  { id: "alabarda", name: "Alabarda", category: "arma", damage: "1d10", damageType: "tagliente", hands: "due mani", properties: ["Pesante", "Portata"] },
-  { id: "arco-lungo", name: "Arco Lungo", category: "arma", damage: "1d8", damageType: "perforante", hands: "due mani", properties: ["Munizioni (45/180 m)", "Pesante"] },
-  { id: "balestra-pesante", name: "Balestra Pesante", category: "arma", damage: "1d10", damageType: "perforante", hands: "due mani", properties: ["Munizioni (30/120 m)", "Pesante", "Ricarica"] },
-  { id: "balestra-a-mano", name: "Balestra a Mano", category: "arma", damage: "1d6", damageType: "perforante", hands: "una mano", properties: ["Leggera", "Munizioni (9/36 m)", "Ricarica"] },
+  { id: "bastone", name: "Bastone", category: "arma", tier: "semplice", damage: "1d4", damageType: "contundente", hands: "una mano", properties: ["Versatile (1d6)"] },
+  { id: "pugnale", name: "Pugnale", category: "arma", tier: "semplice", damage: "1d4", damageType: "perforante", hands: "una mano", properties: ["Leggera", "Finezza", "Da lancio (6/18 m)"] },
+  { id: "ascia-da-lancio", name: "Ascia da Lancio", category: "arma", tier: "semplice", damage: "1d6", damageType: "tagliente", hands: "una mano", properties: ["Leggera", "Da lancio (6/18 m)"] },
+  { id: "giavellotto", name: "Giavellotto", category: "arma", tier: "semplice", damage: "1d6", damageType: "perforante", hands: "una mano", properties: ["Da lancio (9/36 m)"] },
+  { id: "mazza", name: "Mazza", category: "arma", tier: "semplice", damage: "1d6", damageType: "contundente", hands: "una mano", properties: [] },
+  { id: "falcetto", name: "Falcetto", category: "arma", tier: "semplice", damage: "1d4", damageType: "tagliente", hands: "una mano", properties: ["Leggera"] },
+  { id: "lancia", name: "Lancia", category: "arma", tier: "semplice", damage: "1d6", damageType: "perforante", hands: "una mano", properties: ["Versatile (1d8)", "Da lancio (6/18 m)"] },
+  { id: "arco-corto", name: "Arco Corto", category: "arma", tier: "semplice", damage: "1d6", damageType: "perforante", hands: "due mani", properties: ["Munizioni (24/96 m)"] },
+  { id: "balestra-leggera", name: "Balestra Leggera", category: "arma", tier: "semplice", damage: "1d8", damageType: "perforante", hands: "due mani", properties: ["Munizioni (24/96 m)", "Ricarica"] },
+  { id: "fionda", name: "Fionda", category: "arma", tier: "semplice", damage: "1d4", damageType: "contundente", hands: "una mano", properties: ["Munizioni (9/36 m)"] },
+  { id: "spada-corta", name: "Spada Corta", category: "arma", tier: "guerra", damage: "1d6", damageType: "perforante", hands: "una mano", properties: ["Leggera", "Finezza"] },
+  { id: "spada-lunga", name: "Spada Lunga", category: "arma", tier: "guerra", damage: "1d8", damageType: "tagliente", hands: "una mano", properties: ["Versatile (1d10)"] },
+  { id: "rapiera", name: "Rapiera", category: "arma", tier: "guerra", damage: "1d8", damageType: "perforante", hands: "una mano", properties: ["Finezza"] },
+  { id: "ascia-bipenne", name: "Ascia Bipenne", category: "arma", tier: "guerra", damage: "1d12", damageType: "tagliente", hands: "due mani", properties: ["Pesante"] },
+  { id: "spadone", name: "Spadone", category: "arma", tier: "guerra", damage: "2d6", damageType: "tagliente", hands: "due mani", properties: ["Pesante"] },
+  { id: "ascia-da-battaglia", name: "Ascia da Battaglia", category: "arma", tier: "guerra", damage: "1d8", damageType: "tagliente", hands: "una mano", properties: ["Versatile (1d10)"] },
+  { id: "martello-da-guerra", name: "Martello da Guerra", category: "arma", tier: "guerra", damage: "1d8", damageType: "contundente", hands: "una mano", properties: ["Versatile (1d10)"] },
+  { id: "alabarda", name: "Alabarda", category: "arma", tier: "guerra", damage: "1d10", damageType: "tagliente", hands: "due mani", properties: ["Pesante", "Portata"] },
+  { id: "arco-lungo", name: "Arco Lungo", category: "arma", tier: "guerra", damage: "1d8", damageType: "perforante", hands: "due mani", properties: ["Munizioni (45/180 m)", "Pesante"] },
+  { id: "balestra-pesante", name: "Balestra Pesante", category: "arma", tier: "guerra", damage: "1d10", damageType: "perforante", hands: "due mani", properties: ["Munizioni (30/120 m)", "Pesante", "Ricarica"] },
+  { id: "balestra-a-mano", name: "Balestra a Mano", category: "arma", tier: "guerra", damage: "1d6", damageType: "perforante", hands: "una mano", properties: ["Leggera", "Munizioni (9/36 m)", "Ricarica"] },
   { id: "armatura-imbottita", name: "Armatura Imbottita", category: "armatura", tipo: "leggera", ac: "11 + mod. Destrezza", stealthDisadvantage: true },
   { id: "armatura-di-cuoio", name: "Armatura di Cuoio", category: "armatura", tipo: "leggera", ac: "11 + mod. Destrezza", stealthDisadvantage: false },
   { id: "cuoio-borchiato", name: "Cuoio Borchiato", category: "armatura", tipo: "leggera", ac: "12 + mod. Destrezza", stealthDisadvantage: false },
@@ -5363,7 +5466,8 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
     const isOffhand = draft.inventory.filter((i) => i.category === "arma").indexOf(it) > 0;
     const twoWeaponBonus = hasTwoWeapon && isOffhand && isLight ? abilityMod : 0;
 
-    const attackBonus = prof + abilityMod + attackStyleBonus;
+    const proficient = isProficientWithWeapon(draft, it);
+    const attackBonus = (proficient ? prof : 0) + abilityMod + attackStyleBonus;
     const damageBonus = abilityMod + damageStyleBonus + twoWeaponBonus;
 
     // Flag per Protezione (reazione)
@@ -5373,6 +5477,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
       ...it,
       abilityKey,
       attackBonus,
+      proficient,
       damageMod: damageBonus,
       isMelee,
       isTwoHanded,
@@ -5882,8 +5987,15 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
               const damageBonus = w.damageMod;
 
               return (
-                <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0.7rem", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, marginBottom: 6 }}>
-                  <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment }}>{w.name}</span>
+                <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0.7rem", border: `1px solid ${w.proficient ? C.parchmentLine : C.wine}`, borderRadius: 2, marginBottom: 6 }}>
+                  <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
+                    {w.name}
+                    {!w.proficient && (
+                      <span title="Nessuna competenza con questa arma: il bonus di competenza non è incluso nel tiro per colpire" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 11, color: C.wine, border: `1px solid ${C.wine}`, borderRadius: 2, padding: "0 4px" }}>
+                        non competente
+                      </span>
+                    )}
+                  </span>
                   <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
                     Attacco {fmtMod(attackBonus)} · Danno {w.damage}{fmtMod(damageBonus)} {w.damageType}
                   </span>
