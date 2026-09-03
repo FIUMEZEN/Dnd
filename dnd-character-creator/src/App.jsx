@@ -5816,7 +5816,7 @@ function MetricBox({ label, value, hint }) {
 // in un riepilogo di sola lettura in fondo.
 function LevelUpModal({
   clsId, className, fromLevel, toLevel, store, updateStore,
-  subclassOptions, chosenSubclassId, onChooseSubclass, changes, onClose,
+  subclassOptions, chosenSubclassId, onChooseSubclass, changes, onCancel, onConfirm,
 }) {
   const cls = CLASSES.find((c) => c.id === clsId);
   // Chierico/Paladino/Warlock/Druido scelgono dominio/giuramento/patrono/circolo altrove
@@ -5838,12 +5838,12 @@ function LevelUpModal({
           <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 22, color: C.wineDeep, margin: 0 }}>
             Livello {toLevel}! <span style={{ color: C.textMuted, fontWeight: 400, fontSize: 15 }}>— {className}</span>
           </h2>
-          <button onClick={onClose} aria-label="Chiudi" style={{ background: "transparent", border: "none", cursor: "pointer", color: C.textMuted, padding: 4 }}>
+          <button onClick={onCancel} aria-label="Annulla il livellamento" title="Annulla il livellamento" style={{ background: "transparent", border: "none", cursor: "pointer", color: C.textMuted, padding: 4 }}>
             <X size={20} />
           </button>
         </div>
         <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 6px" }}>
-          Completa qui le scelte sbloccate da questo livello. Puoi chiudere il popup in qualunque momento: le scelte restano modificabili anche in seguito, più in basso nella scheda.
+          Completa qui le scelte sbloccate da questo livello. La ✕ in alto annulla il livellamento (torni al livello {fromLevel} senza modifiche); "Fatto" conferma — potrai comunque rivedere le scelte più in basso nella scheda.
         </p>
 
         {subclassJustUnlocked && (
@@ -5902,7 +5902,7 @@ function LevelUpModal({
         )}
 
         <div style={{ marginTop: 18, display: "flex", justifyContent: "flex-end" }}>
-          <GoldButton onClick={onClose}>Fatto</GoldButton>
+          <GoldButton onClick={onConfirm}>Fatto</GoldButton>
         </div>
       </div>
     </div>
@@ -5914,6 +5914,11 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [levelUpInfo, setLevelUpInfo] = useState(null);
+  // Stato del draft (e del flag "modifiche non salvate") subito prima di far scattare il
+  // livellamento: se l'utente annulla dal popup (✕), lo ripristiniamo com'era, come se il
+  // livellamento non fosse mai avvenuto. Ogni aggiornamento del draft nel resto dell'app usa
+  // sempre spread immutabili, quindi tenere un semplice riferimento all'oggetto precedente basta.
+  const [levelUpSnapshot, setLevelUpSnapshot] = useState(null);
   const [addingMulticlass, setAddingMulticlass] = useState(false);
   const [confirmRemoveMc, setConfirmRemoveMc] = useState(false);
 
@@ -5951,6 +5956,7 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
     const fromLevel = draft.level;
     const toLevel = fromLevel + 1;
     const changes = getLevelUpChanges(cls.id, getChosenSubclassId(draft, cls.id), fromLevel, toLevel);
+    setLevelUpSnapshot({ draft, dirty });
     updateDraft((d) => ({ ...d, level: toLevel }));
     setLevelUpInfo({ target: "primary", changes });
   };
@@ -5960,8 +5966,26 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
     const fromLevel = mc.level;
     const toLevel = fromLevel + 1;
     const changes = getLevelUpChanges(mcCls.id, getChosenSubclassId(mc, mcCls.id), fromLevel, toLevel);
+    setLevelUpSnapshot({ draft, dirty });
     updateDraft((d) => ({ ...d, multiclass: { ...d.multiclass, level: toLevel } }));
     setLevelUpInfo({ target: "secondary", changes });
+  };
+
+  // ✕ nel popup: annulla il livellamento e ogni scelta fatta al suo interno, come se non
+  // avessimo mai cliccato "Sali di livello".
+  const cancelLevelUp = () => {
+    if (levelUpSnapshot) {
+      setDraft(levelUpSnapshot.draft);
+      setDirty(levelUpSnapshot.dirty);
+    }
+    setLevelUpSnapshot(null);
+    setLevelUpInfo(null);
+  };
+
+  // "Fatto" nel popup: tiene le scelte fatte e chiude, senza toccare lo stato.
+  const confirmLevelUp = () => {
+    setLevelUpSnapshot(null);
+    setLevelUpInfo(null);
   };
 
   const handleConfirmMulticlass = (classId) => {
@@ -6015,7 +6039,8 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
           chosenSubclassId={getChosenSubclassId(draft, cls.id)}
           onChooseSubclass={(id) => updateDraft((d) => ({ ...d, subclassId: id }))}
           changes={levelUpInfo.changes}
-          onClose={() => setLevelUpInfo(null)}
+          onCancel={cancelLevelUp}
+          onConfirm={confirmLevelUp}
         />
       )}
       {levelUpInfo && levelUpInfo.target === "secondary" && mcCls && (
@@ -6030,7 +6055,8 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
           chosenSubclassId={getChosenSubclassId(mc, mcCls.id)}
           onChooseSubclass={(id) => mcUpdateStore(() => ({ subclassId: id }))}
           changes={levelUpInfo.changes}
-          onClose={() => setLevelUpInfo(null)}
+          onCancel={cancelLevelUp}
+          onConfirm={confirmLevelUp}
         />
       )}
 
