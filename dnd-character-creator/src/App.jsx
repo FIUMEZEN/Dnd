@@ -44,27 +44,27 @@ const ABILITIES = [
 const STANDARD_ARRAY = [15, 14, 13, 12, 10, 8];
 
 const RACES = [
-  { id: "umano", name: "Umano", size: "Medio", speed: 30, dark: false, bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 }, traits: ["Una lingua aggiuntiva a scelta"], blurb: "Versatile e ambizioso, l'umano si trova in ogni angolo del mondo." },
-  { id: "nano-colline", name: "Nano delle Colline", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, wis: 1 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Robustezza nanica: +1 PF per livello"], blurb: "Robusto e resistente, con una salute fuori dal comune." },
-  { id: "nano-montagne", name: "Nano delle Montagne", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, str: 2 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico alle armature: competenza nelle armature leggere e medie"], blurb: "Un nano temprato dalle fortezze e dalla guerra." },
-  { id: "alto-elfo", name: "Alto Elfo", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, int: 1 }, traits: ["Retaggio fatato: vantaggio ai TS contro l'incantamento; la magia non può farti addormentare", "Trance: 4 ore di meditazione equivalgono a 8 ore di sonno", "Trucchetto: un trucchetto dalla lista del mago", "Addestramento alle armi elfiche"], blurb: "Elfo istruito e incline alla magia arcana.", elfSkillChoice: true },
-  { id: "elfo-boschi", name: "Elfo dei Boschi", size: "Medio", speed: 35, dark: true, bonuses: { dex: 2, wis: 1 }, traits: ["Retaggio fatato", "Trance", "Addestramento alle armi elfiche", "Maschera della natura: può tentare di nascondersi con copertura naturale leggera"], blurb: "Elfo legato alla foresta e alla vita selvaggia." },
-  { id: "drow", name: "Drow", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, cha: 1 }, traits: ["Retaggio fatato", "Trance", "Addestramento alle armi drow", "Sensibilità alla luce solare", "Magia drow: Luci danzanti; poi Faerie Fire e Oscurità ai livelli previsti"], blurb: "Elfo del Sottosuolo, dotato di potente magia innata." },
-  { id: "halfling-lightfoot", name: "Halfling Piedelesto", size: "Piccolo", speed: 25, dark: false, bonuses: { dex: 2, cha: 1 }, traits: ["Fortunato: quando ottieni 1 su un d20, puoi ritirare il dado", "Coraggioso: vantaggio ai TS contro la condizione spaventato", "Agilità halfling: puoi muoverti attraverso lo spazio di creature più grandi", "Furtivo per natura: puoi nasconderti dietro una creatura almeno una taglia più grande"], blurb: "Agile e socievole, capace di passare inosservato." },
-  { id: "halfling-stout", name: "Halfling Tozzo", size: "Piccolo", speed: 25, dark: false, bonuses: { dex: 2, con: 1 }, traits: ["Fortunato", "Coraggioso", "Agilità halfling", "Resilienza tozza: vantaggio ai TS contro veleno e resistenza ai danni da veleno"], blurb: "Un halfling robusto con una sorprendente resistenza." },
-  { id: "umano-variante", name: "Umano variante", size: "Medio", speed: 30, dark: false, bonuses: {}, traits: ["Questa è una regola opzionale del Manuale del Giocatore 2014: +1 a due caratteristiche diverse, una competenza in un'abilità e un talento."], blurb: "Opzione variante del PHB 2014; richiede il permesso del DM.", variant: true, extraAbilityChoice: { count: 2 }, extraSkillChoice: { count: 1 } },
-  { id: "dragonide", name: "Dragonide", size: "Medio", speed: 30, dark: false, bonuses: { str: 2, cha: 1 }, traits: ["Retaggio draconico", "Arma a soffio", "Resistenza ai danni associati al retaggio draconico"], blurb: "Discendente dei draghi, con un soffio elementale e una resistenza innata." },
-  { id: "gnomo-foresta", name: "Gnomo della Foresta", size: "Piccolo", speed: 25, dark: true, bonuses: { int: 2, dex: 1 }, traits: ["Astuzia gnomica: vantaggio ai TS di Intelligenza, Saggezza e Carisma contro la magia", "Illusionista naturale: conosce Illusione Minore", "Parlare con le piccole bestie"], blurb: "Piccolo illusionista in sintonia con il mondo naturale." },
-  { id: "gnomo-roccia", name: "Gnomo delle Rocce", size: "Piccolo", speed: 25, dark: true, bonuses: { int: 2, con: 1 }, traits: ["Astuzia gnomica", "Conoscenza dell'artigiano: competenza negli strumenti da artigiano scelti", "Congegno da orologiaio"], blurb: "Inventore curioso e ingegnoso, amante dei meccanismi." },
-  { id: "mezzelfo", name: "Mezzelfo", size: "Medio", speed: 30, dark: true, bonuses: { cha: 2 }, extraAbilityChoice: { count: 2, exclude: ["cha"] }, extraSkillChoice: { count: 2 }, traits: ["Retaggio fatato", "Versatilità nelle abilità: competenza in due abilità a scelta"], blurb: "Tra due mondi, con un talento naturale per le relazioni e l'adattamento." },
-  { id: "mezzorco", name: "Mezzorco", size: "Medio", speed: 30, dark: true, bonuses: { str: 2, con: 1 }, traits: ["Scurovisione", "Resistenza implacabile: a 0 PF, invece di cadere a 0, scendi a 1 PF una volta per riposo lungo", "Attacchi selvaggi: un dado di danno aggiuntivo su un critico con arma da mischia"], blurb: "Potente e tenace, con una ferocia difficile da fermare." },
-  { id: "tiefling", name: "Tiefling", size: "Medio", speed: 30, dark: true, bonuses: { cha: 2, int: 1 }, traits: ["Resistenza infernale: resistenza al fuoco", "Eredità infernale: Taumaturgia; altri incantesimi ai livelli previsti"], blurb: "Portatore di un'eredità infernale e di una magia innata." },
+  { id: "umano", name: "Umano", family: "Umano", subraceName: "Umano", size: "Medio", speed: 30, dark: false, bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 }, traits: ["Una lingua aggiuntiva a scelta"], blurb: "Versatile e ambizioso, l'umano si trova in ogni angolo del mondo." },
+  { id: "nano-colline", name: "Nano delle Colline", family: "Nano", subraceName: "Delle Colline", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, wis: 1 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Robustezza nanica: +1 PF per livello"], blurb: "Robusto e resistente, con una salute fuori dal comune." },
+  { id: "nano-montagne", name: "Nano delle Montagne", family: "Nano", subraceName: "Delle Montagne", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, str: 2 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico alle armature: competenza nelle armature leggere e medie"], blurb: "Un nano temprato dalle fortezze e dalla guerra." },
+  { id: "alto-elfo", name: "Alto Elfo", family: "Elfo", subraceName: "Alto Elfo", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, int: 1 }, traits: ["Retaggio fatato: vantaggio ai TS contro l'incantamento; la magia non può farti addormentare", "Trance: 4 ore di meditazione equivalgono a 8 ore di sonno", "Trucchetto: un trucchetto dalla lista del mago", "Addestramento alle armi elfiche"], blurb: "Elfo istruito e incline alla magia arcana.", elfSkillChoice: true },
+  { id: "elfo-boschi", name: "Elfo dei Boschi", family: "Elfo", subraceName: "Dei Boschi", size: "Medio", speed: 35, dark: true, bonuses: { dex: 2, wis: 1 }, traits: ["Retaggio fatato", "Trance", "Addestramento alle armi elfiche", "Maschera della natura: può tentare di nascondersi con copertura naturale leggera"], blurb: "Elfo legato alla foresta e alla vita selvaggia." },
+  { id: "drow", name: "Drow", family: "Elfo", subraceName: "Drow", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, cha: 1 }, traits: ["Retaggio fatato", "Trance", "Addestramento alle armi drow", "Sensibilità alla luce solare", "Magia drow: Luci danzanti; poi Faerie Fire e Oscurità ai livelli previsti"], blurb: "Elfo del Sottosuolo, dotato di potente magia innata." },
+  { id: "halfling-lightfoot", name: "Halfling Piedelesto", family: "Halfling", subraceName: "Piedelesto", size: "Piccolo", speed: 25, dark: false, bonuses: { dex: 2, cha: 1 }, traits: ["Fortunato: quando ottieni 1 su un d20, puoi ritirare il dado", "Coraggioso: vantaggio ai TS contro la condizione spaventato", "Agilità halfling: puoi muoverti attraverso lo spazio di creature più grandi", "Furtivo per natura: puoi nasconderti dietro una creatura almeno una taglia più grande"], blurb: "Agile e socievole, capace di passare inosservato." },
+  { id: "halfling-stout", name: "Halfling Tozzo", family: "Halfling", subraceName: "Tozzo", size: "Piccolo", speed: 25, dark: false, bonuses: { dex: 2, con: 1 }, traits: ["Fortunato", "Coraggioso", "Agilità halfling", "Resilienza tozza: vantaggio ai TS contro veleno e resistenza ai danni da veleno"], blurb: "Un halfling robusto con una sorprendente resistenza." },
+  { id: "umano-variante", name: "Umano variante", family: "Umano", subraceName: "Variante", size: "Medio", speed: 30, dark: false, bonuses: {}, traits: ["Regola opzionale del Manuale del Giocatore 2014: richiede il permesso del Master.", "+1 a due caratteristiche diverse", "Competenza in un'abilità a scelta", "Un talento a scelta"], blurb: "Rinuncia ai bonus di caratteristica diffusi dell'umano comune in cambio di un profilo più definito fin dal primo livello: due incrementi mirati, un'abilità in più e un talento.", variant: true, extraAbilityChoice: { count: 2 }, extraSkillChoice: { count: 1 }, extraFeatChoice: true },
+  { id: "dragonide", name: "Dragonide", family: "Dragonide", subraceName: "Dragonide", size: "Medio", speed: 30, dark: false, bonuses: { str: 2, cha: 1 }, traits: ["Retaggio draconico", "Arma a soffio", "Resistenza ai danni associati al retaggio draconico"], blurb: "Discendente dei draghi, con un soffio elementale e una resistenza innata." },
+  { id: "gnomo-foresta", name: "Gnomo della Foresta", family: "Gnomo", subraceName: "Della Foresta", size: "Piccolo", speed: 25, dark: true, bonuses: { int: 2, dex: 1 }, traits: ["Astuzia gnomica: vantaggio ai TS di Intelligenza, Saggezza e Carisma contro la magia", "Illusionista naturale: conosce Illusione Minore", "Parlare con le piccole bestie"], blurb: "Piccolo illusionista in sintonia con il mondo naturale." },
+  { id: "gnomo-roccia", name: "Gnomo delle Rocce", family: "Gnomo", subraceName: "Delle Rocce", size: "Piccolo", speed: 25, dark: true, bonuses: { int: 2, con: 1 }, traits: ["Astuzia gnomica", "Conoscenza dell'artigiano: competenza negli strumenti da artigiano scelti", "Congegno da orologiaio"], blurb: "Inventore curioso e ingegnoso, amante dei meccanismi." },
+  { id: "mezzelfo", name: "Mezzelfo", family: "Mezzelfo", subraceName: "Mezzelfo", size: "Medio", speed: 30, dark: true, bonuses: { cha: 2 }, extraAbilityChoice: { count: 2, exclude: ["cha"] }, extraSkillChoice: { count: 2 }, traits: ["Retaggio fatato", "Versatilità nelle abilità: competenza in due abilità a scelta"], blurb: "Tra due mondi, con un talento naturale per le relazioni e l'adattamento." },
+  { id: "mezzorco", name: "Mezzorco", family: "Mezzorco", subraceName: "Mezzorco", size: "Medio", speed: 30, dark: true, bonuses: { str: 2, con: 1 }, traits: ["Scurovisione", "Resistenza implacabile: a 0 PF, invece di cadere a 0, scendi a 1 PF una volta per riposo lungo", "Attacchi selvaggi: un dado di danno aggiuntivo su un critico con arma da mischia"], blurb: "Potente e tenace, con una ferocia difficile da fermare." },
+  { id: "tiefling", name: "Tiefling", family: "Tiefling", subraceName: "Tiefling", size: "Medio", speed: 30, dark: true, bonuses: { cha: 2, int: 1 }, traits: ["Resistenza infernale: resistenza al fuoco", "Eredità infernale: Taumaturgia; altri incantesimi ai livelli previsti"], blurb: "Portatore di un'eredità infernale e di una magia innata." },
 ];
 
 const SKILL_ABILITY = {
   "Acrobazia": "dex", "Addestrare Animali": "wis", "Arcano": "int", "Atletica": "str",
   "Furtività": "dex", "Inganno": "cha", "Indagare": "int", "Intimidire": "cha",
-  "Intuizione": "wis", "Medicina": "wis", "Natura": "int", "Percezione": "wis",
+  "Intrattenere": "cha", "Intuizione": "wis", "Medicina": "wis", "Natura": "int", "Percezione": "wis",
   "Persuasione": "cha", "Rapidità di Mano": "dex", "Religione": "int",
   "Sopravvivenza": "wis", "Storia": "int",
 };
@@ -80,7 +80,7 @@ const CLASSES = [
   {
     id: "bardo", name: "Bardo", hitDie: 8, primary: "Carisma", saves: ["Destrezza", "Carisma"],
     armor: "Armature leggere", weapons: "Armi semplici, spade lunghe, rapiere, spade corte, balestre a mano",
-    skillChoices: 3, skillOptions: ["Acrobazia", "Addestrare Animali", "Arcano", "Atletica", "Inganno", "Indagare", "Intimidire", "Intuizione", "Medicina", "Natura", "Percezione", "Persuasione", "Religione", "Rapidità di Mano", "Furtività", "Sopravvivenza", "Storia"],
+    skillChoices: 3, skillOptions: ["Acrobazia", "Addestrare Animali", "Arcano", "Atletica", "Inganno", "Indagare", "Intimidire", "Intrattenere", "Intuizione", "Medicina", "Natura", "Percezione", "Persuasione", "Religione", "Rapidità di Mano", "Furtività", "Sopravvivenza", "Storia"],
     equipment: ["Una spada corta oppure un'arma semplice", "Uno strumento musicale a scelta", "Uno zaino da intrattenitore", "Un'armatura di cuoio e un pugnale"],
     blurb: "Intreccia musica e magia per ispirare alleati e disarmare nemici.",
   },
@@ -392,9 +392,9 @@ const SUBCLASSES = {
       blurb: "Si lega allo spirito dell'orso: resistenza e forza bruta senza pari.",
       features: [
         { level: 3, name: "Spirito Totemico (Orso)", desc: "Mentre sei in Ira, hai resistenza a tutti i tipi di danno tranne il danno psichico." },
-        { level: 6, name: "Aspetto della Bestia (Orso)", desc: "Conti come Grande per portare/spingere/sollevare; vantaggio alle prove di Forza per spingere, tirare, sollevare o spezzare oggetti." },
-        { level: 10, name: "Spirito Custode (Orso)", desc: "Rituale per proiettare lo spirito ed esplorare i dintorni (flavor, non calcolato numericamente)." },
-        { level: 14, name: "Fusione Totemica (Orso)", desc: "Effetto avanzato legato allo spirito dell'orso (flavor, non calcolato numericamente in questa versione)." },
+        { level: 6, name: "Aspetto della Bestia (Orso)", desc: "La tua capacità di trasporto (carico massimo e sollevamento massimo) raddoppia; hai vantaggio alle prove di Forza per spingere, tirare, sollevare o spezzare oggetti." },
+        { level: 10, name: "Spirito Custode (Orso)", desc: "Puoi lanciare Comunione con la Natura, ma solo come rituale: una versione spettrale dell'orso appare per aiutarti a interpretare le informazioni ottenute." },
+        { level: 14, name: "Fusione Totemica (Orso)", desc: "Mentre sei in Ira, ogni creatura ostile entro 1,5 m da te ha svantaggio ai tiri per colpire contro bersagli diversi da te (o da un altro personaggio con questa stessa feature)." },
       ],
     },
     {
@@ -402,9 +402,9 @@ const SUBCLASSES = {
       blurb: "Si lega allo spirito dell'aquila: velocità e percezione sul campo di battaglia.",
       features: [
         { level: 3, name: "Spirito Totemico (Aquila)", desc: "Mentre sei in Ira e non indossi armatura pesante, le creature hanno svantaggio agli attacchi di opportunità contro di te e puoi Scattare come azione bonus." },
-        { level: 6, name: "Aspetto della Bestia (Aquila)", desc: "Vista a lunga distanza eccezionale; niente svantaggio per attacchi a distanza a lungo raggio in scarsa illuminazione (flavor)." },
-        { level: 10, name: "Spirito Custode (Aquila)", desc: "Rituale per proiettare lo spirito ed esplorare i dintorni (flavor, non calcolato numericamente)." },
-        { level: 14, name: "Fusione Totemica (Aquila)", desc: "Effetto avanzato legato allo spirito dell'aquila (flavor, non calcolato numericamente in questa versione)." },
+        { level: 6, name: "Aspetto della Bestia (Aquila)", desc: "Vedi fino a 1,5 km senza difficoltà, distinguendo dettagli fini come se guardassi qualcosa entro 30 m; inoltre la scarsa illuminazione non impone svantaggio alle tue prove di Percezione (Saggezza)." },
+        { level: 10, name: "Spirito Custode (Aquila)", desc: "Puoi lanciare Comunione con la Natura, ma solo come rituale: una versione spettrale dell'aquila appare per aiutarti a interpretare le informazioni ottenute." },
+        { level: 14, name: "Fusione Totemica (Aquila)", desc: "Mentre sei in Ira, ottieni una velocità di volo pari alla tua velocità attuale (funziona solo a scatti: cadi se termini il turno in aria senza nulla che ti sostenga)." },
       ],
     },
     {
@@ -412,9 +412,9 @@ const SUBCLASSES = {
       blurb: "Si lega allo spirito del lupo: caccia in branco e superiorità tattica.",
       features: [
         { level: 3, name: "Spirito Totemico (Lupo)", desc: "Mentre sei in Ira, i tuoi alleati hanno vantaggio agli attacchi in mischia contro qualsiasi creatura ostile entro 1,5 m da te." },
-        { level: 6, name: "Aspetto della Bestia (Lupo)", desc: "Velocità aumentata di 3 m quando non indossi armatura pesante (flavor)." },
-        { level: 10, name: "Spirito Custode (Lupo)", desc: "Rituale per proiettare lo spirito ed esplorare i dintorni (flavor, non calcolato numericamente)." },
-        { level: 14, name: "Fusione Totemica (Lupo)", desc: "Effetto avanzato legato allo spirito del lupo (flavor, non calcolato numericamente in questa versione)." },
+        { level: 6, name: "Aspetto della Bestia (Lupo)", desc: "Puoi seguire tracce di altre creature anche muovendoti a passo veloce, e muoverti furtivamente anche a passo normale." },
+        { level: 10, name: "Spirito Custode (Lupo)", desc: "Puoi lanciare Comunione con la Natura, ma solo come rituale: una versione spettrale del lupo appare per aiutarti a interpretare le informazioni ottenute." },
+        { level: 14, name: "Fusione Totemica (Lupo)", desc: "Come azione bonus, quando colpisci con un attacco con arma da mischia una creatura Grande o più piccola, puoi atterrarla prona." },
       ],
     },
   ],
@@ -443,10 +443,10 @@ const SUBCLASSES = {
       id: "quattro-elementi", name: "Via dei Quattro Elementi",
       blurb: "Piega i Punti Ki alla volontà degli elementi attraverso discipline elementali.",
       features: [
-        { level: 3, name: "Discepolo degli Elementi", desc: "Impari 2 discipline elementali a scelta, ad es.: Sintonia Elementale (gratuita, un piccolo effetto elementale a scelta come azione), Zanne del Serpente di Fuoco (1 Ki: il tuo prossimo attacco senza armi infligge +1d10 danni da fuoco e ha 3 m di portata in più), Pugno dell'Aria Ininterrotta (2 Ki, azione, linea di 9 m: TS di Forza o 3d10 danni contundenti, spinto di 6 m e prono), Sferza d'Acqua (2 Ki, azione, 9 m: TS di Forza o 3d10 danni contundenti, tirato verso di te o prono). L'elenco completo non è selezionabile in questa versione dell'app: qui sono solo indicate come riferimento testuale." },
-        { level: 6, name: "Disciplina Aggiuntiva", desc: "Impari un'altra disciplina, anche tra quelle che richiedono almeno il 6° livello, ad es.: Raffica degli Spiriti del Vento (2 Ki, azione, cono di 4,5 m: TS di Forza o 3d10 danni contundenti e spinto lontano da te), Colpo Cinereo Dilagante (2 Ki, azione, linea di 9 m: TS di Destrezza o 3d10 danni da fuoco), Gong della Vetta (3 Ki, azione, sfera di 9 m: TS di Costituzione o 3d10 danni tonanti e storditi fino alla fine del tuo prossimo turno)." },
-        { level: 11, name: "Disciplina Aggiuntiva", desc: "Impari un'altra disciplina a scelta tra quelle disponibili al tuo livello (elenco di riferimento indicato sopra)." },
-        { level: 17, name: "Disciplina Aggiuntiva", desc: "Impari un'altra disciplina, anche tra quelle che richiedono il 17° livello, ad es.: Muro di Fuoco degli Elementi (4 Ki, azione, muro di fuoco di 18 m o cerchio di 3 m: 5d8 danni da fuoco a chi lo attraversa o inizia il turno al suo interno)." },
+        { level: 3, name: "Discepolo degli Elementi", desc: "Conosci sempre la disciplina Sintonia Elementale (gratuita) e impari 2 ulteriori discipline elementali a scelta tra quelle disponibili. Scegli le tue discipline qui sotto, nella scheda del personaggio.", disciplinePick: true },
+        { level: 6, name: "Disciplina Aggiuntiva", desc: "Impari un'altra disciplina elementale a scelta, incluse quelle che richiedono almeno il 6° livello.", disciplinePick: true },
+        { level: 11, name: "Disciplina Aggiuntiva", desc: "Impari un'altra disciplina elementale a scelta, incluse quelle che richiedono almeno l'11° livello.", disciplinePick: true },
+        { level: 17, name: "Disciplina Aggiuntiva", desc: "Impari un'altra disciplina elementale a scelta, incluse quelle che richiedono il 17° livello.", disciplinePick: true },
       ],
     },
   ],
@@ -592,7 +592,7 @@ const SUBCLASSES = {
       id: "magia-selvaggia", name: "Magia Selvaggia",
       blurb: "Il caos stesso scorre attraverso la tua magia, imprevedibile e incontrollabile.",
       features: [
-        { level: 1, name: "Sconvolgimento di Magia Selvaggia", desc: "Ogni volta che lanci un incantesimo da Stregone di 1° livello o superiore, il Master può far scatenare un effetto casuale e imprevedibile (tabella non modellata in questa versione dell'app)." },
+        { level: 1, name: "Sconvolgimento di Magia Selvaggia", desc: "Ogni volta che lanci un incantesimo da Stregone di 1° livello o superiore, il Master può far scatenare un effetto casuale sulla tabella d100 degli Sconvolgimenti: usa il tiratore qui sotto, nella scheda del personaggio, per generarne uno.", wildMagic: true },
         { level: 1, name: "Maree del Caos", desc: "Una volta per riposo lungo, ottieni vantaggio a un tiro per colpire, una prova di caratteristica o un tiro salvezza; dopo averlo usato, il tuo prossimo incantesimo da Stregone di 1° livello o superiore può scatenare uno Sconvolgimento.", resource: true },
         { level: 6, name: "Piega la Fortuna", desc: "Come reazione, spendendo 2 Punti Stregoneria, aggiungi o sottrai 1d4 al tiro per colpire, alla prova di caratteristica o al TS di una creatura che puoi vedere." },
         { level: 14, name: "Caos Controllato", desc: "Quando scateni uno Sconvolgimento di Magia Selvaggia, tiri due volte sulla tabella e scegli quale dei due effetti applicare." },
@@ -961,15 +961,139 @@ function getAllClassResources(clsId, subclassId, level, mysticArcanum, chaMod) {
 }
 
 const BACKGROUNDS = [
-  { id: "accolito", name: "Accolito", skills: ["Intuizione", "Religione"], equipment: ["Un simbolo sacro", "Un libro di preghiere", "5 bastoncini d'incenso", "Una veste", "Un set da vestire comune", "Una borsa con 15 mo"], feature: "Rifugio dei Fedeli", featureDesc: "Trova vitto e alloggio gratuiti presso i templi del proprio culto." },
-  { id: "criminale", name: "Criminale", skills: ["Inganno", "Furtività"], equipment: ["Un piede di porco", "Vestiti scuri comuni con cappuccio", "Una borsa con 15 mo"], feature: "Contatto Criminale", featureDesc: "Ha un referente affidabile nel sottobosco criminale locale." },
-  { id: "eroe-gente", name: "Eroe della Gente", skills: ["Addestrare Animali", "Sopravvivenza"], equipment: ["Un set da artigiano", "Una pala", "Una pentola di ferro", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Ospitalità Rustica", featureDesc: "La gente comune gli offre rifugio e aiuto discreto quando necessario." },
-  { id: "nobile", name: "Nobile", skills: ["Storia", "Persuasione"], equipment: ["Vestiti eleganti", "Un anello con sigillo", "Una pergamena di lignaggio", "Una borsa con 25 mo"], feature: "Posizione Privilegiata", featureDesc: "È accolto nell'alta società e ottiene udienze con i nobili locali." },
-  { id: "saggio", name: "Saggio", skills: ["Arcano", "Storia"], equipment: ["Una bottiglia d'inchiostro", "Una penna", "Un piccolo coltello", "Una lettera di un collega defunto", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Ricercatore", featureDesc: "Sa dove cercare quasi ogni informazione, anche se non la conosce già." },
-  { id: "soldato", name: "Soldato", skills: ["Atletica", "Intimidire"], equipment: ["L'insegna del proprio grado", "Un trofeo da un nemico caduto", "Un set di dadi", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Grado Militare", featureDesc: "I soldati fedeli al suo ex esercito lo riconoscono e rispettano il grado." },
-  { id: "marinaio", name: "Marinaio", skills: ["Atletica", "Percezione"], equipment: ["Un bastone", "15 metri di corda di seta", "Un portafortuna", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Contatti nei Porti", featureDesc: "Trova rapidamente informazioni e passaggi nelle città portuali." },
-  { id: "ciarlatano", name: "Ciarlatano", skills: ["Inganno", "Rapidità di Mano"], equipment: ["Un set da travestimento", "Strumenti per falsificare documenti", "Vestiti eleganti", "Una borsa con 15 mo"], feature: "Falsa Identità", featureDesc: "Possiede una seconda identità completa di documenti e recapiti." },
+  {
+    id: "accolito", name: "Accolito", skills: ["Intuizione", "Religione"], equipment: ["Un simbolo sacro", "Un libro di preghiere", "5 bastoncini d'incenso", "Una veste", "Un set da vestire comune", "Una borsa con 15 mo"], feature: "Rifugio dei Fedeli", featureDesc: "Trova vitto e alloggio gratuiti presso i templi del proprio culto.",
+    personalityTraits: ["Cito scritture e parabole per quasi ogni occasione.", "Vedo segni della volontà divina in ogni evento, per quanto piccolo.", "Ho una fede incrollabile e cerco di trasmetterla agli altri.", "Tratto con gentilezza chiunque, a prescindere da come mi tratta."],
+    ideals: ["Tradizione: I costumi antichi della mia fede vanno preservati.", "Carità: Aiuto chi ha bisogno, qualunque sia il costo per me.", "Fede: Confido che la mia divinità agisca attraverso di me.", "Conoscenza: I segreti del divino attendono chi li cerca con devozione."],
+    bonds: ["Darei la vita per proteggere un membro del mio ordine.", "Cerco di ritrovare un antico testo sacro andato perduto.", "Il mio tempio d'origine è stato distrutto: voglio vederlo ricostruito.", "Devo tutto al sacerdote che mi ha cresciuto."],
+    flaws: ["Giudico severamente chi non condivide la mia fede.", "Seguirei un ordine della mia gerarchia anche se lo ritenessi sbagliato.", "Nutro un segreto risentimento verso l'autorità religiosa.", "Sono facilmente manipolato da chi millanta pietà."],
+  },
+  {
+    id: "criminale", name: "Criminale", skills: ["Inganno", "Furtività"], equipment: ["Un piede di porco", "Vestiti scuri comuni con cappuccio", "Una borsa con 15 mo"], feature: "Contatto Criminale", featureDesc: "Ha un referente affidabile nel sottobosco criminale locale.",
+    personalityTraits: ["Ho sempre un piano di riserva per quando le cose vanno male.", "Resto calmo, non importa quale sia la situazione: sono abituato a mentire.", "Il pericolo mi eccita.", "Mi fido solo di chi ha già dimostrato di potersi fidare di me."],
+    ideals: ["Onore: Non tradisco mai chi lavora con me.", "Libertà: Le catene sono fatte per essere spezzate.", "Avidità: Farò qualunque cosa per un guadagno abbastanza grande.", "Redenzione: C'è speranza di cambiare, per chiunque."],
+    bonds: ["Sto pagando un debito che non posso ripagare.", "Qualcuno che amo è ancora impigliato nella mia vecchia vita criminale.", "Mi hanno incastrato per un crimine che non ho commesso e voglio giustizia.", "La mia banda è la mia unica vera famiglia."],
+    flaws: ["Se c'è un bottino nelle vicinanze, lo voglio.", "Quando qualcuno mi fa un torto, non lo dimentico né lo perdono.", "Non riesco a resistere a una sfida facile.", "Divento nervoso quando la legge è nei paraggi, anche se sono innocente."],
+  },
+  {
+    id: "eroe-gente", name: "Eroe Popolare", skills: ["Addestrare Animali", "Sopravvivenza"], equipment: ["Un set da artigiano", "Una pala", "Una pentola di ferro", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Ospitalità Rustica", featureDesc: "La gente comune gli offre rifugio e aiuto discreto quando necessario.",
+    personalityTraits: ["Giudico le persone dalle loro azioni, non dalle loro parole.", "Se qualcuno ha bisogno d'aiuto, non chiedo mai nulla in cambio.", "Sono ingenuo e mi fido troppo facilmente.", "Lavoro sodo perché mi hanno insegnato che è l'unico modo per farcela."],
+    ideals: ["Rispetto: La gente comune merita rispetto quanto i nobili.", "Uguaglianza indipendentemente da chi si è o si è nati.", "Libertà: I tiranni non devono opprimere il popolo.", "Destino: Nulla mi accade per caso, tutto ha uno scopo."],
+    bonds: ["Un contadino locale mi ha aiutato quando ero nel bisogno: ora è come una famiglia.", "Combatto per chi non può difendersi da solo.", "Il mio villaggio contava su di me e l'ho deluso: voglio rimediare.", "Un tiranno locale mi ha rovinato la vita e voglio vederlo cadere."],
+    flaws: ["Il potere delle persone importanti mi intimidisce.", "Non lascerei mai passare l'occasione di fare soldi facili, anche disonestamente.", "Sono più a mio agio con gli animali che con le persone.", "Sono ancora ingenuo riguardo al mondo al di fuori del mio villaggio."],
+  },
+  {
+    id: "nobile", name: "Nobile", skills: ["Storia", "Persuasione"], equipment: ["Vestiti eleganti", "Un anello con sigillo", "Una pergamena di lignaggio", "Una borsa con 25 mo"], feature: "Posizione Privilegiata", featureDesc: "È accolto nell'alta società e ottiene udienze con i nobili locali.",
+    personalityTraits: ["Il mio linguaggio raffinato mi fa sembrare colto anche quando non lo sono.", "Sono abituato a farmi ubbidire e mi irrito quando qualcuno mi ignora.", "Ho un debole per il gioco d'azzardo, il vino o entrambi.", "Ricordo sempre nomi e volti, e non dimentico chi mi ha aiutato o insultato."],
+    ideals: ["Nobile Obbligo: È mio dovere prendermi cura di chi ha meno di me.", "Ambizione: Voglio ottenere un titolo tutto mio.", "Famiglia: Il sangue viene prima di ogni altra cosa.", "Potere: Se ottengo abbastanza potere, potrò cambiare le cose in meglio."],
+    bonds: ["Il mio buon nome vale più della mia vita.", "Devo dimostrare di meritare il mio titolo, non solo di averlo ereditato.", "Difenderei a costo della vita quelli sotto la mia protezione.", "Ho un rivale di lignaggio che disprezza tutto ciò che rappresento."],
+    flaws: ["Penso che gli altri esistano per servirmi.", "Il mio orgoglio a volte offusca il mio giudizio.", "Disprezzo chi considero di rango inferiore.", "Farei qualunque cosa per proteggere il buon nome della mia famiglia, anche mentire."],
+  },
+  {
+    id: "saggio", name: "Sapiente", skills: ["Arcano", "Storia"], equipment: ["Una bottiglia d'inchiostro", "Una penna", "Un piccolo coltello", "Una lettera di un collega defunto", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Ricercatore", featureDesc: "Sa dove cercare quasi ogni informazione, anche se non la conosce già.",
+    personalityTraits: ["Cito fonti e trattati anche quando nessuno me lo chiede.", "Sono affascinato da un particolare campo di studio, quasi ossessivamente.", "Trovo il modo di ricondurre ogni discussione a un argomento che conosco bene.", "Prendo appunti compulsivamente su qualunque cosa mi circondi."],
+    ideals: ["Conoscenza: I segreti del mondo vanno scoperti e custoditi.", "Verità: I fatti contano più di ciò che le persone vogliono sentirsi dire.", "Autoperfezionamento: Lo studio è la via per diventare migliori.", "Bene Superiore: La mia conoscenza deve servire il bene di tutti."],
+    bonds: ["Il libro che sto cercando potrebbe portare grande sapienza o grande rovina.", "Devo tutto alla biblioteca o all'accademia che mi ha formato.", "Sto seguendo le tracce di un maestro scomparso.", "Voglio dimostrare una teoria che gli altri studiosi deridono."],
+    flaws: ["Cito fonti errate con assoluta sicurezza, senza accorgermene.", "Sono ossessionato da un mistero irrisolto: non riesco a lasciarlo andare.", "Sottovaluto pericoli pratici davanti a un enigma intellettuale.", "Ho poca pazienza per chi non condivide il mio amore per lo studio."],
+  },
+  {
+    id: "soldato", name: "Soldato", skills: ["Atletica", "Intimidire"], equipment: ["L'insegna del proprio grado", "Un trofeo da un nemico caduto", "Un set di dadi", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Grado Militare", featureDesc: "I soldati fedeli al suo ex esercito lo riconoscono e rispettano il grado.",
+    personalityTraits: ["Affronto i problemi in modo diretto, quasi mai con diplomazia.", "Ho una battuta pronta per stemperare la tensione, anche nei momenti peggiori.", "Sono spietatamente pragmatico sul campo di battaglia.", "Mi metto sempre al servizio di chi è più debole nel gruppo."],
+    ideals: ["Grande Bene: I nostri sacrifici sono nulla se avvantaggiano molti.", "Responsabilità: Faccio ciò che mi viene ordinato per il bene della causa.", "Indipendenza: Ho imparato a contare solo su me stesso in guerra.", "Vivere e Lasciar Vivere: Le battaglie inutili non giovano a nessuno."],
+    bonds: ["Darei la vita per proteggere i soldati con cui ho servito.", "Il mio equipaggiamento è tutto ciò che mi resta della mia vita precedente.", "Mi manca la guerra: la vita civile mi sembra vuota.", "Un ufficiale mi ha tradito in battaglia e voglio giustizia."],
+    flaws: ["Ho incubi ricorrenti legati alla guerra e faccio fatica a dormire.", "Ho un temperamento facile all'ira in situazioni di stress.", "Ho difficoltà a fidarmi di chi non ha mai prestato servizio.", "Bevo troppo per dimenticare ciò che ho visto."],
+  },
+  {
+    id: "marinaio", name: "Marinaio", skills: ["Atletica", "Percezione"], equipment: ["Un bastone", "15 metri di corda di seta", "Un portafortuna", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Contatti nei Porti", featureDesc: "Trova rapidamente informazioni e passaggi nelle città portuali.",
+    personalityTraits: ["Il mio linguaggio è colorito, anche in compagnia poco adatta.", "Divento irrequieto se resto a terra troppo a lungo.", "Sono superstizioso riguardo a maree, venti e presagi.", "Racconto storie di mare esagerate ad ogni occasione."],
+    ideals: ["Rispetto: L'equipaggio si sostiene a vicenda, o affonda insieme.", "Libertà: Il mare non conosce padroni.", "Maestria: Voglio essere il miglior marinaio che le onde abbiano mai visto.", "Gente: Le persone comuni, non i governanti, fanno la vera differenza."],
+    bonds: ["Darei la vita per il mio equipaggio.", "Sto cercando un tesoro leggendario nascosto in mare aperto.", "Devo tornare a saldare un debito d'onore in un porto lontano.", "La mia nave è tutto ciò che mi resta di un tempo felice."],
+    flaws: ["Non resisto alla tentazione di un bottino facile.", "Ho scommesso e perso più di quanto potessi permettermi, più di una volta.", "Reagisco in modo eccessivo se qualcuno mette in dubbio il mio coraggio.", "Ho lasciato dei conti in sospeso in troppi porti."],
+  },
+  {
+    id: "ciarlatano", name: "Ciarlatano", skills: ["Inganno", "Rapidità di Mano"], equipment: ["Un set da travestimento", "Strumenti per falsificare documenti", "Vestiti eleganti", "Una borsa con 15 mo"], feature: "Falsa Identità", featureDesc: "Possiede una seconda identità completa di documenti e recapiti.",
+    personalityTraits: ["Riesco a sembrare sincero anche quando sto mentendo spudoratamente.", "Ho una battuta o un aneddoto pronto per ogni situazione sociale.", "Studio gli altri per capire cosa vogliono sentirsi dire.", "Cambio accento e portamento a seconda di chi ho davanti."],
+    ideals: ["Indipendenza: Nessuno mi dice come vivere.", "Fascino: Chi non riesce a sedurre una stanza non merita di comandarla.", "Redenzione: Ogni truffatore può, un giorno, diventare onesto.", "Avidità: Punto sempre al guadagno più grande possibile."],
+    bonds: ["Una vecchia truffa è andata storta e qualcuno ne ha pagato le conseguenze al posto mio.", "Sto cercando di riscattarmi agli occhi di chi ho tradito.", "Ho un socio in affari poco puliti a cui devo lealtà.", "Un'identità falsa che uso è diventata più reale di quella vera."],
+    flaws: ["Non riesco a resistere a un facile raggiro, anche quando è rischioso.", "Le persone che ho truffato in passato potrebbero riconoscermi in qualsiasi momento.", "Sono convinto di essere più furbo di chiunque altro, e questo mi rende avventato.", "Mento anche quando dire la verità sarebbe più semplice."],
+  },
+  {
+    id: "artigiano-gilda", name: "Artigiano di Gilda", skills: ["Intuizione", "Persuasione"], equipment: ["Un set di strumenti da artigiano (a scelta)", "Una lettera di presentazione della gilda", "Un set di vestiti da viaggio", "Una borsa con 15 mo"], feature: "Membro di Gilda", featureDesc: "La sua gilda gli offre vitto, alloggio e sostegno politico nelle città in cui è presente, in cambio del rispetto delle sue regole e di una quota periodica.",
+    personalityTraits: ["Giudico gli altri artigiani dalla qualità del loro lavoro, non dalle loro parole.", "Sono orgoglioso del mio mestiere fino quasi all'arroganza.", "Tratto ogni contratto come sacro.", "Ho un occhio attento per ogni dettaglio, anche il più piccolo."],
+    ideals: ["Comunità: È dovere di tutti sostenere la propria gilda.", "Maestria: Il buon lavoro parla da sé.", "Prosperità: Il commercio onesto arricchisce tutti, non solo pochi.", "Ambizione: Voglio arrivare a guidare la mia gilda, un giorno."],
+    bonds: ["La mia gilda mi ha dato tutto quello che ho: le devo lealtà.", "Sto cercando di riscattare il buon nome della mia famiglia nel mio mestiere.", "Un rivale di bottega ha rubato una mia idea e voglio giustizia.", "Sto risparmiando per aprire una bottega tutta mia."],
+    flaws: ["Sono disposto a piegare le regole della gilda se il guadagno è abbastanza grande.", "Detesto la concorrenza sleale al punto da agire d'impulso.", "Sono ossessionato dal perfezionismo, a scapito della rapidità.", "Mi fido troppo di chi parla la lingua del commercio."],
+  },
+  {
+    id: "eremita", name: "Eremita", skills: ["Medicina", "Religione"], equipment: ["Una cassa di pergamene con appunti di studio", "Una coperta invernale", "Un set di vestiti comuni", "Un kit da erborista", "Una borsa con 5 mo"], feature: "Scoperta", featureDesc: "Il lungo isolamento gli ha rivelato una verità straordinaria, il cui significato e la cui portata sono ancora da comprendere appieno.",
+    personalityTraits: ["Sono a disagio tra la folla e cerco sempre un angolo tranquillo.", "Parlo a voce alta con me stesso per abitudine, dopo anni di solitudine.", "Vedo la saggezza nelle piccole cose che gli altri ignorano.", "Diffido delle istituzioni: preferisco la mia sola compagnia."],
+    ideals: ["Verità Interiore: L'illuminazione si trova solo nel silenzio e nella riflessione.", "Grande Bene: La mia scoperta deve essere condivisa, prima o poi, con il mondo.", "Solitudine: Le risposte migliori si trovano lontano dal rumore del mondo.", "Logica: I sentimenti non devono offuscare il ragionamento."],
+    bonds: ["Il luogo del mio isolamento è sacro per me e lo difenderei.", "Sto cercando qualcuno degno di ricevere ciò che ho scoperto.", "Un evento del mio passato mi ha spinto a fuggire dal mondo, e ancora mi perseguita.", "Devo la vita a chi mi ha ospitato durante il mio isolamento."],
+    flaws: ["Fatico enormemente a fidarmi di sconosciuti.", "La mia scoperta mi ha reso ossessivo: la antepongo a tutto il resto.", "Ho perso familiarità con le usanze sociali del mondo che ho lasciato.", "Sono convinto che la mia visione sia l'unica verità possibile."],
+  },
+  {
+    id: "forestiero", name: "Forestiero", skills: ["Atletica", "Sopravvivenza"], equipment: ["Un bastone da viaggio", "Una trappola da caccia", "Un trofeo di un animale ucciso personalmente", "Un set di vestiti da viaggio", "Una borsa con 10 mo"], feature: "Viandante", featureDesc: "Ricorda con precisione la disposizione del territorio attraversato e può sempre trovare cibo e acqua fresca per sé e fino a cinque compagni, se la zona ne offre.",
+    personalityTraits: ["Mi sento più a mio agio nella natura selvaggia che tra le mura di una città.", "Parlo poco e vado dritto al punto.", "Osservo ogni ambiente come un potenziale pericolo o una potenziale risorsa.", "Sono leale fino alla fine con chi considero parte del mio branco."],
+    ideals: ["Cambiamento: Il mondo naturale è in costante mutamento, e va accettato.", "Onore: Un cacciatore rispetta sempre la preda.", "Comunione: Sono parte della natura, non il suo padrone.", "Vendetta: Chi ha devastato la mia terra pagherà."],
+    bonds: ["La mia terra d'origine è stata invasa o distrutta, e voglio riprenderla.", "Sto seguendo le tracce di chi ha ucciso la mia famiglia o il mio clan.", "Proteggo un luogo selvaggio sacro per il mio popolo.", "Un animale guida mi ha risparmiato la vita: gli devo lealtà."],
+    flaws: ["Non capisco né rispetto le sottigliezze dell'etichetta cittadina.", "Reagisco con violenza istintiva quando mi sento minacciato.", "Diffido profondamente di chi non ha mai vissuto fuori dalle mura di una città.", "Non so resistere alla tentazione di seguire una traccia, qualunque essa sia."],
+  },
+  {
+    id: "intrattenitore", name: "Intrattenitore", skills: ["Acrobazia", "Intrattenere"], equipment: ["Uno strumento musicale (a scelta)", "Il favore di un ammiratore", "Un set di vestiti da intrattenitore", "Una borsa con 15 mo"], feature: "Seguito Popolare", featureDesc: "Trova sempre un luogo dove esibirsi gratuitamente in cambio di vitto e alloggio modesti, e la gente comune spesso lo protegge dalle autorità.",
+    personalityTraits: ["Non perdo mai occasione per intrattenere chi mi circonda.", "Ricordo ogni singolo elogio ricevuto, parola per parola.", "Mi annoio facilmente quando non sono al centro dell'attenzione.", "Vivo per il momento in cui il pubblico applaude."],
+    ideals: ["Bellezza: Quando eseguo un'opera, creo qualcosa di senza tempo.", "Tradizione: Le storie e le canzoni antiche vanno preservate.", "Creatività: È sempre possibile trovare una soluzione originale.", "Grazia: Nessuna sfida può abbattere chi resta gentile e composto."],
+    bonds: ["Il mio strumento (o il mio costume di scena) è il bene più prezioso che ho.", "Sto cercando il pubblico o il palcoscenico che darà senso alla mia carriera.", "Devo tutto alla compagnia che mi ha accolto quando non avevo nulla.", "Un rivale sul palco ha rovinato la mia reputazione, e voglio riscattarmi."],
+    flaws: ["Amo troppo la fama, l'oro, il piacere fisico, o tutti e tre.", "Un mecenate potente potrebbe volermi rintracciare per motivi tutt'altro che amichevoli.", "Sono ossessionato dal giudizio del pubblico, anche a mio danno.", "Le voci sul mio conto tendono a crescere fino a diventare leggenda, e non sempre a mio favore."],
+  },
+  {
+    id: "monello", name: "Monello", skills: ["Rapidità di Mano", "Furtività"], equipment: ["Un piccolo coltello", "Una mappa della città in cui è cresciuto", "Un topolino domestico", "Un ricordo dei genitori", "Un set di vestiti comuni", "Una borsa con 10 mo"], feature: "Segreti della Città", featureDesc: "Conosce vicoli, passaggi segreti e scorciatoie di una città: lui e chi lo accompagna possono muoversi al doppio della velocità normale mentre non sono in fretta a vista di tutti.",
+    personalityTraits: ["Mi nascondo prima di tutto: guardo e ascolto prima di agire.", "Non mi separo mai da un piccolo oggetto che mi ricorda casa.", "Parlo lo slang di strada e faccio fatica con i modi raffinati.", "Nascondo il cibo per abitudine, non si sa mai."],
+    ideals: ["Sopravvivenza: Fai quel che devi fare per andare avanti a domani.", "Popolo: Chi vive per strada deve aiutarsi a vicenda.", "Cambiamento: Il mondo va reso più giusto per chi non ha nulla.", "Aspirazione: Voglio dimostrare di valere più di dove sono nato."],
+    bonds: ["Proteggo gli altri bambini di strada che ho lasciato indietro.", "Qualcuno mi ha salvato quando ero solo per strada, e gli devo tutto.", "Sto cercando la persona che ha causato la morte dei miei genitori.", "La mia città, per quanto dura sia stata con me, è comunque casa."],
+    flaws: ["Rubo per abitudine, anche quando non ne ho bisogno.", "Non mi fido delle autorità, anche quando agiscono in buona fede.", "Nascondo le mie vere emozioni dietro una battuta o un silenzio.", "Faccio fatica a restare in un posto solo troppo a lungo."],
+  },
 ];
+
+const CUSTOM_BACKGROUND_ID = "personalizzato";
+
+// Restituisce il background selezionato: uno dei 13 predefiniti, oppure — se il giocatore ha
+// scelto "Personalizzato" — un oggetto con la stessa forma costruito dai campi custom del
+// draft (regola "Personalizzare un Background", PHB 2014 p.125: 2 competenze a scelta,
+// strumenti/lingua, corredo ed equivalente, e un tratto di background inventato con il DM).
+function getSelectedBackground(draft) {
+  if (draft.backgroundId === CUSTOM_BACKGROUND_ID) {
+    return {
+      id: CUSTOM_BACKGROUND_ID,
+      name: (draft.customBackgroundName || "").trim() || "Personalizzato",
+      skills: draft.customBackgroundSkills || [],
+      equipment: (draft.customBackgroundEquipment || "").split("\n").map((s) => s.trim()).filter(Boolean),
+      toolsLanguages: draft.customBackgroundToolsLanguages || "",
+      feature: (draft.customBackgroundFeatureName || "").trim() || "Tratto personalizzato",
+      featureDesc: draft.customBackgroundFeatureDesc || "",
+      custom: true,
+    };
+  }
+  return BACKGROUNDS.find((b) => b.id === draft.backgroundId) || null;
+}
+
+// Errori di validazione specifici del background (predefinito o personalizzato). Usata sia da
+// validateCharacter sia per capire se lo step "Background" del wizard è completo.
+function getBackgroundValidationErrors(draft) {
+  const errors = [];
+  if (!draft.backgroundId) {
+    errors.push("Seleziona un background.");
+    return errors;
+  }
+  if (draft.backgroundId === CUSTOM_BACKGROUND_ID) {
+    if (!(draft.customBackgroundName || "").trim()) errors.push("Dai un nome al tuo background personalizzato.");
+    if ((draft.customBackgroundSkills || []).length !== 2) errors.push("Scegli 2 competenze per il background personalizzato.");
+    if (!(draft.customBackgroundEquipment || "").trim()) errors.push("Indica il corredo di partenza del background personalizzato.");
+    if (!(draft.customBackgroundFeatureName || "").trim() || !(draft.customBackgroundFeatureDesc || "").trim()) {
+      errors.push("Descrivi il tratto (nome e testo) del background personalizzato.");
+    }
+  }
+  return errors;
+}
 
 /* ---------------------------------- TALENTI (FEATS) ---------------------------------- */
 // Catalogo dei talenti del Manuale del Giocatore 2014. Ogni talento può opzionalmente
@@ -1353,6 +1477,67 @@ function getMetamagic(id) {
   return METAMAGIC_OPTIONS.find((m) => m.id === id) || null;
 }
 
+/* ------------------------------- SCONVOLGIMENTO DI MAGIA SELVAGGIA (Stregone) ------------------------------- */
+// Tabella d100 (coppie di valori 01-02, 03-04, ... 99-00) per l'effetto casuale che il DM può
+// far scatenare quando uno Stregone di Magia Selvaggia lancia un incantesimo di 1° livello o superiore.
+const WILD_MAGIC_SURGE_TABLE = [
+  "Per il prossimo minuto tiri di nuovo su questa tabella all'inizio di ogni tuo turno, ignorando ulteriori risultati identici a questo.",
+  "Per il prossimo minuto vedi le creature invisibili.",
+  "Un modron innocuo, alto 30 cm, appare entro 1,5 m e resta per 1 minuto (controllato dal DM), poi svanisce.",
+  "Lanci Palla di Fuoco come incantesimo di 3° livello centrato su te stesso.",
+  "Lanci Dardo Incantato come incantesimo di 5° livello.",
+  "La tua altezza cambia in modo casuale di 1d10 pollici (dispari = ti rimpicciolisci, pari = cresci) per 1d10 minuti.",
+  "Lanci Confusione centrata su te stesso.",
+  "Per il prossimo minuto recuperi 5 punti ferita all'inizio di ogni tuo turno.",
+  "Ti crescono piume su tutto il corpo, che restano finché non starnutisci: a quel punto esplodono via.",
+  "Lanci Untuosità centrata su te stesso.",
+  "Il prossimo incantesimo che lanci con un tiro salvezza entro il prossimo minuto impone svantaggio ai bersagli su quel tiro.",
+  "La tua pelle diventa di un blu vivido per 1d10 giorni; Rimuovi Maledizione pone fine anticipatamente all'effetto.",
+  "Ti spunta per 1 minuto un occhio in più sulla fronte: hai vantaggio alle prove di Percezione basate sulla vista.",
+  "Per il prossimo minuto, ogni incantesimo con tempo di lancio di 1 azione che lanci può essere lanciato come azione bonus.",
+  "Ti teletrasporti fino a 18 m in uno spazio libero a tua scelta che puoi vedere.",
+  "Vieni trasportato sul Piano Astrale finché non finisce il tuo prossimo turno, dopo di che riappari dove eri prima (o nello spazio libero più vicino).",
+  "Il prossimo incantesimo dannoso che lanci entro il prossimo minuto infligge il danno massimo possibile.",
+  "La tua età cambia in modo casuale di 1d10 anni (dispari = ringiovanisci, pari = invecchi).",
+  "1d6 flumph innocui appaiono entro 18 m e restano per 1 minuto (controllati dal DM), poi svaniscono.",
+  "Recuperi 2d10 punti ferita.",
+  "Ti trasformi in una pianta in vaso fino all'inizio del tuo prossimo turno: sei incapacitato e vulnerabile a ogni tipo di danno.",
+  "Per il prossimo minuto puoi teletrasportarti fino a 6 m come azione bonus prima di ogni tuo attacco o incantesimo.",
+  "Lanci Levitazione su te stesso.",
+  "Un unicorno innocuo appare entro 1,5 m e resta per 1 minuto (controllato dal DM), poi svanisce.",
+  "Per il prossimo minuto non puoi parlare: ogni volta che provi, ti escono di bocca bolle rosa.",
+  "Uno scudo spettrale ti circonda per 1 minuto: +2 CA e immunità a Dardo Incantato.",
+  "Sei immune agli effetti dell'alcol per 5d6 giorni.",
+  "I tuoi capelli cadono, ma ricrescono entro 24 ore.",
+  "Per il prossimo minuto, ogni oggetto infiammabile che tocchi (non indossato o trasportato da altri) prende fuoco.",
+  "Recuperi lo slot incantesimo di livello più basso che hai speso.",
+  "Per il prossimo minuto devi gridare per parlare.",
+  "Lanci Nube di Nebbia centrata su te stesso.",
+  "Fino a tre creature a tua scelta entro 9 m subiscono 4d10 danni da fulmine.",
+  "Sei spaventato dalla creatura più vicina fino alla fine del tuo prossimo turno.",
+  "Ogni creatura entro 9 m da te diventa invisibile per 1 minuto; l'invisibilità termina per chi attacca o lancia un incantesimo.",
+  "Ottieni resistenza a tutti i danni per 1 minuto.",
+  "Una creatura casuale entro 18 m è avvelenata per 1d4 ore.",
+  "Emani una luce intensa in un raggio di 9 m per 1 minuto; ogni creatura entro 1,5 m da te quando l'effetto scatta è accecata per 1 minuto.",
+  "Lanci Polimorfia su te stesso; se fallisci il tiro salvezza, ti trasformi in una pecora.",
+  "Farfalle illusorie e petali di fiori svolazzano intorno a te in un raggio di 3 m per 1 minuto.",
+  "Puoi immediatamente effettuare un'azione aggiuntiva.",
+  "Ogni creatura entro 9 m da te subisce 1d10 danni necrotici e tu recuperi punti ferita pari al totale del danno inflitto.",
+  "Lanci Immagine Speculare.",
+  "Lanci Volare su una creatura casuale entro 18 m.",
+  "Diventi invisibile per 1 minuto; gli indumenti e gli oggetti che porti diventano invisibili con te. L'effetto termina se attacchi o lanci un incantesimo.",
+  "Se muori entro il prossimo minuto, torni immediatamente in vita come per l'incantesimo Reincarnazione.",
+  "La tua taglia aumenta di una categoria per 1 minuto.",
+  "Tu e ogni creatura entro 9 m diventate vulnerabili al danno perforante per 1 minuto.",
+  "Sei circondato da una tenue musica eterea per 1 minuto.",
+  "Recuperi tutti i Punti Stregoneria spesi.",
+];
+function rollWildMagicSurge() {
+  const roll = 1 + Math.floor(Math.random() * 100);
+  const index = Math.min(WILD_MAGIC_SURGE_TABLE.length - 1, Math.floor((roll - 1) / 2));
+  return { roll, text: WILD_MAGIC_SURGE_TABLE[index] };
+}
+
 /* ------------------------------- INVOCAZIONI OCCULTE (Warlock) ------------------------------- */
 
 const WARLOCK_INVOCATIONS = [
@@ -1393,6 +1578,40 @@ const PACT_BOONS = [
 ];
 function getDivineSmiteDice(slotLevel) {
   return Math.min(5, Math.max(2, (slotLevel || 1) + 1));
+}
+
+/* ------------------------------- DISCIPLINE ELEMENTALI (Monaco — Via dei Quattro Elementi) ------------------------------- */
+
+const ELEMENTAL_DISCIPLINES = [
+  { id: "sintonia-elementale", name: "Sintonia Elementale", kiCost: "Gratis", minLevel: 3, automatic: true, desc: "Come azione, controlli brevemente le forze elementali intorno a te: crei un effetto sensoriale innocuo (una folata di vento, scintille, un sussurro), accendi o spegni una candela/torcia/piccolo fuoco da campo, raffreddi/riscaldi/dai sapore fino a 0,5 kg di materiale inerte per 1 ora, oppure plasmi la terra, il fuoco, l'acqua o l'aria per creare per un istante una piccola immagine." },
+  { id: "zanne-serpente-fuoco", name: "Zanne del Serpente di Fuoco", kiCost: "1 (+1 per dado extra)", minLevel: 3, desc: "Subito dopo l'azione Attacco, uno o due dei tuoi attacchi senza armi infliggono danno da fuoco invece che contundente e hanno 3 m di portata in più; se colpisci, infliggi 1d10 danni da fuoco extra (spendendo Ki aggiuntivi puoi aumentare questo danno di 1d10 per ogni punto Ki extra)." },
+  { id: "pugno-aria-ininterrotta", name: "Pugno dell'Aria Ininterrotta", kiCost: "2 (+1 per dado extra)", minLevel: 3, desc: "Come azione, in una linea di 9 m x 1,5 m: TS di Forza o 3d10 danni contundenti, spinto di 6 m e prono (metà danno e nessun altro effetto se il TS ha successo); spendendo Ki aggiuntivi il danno aumenta di 1d10 per punto." },
+  { id: "sferza-acqua", name: "Sferza d'Acqua", kiCost: "2 (+1 per dado extra)", minLevel: 3, desc: "Come azione, contro una creatura entro 9 m: TS di Destrezza o 3d10 danni contundenti e, a tua scelta, prona oppure tirata fino a 7,5 m verso di te; spendendo Ki aggiuntivi il danno aumenta di 1d10 per punto." },
+  { id: "raffica-spiriti-vento", name: "Raffica degli Spiriti del Vento", kiCost: 2, minLevel: 3, desc: "Come azione, in una linea di 18 m: crei un forte vento che spegne fiamme scoperte, disperde nebbia/gas e spinge indietro creature di taglia Grande o inferiore che falliscono un TS di Forza." },
+  { id: "pugno-quattro-tuoni", name: "Pugno dei Quattro Tuoni", kiCost: 2, minLevel: 3, desc: "Come azione, in una sfera di 4,5 m centrata su di te: ogni creatura subisce 2d8 danni tonanti (metà con TS di Costituzione superato) ed è spinta di 3 m se il TS fallisce; oggetti non indossati/trasportati nell'area sono spinti di 3 m." },
+  { id: "colpo-cinere-strisciante", name: "Colpo Cinereo Strisciante", kiCost: 2, minLevel: 3, desc: "Come azione, in un cono di 4,5 m: TS di Destrezza o 3d6 danni da fuoco (metà se superato); gli oggetti infiammabili non indossati/trasportati nell'area prendono fuoco." },
+  { id: "forma-fiume-fluente", name: "Forgia il Fiume in Movimento", kiCost: 1, minLevel: 3, desc: "Come azione, entro 36 m, geli acqua o sciogli ghiaccio in un'area fino a un cubo di 9 m, oppure rimodelli il terreno ghiacciato o acquatico a tuo piacimento per 1 ora." },
+  { id: "morsa-vento-nord", name: "Morsa del Vento del Nord", kiCost: 3, minLevel: 6, desc: "Come azione, contro una creatura entro 18 m: TS di Saggezza o è paralizzata per 1 minuto (può ripetere il TS a ogni suo turno)." },
+  { id: "gong-della-vetta", name: "Gong della Vetta", kiCost: 3, minLevel: 6, desc: "Come azione, in una sfera di 3 m centrata su un punto entro 18 m: TS di Costituzione o 3d8 danni tonanti e stordita fino alla fine del tuo prossimo turno (metà danno, nessuno stordimento se il TS ha successo)." },
+  { id: "fiamme-fenice", name: "Fiamme della Fenice", kiCost: 4, minLevel: 11, desc: "Come azione, in una sfera di 6 m centrata su un punto entro 45 m: TS di Destrezza o 8d6 danni da fuoco (metà se superato)." },
+  { id: "posizione-nebbia", name: "Posizione della Nebbia", kiCost: 4, minLevel: 11, desc: "Come azione bonus, ti trasformi in una nube nebbiosa (come l'incantesimo Forma Gassosa) per un massimo di 10 minuti o finché non decidi di terminare l'effetto come azione bonus." },
+  { id: "cavalca-vento", name: "Cavalca il Vento", kiCost: 4, minLevel: 11, desc: "Come azione bonus, ottieni una velocità di volo pari a 18 m per fino a 10 minuti." },
+  { id: "respiro-inverno", name: "Respiro dell'Inverno", kiCost: 6, minLevel: 17, desc: "Come azione, in un cono di 18 m: TS di Costituzione o 8d8 danni da freddo e velocità dimezzata fino alla fine del tuo prossimo turno (metà danno, nessuna riduzione di velocità se il TS ha successo)." },
+  { id: "difesa-montagna-eterna", name: "Difesa della Montagna Eterna", kiCost: 5, minLevel: 17, desc: "Come azione bonus, la tua pelle si indurisce come pietra (come l'incantesimo Pelle di Pietra) per fino a 1 ora o finché non sei incapacitato o termini l'effetto come azione bonus: resistenza a tutto il danno non magico." },
+  { id: "fiume-fiamma-vorace", name: "Fiume della Fiamma Vorace", kiCost: 5, minLevel: 17, desc: "Come azione, crei un muro di fuoco lungo fino a 18 m e alto 6 m entro 36 m (o un cerchio di 6 m di diametro): ogni creatura nell'area o che vi entra/attraversa subisce 5d8 danni da fuoco (metà con TS di Destrezza)." },
+  { id: "onda-terra-rotolante", name: "Onda di Terra Rotolante", kiCost: 6, minLevel: 17, desc: "Come azione, crei un muro di pietra fino a 9 m x 6 m entro 36 m (o una cupola/sfera di 3 m di raggio), che dura fino a 10 minuti o finché non lo dissolvi come azione." },
+];
+
+function getDisciplinesKnownCount(level) {
+  const lvl = level || 1;
+  if (lvl >= 17) return 5;
+  if (lvl >= 11) return 4;
+  if (lvl >= 6) return 3;
+  if (lvl >= 3) return 2;
+  return 0;
+}
+function getElementalDiscipline(id) {
+  return ELEMENTAL_DISCIPLINES.find((d) => d.id === id) || null;
 }
 
 const MAX_DATA_SPELL_LEVEL = 9;
@@ -1467,252 +1686,252 @@ const SCHOOLS = {
 };
 
 const SPELLS = [
-  { id: "mano-magica", name: "Mano Magica", level: 0, school: "invocazione", classes: ["mago", "bardo", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Crea una mano spettrale che sposta o manipola piccoli oggetti a distanza." },
-  { id: "luce", name: "Luce", level: 0, school: "invocazione", classes: ["mago", "bardo", "stregone"], time: "1 azione", range: "Contatto", comp: "V, M", duration: "1 ora", desc: "Rende un oggetto toccato una fonte di luce brillante per un'ora." },
-  { id: "raggio-di-gelo", name: "Raggio di Gelo", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Un raggio gelido infligge danno freddo e riduce la velocità del bersaglio." },
-  { id: "dardo-di-fuoco", name: "Dardo di Fuoco", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Scaglia un dardo fiammeggiante che infligge danno da fuoco a distanza." },
-  { id: "illusione-minore", name: "Illusione Minore", level: 0, school: "illusione", classes: ["mago", "bardo", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "S, M", duration: "1 minuto", desc: "Crea un suono o un'immagine illusoria priva di effetti reali." },
-  { id: "prestidigitazione", name: "Prestidigitazione", level: 0, school: "trasmutazione", classes: ["mago", "bardo", "stregone", "warlock"], time: "1 azione", range: "3 m", comp: "V, S", duration: "Fino a 1 ora", desc: "Un piccolo trucco magico: pulisce, riscalda, colora o crea un effetto sensoriale minore." },
-  { id: "taumaturgia", name: "Taumaturgia", level: 0, school: "invocazione", classes: ["chierico"], time: "1 azione bonus", range: "9 m", comp: "V", duration: "Fino a 1 minuto", desc: "Manifesta un piccolo prodigio divino: voce tonante, porte che sbattono, luci tremolanti." },
-  { id: "fiamma-sacra", name: "Fiamma Sacra", level: 0, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Fuoco divino cala su un bersaglio, che non ottiene beneficio dai bonus di copertura." },
-  { id: "guarigione-in-punto-di-morte", name: "Guarigione in Punto di Morte", level: 0, school: "necromanzia", classes: ["chierico"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Istantanea", desc: "Stabilizza una creatura morente toccandola, senza curarne i punti ferita." },
-  { id: "resistenza", name: "Resistenza", level: 0, school: "abiurazione", classes: ["chierico", "druido"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Concede un piccolo bonus a un tiro salvezza a scelta entro un minuto." },
-  { id: "produrre-fiamma", name: "Produrre Fiamma", level: 0, school: "invocazione", classes: ["druido"], time: "1 azione", range: "Personale", comp: "V, S", duration: "10 minuti", desc: "Crea una fiamma in mano che illumina e può essere scagliata come attacco." },
-  { id: "spruzzo-velenoso", name: "Spruzzo Velenoso", level: 0, school: "necromanzia", classes: ["druido"], time: "1 azione", range: "3 m", comp: "V, S", duration: "Istantanea", desc: "Proietta gas nocivo verso un bersaglio vicino, infliggendo danno da veleno." },
-  { id: "scherno-crudele", name: "Scherno Crudele", level: 0, school: "ammaliamento", classes: ["bardo"], time: "1 azione bonus", range: "18 m", comp: "V", duration: "Istantanea", desc: "Un insulto incantato infligge danno psichico e svantaggia il prossimo attacco del bersaglio." },
-  { id: "impulso-occulto", name: "Impulso Occulto", level: 0, school: "invocazione", classes: ["warlock"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Un raggio di energia spettrale colpisce a distanza, sempre più potente nei livelli alti." },
-  { id: "getto-d-acido", name: "Getto d'Acido", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Una bolla d'acido scoppia su uno o due bersagli vicini tra loro, corrodendoli." },
-  { id: "aiuto", name: "Aiuto", level: 0, school: "divinazione", classes: ["chierico", "druido"], time: "1 azione bonus", range: "Contatto", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Concede un piccolo bonus alla prossima prova di caratteristica del bersaglio." },
-  { id: "contatto-gelido", name: "Contatto Gelido", level: 0, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "36 m", comp: "V, S", duration: "1 turno", desc: "Una mano spettrale gelida infligge danno freddo e impedisce la guarigione del bersaglio." },
-  { id: "choc-elettrico", name: "Choc Elettrico", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Istantanea", desc: "Una scarica elettrica colpisce al tocco e può impedire reazioni al bersaglio." },
-  { id: "riparare", name: "Riparare", level: 0, school: "trasmutazione", classes: ["bardo", "chierico", "druido", "mago"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Ripara una singola rottura o strappo in un oggetto toccato." },
-  { id: "messaggio", name: "Messaggio", level: 0, school: "trasmutazione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "1 turno", desc: "Sussurra un breve messaggio a un bersaglio a distanza, che può rispondere sottovoce." },
-  { id: "colpo-sicuro", name: "Colpo Sicuro", level: 0, school: "divinazione", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "S", duration: "1 turno", desc: "Scruta un bersaglio per ottenere vantaggio sul prossimo attacco contro di esso." },
-  { id: "infliggere-ferite", name: "Infliggere Ferite", level: 0, school: "necromanzia", classes: ["chierico", "warlock"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Un rintocco funebre risuona nella mente di un bersaglio già ferito, infliggendogli danno necrotico." },
-  { id: "percezione-naturale", name: "Percezione Naturale", level: 0, school: "trasmutazione", classes: ["druido"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Istantanea", desc: "Un piccolo prodigio della natura: un fiore sboccia, una scintilla accende un ramoscello." },
-  { id: "dardo-incantato", name: "Dardo Incantato", level: 1, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Tre dardi di forza magica colpiscono automaticamente uno o più bersagli." },
-  { id: "scudo", name: "Scudo", level: 1, school: "abiurazione", classes: ["mago", "stregone"], time: "1 reazione", range: "Personale", comp: "V, S", duration: "1 turno", desc: "Reazione istantanea che innalza la Classe Armatura e respinge il Dardo Incantato." },
-  { id: "individuazione-magia", name: "Individuazione della Magia", level: 1, school: "divinazione", classes: ["mago", "chierico", "druido", "bardo"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Percepisce la presenza di magia entro un breve raggio per 10 minuti." },
-  { id: "sonno", name: "Sonno", level: 1, school: "ammaliamento", classes: ["mago", "bardo", "stregone"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "1 minuto", desc: "Fa cadere in un sonno magico le creature più deboli in un'area." },
-  { id: "mani-brucianti", name: "Mani Brucianti", level: 1, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "Cono di 4,5 m", comp: "V, S", duration: "Istantanea", desc: "Un cono di fiamme si propaga dalle mani, infliggendo danno da fuoco." },
-  { id: "armatura-magica", name: "Armatura Magica", level: 1, school: "abiurazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Avvolge il bersaglio in una forza protettiva che ne aumenta la Classe Armatura." },
-  { id: "cura-ferite", name: "Cura Ferite", level: 1, school: "evocazione", classes: ["chierico", "druido"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Istantanea", desc: "Toccando una creatura le restituisce punti ferita." },
-  { id: "benedizione", name: "Benedizione", level: 1, school: "ammaliamento", classes: ["chierico"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Fino a tre creature aggiungono un dado ad attacchi e tiri salvezza." },
-  { id: "parola-curativa", name: "Parola Curativa", level: 1, school: "evocazione", classes: ["chierico", "bardo"], time: "1 azione bonus", range: "18 m", comp: "V", duration: "Istantanea", desc: "Cura una creatura a distanza con una sola parola, senza bisogno di toccarla." },
-  { id: "scudo-della-fede", name: "Scudo della Fede", level: 1, school: "abiurazione", classes: ["chierico"], time: "1 azione bonus", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Un campo scintillante protegge una creatura aumentandone la Classe Armatura." },
-  { id: "comando", name: "Comando", level: 1, school: "ammaliamento", classes: ["chierico", "warlock"], time: "1 azione", range: "18 m", comp: "V", duration: "1 turno", desc: "Costringe una creatura a obbedire a una singola parola, come Fuggi o Inginocchiati." },
-  { id: "amicizia-con-gli-animali", name: "Amicizia con gli Animali", level: 1, school: "ammaliamento", classes: ["druido"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "24 ore", desc: "Convince una bestia della propria buona fede, rendendola non ostile." },
-  { id: "groviglio-di-rovi", name: "Groviglio di Rovi", level: 1, school: "trasmutazione", classes: ["druido"], time: "1 azione", range: "27 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Rovi ed erba afferrano le creature in un'area, intrappolandole al suolo." },
-  { id: "individuazione-veleni", name: "Individuazione di Veleni e Malattie", level: 1, school: "divinazione", classes: ["druido", "chierico"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Rivela la presenza di veleni, creature velenose e malattie nelle vicinanze." },
-  { id: "charme-su-persone", name: "Charme su Persone", level: 1, school: "ammaliamento", classes: ["bardo", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "V, S", duration: "1 ora", desc: "Tenta di convincere un umanoide a considerarlo un amico fidato." },
-  { id: "identificazione", name: "Identificazione", level: 1, school: "divinazione", classes: ["bardo", "mago"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Rivela le proprietà magiche di un oggetto toccato o di un incantesimo su una creatura." },
-  { id: "sussurri-dissonanti", name: "Sussurri Dissonanti", level: 1, school: "ammaliamento", classes: ["bardo"], time: "1 azione", range: "18 m", comp: "V", duration: "Istantanea", desc: "Un verso terribile risuona nella mente del bersaglio, ferendolo e mettendolo in fuga." },
-  { id: "occhio-maligno", name: "Occhio Maligno", level: 1, school: "ammaliamento", classes: ["warlock"], time: "1 azione bonus", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Maledice una creatura, infliggendole danno extra ogni volta che viene colpita." },
-  { id: "fedele-animale", name: "Fedele Animale", level: 1, school: "invocazione", classes: ["mago"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Evoca uno spirito che assume la forma di un piccolo animale al servizio del lanciatore." },
-  { id: "assorbire-elementi", name: "Assorbire Elementi", level: 1, school: "abiurazione", classes: ["druido", "mago", "stregone", "ranger"], time: "1 reazione", range: "Personale", comp: "S", duration: "1 turno", desc: "Assorbe parte del danno elementale in arrivo e lo rilascia nel prossimo attacco in mischia." },
-  { id: "protezione-dal-male-e-dal-bene", name: "Protezione dal Male e dal Bene", level: 1, school: "abiurazione", classes: ["chierico", "mago", "paladino", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Protegge una creatura da specifiche categorie di mostri, ostacolandone il controllo e gli attacchi." },
-  { id: "eroismo", name: "Eroismo", level: 1, school: "ammaliamento", classes: ["bardo", "paladino"], time: "1 azione bonus", range: "Contatto", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Riempie il bersaglio di coraggio, concedendogli punti ferita temporanei e immunità alla paura." },
-  { id: "invisibilita", name: "Invisibilità", level: 2, school: "illusione", classes: ["mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Rende invisibile la creatura toccata finché non attacca o lancia un incantesimo." },
-  { id: "ragnatela", name: "Ragnatela", level: 2, school: "invocazione", classes: ["mago"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Riempie un'area di ragnatele appiccicose che intrappolano chi vi entra." },
-  { id: "sospendere-persona", name: "Sospendere Persona", level: 2, school: "ammaliamento", classes: ["chierico", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Paralizza un umanoide bersaglio se questo fallisce il tiro salvezza sulla Saggezza." },
-  { id: "silenzio", name: "Silenzio", level: 2, school: "illusione", classes: ["chierico"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Un'area rimane priva di suoni, bloccando incantesimi con componente verbale." },
-  { id: "sfera-fiammeggiante", name: "Sfera Fiammeggiante", level: 2, school: "evocazione", classes: ["druido"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Evoca una sfera di fuoco che può essere spinta contro i nemici ogni turno." },
-  { id: "passo-senza-tracce", name: "Passo senza Tracce", level: 2, school: "abiurazione", classes: ["druido"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Concentrazione, fino a 1 ora", desc: "Il gruppo diventa più difficile da seguire e da individuare mentre si muove." },
-  { id: "suggestione", name: "Suggestione", level: 2, school: "ammaliamento", classes: ["bardo", "warlock"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 8 ore", desc: "Suggerisce un corso d'azione plausibile che il bersaglio si sente spinto a seguire." },
-  { id: "individuazione-pensieri", name: "Individuazione dei Pensieri", level: 2, school: "divinazione", classes: ["bardo"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Legge la superficie dei pensieri di una creatura vicina." },
-  { id: "raggio-rovente", name: "Raggio Rovente", level: 2, school: "invocazione", classes: ["stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Tre raggi di fuoco scattano verso uno o più bersagli entro portata." },
-  { id: "vista-nel-buio", name: "Vista nel Buio", level: 2, school: "trasmutazione", classes: ["warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Concede alla creatura toccata la capacità di vedere nell'oscurità totale." },
-  { id: "levitazione", name: "Levitazione", level: 2, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Fa levitare verticalmente una creatura o un oggetto, che il lanciatore può spingere o tirare." },
-  { id: "vista-magica", name: "Vista Magica", level: 2, school: "divinazione", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Il bersaglio può vedere le creature e gli oggetti invisibili come se fossero normalmente visibili." },
-  { id: "immagine-speculare", name: "Immagine Speculare", level: 2, school: "illusione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Personale", comp: "V, S", duration: "1 minuto", desc: "Crea tre duplicati illusori di se stessi, che possono assorbire gli attacchi in arrivo." },
-  { id: "ripristinare-ferite-minori", name: "Ripristinare Ferite Minori", level: 2, school: "abiurazione", classes: ["bardo", "chierico", "druido", "paladino", "ranger"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Istantanea", desc: "Elimina una malattia o una condizione debilitante che affligge la creatura toccata." },
-  { id: "potenziare-caratteristica", name: "Potenziare Caratteristica", level: 2, school: "trasmutazione", classes: ["bardo", "chierico", "druido", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Concede vantaggio alle prove basate su una caratteristica scelta per il bersaglio." },
-  { id: "passo-spettrale", name: "Passo Spettrale", level: 2, school: "invocazione", classes: ["mago", "stregone", "warlock"], time: "1 azione bonus", range: "Personale", comp: "V", duration: "Istantanea", desc: "Si teletrasporta istantaneamente in un punto visibile entro breve distanza." },
-  { id: "palla-di-fuoco", name: "Palla di Fuoco", level: 3, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Istantanea", desc: "Un globo di fiamme esplode in un'area, incenerendo tutto ciò che vi si trova." },
-  { id: "dissolvi-magie", name: "Dissolvi Magie", level: 3, school: "abiurazione", classes: ["mago", "chierico", "bardo"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Interrompe un incantesimo attivo o una magia su un bersaglio." },
-  { id: "luce-del-giorno", name: "Luce del Giorno", level: 3, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "1 ora", desc: "Crea una sfera di luce solare che disperde l'oscurità magica e non." },
-  { id: "chiamare-fulmine", name: "Chiamare Fulmine", level: 3, school: "invocazione", classes: ["druido"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Richiama una colonna di fulmini dal cielo su un punto scelto, se c'è una nube sopra." },
-  { id: "schema-ipnotico", name: "Schema Ipnotico", level: 3, school: "illusione", classes: ["bardo"], time: "1 azione", range: "36 m", comp: "S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Un vortice di colori affascina le creature in un'area, lasciandole incantate." },
-  { id: "chiaroveggenza", name: "Chiaroveggenza", level: 3, school: "divinazione", classes: ["bardo"], time: "10 minuti", range: "1600 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea un sensore invisibile in un luogo noto, tramite cui vedere o udire." },
-  { id: "fulmine", name: "Fulmine", level: 3, school: "invocazione", classes: ["stregone"], time: "1 azione", range: "Linea di 30 m", comp: "V, S, M", duration: "Istantanea", desc: "Una scarica elettrica lineare colpisce tutto ciò che attraversa." },
-  { id: "contromagia", name: "Contromagia", level: 3, school: "abiurazione", classes: ["mago", "stregone", "warlock"], time: "1 reazione", range: "18 m", comp: "S", duration: "Istantanea", desc: "Interrompe un incantesimo che un'altra creatura sta lanciando." },
-  { id: "volare", name: "Volare", level: 3, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Il bersaglio ottiene una velocità di volo di 18 metri per la durata." },
-  { id: "velocita", name: "Velocità", level: 3, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Raddoppia la velocità del bersaglio e gli concede un'azione e un bonus alla Classe Armatura." },
-  { id: "guardiani-spirituali", name: "Guardiani Spirituali", level: 3, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Spiriti protettivi circondano il lanciatore, rallentando e ferendo i nemici vicini." },
-  { id: "tocco-vampirico", name: "Tocco Vampirico", level: 3, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "La mano del lanciatore drena energia vitale al tocco, curandolo di metà del danno inflitto." },
-  { id: "invisibilita-superiore", name: "Invisibilità Superiore", level: 4, school: "illusione", classes: ["mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Rende invisibile il bersaglio anche mentre attacca o lancia incantesimi." },
-  { id: "porta-dimensionale", name: "Porta Dimensionale", level: 4, school: "trasmutazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "150 m", comp: "V", duration: "Istantanea", desc: "Il lanciatore e un compagno si teletrasportano istantaneamente in un punto visibile." },
-  { id: "liberta-di-movimento", name: "Libertà di Movimento", level: 4, school: "abiurazione", classes: ["chierico", "bardo"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "1 ora", desc: "Il bersaglio ignora terreno difficile e non può essere paralizzato o immobilizzato." },
-  { id: "profezia", name: "Profezia", level: 4, school: "divinazione", classes: ["chierico"], time: "1 minuto", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 30 minuti", desc: "Rivela frammenti del futuro riguardo a un evento o una decisione imminente." },
-  { id: "controllare-lacqua", name: "Controllare l'Acqua", level: 4, school: "trasmutazione", classes: ["druido"], time: "1 azione", range: "90 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Manipola livello, corrente o direzione di un grande volume d'acqua." },
-  { id: "polimorfia", name: "Polimorfia", level: 4, school: "trasmutazione", classes: ["druido", "bardo"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Trasforma una creatura bersaglio nella forma di una bestia." },
-  { id: "bando", name: "Bando", level: 4, school: "ammaliamento", classes: ["warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Tenta di esiliare una creatura verso un altro piano di esistenza." },
-  { id: "muro-di-fuoco", name: "Muro di Fuoco", level: 4, school: "evocazione", classes: ["warlock"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Crea un muro di fiamme che infligge danno a chi lo attraversa." },
-  { id: "occhio-arcano", name: "Occhio Arcano", level: 4, school: "divinazione", classes: ["mago"], time: "1 azione", range: "150 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Crea un occhio invisibile e volante che il lanciatore può muovere e usare per vedere." },
-  { id: "confusione", name: "Confusione", level: 4, school: "ammaliamento", classes: ["bardo", "druido", "mago", "stregone"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Le creature in un'area agiscono in modo imprevedibile, incapaci di seguire un piano." },
-  { id: "tempesta-di-ghiaccio", name: "Tempesta di Ghiaccio", level: 4, school: "invocazione", classes: ["druido", "mago"], time: "1 azione", range: "90 m", comp: "V, S, M", duration: "Istantanea", desc: "Grandine e schegge di ghiaccio flagellano un'area, ferendo tutti al suo interno." },
-  { id: "pelle-di-pietra", name: "Pelle di Pietra", level: 4, school: "abiurazione", classes: ["druido", "mago", "ranger", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Concede resistenza a tutto il danno non magico da arma alla creatura toccata." },
-  { id: "guardiano-di-fede", name: "Guardiano di Fede", level: 4, school: "invocazione", classes: ["chierico"], time: "1 azione bonus", range: "9 m", comp: "V", duration: "Concentrazione, fino a 8 ore", desc: "Evoca una sentinella spettrale che colpisce chiunque si avvicini ostilmente." },
-  { id: "muro-di-forza", name: "Muro di Forza", level: 5, school: "evocazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea una barriera invisibile e indistruttibile per la durata dell'incantesimo." },
-  { id: "scrutare", name: "Scrutare", level: 5, school: "divinazione", classes: ["mago", "bardo", "warlock"], time: "10 minuti", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea un sensore invisibile vicino a una creatura nota, per vederla e udirla." },
-  { id: "cura-ferite-di-gruppo", name: "Cura Ferite di Gruppo", level: 5, school: "evocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Guarisce fino a sei creature scelte entro portata in un solo istante." },
-  { id: "riportare-in-vita", name: "Riportare in Vita", level: 5, school: "necromanzia", classes: ["chierico"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita una creatura morta da non più di 10 giorni, a patto che il corpo esista ancora." },
-  { id: "reincarnazione", name: "Reincarnazione", level: 5, school: "trasmutazione", classes: ["druido"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita una creatura morta di recente in un nuovo corpo casuale." },
-  { id: "muro-di-pietra", name: "Muro di Pietra", level: 5, school: "evocazione", classes: ["druido"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea un muro di pietra non magica di forma e spessore a scelta." },
-  { id: "sogno", name: "Sogno", level: 5, school: "illusione", classes: ["bardo"], time: "1 minuto", range: "Speciale", comp: "V, S, M", duration: "8 ore", desc: "Invia un messaggio o un'immagine nei sogni di una creatura nota." },
-  { id: "telecinesi", name: "Telecinesi", level: 5, school: "trasmutazione", classes: ["stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Muove o manipola oggetti e creature con la sola forza della mente." },
-  { id: "contattare-altro-piano", name: "Contattare un Altro Piano", level: 5, school: "divinazione", classes: ["warlock"], time: "1 minuto", range: "Personale", comp: "V", duration: "1 minuto", desc: "Apre la mente a un'entità di un altro piano per porle alcune domande." },
-  { id: "immobilizzare-mostro", name: "Immobilizzare Mostro", level: 5, school: "ammaliamento", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Paralizza qualsiasi creatura, non solo umanoidi, se fallisce il tiro salvezza sulla Saggezza." },
-  { id: "cono-di-freddo", name: "Cono di Freddo", level: 5, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "Cono di 18 m", comp: "V, S, M", duration: "Istantanea", desc: "Un cono di aria gelida si propaga dalle mani, infliggendo danno freddo a tutti al suo interno." },
-  { id: "ripristino-superiore", name: "Ripristino Superiore", level: 5, school: "abiurazione", classes: ["bardo", "chierico", "druido"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Elimina un effetto debilitante duraturo, come una riduzione di caratteristica o una maledizione." },
-  { id: "passamuro", name: "Passamuro", level: 5, school: "trasmutazione", classes: ["mago"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "1 ora", desc: "Crea un passaggio attraverso legno, gesso o pietra, abbastanza ampio da farci passare." },
-  { id: "dominare-persona", name: "Dominare Persona", level: 5, school: "ammaliamento", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Tenta di soggiogare la mente di un umanoide, che il lanciatore può poi guidare con la volontà." },
-  { id: "vero-vedere", name: "Vero Vedere", level: 6, school: "divinazione", classes: ["warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "1 ora", desc: "Concede la capacità di vedere attraverso illusioni, trasformazioni e l'oscurità magica." },
-  { id: "globo-di-invulnerabilita", name: "Globo di Invulnerabilità", level: 6, school: "abiurazione", classes: ["mago"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Una sfera invisibile blocca tutti gli incantesimi di livello 5 o inferiore lanciati dall'esterno." },
-  { id: "guarigione-suprema", name: "Guarigione Suprema", level: 6, school: "evocazione", classes: ["chierico", "druido"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Cura una quantità ingente di punti ferita ed elimina malattie e la maggior parte delle condizioni." },
-  { id: "parola-di-richiamo", name: "Parola di Richiamo", level: 6, school: "evocazione", classes: ["chierico"], time: "1 azione", range: "Contatto", comp: "V", duration: "Istantanea", desc: "Teletrasporta il lanciatore e fino a cinque alleati verso un santuario prescelto in precedenza." },
-  { id: "occhio-malvagio-superiore", name: "Occhio Malvagio Superiore", level: 6, school: "trasmutazione", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Lo sguardo del lanciatore può accecare, addormentare, paralizzare o avvelenare chi lo incontra." },
-  { id: "evocare-i-fatati", name: "Evocare i Fatati", level: 6, school: "invocazione", classes: ["druido", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Richiama uno spirito fatato che assume una forma bestiale o simile a un folletto per combattere al suo fianco." },
-  { id: "muro-di-ghiaccio", name: "Muro di Ghiaccio", level: 6, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea una parete di ghiaccio che può bloccare il passaggio o intrappolare i nemici." },
-  { id: "disintegrare", name: "Disintegrare", level: 6, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Un sottile raggio verdastro disintegra un bersaglio o un grande oggetto non magico, riducendolo in polvere." },
-  { id: "vincolo-planare", name: "Vincolo Planare", level: 6, school: "abiurazione", classes: ["chierico", "druido", "mago", "warlock"], time: "1 ora", range: "18 m", comp: "V, S, M", duration: "24 ore", desc: "Costringe una creatura extraplanare a servire il lanciatore per tutta la durata dell'incantesimo." },
-  { id: "catena-di-fulmini", name: "Catena di Fulmini", level: 6, school: "evocazione", classes: ["mago", "stregone"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Istantanea", desc: "Un fulmine biforcuto scatta verso il bersaglio principale e fino a tre bersagli secondari vicini." },
-  { id: "raggio-di-sole", name: "Raggio di Sole", level: 6, school: "evocazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "Personale (linea di 18 m)", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Un raggio di luce radiosa acceca e brucia ogni creatura lungo la linea, ripetibile nei turni successivi." },
-  { id: "palla-di-fuoco-ritardata", name: "Palla di Fuoco Ritardata", level: 7, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Crea una sfera di fuoco che può essere fatta detonare subito o con un ritardo scelto dal lanciatore." },
-  { id: "teletrasporto", name: "Teletrasporto", level: 7, school: "invocazione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "3 m", comp: "V", duration: "Istantanea", desc: "Trasporta istantaneamente il lanciatore e fino a otto alleati verso una destinazione nota." },
-  { id: "prigione-delle-forze", name: "Prigione delle Forze", level: 7, school: "invocazione", classes: ["bardo", "mago", "warlock"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Intrappola una creatura in una gabbia di forza invisibile e indistruttibile." },
-  { id: "resurrezione", name: "Resurrezione", level: 7, school: "necromanzia", classes: ["chierico"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita una creatura morta da non più di un secolo, restituendole un corpo integro e sano." },
-  { id: "piano-astrale", name: "Piano Astrale", level: 7, school: "invocazione", classes: ["chierico", "druido", "mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V", duration: "Istantanea", desc: "Trasporta fino a otto creature volontarie verso un altro piano di esistenza a scelta." },
-  { id: "rigenerazione", name: "Rigenerazione", level: 7, school: "trasmutazione", classes: ["bardo", "chierico", "druido"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "1 ora", desc: "Il bersaglio ripristina gradualmente punti ferita ogni turno e ricresce arti perduti nel tempo." },
-  { id: "simbolo", name: "Simbolo", level: 7, school: "abiurazione", classes: ["bardo", "chierico", "mago"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "Finché non viene dissolto o attivato", desc: "Iscrive un glifo magico invisibile che scatena un potente effetto quando qualcuno lo attiva." },
-  { id: "inversione-di-gravita", name: "Inversione di Gravità", level: 7, school: "trasmutazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "30 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Inverte la gravità in un'area cubica: le creature e gli oggetti al suo interno cadono verso l'alto." },
-  { id: "dito-della-morte", name: "Dito della Morte", level: 7, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Un dito puntato scaglia energia necrotica letale contro un singolo bersaglio." },
-  { id: "terremoto", name: "Terremoto", level: 8, school: "evocazione", classes: ["chierico", "druido", "stregone"], time: "1 azione", range: "150 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Il terreno in una vasta area trema violentemente, aprendo crepacci e abbattendo strutture." },
-  { id: "dominare-mostro", name: "Dominare Mostro", level: 8, school: "ammaliamento", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 ora", desc: "Come Dominare Persona, ma efficace su qualsiasi tipo di creatura." },
-  { id: "clone", name: "Clone", level: 8, school: "necromanzia", classes: ["mago"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Cresce un duplicato inerte di una creatura, in cui la sua coscienza si trasferisce se muore." },
-  { id: "antipatia-simpatia", name: "Antipatia/Simpatia", level: 8, school: "ammaliamento", classes: ["druido", "mago"], time: "1 ora", range: "18 m", comp: "V, S, M", duration: "10 giorni", desc: "Rende un oggetto o un luogo irresistibilmente attraente oppure repellente per un tipo di creatura scelto." },
-  { id: "fulgore-solare", name: "Fulgore Solare", level: 8, school: "evocazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "Personale (sfera di 18 m)", comp: "V, S, M", duration: "Istantanea", desc: "Un'esplosione di luce solare acceca e infligge danno radioso a ogni creatura in una vasta area." },
-  { id: "ottundere-la-mente", name: "Ottundere la Mente", level: 8, school: "ammaliamento", classes: ["bardo", "druido", "mago", "stregone", "warlock"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Istantanea", desc: "Assale la mente di un bersaglio con energia psichica devastante, riducendone drasticamente Intelligenza e Carisma." },
-  { id: "parola-di-potere-stordire", name: "Parola di Potere: Stordire", level: 8, school: "ammaliamento", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V", duration: "Istantanea", desc: "Pronuncia una parola di potere che stordisce istantaneamente un bersaglio con PF sufficientemente bassi." },
-  { id: "labirinto", name: "Labirinto", level: 8, school: "evocazione", classes: ["mago", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Bandisce un bersaglio in un labirinto extradimensionale da cui deve trovare la via d'uscita." },
-  { id: "aura-sacra", name: "Aura Sacra", level: 8, school: "abiurazione", classes: ["chierico"], time: "1 azione", range: "Personale (sfera 9 m)", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Gli alleati nell'aura ottengono vantaggio ai TS, mentre i nemici che li attaccano in mischia hanno svantaggio; le creature malvagie che colpiscono un alleato possono essere accecate." },
-  { id: "campo-antimagia", name: "Campo Antimagia", level: 8, school: "abiurazione", classes: ["chierico", "mago"], time: "1 azione", range: "Personale (sfera 3 m)", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Sopprime ogni magia, incantesimo e oggetto magico all'interno di una sfera che si muove col lanciatore." },
-  { id: "desiderio", name: "Desiderio", level: 9, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V", duration: "Istantanea", desc: "L'incantesimo più potente che esista: duplica qualsiasi altro incantesimo di livello 8 o inferiore, o realizza un effetto a scelta del lanciatore." },
-  { id: "meteore", name: "Meteore", level: 9, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "1 km", comp: "V, S", duration: "Istantanea", desc: "Frammenti di roccia fiammeggiante piovono dal cielo su un'area vastissima, devastando tutto." },
-  { id: "immobilita-temporale", name: "Immobilità Temporale", level: 9, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V", duration: "Istantanea", desc: "Il tempo si ferma per tutti tranne il lanciatore, che agisce liberamente per alcuni turni." },
-  { id: "tempesta-divina", name: "Tempesta Divina", level: 9, school: "invocazione", classes: ["druido"], time: "1 azione", range: "Vista", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Scatena una tempesta implacabile su una vasta area, con fulmini, grandine e venti furiosi." },
-  { id: "portale", name: "Portale", level: 9, school: "invocazione", classes: ["chierico", "mago"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Apre un varco circolare verso un luogo preciso su un altro piano di esistenza." },
-  { id: "resurrezione-vera", name: "Resurrezione Vera", level: 9, school: "necromanzia", classes: ["bardo", "chierico", "druido"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita chiunque sia morto da non più di duecento anni, anche senza un corpo, creandogliene uno nuovo." },
-  { id: "cambiaforma", name: "Cambiaforma", level: 9, school: "trasmutazione", classes: ["druido", "mago"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Il lanciatore assume la forma di qualsiasi creatura conosciuta, ottenendone statistiche e capacità." },
-  { id: "mente-impenetrabile", name: "Mente Impenetrabile", level: 9, school: "abiurazione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "24 ore", desc: "Rende il bersaglio immune a divinazione, controllo mentale e danno psichico per un giorno intero." },
-  { id: "prescienza", name: "Prescienza", level: 9, school: "divinazione", classes: ["bardo", "druido", "mago", "warlock"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Concede al bersaglio una percezione soprannaturale degli eventi imminenti: vantaggio a tiri per colpire, prove e TS, e svantaggio agli attacchi contro di lui." },
-  { id: "fuoco-fatato", name: "Fuoco Fatato", level: 1, school: "invocazione", classes: ["bardo", "druido", "ranger"], time: "1 azione", range: "18 m", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Ricopre le creature in un'area di luce fatata, rendendole visibili anche se invisibili." },
-  { id: "favore-divino", name: "Favore Divino", level: 1, school: "ammaliamento", classes: ["paladino"], time: "1 azione bonus", range: "Personale", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Le armi del lanciatore risplendono di energia divina, infliggendo danno radioso extra sui prossimi colpi." },
-  { id: "nube-di-nebbia", name: "Nube di Nebbia", level: 1, school: "invocazione", classes: ["druido", "ranger", "mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Concentrazione, fino a 1 ora", desc: "Riempie un'area di nebbia densa, offuscando la vista di tutti al suo interno." },
-  { id: "onda-tonante", name: "Onda Tonante", level: 1, school: "evocazione", classes: ["bardo", "druido", "mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Istantanea", desc: "Un'onda d'urto tonante respinge le creature vicine e infligge loro danno." },
-  { id: "parlare-con-gli-animali", name: "Parlare con gli Animali", level: 1, school: "divinazione", classes: ["bardo", "druido", "ranger"], time: "1 azione", range: "Personale", comp: "V, S", duration: "10 minuti", desc: "Permette di comprendere e comunicare con gli animali per la durata." },
-  { id: "travestimento", name: "Travestimento", level: 1, school: "illusione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S", duration: "1 ora", desc: "Altera il proprio aspetto illusorio, cambiando volto, altezza e vestiti per la durata." },
-  { id: "falsa-vita", name: "Falsa Vita", level: 1, school: "necromanzia", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "1 ora", desc: "Avvolge il lanciatore di forza vitale artificiale, concedendogli punti ferita temporanei." },
-  { id: "raggio-nauseante", name: "Raggio Nauseante", level: 1, school: "necromanzia", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Un raggio velenoso infligge danno da veleno e può indebolire fisicamente il bersaglio." },
-  { id: "arma-spirituale", name: "Arma Spirituale", level: 2, school: "evocazione", classes: ["chierico"], time: "1 azione bonus", range: "18 m", comp: "V, S", duration: "1 minuto", desc: "Crea un'arma spettrale che colpisce un bersaglio; può essere richiamata come azione bonus nei turni successivi." },
-  { id: "arma-magica", name: "Arma Magica", level: 2, school: "trasmutazione", classes: ["mago", "paladino"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Rende magica un'arma non magica, concedendole un bonus ad attacco e danno." },
-  { id: "raffica-di-vento", name: "Raffica di Vento", level: 2, school: "evocazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Un forte vento spazza via nebbie e disperde gas, spingendo indietro le creature più leggere." },
-  { id: "frantumare", name: "Frantumare", level: 2, school: "evocazione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Un suono acuto e stridente danneggia le creature in un'area e può incrinare oggetti fragili." },
-  { id: "pelle-di-corteccia", name: "Pelle di Corteccia", level: 2, school: "trasmutazione", classes: ["druido", "ranger"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "La pelle del bersaglio si indurisce come corteccia, aumentando la sua Classe Armatura." },
-  { id: "crescita-di-spine", name: "Crescita di Spine", level: 2, school: "trasmutazione", classes: ["druido", "ranger"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Il terreno in un'area si ricopre di rovi che rallentano e feriscono chi vi cammina." },
-  { id: "presagio", name: "Presagio", level: 2, school: "divinazione", classes: ["chierico"], time: "1 minuto", range: "Personale", comp: "V, S, M", duration: "Istantanea", desc: "Rivela, tramite un rituale divinatorio, se un'azione imminente porterà buona o cattiva sorte." },
-  { id: "cecita-sordita", name: "Cecità/Sordità", level: 2, school: "necromanzia", classes: ["bardo", "chierico", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V", duration: "1 minuto", desc: "Priva un bersaglio della vista o dell'udito per la durata dell'incantesimo." },
-  { id: "raggio-debilitante", name: "Raggio Debilitante", level: 2, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Un raggio necrotico indebolisce il bersaglio, dimezzando il danno dei suoi attacchi." },
-  { id: "faro-di-speranza", name: "Faro di Speranza", level: 3, school: "abiurazione", classes: ["chierico"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Rende immune alla paura e massimizza le cure ricevute da chi si trova nell'area per la durata." },
-  { id: "ravvivare", name: "Ravvivare", level: 3, school: "necromanzia", classes: ["chierico", "paladino"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita una creatura morta da non più di un minuto, restituendole un solo punto ferita." },
-  { id: "manto-del-crociato", name: "Manto del Crociato", level: 3, school: "ammaliamento", classes: ["paladino"], time: "1 azione", range: "Personale", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Un'aura di ardore sacro infligge danno radioso extra agli attacchi degli alleati vicini." },
-  { id: "tempesta-di-neve", name: "Tempesta di Neve", level: 3, school: "invocazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "150 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Pioggia gelata e ghiaccio rendono il terreno scivoloso e la visuale offuscata in un'area." },
-  { id: "crescita-delle-piante", name: "Crescita delle Piante", level: 3, school: "trasmutazione", classes: ["bardo", "druido", "ranger"], time: "1 azione", range: "45 m", comp: "V, S", duration: "Istantanea", desc: "Fa crescere rigogliosa la vegetazione in una vasta area, trasformandola in terreno difficile." },
-  { id: "muro-di-vento", name: "Muro di Vento", level: 3, school: "evocazione", classes: ["druido", "ranger"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Crea una parete di vento fortissimo che devia frecce, gas e piccole creature volanti." },
-  { id: "non-individuazione", name: "Non Individuazione", level: 3, school: "abiurazione", classes: ["bardo", "ranger", "mago"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Nasconde un oggetto o un luogo da ogni forma di divinazione magica." },
-  { id: "parlare-con-i-morti", name: "Parlare con i Morti", level: 3, school: "necromanzia", classes: ["chierico"], time: "1 azione", range: "3 m", comp: "V, S, M", duration: "10 minuti", desc: "Permette di rivolgere domande a un cadavere, che risponde con la conoscenza che aveva in vita." },
-  { id: "sfarfallio", name: "Sfarfallio", level: 3, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "1 minuto", desc: "Il lanciatore sfarfalla tra il piano materiale e quello etereo, diventando parzialmente intangibile." },
-  { id: "animare-morti", name: "Animare Morti", level: 3, school: "necromanzia", classes: ["mago", "chierico"], time: "1 minuto", range: "3 m", comp: "V, S, M", duration: "Istantanea", desc: "Anima ossa o cadaveri, trasformandoli in servitori non morti sotto il controllo del lanciatore." },
-  { id: "contrasto-alla-morte", name: "Contrasto alla Morte", level: 4, school: "abiurazione", classes: ["chierico", "paladino"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Protegge il bersaglio dalla morte per punti ferita a zero e dalla riduzione massima dei PF." },
-  { id: "dominare-bestia", name: "Dominare Bestia", level: 4, school: "ammaliamento", classes: ["druido"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Tenta di soggiogare la mente di una bestia, che il lanciatore può poi guidare con la volontà." },
-  { id: "viticcio-afferrante", name: "Viticcio Afferrante", level: 4, school: "invocazione", classes: ["druido", "ranger"], time: "1 azione bonus", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Un lungo viticcio scaturisce dal terreno per afferrare e trascinare a sé una creatura." },
-  { id: "piaga", name: "Piaga", level: 4, school: "necromanzia", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Istantanea", desc: "Fa avvizzire un bersaglio con energia necromantica, infliggendogli un danno grave." },
-  { id: "colpo-di-fiamma", name: "Colpo di Fiamma", level: 5, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Una colonna di fuoco divino divampa dal cielo su un punto scelto, incenerendo l'area." },
-  { id: "onda-distruttiva", name: "Onda Distruttiva", level: 5, school: "evocazione", classes: ["paladino"], time: "1 azione", range: "Personale", comp: "V", duration: "Istantanea", desc: "Un'onda di energia sacra o malvagia abbatte le creature vicine, ferendole gravemente." },
-  { id: "piaga-d-insetti", name: "Piaga d'Insetti", level: 5, school: "invocazione", classes: ["druido", "stregone"], time: "1 azione", range: "90 m", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Uno sciame di insetti punge tutti coloro che si trovano nell'area colpita." },
-  { id: "sapienza-leggendaria", name: "Sapienza Leggendaria", level: 5, school: "divinazione", classes: ["bardo", "chierico", "mago"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Istantanea", desc: "Rivela informazioni note riguardo un oggetto, un luogo o una creatura leggendaria." },
-  { id: "modificare-memoria", name: "Modificare Memoria", level: 5, school: "ammaliamento", classes: ["bardo", "mago"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Altera i ricordi recenti di una creatura affascinata, cancellandoli o sostituendoli." },
-  { id: "sfera-antivita", name: "Sfera Antivita", level: 5, school: "abiurazione", classes: ["druido"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 8 ore", desc: "Crea una barriera invisibile che impedisce a creature e bestie ostili di avvicinarsi." },
-  { id: "nube-letale", name: "Nube Letale", level: 5, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "90 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Una nube di gas venefico giallo-verde si espande, avvelenando chiunque vi resti dentro." },
-  { id: "passo-tra-gli-alberi", name: "Passo tra gli Alberi", level: 5, school: "trasmutazione", classes: ["druido", "ranger"], time: "1 azione", range: "Vista", comp: "V, S", duration: "Concentrazione, fino a 1 ora", desc: "Permette di entrare in un albero e riemergere istantaneamente da un altro entro portata." },
-  { id: "malaugurio", name: "Malaugurio", level: 1, school: "ammaliamento", classes: ["bardo", "chierico"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Indebolisce fino a tre nemici, sottraendo una piccola penalità ad attacchi e tiri salvezza." },
-  { id: "marchio-del-cacciatore", name: "Marchio del Cacciatore", level: 1, school: "divinazione", classes: ["ranger"], time: "1 azione bonus", range: "27 m", comp: "V", duration: "Concentrazione, fino a 1 ora", desc: "Marchia un bersaglio, infliggendogli danno extra ogni volta che viene colpito e facilitandone il tracciamento." },
-  { id: "colpo-intrappolante", name: "Colpo Intrappolante", level: 1, school: "ammaliamento", classes: ["ranger"], time: "1 azione bonus", range: "Personale", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Il prossimo colpo andato a segno intrappola il bersaglio in viticci che ne impediscono il movimento." },
-  { id: "zona-di-verita", name: "Zona di Verità", level: 2, school: "ammaliamento", classes: ["chierico", "paladino"], time: "1 azione", range: "18 m", comp: "V", duration: "10 minuti", desc: "Chi si trova nell'area non può dire consapevolmente il falso per la durata." },
-  { id: "raggio-lunare", name: "Raggio Lunare", level: 2, school: "evocazione", classes: ["druido"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Un raggio di luce argentea danneggia le creature che vi entrano o iniziano il turno al suo interno." },
-  { id: "protezione-dalle-energie", name: "Protezione dalle Energie", level: 3, school: "abiurazione", classes: ["druido", "chierico", "mago", "ranger", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Concede resistenza a un tipo di danno elementale scelto, per la durata." },
-  { id: "comunione-con-la-natura", name: "Comunione con la Natura", level: 5, school: "divinazione", classes: ["druido", "ranger"], time: "1 minuto", range: "Personale", comp: "V, S", duration: "Istantanea", desc: "Rivela informazioni sul terreno circostante, come la presenza di acqua, creature o insediamenti." },
-  { id: "comunione", name: "Comunione", level: 5, school: "divinazione", classes: ["chierico"], time: "1 minuto", range: "Personale", comp: "V, S", duration: "1 minuto", desc: "Pone fino a tre domande a un'entità divina, ricevendo risposte veritiere a sì o no." },
-  { id: "santuario", name: "Santuario", level: 1, school: "abiurazione", classes: ["chierico"], time: "1 azione bonus", range: "9 m", comp: "V, S, M", duration: "1 minuto", desc: "Protegge una creatura: chi la attacca deve prima superare un tiro salvezza, pena il fallimento dell'attacco." },
-  { id: "risata-orrenda-di-tasha", name: "Risata Orrenda di Tasha", level: 1, school: "ammaliamento", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Il bersaglio scoppia in una risata incontrollabile, cadendo a terra incapace di agire." },
-  { id: "calma-delle-emozioni", name: "Calma delle Emozioni", level: 2, school: "ammaliamento", classes: ["bardo", "chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Sopprime le emozioni intense in un'area, placando ostilità o eliminando paura e charme." },
-  { id: "immagine-fantasma", name: "Immagine Fantasma", level: 2, school: "illusione", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Crea un'illusione visiva di un oggetto o una creatura, priva di suoni o altri effetti sensoriali." },
-  { id: "nube-ripugnante", name: "Nube Ripugnante", level: 3, school: "invocazione", classes: ["bardo", "druido", "stregone"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Un gas nauseante riempie un'area, causando nausea a chi lo respira." },
-  { id: "messaggero", name: "Messaggero", level: 3, school: "divinazione", classes: ["bardo", "chierico", "mago", "stregone", "warlock"], time: "1 azione", range: "Illimitata", comp: "V, S, M", duration: "1 turno", desc: "Invia un breve messaggio a una creatura nota ovunque si trovi, sullo stesso piano o altrove." },
-  { id: "scudo-di-fuoco", name: "Scudo di Fuoco", level: 4, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione bonus", range: "Personale", comp: "V, S, M", duration: "10 minuti", desc: "Avvolge il lanciatore in fiamme protettive che riducono un tipo di danno e ne infliggono ai nemici in mischia." },
-  { id: "tentacoli-neri-di-evard", name: "Tentacoli Neri di Evard", level: 4, school: "evocazione", classes: ["mago"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Tentacoli scuri emergono dal terreno in un'area, afferrando e schiacciando chi vi si trova." },
-  { id: "sembianza", name: "Sembianza", level: 5, school: "illusione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "8 ore", desc: "Altera l'aspetto di più creature volontarie, incluso volto, voce e vestiti, per l'intera durata." },
-  { id: "consacrazione", name: "Consacrazione", level: 5, school: "abiurazione", classes: ["chierico", "druido"], time: "24 ore", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Santifica permanentemente un'area, conferendole effetti magici benefici scelti dal lanciatore." },
-  { id: "legame-telepatico", name: "Legame Telepatico", level: 5, school: "divinazione", classes: ["bardo", "mago"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "1 ora", desc: "Crea un legame telepatico tra più creature volontarie, che possono comunicare mentalmente per la durata." },
-  { id: "rallentare", name: "Rallentare", level: 3, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Rallenta fino a sei creature in un'area, dimezzandone la velocità e penalizzando attacchi e tiri salvezza." },
-  { id: "respirare-in-acqua", name: "Respirare in Acqua", level: 3, school: "trasmutazione", classes: ["druido", "ranger", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "24 ore", desc: "Consente a un gruppo di creature di respirare sott'acqua per l'intera durata." },
-  { id: "camminare-sulle-acque", name: "Camminare sulle Acque", level: 3, school: "trasmutazione", classes: ["chierico", "druido", "ranger"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "1 ora", desc: "Permette a un gruppo di creature di camminare sulla superficie di un liquido come fosse terreno solido." },
-  { id: "evocare-elementale", name: "Evocare Elementale", level: 5, school: "invocazione", classes: ["druido", "mago", "stregone"], time: "1 minuto", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Evoca uno spirito elementale che assume una forma legata al tipo scelto, per combattere al fianco del lanciatore." },
-  { id: "offuscamento", name: "Offuscamento", level: 2, school: "illusione", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Distorce l'aspetto del lanciatore, conferendo svantaggio agli attacchi in mischia e a distanza contro di lui." },
-  { id: "creare-cibo-e-acqua", name: "Creare Cibo e Acqua", level: 3, school: "invocazione", classes: ["chierico", "paladino"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Istantanea", desc: "Crea cibo e acqua sufficienti a sfamare un piccolo gruppo per un'intera giornata." },
-  { id: "terreno-illusorio", name: "Terreno Illusorio", level: 4, school: "illusione", classes: ["bardo", "druido", "mago", "stregone"], time: "10 minuti", range: "90 m", comp: "V, S, M", duration: "24 ore", desc: "Fa apparire un'ampia area di terreno naturale come un paesaggio completamente diverso da quello reale." },
-  { id: "oscurita", name: "Oscurità", level: 2, school: "invocazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, M", duration: "Concentrazione, fino a 10 minuti", desc: "Estingue ogni fonte di luce in un'area, creando oscurità magica impenetrabile alla vista normale." },
-  { id: "freccia-acida-di-melf", name: "Freccia Acida di Melf", level: 2, school: "invocazione", classes: ["mago"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Istantanea", desc: "Una freccia d'acido colpisce infliggendo danno immediato e continua a corrodere il bersaglio nel turno successivo." },
-  { id: "localizzare-creatura", name: "Localizzare Creatura", level: 4, school: "divinazione", classes: ["bardo", "chierico", "druido", "paladino", "ranger"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Rivela la direzione verso una creatura nota o di un tipo specifico entro un ampio raggio." },
-  { id: "scalare-come-un-ragno", name: "Scalare come un Ragno", level: 2, school: "trasmutazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Il bersaglio può camminare su superfici verticali e soffitti senza bisogno di arrampicarsi." },
-  { id: "fondersi-con-la-pietra", name: "Fondersi con la Pietra", level: 3, school: "trasmutazione", classes: ["chierico", "druido"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "8 ore", desc: "Il lanciatore si fonde con un blocco di pietra, nascondendosi al suo interno per la durata." },
-  { id: "modellare-la-pietra", name: "Modellare la Pietra", level: 4, school: "trasmutazione", classes: ["chierico", "druido", "mago"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Modella pietra, terra o simili nella forma desiderata, come se fossero argilla morbida." },
-  { id: "forma-gassosa", name: "Forma Gassosa", level: 3, school: "trasmutazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Trasforma il bersaglio in una nube gassosa, capace di infilarsi in ogni fessura e resistente a molti danni." },
+  { id: "mano-magica", name: "Mano Magica", level: 0, school: "invocazione", classes: ["mago", "bardo", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Crea una mano spettrale che sposta o manipola piccoli oggetti a distanza.", crunch: "Nessun danno: la mano può portare fino a 4,5 kg, aprire/chiudere/frugare cose non ancorate, entro 9 m da te." },
+  { id: "luce", name: "Luce", level: 0, school: "invocazione", classes: ["mago", "bardo", "stregone"], time: "1 azione", range: "Contatto", comp: "V, M", duration: "1 ora", desc: "Rende un oggetto toccato una fonte di luce brillante per un'ora.", crunch: "Nessun danno: luce intensa in 6 m di raggio (+6 m di luce fioca) per 1 ora." },
+  { id: "raggio-di-gelo", name: "Raggio di Gelo", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Un raggio gelido infligge danno freddo e riduce la velocità del bersaglio.", crunch: "1d8 danno freddo (2d8 al 5°, 3d8 all'11°, 4d8 al 17°), tiro per colpire con incantesimi; se colpisce, la velocità del bersaglio è ridotta di 3 m fino al tuo prossimo turno." },
+  { id: "dardo-di-fuoco", name: "Dardo di Fuoco", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Scaglia un dardo fiammeggiante che infligge danno da fuoco a distanza.", crunch: "1d10 danno da fuoco (2d10 al 5°, 3d10 all'11°, 4d10 al 17°), tiro per colpire con incantesimi." },
+  { id: "illusione-minore", name: "Illusione Minore", level: 0, school: "illusione", classes: ["mago", "bardo", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "S, M", duration: "1 minuto", desc: "Crea un suono o un'immagine illusoria priva di effetti reali.", crunch: "Nessun danno: crea un suono o un'immagine (non entrambi) entro un cubo di 1,5 m; un'indagine attiva la smaschera." },
+  { id: "prestidigitazione", name: "Prestidigitazione", level: 0, school: "trasmutazione", classes: ["mago", "bardo", "stregone", "warlock"], time: "1 azione", range: "3 m", comp: "V, S", duration: "Fino a 1 ora", desc: "Un piccolo trucco magico: pulisce, riscalda, colora o crea un effetto sensoriale minore.", crunch: "Nessun danno: sceglie uno tra vari piccoli effetti sensoriali/pratici, nessuno abbastanza potente da avere impatto in combattimento." },
+  { id: "taumaturgia", name: "Taumaturgia", level: 0, school: "invocazione", classes: ["chierico"], time: "1 azione bonus", range: "9 m", comp: "V", duration: "Fino a 1 minuto", desc: "Manifesta un piccolo prodigio divino: voce tonante, porte che sbattono, luci tremolanti.", crunch: "Nessun danno: sceglie uno tra vari piccoli prodigi divini a scopo di intimidazione o effetto scenico." },
+  { id: "fiamma-sacra", name: "Fiamma Sacra", level: 0, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Fuoco divino cala su un bersaglio, che non ottiene beneficio dai bonus di copertura.", crunch: "1d8 danno radioso (2d8 al 5°, 3d8 all'11°, 4d8 al 17°); TS Destrezza nega il danno (nessuna metà danno)." },
+  { id: "guarigione-in-punto-di-morte", name: "Guarigione in Punto di Morte", level: 0, school: "necromanzia", classes: ["chierico"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Istantanea", desc: "Stabilizza una creatura morente toccandola, senza curarne i punti ferita.", crunch: "Nessun danno né cura: la creatura toccata a 0 PF diventa stabile." },
+  { id: "resistenza", name: "Resistenza", level: 0, school: "abiurazione", classes: ["chierico", "druido"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Concede un piccolo bonus a un tiro salvezza a scelta entro un minuto.", crunch: "Nessun danno: la creatura toccata può aggiungere 1d4 a un TS a sua scelta lanciato entro la durata." },
+  { id: "produrre-fiamma", name: "Produrre Fiamma", level: 0, school: "invocazione", classes: ["druido"], time: "1 azione", range: "Personale", comp: "V, S", duration: "10 minuti", desc: "Crea una fiamma in mano che illumina e può essere scagliata come attacco.", crunch: "Se lanciata contro un bersaglio: 1d8 danno da fuoco (2d8 al 5°, 3d8 all'11°, 4d8 al 17°), tiro per colpire con incantesimi a 9 m." },
+  { id: "spruzzo-velenoso", name: "Spruzzo Velenoso", level: 0, school: "necromanzia", classes: ["druido"], time: "1 azione", range: "3 m", comp: "V, S", duration: "Istantanea", desc: "Proietta gas nocivo verso un bersaglio vicino, infliggendo danno da veleno.", crunch: "1d12 danno da veleno (2d12 al 5°, 3d12 all'11°, 4d12 al 17°); TS Costituzione nega il danno." },
+  { id: "scherno-crudele", name: "Scherno Crudele", level: 0, school: "ammaliamento", classes: ["bardo"], time: "1 azione bonus", range: "18 m", comp: "V", duration: "Istantanea", desc: "Un insulto incantato infligge danno psichico e svantaggia il prossimo attacco del bersaglio.", crunch: "1d4 danno psichico (2d4 al 5°, 3d4 all'11°, 4d4 al 17°) e svantaggio al prossimo attacco entro il suo prossimo turno; TS Saggezza nega entrambi gli effetti." },
+  { id: "impulso-occulto", name: "Impulso Occulto", level: 0, school: "invocazione", classes: ["warlock"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Un raggio di energia spettrale colpisce a distanza, sempre più potente nei livelli alti.", crunch: "1d10 danno di forza per raggio, tiro per colpire con incantesimi; un secondo raggio al 5° livello, un terzo all'11°, un quarto al 17° (ogni raggio può colpire lo stesso bersaglio o bersagli diversi)." },
+  { id: "getto-d-acido", name: "Getto d'Acido", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Una bolla d'acido scoppia su uno o due bersagli vicini tra loro, corrodendoli.", crunch: "1d6 danno da acido (2d6 al 5°, 3d6 all'11°, 4d6 al 17°) per bersaglio; TS Destrezza nega il danno." },
+  { id: "aiuto", name: "Aiuto", level: 0, school: "divinazione", classes: ["chierico", "druido"], time: "1 azione bonus", range: "Contatto", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Concede un piccolo bonus alla prossima prova di caratteristica del bersaglio.", crunch: "Nessun danno: il bersaglio aggiunge 1d4 a una prova di caratteristica a sua scelta lanciata entro la durata." },
+  { id: "contatto-gelido", name: "Contatto Gelido", level: 0, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "36 m", comp: "V, S", duration: "1 turno", desc: "Una mano spettrale gelida infligge danno freddo e impedisce la guarigione del bersaglio.", crunch: "1d8 danno freddo (2d8 al 5°, 3d8 all'11°, 4d8 al 17°), tiro per colpire con incantesimi; il bersaglio non può recuperare PF fino all'inizio del tuo prossimo turno." },
+  { id: "choc-elettrico", name: "Choc Elettrico", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Istantanea", desc: "Una scarica elettrica colpisce al tocco e può impedire reazioni al bersaglio.", crunch: "1d8 danno da fulmine (2d8 al 5°, 3d8 all'11°, 4d8 al 17°), tiro per colpire con incantesimi (vantaggio se il bersaglio indossa armatura metallica); se colpisce, il bersaglio non può usare reazioni fino al suo prossimo turno." },
+  { id: "riparare", name: "Riparare", level: 0, school: "trasmutazione", classes: ["bardo", "chierico", "druido", "mago"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Ripara una singola rottura o strappo in un oggetto toccato.", crunch: "Nessun danno: ripara un singolo danno fisico (non un oggetto distrutto)." },
+  { id: "messaggio", name: "Messaggio", level: 0, school: "trasmutazione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "1 turno", desc: "Sussurra un breve messaggio a un bersaglio a distanza, che può rispondere sottovoce.", crunch: "Nessun danno: comunicazione a distanza, richiede linea di vista o conoscenza del percorso." },
+  { id: "colpo-sicuro", name: "Colpo Sicuro", level: 0, school: "divinazione", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "S", duration: "1 turno", desc: "Scruta un bersaglio per ottenere vantaggio sul prossimo attacco contro di esso.", crunch: "Nessun danno diretto: il primo tiro per colpire contro il bersaglio entro il tuo prossimo turno ha vantaggio." },
+  { id: "infliggere-ferite", name: "Infliggere Ferite", level: 0, school: "necromanzia", classes: ["chierico", "warlock"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Un rintocco funebre risuona nella mente di un bersaglio già ferito, infliggendogli danno necrotico.", crunch: "1d8 danno necrotico se il bersaglio ha già subito danno (altrimenti 1d12); dado che sale a 2d8/2d12 al 5°, 3d8/3d12 all'11°, 4d8/4d12 al 17°. TS Saggezza nega il danno." },
+  { id: "percezione-naturale", name: "Percezione Naturale", level: 0, school: "trasmutazione", classes: ["druido"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Istantanea", desc: "Un piccolo prodigio della natura: un fiore sboccia, una scintilla accende un ramoscello.", crunch: "Nessun danno: sceglie uno tra vari piccoli prodigi naturali, privi di effetto meccanico in combattimento." },
+  { id: "dardo-incantato", name: "Dardo Incantato", level: 1, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Tre dardi di forza magica colpiscono automaticamente uno o più bersagli.", crunch: "3 dardi da 1d4+1 danno di forza ciascuno, colpiscono sempre (nessun tiro per colpire né TS); +1 dardo per ogni slot superiore al 1°." },
+  { id: "scudo", name: "Scudo", level: 1, school: "abiurazione", classes: ["mago", "stregone"], time: "1 reazione", range: "Personale", comp: "V, S", duration: "1 turno", desc: "Reazione istantanea che innalza la Classe Armatura e respinge il Dardo Incantato.", crunch: "Nessun danno: +5 CA fino all'inizio del tuo prossimo turno, incluso contro l'attacco che ha scatenato la reazione; immunità totale al danno di Dardo Incantato." },
+  { id: "individuazione-magia", name: "Individuazione della Magia", level: 1, school: "divinazione", classes: ["mago", "chierico", "druido", "bardo"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Percepisce la presenza di magia entro un breve raggio per 10 minuti.", crunch: "Nessun danno: percepisce la presenza di magia entro 9 m, rituale." },
+  { id: "sonno", name: "Sonno", level: 1, school: "ammaliamento", classes: ["mago", "bardo", "stregone"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "1 minuto", desc: "Fa cadere in un sonno magico le creature più deboli in un'area.", crunch: "Nessun danno, nessun TS: 5d8 punti ferita totali di sonno, distribuiti partendo dalla creatura con meno PF attuali nell'area; +2d8 per ogni slot superiore al 1°." },
+  { id: "mani-brucianti", name: "Mani Brucianti", level: 1, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "Cono di 4,5 m", comp: "V, S", duration: "Istantanea", desc: "Un cono di fiamme si propaga dalle mani, infliggendo danno da fuoco.", crunch: "3d6 danno da fuoco; TS Destrezza dimezza. +1d6 per ogni slot superiore al 1°." },
+  { id: "armatura-magica", name: "Armatura Magica", level: 1, school: "abiurazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Avvolge il bersaglio in una forza protettiva che ne aumenta la Classe Armatura.", crunch: "Nessun danno: CA base diventa 13 + mod. Destrezza, indipendentemente dall'armatura indossata." },
+  { id: "cura-ferite", name: "Cura Ferite", level: 1, school: "evocazione", classes: ["chierico", "druido"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Istantanea", desc: "Toccando una creatura le restituisce punti ferita.", crunch: "Cura 1d8 + mod. caratteristica incantatrice; +1d8 per ogni slot superiore al 1°." },
+  { id: "benedizione", name: "Benedizione", level: 1, school: "ammaliamento", classes: ["chierico"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Fino a tre creature aggiungono un dado ad attacchi e tiri salvezza.", crunch: "Nessun danno: fino a 3 creature aggiungono 1d4 a ogni tiro per colpire e TS per la durata; +1 bersaglio per ogni slot superiore al 1°." },
+  { id: "parola-curativa", name: "Parola Curativa", level: 1, school: "evocazione", classes: ["chierico", "bardo"], time: "1 azione bonus", range: "18 m", comp: "V", duration: "Istantanea", desc: "Cura una creatura a distanza con una sola parola, senza bisogno di toccarla.", crunch: "Cura 1d4 + mod. caratteristica incantatrice; +1d4 per ogni slot superiore al 1°." },
+  { id: "scudo-della-fede", name: "Scudo della Fede", level: 1, school: "abiurazione", classes: ["chierico"], time: "1 azione bonus", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Un campo scintillante protegge una creatura aumentandone la Classe Armatura.", crunch: "Nessun danno: +2 CA per la durata." },
+  { id: "comando", name: "Comando", level: 1, school: "ammaliamento", classes: ["chierico", "warlock"], time: "1 azione", range: "18 m", comp: "V", duration: "1 turno", desc: "Costringe una creatura a obbedire a una singola parola, come Fuggi o Inginocchiati.", crunch: "Nessun danno diretto: TS Saggezza nega; se fallito, il bersaglio obbedisce a una parola singola (Avvicinati, Cadi, Fuggi, Resta o Arrenditi) nel suo turno. +1 bersaglio per ogni slot superiore al 1°." },
+  { id: "amicizia-con-gli-animali", name: "Amicizia con gli Animali", level: 1, school: "ammaliamento", classes: ["druido"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "24 ore", desc: "Convince una bestia della propria buona fede, rendendola non ostile.", crunch: "Nessun danno: TS Saggezza della bestia nega (svantaggio se le mostri cibo); se fallito, la bestia diventa amichevole per la durata." },
+  { id: "groviglio-di-rovi", name: "Groviglio di Rovi", level: 1, school: "trasmutazione", classes: ["druido"], time: "1 azione", range: "27 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Rovi ed erba afferrano le creature in un'area, intrappolandole al suolo.", crunch: "Nessun danno: TS Forza per ogni creatura nell'area (ripetibile come azione); se fallito, resta trattenuta per la durata." },
+  { id: "individuazione-veleni", name: "Individuazione di Veleni e Malattie", level: 1, school: "divinazione", classes: ["druido", "chierico"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Rivela la presenza di veleni, creature velenose e malattie nelle vicinanze.", crunch: "Nessun danno: rivela veleni, creature velenose e malattie entro 9 m; rituale." },
+  { id: "charme-su-persone", name: "Charme su Persone", level: 1, school: "ammaliamento", classes: ["bardo", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "V, S", duration: "1 ora", desc: "Tenta di convincere un umanoide a considerarlo un amico fidato.", crunch: "Nessun danno: TS Saggezza (vantaggio se in combattimento con te) nega; se fallito, l'umanoide ti considera un amico fidato per la durata. +1 bersaglio per ogni slot superiore al 1°." },
+  { id: "identificazione", name: "Identificazione", level: 1, school: "divinazione", classes: ["bardo", "mago"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Rivela le proprietà magiche di un oggetto toccato o di un incantesimo su una creatura.", crunch: "Nessun danno: rivela le proprietà magiche di un oggetto o incantesimo attivo su una creatura; rituale." },
+  { id: "sussurri-dissonanti", name: "Sussurri Dissonanti", level: 1, school: "ammaliamento", classes: ["bardo"], time: "1 azione", range: "18 m", comp: "V", duration: "Istantanea", desc: "Un verso terribile risuona nella mente del bersaglio, ferendolo e mettendolo in fuga.", crunch: "3d6 danno psichico; TS Saggezza dimezza il danno e annulla la fuga forzata. Se fallito, il bersaglio deve usare la reazione per allontanarsi il più possibile da te. +1d6 per ogni slot superiore al 1°." },
+  { id: "occhio-maligno", name: "Occhio Maligno", level: 1, school: "ammaliamento", classes: ["warlock"], time: "1 azione bonus", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Maledice una creatura, infliggendole danno extra ogni volta che viene colpita.", crunch: "Nessun danno all'atto del lancio: ogni volta che colpisci il bersaglio maledetto con un attacco, infliggi 1d6 danno necrotico aggiuntivo; anche svantaggio alle prove della caratteristica scelta. Durata più lunga con slot superiori (8 ore al 3° livello, 24 ore al 5°)." },
+  { id: "fedele-animale", name: "Fedele Animale", level: 1, school: "invocazione", classes: ["mago"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Evoca uno spirito che assume la forma di un piccolo animale al servizio del lanciatore.", crunch: "Nessun danno: evoca un famiglio con cui puoi comunicare telepaticamente entro 30 m e attraverso i cui sensi puoi percepire come azione; rituale." },
+  { id: "assorbire-elementi", name: "Assorbire Elementi", level: 1, school: "abiurazione", classes: ["druido", "mago", "stregone", "ranger"], time: "1 reazione", range: "Personale", comp: "S", duration: "1 turno", desc: "Assorbe parte del danno elementale in arrivo e lo rilascia nel prossimo attacco in mischia.", crunch: "Nessun danno diretto: dà resistenza al tipo di danno subito (acido/freddo/fuoco/fulmine/tuono) per l'attacco scatenante; il tuo prossimo attacco in mischia entro 1 turno aggiunge 1d6 di quel tipo di danno. +1d6 per ogni slot superiore al 1°." },
+  { id: "protezione-dal-male-e-dal-bene", name: "Protezione dal Male e dal Bene", level: 1, school: "abiurazione", classes: ["chierico", "mago", "paladino", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Protegge una creatura da specifiche categorie di mostri, ostacolandone il controllo e gli attacchi.", crunch: "Nessun danno: contro aberrazioni/celestiali/elementali/fate/demoni/non morti, questi hanno svantaggio ad attaccare il bersaglio e non possono affascinarlo/spaventarlo/possederlo (con TS per liberarsi se già sotto effetto)." },
+  { id: "eroismo", name: "Eroismo", level: 1, school: "ammaliamento", classes: ["bardo", "paladino"], time: "1 azione bonus", range: "Contatto", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Riempie il bersaglio di coraggio, concedendogli punti ferita temporanei e immunità alla paura.", crunch: "Nessun danno: PF temporanei pari al tuo mod. caratteristica incantatrice all'inizio del lancio e a ogni suo turno per la durata; immune alla paura mentre l'effetto dura. +1 bersaglio per ogni slot superiore al 1°." },
+  { id: "invisibilita", name: "Invisibilità", level: 2, school: "illusione", classes: ["mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Rende invisibile la creatura toccata finché non attacca o lancia un incantesimo.", crunch: "Nessun danno: il bersaglio (e ciò che indossa/trasporta) diventa invisibile finché l'incantesimo non termina; attaccare o lanciare un incantesimo NON lo interrompe più (errata 2014: solo la fine della concentrazione lo fa). +1 bersaglio per ogni slot superiore al 2°." },
+  { id: "ragnatela", name: "Ragnatela", level: 2, school: "invocazione", classes: ["mago"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Riempie un'area di ragnatele appiccicose che intrappolano chi vi entra.", crunch: "Nessun danno: TS Destrezza per ogni creatura nell'area (ripetibile come azione); se fallito, resta trattenuta. L'area è terreno difficile e infiammabile." },
+  { id: "sospendere-persona", name: "Sospendere Persona", level: 2, school: "ammaliamento", classes: ["chierico", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Paralizza un umanoide bersaglio se questo fallisce il tiro salvezza sulla Saggezza.", crunch: "Nessun danno: TS Saggezza nega (ripetibile a fine turno); se fallito, il bersaglio è paralizzato per la durata. +1 bersaglio per ogni slot superiore al 2°." },
+  { id: "silenzio", name: "Silenzio", level: 2, school: "illusione", classes: ["chierico"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Un'area rimane priva di suoni, bloccando incantesimi con componente verbale.", crunch: "Nessun danno: sfera di 6 m priva di suoni; blocca incantesimi con componente verbale al suo interno." },
+  { id: "sfera-fiammeggiante", name: "Sfera Fiammeggiante", level: 2, school: "evocazione", classes: ["druido"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Evoca una sfera di fuoco che può essere spinta contro i nemici ogni turno.", crunch: "2d6 danno da fuoco per creatura entro 1,5 m dalla sfera; TS Destrezza dimezza. Come azione bonus la sposti fino a 9 m e ripeti il danno. +1d6 per ogni slot superiore al 2°." },
+  { id: "passo-senza-tracce", name: "Passo senza Tracce", level: 2, school: "abiurazione", classes: ["druido"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Concentrazione, fino a 1 ora", desc: "Il gruppo diventa più difficile da seguire e da individuare mentre si muove.", crunch: "Nessun danno: +10 alle prove di Furtività per te e gli alleati entro 9 m per la durata; non lasciate tracce rintracciabili con mezzi non magici." },
+  { id: "suggestione", name: "Suggestione", level: 2, school: "ammaliamento", classes: ["bardo", "warlock"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 8 ore", desc: "Suggerisce un corso d'azione plausibile che il bersaglio si sente spinto a seguire.", crunch: "Nessun danno: TS Saggezza nega; se fallito, il bersaglio segue il corso d'azione suggerito finché non è completato o l'incantesimo termina." },
+  { id: "individuazione-pensieri", name: "Individuazione dei Pensieri", level: 2, school: "divinazione", classes: ["bardo"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Legge la superficie dei pensieri di una creatura vicina.", crunch: "Nessun danno: legge i pensieri superficiali entro 9 m; per sondare più a fondo il bersaglio fa un TS Intelligenza (fallito = accesso a ricordi/emozioni)." },
+  { id: "raggio-rovente", name: "Raggio Rovente", level: 2, school: "invocazione", classes: ["stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Tre raggi di fuoco scattano verso uno o più bersagli entro portata.", crunch: "3 raggi da 2d6 danno da fuoco ciascuno, tiro per colpire con incantesimi per raggio (assegnabili a bersagli diversi). +1 raggio per ogni slot superiore al 2°." },
+  { id: "vista-nel-buio", name: "Vista nel Buio", level: 2, school: "trasmutazione", classes: ["warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Concede alla creatura toccata la capacità di vedere nell'oscurità totale.", crunch: "Nessun danno: scurovisione di 18 m per la durata." },
+  { id: "levitazione", name: "Levitazione", level: 2, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Fa levitare verticalmente una creatura o un oggetto, che il lanciatore può spingere o tirare.", crunch: "Nessun danno: TS Costituzione nega se non consenziente; il bersaglio sale/scende fino a 6 m per turno, movimento orizzontale solo se spinto o tirato." },
+  { id: "vista-magica", name: "Vista Magica", level: 2, school: "divinazione", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Il bersaglio può vedere le creature e gli oggetti invisibili come se fossero normalmente visibili.", crunch: "Nessun danno: vede l'invisibile e il Piano Etereo per la durata." },
+  { id: "immagine-speculare", name: "Immagine Speculare", level: 2, school: "illusione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Personale", comp: "V, S", duration: "1 minuto", desc: "Crea tre duplicati illusori di se stessi, che possono assorbire gli attacchi in arrivo.", crunch: "Nessun danno: crea 3 duplicati con la tua CA; ogni attacco contro di te tira 1d20, se il risultato eguaglia o supera la CA di un duplicato l'attacco lo colpisce e lo distrugge invece di colpirti." },
+  { id: "ripristinare-ferite-minori", name: "Ripristinare Ferite Minori", level: 2, school: "abiurazione", classes: ["bardo", "chierico", "druido", "paladino", "ranger"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Istantanea", desc: "Elimina una malattia o una condizione debilitante che affligge la creatura toccata.", crunch: "Nessun danno né cura: elimina una malattia o una condizione a scelta tra accecato, sordo, paralizzato o avvelenato che affligge il bersaglio." },
+  { id: "potenziare-caratteristica", name: "Potenziare Caratteristica", level: 2, school: "trasmutazione", classes: ["bardo", "chierico", "druido", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Concede vantaggio alle prove basate su una caratteristica scelta per il bersaglio.", crunch: "Nessun danno: vantaggio alle prove della caratteristica scelta per la durata, con effetto aggiuntivo legato alla caratteristica (es. Costituzione: vantaggio anche ai TS di Costituzione per resistere al veleno). +1 bersaglio per ogni slot superiore al 2°." },
+  { id: "passo-spettrale", name: "Passo Spettrale", level: 2, school: "invocazione", classes: ["mago", "stregone", "warlock"], time: "1 azione bonus", range: "Personale", comp: "V", duration: "Istantanea", desc: "Si teletrasporta istantaneamente in un punto visibile entro breve distanza.", crunch: "Nessun danno: teletrasporto fino a 9 m in uno spazio libero visibile, come azione bonus." },
+  { id: "palla-di-fuoco", name: "Palla di Fuoco", level: 3, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Istantanea", desc: "Un globo di fiamme esplode in un'area, incenerendo tutto ciò che vi si trova.", crunch: "8d6 danno da fuoco, sfera di 6 m di raggio; TS Destrezza dimezza. +1d6 per ogni slot superiore al 3°." },
+  { id: "dissolvi-magie", name: "Dissolvi Magie", level: 3, school: "abiurazione", classes: ["mago", "chierico", "bardo"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Istantanea", desc: "Interrompe un incantesimo attivo o una magia su un bersaglio.", crunch: "Nessun danno: interrompe automaticamente un incantesimo di livello pari o inferiore al tuo slot; per livelli superiori serve una prova di caratteristica incantatrice (CD 10 + livello dell'incantesimo)." },
+  { id: "luce-del-giorno", name: "Luce del Giorno", level: 3, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "1 ora", desc: "Crea una sfera di luce solare che disperde l'oscurità magica e non.", crunch: "Nessun danno diretto: sfera di luce intensa di 18 m di raggio; alcune creature (es. non morti sensibili al sole) subiscono effetti aggiuntivi indicati nel loro blocco statistico." },
+  { id: "chiamare-fulmine", name: "Chiamare Fulmine", level: 3, school: "invocazione", classes: ["druido"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Richiama una colonna di fulmini dal cielo su un punto scelto, se c'è una nube sopra.", crunch: "3d10 danno da fulmine; TS Destrezza dimezza. Ripetibile ogni turno come azione. +1d10 per ogni slot superiore al 3°." },
+  { id: "schema-ipnotico", name: "Schema Ipnotico", level: 3, school: "illusione", classes: ["bardo"], time: "1 azione", range: "36 m", comp: "S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Un vortice di colori affascina le creature in un'area, lasciandole incantate.", crunch: "Nessun danno: TS Saggezza per ogni creatura nel cubo di 9 m; se fallito, resta affascinata (incapacitata, velocità 0) per la durata." },
+  { id: "chiaroveggenza", name: "Chiaroveggenza", level: 3, school: "divinazione", classes: ["bardo"], time: "10 minuti", range: "1600 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea un sensore invisibile in un luogo noto, tramite cui vedere o udire.", crunch: "Nessun danno: percezione a distanza (vista o udito, a scelta) da un sensore invisibile in un punto noto entro 1600 m." },
+  { id: "fulmine", name: "Fulmine", level: 3, school: "invocazione", classes: ["stregone"], time: "1 azione", range: "Linea di 30 m", comp: "V, S, M", duration: "Istantanea", desc: "Una scarica elettrica lineare colpisce tutto ciò che attraversa.", crunch: "8d6 danno da fulmine in una linea di 30 m x 1,5 m; TS Destrezza dimezza. +1d6 per ogni slot superiore al 3°." },
+  { id: "contromagia", name: "Contromagia", level: 3, school: "abiurazione", classes: ["mago", "stregone", "warlock"], time: "1 reazione", range: "18 m", comp: "S", duration: "Istantanea", desc: "Interrompe un incantesimo che un'altra creatura sta lanciando.", crunch: "Nessun danno: annulla automaticamente un incantesimo di livello pari o inferiore al tuo slot; per livelli superiori serve una prova di caratteristica incantatrice (CD 10 + livello dell'incantesimo)." },
+  { id: "volare", name: "Volare", level: 3, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Il bersaglio ottiene una velocità di volo di 18 metri per la durata.", crunch: "Nessun danno: velocità di volo di 18 m per la durata; se l'effetto termina in volo e non plana, cade. +1 bersaglio per ogni slot superiore al 3°." },
+  { id: "velocita", name: "Velocità", level: 3, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Raddoppia la velocità del bersaglio e gli concede un'azione e un bonus alla Classe Armatura.", crunch: "Nessun danno: velocità raddoppiata, +2 CA, vantaggio ai TS di Destrezza e un'azione aggiuntiva (Attacco singolo, Scattare, Disimpegnarsi, Nascondersi o oggetto) per la durata; alla fine, un turno di sfinimento (velocità 0)." },
+  { id: "guardiani-spirituali", name: "Guardiani Spirituali", level: 3, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Spiriti protettivi circondano il lanciatore, rallentando e ferendo i nemici vicini.", crunch: "3d8 danno radioso o necrotico (a tua scelta al lancio) alle creature ostili entro 4,5 m da te che iniziano il turno nell'area o vi entrano; TS Saggezza dimezza e nega il rallentamento (velocità dimezzata). +1d8 per ogni slot superiore al 3°." },
+  { id: "tocco-vampirico", name: "Tocco Vampirico", level: 3, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "La mano del lanciatore drena energia vitale al tocco, curandolo di metà del danno inflitto.", crunch: "3d6 danno necrotico, tiro per colpire con incantesimi in mischia; recuperi PF pari a metà del danno inflitto. +1d6 per ogni slot superiore al 3°." },
+  { id: "invisibilita-superiore", name: "Invisibilità Superiore", level: 4, school: "illusione", classes: ["mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Rende invisibile il bersaglio anche mentre attacca o lancia incantesimi.", crunch: "Nessun danno: il bersaglio è invisibile per la durata, anche mentre attacca o lancia incantesimi." },
+  { id: "porta-dimensionale", name: "Porta Dimensionale", level: 4, school: "trasmutazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "150 m", comp: "V", duration: "Istantanea", desc: "Il lanciatore e un compagno si teletrasportano istantaneamente in un punto visibile.", crunch: "Nessun danno: teletrasporto fino a 150 m per te e un'altra creatura volontaria che tocchi; se la destinazione è occupata, entrambi subiscono 4d6 danno di forza e finite in uno spazio libero vicino." },
+  { id: "liberta-di-movimento", name: "Libertà di Movimento", level: 4, school: "abiurazione", classes: ["chierico", "bardo"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "1 ora", desc: "Il bersaglio ignora terreno difficile e non può essere paralizzato o immobilizzato.", crunch: "Nessun danno: il bersaglio ignora terreno difficile, non può essere paralizzato/immobilizzato/trattenuto e la velocità non è ridotta." },
+  { id: "profezia", name: "Profezia", level: 4, school: "divinazione", classes: ["chierico"], time: "1 minuto", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 30 minuti", desc: "Rivela frammenti del futuro riguardo a un evento o una decisione imminente.", crunch: "Nessun danno: la tua divinità risponde a una domanda su un evento specifico entro 7 giorni, con un messaggio criptico (immagine, poesia, frase enigmatica)." },
+  { id: "controllare-lacqua", name: "Controllare l'Acqua", level: 4, school: "trasmutazione", classes: ["druido"], time: "1 azione", range: "90 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Manipola livello, corrente o direzione di un grande volume d'acqua.", crunch: "Nessun danno diretto: innalza/abbassa il livello dell'acqua, crea onde/correnti o un vortice che può trascinare le creature al suo interno." },
+  { id: "polimorfia", name: "Polimorfia", level: 4, school: "trasmutazione", classes: ["druido", "bardo"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Trasforma una creatura bersaglio nella forma di una bestia.", crunch: "Nessun danno diretto: TS Saggezza nega se non consenziente; se fallito, il bersaglio assume il profilo di una bestia con GS pari o inferiore al suo livello (mantiene PF, INT/SAG/CAR), riprendendo forma normale se portato a 0 PF nella nuova forma." },
+  { id: "bando", name: "Bando", level: 4, school: "ammaliamento", classes: ["warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Tenta di esiliare una creatura verso un altro piano di esistenza.", crunch: "Nessun danno: TS Carisma nega; se fallito, il bersaglio è bandito in una tasca dimensionale (o rimandato al suo piano d'origine, se estraneo, allo scadere dell'incantesimo)." },
+  { id: "muro-di-fuoco", name: "Muro di Fuoco", level: 4, school: "evocazione", classes: ["warlock"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Crea un muro di fiamme che infligge danno a chi lo attraversa.", crunch: "5d8 danno da fuoco a chi si trova nel muro al momento dell'evocazione o entra/inizia il turno nell'area; TS Destrezza dimezza. +1d8 per ogni slot superiore al 4°." },
+  { id: "occhio-arcano", name: "Occhio Arcano", level: 4, school: "divinazione", classes: ["mago"], time: "1 azione", range: "150 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Crea un occhio invisibile e volante che il lanciatore può muovere e usare per vedere.", crunch: "Nessun danno: crea un occhio invisibile volante (velocità 9 m) attraverso cui vedi e senti entro 150 m." },
+  { id: "confusione", name: "Confusione", level: 4, school: "ammaliamento", classes: ["bardo", "druido", "mago", "stregone"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Le creature in un'area agiscono in modo imprevedibile, incapaci di seguire un piano.", crunch: "Nessun danno diretto: TS Saggezza per ogni creatura nella sfera di 3 m (ripetibile a ogni turno); se fallito, tira su una tabella d100 per determinare l'azione casuale del turno (vagare, non agire, attaccare la creatura più vicina, ecc.)." },
+  { id: "tempesta-di-ghiaccio", name: "Tempesta di Ghiaccio", level: 4, school: "invocazione", classes: ["druido", "mago"], time: "1 azione", range: "90 m", comp: "V, S, M", duration: "Istantanea", desc: "Grandine e schegge di ghiaccio flagellano un'area, ferendo tutti al suo interno.", crunch: "2d8 danno contundente + 4d6 danno freddo; TS Destrezza dimezza entrambi. +1d8 danno contundente per ogni slot superiore al 4°." },
+  { id: "pelle-di-pietra", name: "Pelle di Pietra", level: 4, school: "abiurazione", classes: ["druido", "mago", "ranger", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Concede resistenza a tutto il danno non magico da arma alla creatura toccata.", crunch: "Nessun danno: resistenza a tutto il danno contundente/perforante/tagliente non magico per la durata." },
+  { id: "guardiano-di-fede", name: "Guardiano di Fede", level: 4, school: "invocazione", classes: ["chierico"], time: "1 azione bonus", range: "9 m", comp: "V", duration: "Concentrazione, fino a 8 ore", desc: "Evoca una sentinella spettrale che colpisce chiunque si avvicini ostilmente.", crunch: "20 danno radioso alla prima creatura ostile che entra nel suo spazio o inizia lì il turno; TS Saggezza nega. Il guardiano svanisce dopo aver inflitto 60 danni totali." },
+  { id: "muro-di-forza", name: "Muro di Forza", level: 5, school: "evocazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea una barriera invisibile e indistruttibile per la durata dell'incantesimo.", crunch: "Nessun danno: muro di forza invisibile e indistruttibile (10 pannelli da 3 m), impenetrabile a tutto tranne Disintegrare e il Piano Etereo." },
+  { id: "scrutare", name: "Scrutare", level: 5, school: "divinazione", classes: ["mago", "bardo", "warlock"], time: "10 minuti", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea un sensore invisibile vicino a una creatura nota, per vederla e udirla.", crunch: "Nessun danno: TS Saggezza del bersaglio (svantaggiato se ostile/diffidente) nega; se fallito, crei un sensore invisibile vicino a lui per vedere e udire." },
+  { id: "cura-ferite-di-gruppo", name: "Cura Ferite di Gruppo", level: 5, school: "evocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Guarisce fino a sei creature scelte entro portata in un solo istante.", crunch: "Cura 3d8 + mod. caratteristica incantatrice, distribuita tra un massimo di 6 creature a tua scelta; +1d8 per ogni slot superiore al 5°." },
+  { id: "riportare-in-vita", name: "Riportare in Vita", level: 5, school: "necromanzia", classes: ["chierico"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita una creatura morta da non più di 10 giorni, a patto che il corpo esista ancora.", crunch: "Nessun danno: riporta in vita con 1 PF una creatura morta da non più di 10 giorni; non ripristina arti perduti né cura la causa della morte." },
+  { id: "reincarnazione", name: "Reincarnazione", level: 5, school: "trasmutazione", classes: ["druido"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita una creatura morta di recente in un nuovo corpo casuale.", crunch: "Nessun danno: riporta in vita una creatura morta da non più di 10 giorni in un corpo nuovo (specie determinata tirando 1d100), con PF pieni." },
+  { id: "muro-di-pietra", name: "Muro di Pietra", level: 5, school: "evocazione", classes: ["druido"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea un muro di pietra non magica di forma e spessore a scelta.", crunch: "Nessun danno: fino a 10 pannelli di pietra da 3 m, forma libera; ogni pannello ha 30 PF e può essere sfondato (CA 15)." },
+  { id: "sogno", name: "Sogno", level: 5, school: "illusione", classes: ["bardo"], time: "1 minuto", range: "Speciale", comp: "V, S, M", duration: "8 ore", desc: "Invia un messaggio o un'immagine nei sogni di una creatura nota.", crunch: "Se usato come incubo: 3d6 danno psichico e nessun beneficio dal riposo per il bersaglio; altrimenti nessun danno, solo un messaggio/immagine onirica." },
+  { id: "telecinesi", name: "Telecinesi", level: 5, school: "trasmutazione", classes: ["stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Muove o manipola oggetti e creature con la sola forza della mente.", crunch: "Nessun danno diretto: sposta un oggetto/creatura fino a 9 m per turno (TS Forza per creature/oggetti non ancorati non consenzienti) o effettua una prova di Forza (Atletica) contrapposta per lottare con un bersaglio." },
+  { id: "contattare-altro-piano", name: "Contattare un Altro Piano", level: 5, school: "divinazione", classes: ["warlock"], time: "1 minuto", range: "Personale", comp: "V", duration: "1 minuto", desc: "Apre la mente a un'entità di un altro piano per porle alcune domande.", crunch: "TS Intelligenza CD 15 o 6d6 danno psichico e sei stordito per 1d10 minuti; se superato, poni fino a 5 domande a un'entità extraplanare (risposte non garantite veritiere)." },
+  { id: "immobilizzare-mostro", name: "Immobilizzare Mostro", level: 5, school: "ammaliamento", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Paralizza qualsiasi creatura, non solo umanoidi, se fallisce il tiro salvezza sulla Saggezza.", crunch: "Nessun danno: TS Saggezza nega (ripetibile a fine turno); se fallito, la creatura (di qualsiasi tipo) è paralizzata per la durata. +1 bersaglio per ogni slot superiore al 5°." },
+  { id: "cono-di-freddo", name: "Cono di Freddo", level: 5, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "Cono di 18 m", comp: "V, S, M", duration: "Istantanea", desc: "Un cono di aria gelida si propaga dalle mani, infliggendo danno freddo a tutti al suo interno.", crunch: "8d8 danno freddo; TS Costituzione dimezza. +1d8 per ogni slot superiore al 5°." },
+  { id: "ripristino-superiore", name: "Ripristino Superiore", level: 5, school: "abiurazione", classes: ["bardo", "chierico", "druido"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Elimina un effetto debilitante duraturo, come una riduzione di caratteristica o una maledizione.", crunch: "Nessun danno né cura: elimina un livello di sfinimento, oppure una riduzione di caratteristica, oppure charme/pietrificazione/maledizione/trasformazione, oppure la riduzione dei PF massimi." },
+  { id: "passamuro", name: "Passamuro", level: 5, school: "trasmutazione", classes: ["mago"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "1 ora", desc: "Crea un passaggio attraverso legno, gesso o pietra, abbastanza ampio da farci passare.", crunch: "Nessun danno: passaggio fino a 1,5 m x 3 m x 6 m di profondità attraverso legno/gesso/pietra, per la durata." },
+  { id: "dominare-persona", name: "Dominare Persona", level: 5, school: "ammaliamento", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Tenta di soggiogare la mente di un umanoide, che il lanciatore può poi guidare con la volontà.", crunch: "Nessun danno: TS Saggezza nega (ripetibile ogni volta che il bersaglio subisce danno, e a fine turno se controllato passivamente); se fallito, il bersaglio è affascinato e puoi guidarne le azioni." },
+  { id: "vero-vedere", name: "Vero Vedere", level: 6, school: "divinazione", classes: ["warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "1 ora", desc: "Concede la capacità di vedere attraverso illusioni, trasformazioni e l'oscurità magica.", crunch: "Nessun danno: vera vista (illusioni, forme trasformate, oscurità magica), scurovisione 36 m e vista sul Piano Etereo per 1 ora." },
+  { id: "globo-di-invulnerabilita", name: "Globo di Invulnerabilità", level: 6, school: "abiurazione", classes: ["mago"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Una sfera invisibile blocca tutti gli incantesimi di livello 5 o inferiore lanciati dall'esterno.", crunch: "Nessun danno: sfera di 3 m che blocca ogni incantesimo di 5° livello o inferiore lanciato dall'esterno verso l'interno." },
+  { id: "guarigione-suprema", name: "Guarigione Suprema", level: 6, school: "evocazione", classes: ["chierico", "druido"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Cura una quantità ingente di punti ferita ed elimina malattie e la maggior parte delle condizioni.", crunch: "Cura 70 PF + 10 per ogni slot superiore al 6°; elimina anche cecità, sordità e ogni malattia dal bersaglio." },
+  { id: "parola-di-richiamo", name: "Parola di Richiamo", level: 6, school: "evocazione", classes: ["chierico"], time: "1 azione", range: "Contatto", comp: "V", duration: "Istantanea", desc: "Teletrasporta il lanciatore e fino a cinque alleati verso un santuario prescelto in precedenza.", crunch: "Nessun danno: teletrasporta te e fino a 5 alleati volontari entro 9 m verso un santuario legato in precedenza." },
+  { id: "occhio-malvagio-superiore", name: "Occhio Malvagio Superiore", level: 6, school: "trasmutazione", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Lo sguardo del lanciatore può accecare, addormentare, paralizzare o avvelenare chi lo incontra.", crunch: "Nessun danno diretto: come azione, fissi una creatura entro 27 m per un effetto a scelta (Ipersonno, Panico Sconvolgente, Malessere Nauseante); TS Costituzione o Saggezza (a seconda dell'effetto) nega." },
+  { id: "evocare-i-fatati", name: "Evocare i Fatati", level: 6, school: "invocazione", classes: ["druido", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Richiama uno spirito fatato che assume una forma bestiale o simile a un folletto per combattere al suo fianco.", crunch: "Nessun danno diretto: evoca uno spirito fatato con GS fino a 6 (il suo danno dipende dal profilo scelto), sotto il tuo controllo per la durata." },
+  { id: "muro-di-ghiaccio", name: "Muro di Ghiaccio", level: 6, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea una parete di ghiaccio che può bloccare il passaggio o intrappolare i nemici.", crunch: "10d6 danno freddo a chi si trova nello spazio del muro quando appare; TS Destrezza dimezza. Ogni pannello ha 30 PF (immune al freddo, vulnerabile al fuoco); una volta distrutto un pannello, chi vi era adiacente subisce 2d6 danno freddo (TS Costituzione dimezza)." },
+  { id: "disintegrare", name: "Disintegrare", level: 6, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Un sottile raggio verdastro disintegra un bersaglio o un grande oggetto non magico, riducendolo in polvere.", crunch: "10d6 + 40 danno di forza; TS Destrezza nega interamente il danno. Se il danno porta il bersaglio a 0 PF, viene disintegrato in polvere. +3d6 per ogni slot superiore al 6°." },
+  { id: "vincolo-planare", name: "Vincolo Planare", level: 6, school: "abiurazione", classes: ["chierico", "druido", "mago", "warlock"], time: "1 ora", range: "18 m", comp: "V, S, M", duration: "24 ore", desc: "Costringe una creatura extraplanare a servire il lanciatore per tutta la durata dell'incantesimo.", crunch: "Nessun danno: TS Carisma nega (con svantaggio se hai già ridotto il bersaglio a 0 PF o l'hai catturato); se fallito, la creatura è vincolata a servire per la durata (1 giorno; slot più alti estendono a 10 giorni, 30 giorni o 1 anno)." },
+  { id: "catena-di-fulmini", name: "Catena di Fulmini", level: 6, school: "evocazione", classes: ["mago", "stregone"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Istantanea", desc: "Un fulmine biforcuto scatta verso il bersaglio principale e fino a tre bersagli secondari vicini.", crunch: "10d8 danno da fulmine per bersaglio (fino a 4 bersagli, ciascuno entro 9 m dal primo); TS Destrezza dimezza per ognuno. +1d8 per ogni slot superiore al 6°." },
+  { id: "raggio-di-sole", name: "Raggio di Sole", level: 6, school: "evocazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "Personale (linea di 18 m)", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Un raggio di luce radiosa acceca e brucia ogni creatura lungo la linea, ripetibile nei turni successivi.", crunch: "6d8 danno radioso in una linea di 18 m x 1,5 m; TS Costituzione dimezza il danno e nega l'accecamento fino al tuo prossimo turno. Ripetibile come azione a ogni turno mentre mantieni la concentrazione." },
+  { id: "palla-di-fuoco-ritardata", name: "Palla di Fuoco Ritardata", level: 7, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Crea una sfera di fuoco che può essere fatta detonare subito o con un ritardo scelto dal lanciatore.", crunch: "12d6 danno da fuoco (+1d6 per ogni turno di ritardo, fino a 6 turni, e +1d6 per ogni slot superiore al 7°); TS Destrezza dimezza. Se toccata prima di esplodere, detona subito." },
+  { id: "teletrasporto", name: "Teletrasporto", level: 7, school: "invocazione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "3 m", comp: "V", duration: "Istantanea", desc: "Trasporta istantaneamente il lanciatore e fino a otto alleati verso una destinazione nota.", crunch: "Nessun danno: teletrasporta fino a 8 creature verso una destinazione nota; l'affidabilità (da 'fallimento' a 'esatto') dipende da quanto conosci bene il luogo." },
+  { id: "prigione-delle-forze", name: "Prigione delle Forze", level: 7, school: "invocazione", classes: ["bardo", "mago", "warlock"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Intrappola una creatura in una gabbia di forza invisibile e indistruttibile.", crunch: "Nessun danno: TS Carisma nega (svantaggio se il bersaglio è invisibile); se fallito, resta intrappolato in una gabbia di forza indistruttibile di 3 m per la durata." },
+  { id: "resurrezione", name: "Resurrezione", level: 7, school: "necromanzia", classes: ["chierico"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita una creatura morta da non più di un secolo, restituendole un corpo integro e sano.", crunch: "Nessun danno: riporta in vita con PF pieni una creatura morta da non più di 100 anni, guarendo qualsiasi ferita o malattia (non l'invecchiamento)." },
+  { id: "piano-astrale", name: "Piano Astrale", level: 7, school: "invocazione", classes: ["chierico", "druido", "mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V", duration: "Istantanea", desc: "Trasporta fino a otto creature volontarie verso un altro piano di esistenza a scelta.", crunch: "Nessun danno per un bersaglio consenziente. Contro un bersaglio non consenziente: tiro per colpire con incantesimi in mischia; se colpisce, TS Carisma nega il bando sul piano scelto." },
+  { id: "rigenerazione", name: "Rigenerazione", level: 7, school: "trasmutazione", classes: ["bardo", "chierico", "druido"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "1 ora", desc: "Il bersaglio ripristina gradualmente punti ferita ogni turno e ricresce arti perduti nel tempo.", crunch: "Cura 4d8 + 15 PF immediati, poi 1 PF ogni 10 minuti per la durata; arti/organi perduti ricrescono in 2 minuti se il bersaglio resta sopra 0 PF per l'intera durata." },
+  { id: "simbolo", name: "Simbolo", level: 7, school: "abiurazione", classes: ["bardo", "chierico", "mago"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "Finché non viene dissolto o attivato", desc: "Iscrive un glifo magico invisibile che scatena un potente effetto quando qualcuno lo attiva.", crunch: "Effetto variabile in base al glifo scelto: es. Morte = 10d10 danno necrotico (TS Costituzione dimezza), altri glifi (Follia, Dolore, Sonno, Paura, Discordia, Stordimento, Scrutare) non infliggono danno diretto ma impongono condizioni." },
+  { id: "inversione-di-gravita", name: "Inversione di Gravità", level: 7, school: "trasmutazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "30 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Inverte la gravità in un'area cubica: le creature e gli oggetti al suo interno cadono verso l'alto.", crunch: "Nessun danno diretto dall'incantesimo: TS Destrezza per non cadere verso l'alto; quando l'effetto termina o il bersaglio esce dall'area, ricade subendo danno da caduta normale." },
+  { id: "dito-della-morte", name: "Dito della Morte", level: 7, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Un dito puntato scaglia energia necrotica letale contro un singolo bersaglio.", crunch: "7d8 + 30 danno necrotico; TS Costituzione dimezza. Un umanoide ucciso da questo danno risorge al tuo prossimo turno come zombie sotto il tuo controllo permanente." },
+  { id: "terremoto", name: "Terremoto", level: 8, school: "evocazione", classes: ["chierico", "druido", "stregone"], time: "1 azione", range: "150 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Il terreno in una vasta area trema violentemente, aprendo crepacci e abbattendo strutture.", crunch: "Nessun danno diretto dal tremore: TS Costituzione o prono per ogni creatura al suolo nell'area (sfera di 30 m). Crepacci opzionali causano danno da caduta; strutture che crollano infliggono 5d6 danno contundente (TS Destrezza dimezza) a chi è nei paraggi." },
+  { id: "dominare-mostro", name: "Dominare Mostro", level: 8, school: "ammaliamento", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 ora", desc: "Come Dominare Persona, ma efficace su qualsiasi tipo di creatura.", crunch: "Nessun danno: TS Saggezza nega (ripetibile ogni volta che il bersaglio subisce danno); come Dominare Persona ma su qualunque tipo di creatura." },
+  { id: "clone", name: "Clone", level: 8, school: "necromanzia", classes: ["mago"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Cresce un duplicato inerte di una creatura, in cui la sua coscienza si trasferisce se muore.", crunch: "Nessun danno: crea un duplicato inerte (in un contenitore, cresce in 120 giorni) di una creatura; se l'originale muore, la sua anima e i suoi PF pieni si trasferiscono nel clone." },
+  { id: "antipatia-simpatia", name: "Antipatia/Simpatia", level: 8, school: "ammaliamento", classes: ["druido", "mago"], time: "1 ora", range: "18 m", comp: "V, S, M", duration: "10 giorni", desc: "Rende un oggetto o un luogo irresistibilmente attraente oppure repellente per un tipo di creatura scelto.", crunch: "Nessun danno: TS Saggezza (ripetibile ogni ora se in Antipatia) per il tipo di creatura scelto; se fallito è respinta/attratta dal bersaglio per la durata." },
+  { id: "fulgore-solare", name: "Fulgore Solare", level: 8, school: "evocazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "Personale (sfera di 18 m)", comp: "V, S, M", duration: "Istantanea", desc: "Un'esplosione di luce solare acceca e infligge danno radioso a ogni creatura in una vasta area.", crunch: "12d6 danno radioso; TS Costituzione dimezza il danno e nega l'accecamento (fino a 1 minuto, con TS di ripetizione ogni turno)." },
+  { id: "ottundere-la-mente", name: "Ottundere la Mente", level: 8, school: "ammaliamento", classes: ["bardo", "druido", "mago", "stregone", "warlock"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Istantanea", desc: "Assale la mente di un bersaglio con energia psichica devastante, riducendone drasticamente Intelligenza e Carisma.", crunch: "4d6 danno psichico; TS Intelligenza dimezza il danno e nega l'effetto secondario. Se fallito, Intelligenza e Carisma del bersaglio scendono a 1 finché non viene curato con Guarigione Suprema, Desiderio o simili." },
+  { id: "parola-di-potere-stordire", name: "Parola di Potere: Stordire", level: 8, school: "ammaliamento", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V", duration: "Istantanea", desc: "Pronuncia una parola di potere che stordisce istantaneamente un bersaglio con PF sufficientemente bassi.", crunch: "Nessun danno, nessun tiro per colpire né TS: se il bersaglio ha 150 PF o meno è automaticamente stordito (TS Costituzione a fine turno per liberarsi); altrimenti nessun effetto." },
+  { id: "labirinto", name: "Labirinto", level: 8, school: "evocazione", classes: ["mago", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Bandisce un bersaglio in un labirinto extradimensionale da cui deve trovare la via d'uscita.", crunch: "Nessun danno: bandisce il bersaglio in un labirinto extradimensionale; può tentare una prova di Intelligenza CD 20 al termine di ogni suo turno per fuggire (le bestie con Intelligenza 1 o meno fuggono automaticamente al 1° tentativo)." },
+  { id: "aura-sacra", name: "Aura Sacra", level: 8, school: "abiurazione", classes: ["chierico"], time: "1 azione", range: "Personale (sfera 9 m)", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Gli alleati nell'aura ottengono vantaggio ai TS, mentre i nemici che li attaccano in mischia hanno svantaggio; le creature malvagie che colpiscono un alleato possono essere accecate.", crunch: "Nessun danno diretto: vantaggio ai TS per gli alleati nella sfera di 9 m; le creature ostili hanno svantaggio ad attaccarli in mischia. Se una creatura malvagia colpisce in mischia un alleato protetto, deve superare un TS Costituzione o essere accecata per la durata." },
+  { id: "campo-antimagia", name: "Campo Antimagia", level: 8, school: "abiurazione", classes: ["chierico", "mago"], time: "1 azione", range: "Personale (sfera 3 m)", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Sopprime ogni magia, incantesimo e oggetto magico all'interno di una sfera che si muove col lanciatore.", crunch: "Nessun danno: sopprime incantesimi, oggetti magici ed effetti magici (incluse evocazioni, che vengono temporaneamente bandite) nella sfera di 3 m che si muove con te." },
+  { id: "desiderio", name: "Desiderio", level: 9, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V", duration: "Istantanea", desc: "L'incantesimo più potente che esista: duplica qualsiasi altro incantesimo di livello 8 o inferiore, o realizza un effetto a scelta del lanciatore.", crunch: "Nessun danno se usato per duplicare un incantesimo. Per effetti più ambiziosi: 1d20 al lancio, con 1 = non potrai mai più lanciare Desiderio, 2-8 = 1d10×10 danno necrotico e sfinimento per lo sforzo." },
+  { id: "meteore", name: "Meteore", level: 9, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "1 km", comp: "V, S", duration: "Istantanea", desc: "Frammenti di roccia fiammeggiante piovono dal cielo su un'area vastissima, devastando tutto.", crunch: "4 meteore, ciascuna sfera di 12 m: 20d6 danno da fuoco + 20d6 danno contundente per sfera; TS Destrezza dimezza. Una creatura toccata da più sfere subisce il danno di ciascuna." },
+  { id: "immobilita-temporale", name: "Immobilità Temporale", level: 9, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V", duration: "Istantanea", desc: "Il tempo si ferma per tutti tranne il lanciatore, che agisce liberamente per alcuni turni.", crunch: "Nessun danno diretto: agisci liberamente per 1d4+1 turni consecutivi (azione, azione bonus, movimento ogni turno); l'effetto termina subito se usi un'azione che tocca un'altra creatura o un oggetto indossato/trasportato da altri." },
+  { id: "tempesta-divina", name: "Tempesta Divina", level: 9, school: "invocazione", classes: ["druido"], time: "1 azione", range: "Vista", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Scatena una tempesta implacabile su una vasta area, con fulmini, grandine e venti furiosi.", crunch: "Effetto crescente per round in un cilindro di 720 m: tuono (assordati), poi 1d6 danno da acido/turno, poi fino a 5 fulmini da 10d6 danno da fulmine ciascuno (TS Destrezza dimezza), poi vento fortissimo, infine 2d6 danno contundente da grandine (TS Destrezza dimezza)." },
+  { id: "portale", name: "Portale", level: 9, school: "invocazione", classes: ["chierico", "mago"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Apre un varco circolare verso un luogo preciso su un altro piano di esistenza.", crunch: "Nessun danno: apre un portale bidirezionale verso un luogo specifico su un altro piano per la durata." },
+  { id: "resurrezione-vera", name: "Resurrezione Vera", level: 9, school: "necromanzia", classes: ["bardo", "chierico", "druido"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita chiunque sia morto da non più di duecento anni, anche senza un corpo, creandogliene uno nuovo.", crunch: "Nessun danno: riporta in vita con PF pieni chiunque sia morto da non più di 200 anni, creando un nuovo corpo se necessario e curando ogni malattia o veleno." },
+  { id: "cambiaforma", name: "Cambiaforma", level: 9, school: "trasmutazione", classes: ["druido", "mago"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Il lanciatore assume la forma di qualsiasi creatura conosciuta, ottenendone statistiche e capacità.", crunch: "Nessun danno diretto: assumi il profilo di qualsiasi creatura tu abbia visto (GS pari o inferiore al tuo livello), mantenendo la tua mente; il danno inflitto dipende dalla forma scelta." },
+  { id: "mente-impenetrabile", name: "Mente Impenetrabile", level: 9, school: "abiurazione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "24 ore", desc: "Rende il bersaglio immune a divinazione, controllo mentale e danno psichico per un giorno intero.", crunch: "Nessun danno: immunità a divinazione, lettura/controllo mentale e danno psichico per 24 ore." },
+  { id: "prescienza", name: "Prescienza", level: 9, school: "divinazione", classes: ["bardo", "druido", "mago", "warlock"], time: "1 minuto", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Concede al bersaglio una percezione soprannaturale degli eventi imminenti: vantaggio a tiri per colpire, prove e TS, e svantaggio agli attacchi contro di lui.", crunch: "Nessun danno: per la durata il bersaglio ha vantaggio a tiri per colpire, prove e TS, non può essere colto di sorpresa e gli attacchi contro di lui hanno svantaggio." },
+  { id: "fuoco-fatato", name: "Fuoco Fatato", level: 1, school: "invocazione", classes: ["bardo", "druido", "ranger"], time: "1 azione", range: "18 m", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Ricopre le creature in un'area di luce fatata, rendendole visibili anche se invisibili.", crunch: "Nessun danno: TS Destrezza per ogni creatura nel cubo di 6 m; se fallito resta delineata (visibile anche se invisibile) e ogni attacco contro di essa ha vantaggio, per la durata." },
+  { id: "favore-divino", name: "Favore Divino", level: 1, school: "ammaliamento", classes: ["paladino"], time: "1 azione bonus", range: "Personale", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Le armi del lanciatore risplendono di energia divina, infliggendo danno radioso extra sui prossimi colpi.", crunch: "Nessun danno all'atto del lancio: i tuoi attacchi con arma infliggono +1d4 danno radioso per la durata." },
+  { id: "nube-di-nebbia", name: "Nube di Nebbia", level: 1, school: "invocazione", classes: ["druido", "ranger", "mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Concentrazione, fino a 1 ora", desc: "Riempie un'area di nebbia densa, offuscando la vista di tutti al suo interno.", crunch: "Nessun danno: sfera di 6 m di nebbia che ostacola gravemente la vista per la durata." },
+  { id: "onda-tonante", name: "Onda Tonante", level: 1, school: "evocazione", classes: ["bardo", "druido", "mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Istantanea", desc: "Un'onda d'urto tonante respinge le creature vicine e infligge loro danno.", crunch: "2d8 danno tonante alle creature in un cubo di 4,5 m da te; TS Costituzione dimezza e nega la spinta di 3 m. +1d8 per ogni slot superiore al 1°." },
+  { id: "parlare-con-gli-animali", name: "Parlare con gli Animali", level: 1, school: "divinazione", classes: ["bardo", "druido", "ranger"], time: "1 azione", range: "Personale", comp: "V, S", duration: "10 minuti", desc: "Permette di comprendere e comunicare con gli animali per la durata.", crunch: "Nessun danno: comprendi e comunichi con animali per la durata; rituale." },
+  { id: "travestimento", name: "Travestimento", level: 1, school: "illusione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S", duration: "1 ora", desc: "Altera il proprio aspetto illusorio, cambiando volto, altezza e vestiti per la durata.", crunch: "Nessun danno: illusione del tuo aspetto (altezza ±30 cm); un'indagine attiva la smaschera con una prova di Intelligenza contro la tua CD incantesimi." },
+  { id: "falsa-vita", name: "Falsa Vita", level: 1, school: "necromanzia", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "1 ora", desc: "Avvolge il lanciatore di forza vitale artificiale, concedendogli punti ferita temporanei.", crunch: "Nessun danno: 1d4 + 4 punti ferita temporanei per la durata; +5 PF temporanei per ogni slot superiore al 1°." },
+  { id: "raggio-nauseante", name: "Raggio Nauseante", level: 1, school: "necromanzia", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Un raggio velenoso infligge danno da veleno e può indebolire fisicamente il bersaglio.", crunch: "2d8 danno da veleno, tiro per colpire con incantesimi; se colpisce, TS Costituzione o avvelenato (svantaggio ad attacchi e prove di caratteristica) fino al tuo prossimo turno. +1d8 per ogni slot superiore al 1°." },
+  { id: "arma-spirituale", name: "Arma Spirituale", level: 2, school: "evocazione", classes: ["chierico"], time: "1 azione bonus", range: "18 m", comp: "V, S", duration: "1 minuto", desc: "Crea un'arma spettrale che colpisce un bersaglio; può essere richiamata come azione bonus nei turni successivi.", crunch: "1d8 + mod. caratteristica incantatrice danno di forza, tiro per colpire con incantesimi; +1d8 ogni 2 slot superiori al 2° (4°, 6°, ecc.)." },
+  { id: "arma-magica", name: "Arma Magica", level: 2, school: "trasmutazione", classes: ["mago", "paladino"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Rende magica un'arma non magica, concedendole un bonus ad attacco e danno.", crunch: "Nessun danno diretto: +1 ai tiri per colpire e ai danni dell'arma per la durata (+2 con uno slot di 4°, +3 con uno slot di 6°)." },
+  { id: "raffica-di-vento", name: "Raffica di Vento", level: 2, school: "evocazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Un forte vento spazza via nebbie e disperde gas, spingendo indietro le creature più leggere.", crunch: "Nessun danno: TS Forza in una linea di 18 m; se fallito, la creatura è spinta di 4,5 m lontano da te. Ripetibile come azione a ogni turno." },
+  { id: "frantumare", name: "Frantumare", level: 2, school: "evocazione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Un suono acuto e stridente danneggia le creature in un'area e può incrinare oggetti fragili.", crunch: "3d8 danno tonante nella sfera di 3 m; TS Costituzione dimezza (svantaggio per costrutti e oggetti fatti di metallo o pietra). +1d8 per ogni slot superiore al 2°." },
+  { id: "pelle-di-corteccia", name: "Pelle di Corteccia", level: 2, school: "trasmutazione", classes: ["druido", "ranger"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "La pelle del bersaglio si indurisce come corteccia, aumentando la sua Classe Armatura.", crunch: "Nessun danno: la CA del bersaglio non può essere inferiore a 16 per la durata." },
+  { id: "crescita-di-spine", name: "Crescita di Spine", level: 2, school: "trasmutazione", classes: ["druido", "ranger"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Il terreno in un'area si ricopre di rovi che rallentano e feriscono chi vi cammina.", crunch: "2d4 danno perforante ogni 1,5 m percorsi nell'area (nessun TS); l'area è anche terreno difficile per la durata." },
+  { id: "presagio", name: "Presagio", level: 2, school: "divinazione", classes: ["chierico"], time: "1 minuto", range: "Personale", comp: "V, S, M", duration: "Istantanea", desc: "Rivela, tramite un rituale divinatorio, se un'azione imminente porterà buona o cattiva sorte.", crunch: "Nessun danno: rivela se un'azione pianificata entro 30 minuti porterà buona sorte, cattiva sorte, entrambe o nessuna delle due; rituale." },
+  { id: "cecita-sordita", name: "Cecità/Sordità", level: 2, school: "necromanzia", classes: ["bardo", "chierico", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V", duration: "1 minuto", desc: "Priva un bersaglio della vista o dell'udito per la durata dell'incantesimo.", crunch: "Nessun danno: TS Costituzione nega; se fallito, il bersaglio è accecato o assordato (a tua scelta) per la durata. +1 bersaglio per ogni slot superiore al 2°." },
+  { id: "raggio-debilitante", name: "Raggio Debilitante", level: 2, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Un raggio necrotico indebolisce il bersaglio, dimezzando il danno dei suoi attacchi.", crunch: "Nessun danno diretto: tiro per colpire con incantesimi; se colpisce, TS Costituzione a ogni suo turno o gli attacchi con arma del bersaglio infliggono metà danno, per la durata." },
+  { id: "faro-di-speranza", name: "Faro di Speranza", level: 3, school: "abiurazione", classes: ["chierico"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Rende immune alla paura e massimizza le cure ricevute da chi si trova nell'area per la durata.", crunch: "Nessun danno: vantaggio ai TS di Saggezza e ai tiri salvezza contro la morte per i bersagli scelti; ogni cura che ricevono usa il valore massimo possibile dei dadi." },
+  { id: "ravvivare", name: "Ravvivare", level: 3, school: "necromanzia", classes: ["chierico", "paladino"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Riporta in vita una creatura morta da non più di un minuto, restituendole un solo punto ferita.", crunch: "Nessun danno: riporta in vita con 1 PF una creatura morta da non più di 1 minuto (non ripristina arti perduti né cura malattie/veleni)." },
+  { id: "manto-del-crociato", name: "Manto del Crociato", level: 3, school: "ammaliamento", classes: ["paladino"], time: "1 azione", range: "Personale", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Un'aura di ardore sacro infligge danno radioso extra agli attacchi degli alleati vicini.", crunch: "Nessun danno diretto: tu e gli alleati entro 9 m infliggete +1d4 danno radioso con gli attacchi con arma per la durata." },
+  { id: "tempesta-di-neve", name: "Tempesta di Neve", level: 3, school: "invocazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "150 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Pioggia gelata e ghiaccio rendono il terreno scivoloso e la visuale offuscata in un'area.", crunch: "Nessun danno: TS Destrezza per chi si muove nell'area o cade prono se fallito; l'area è fortemente offuscata e il terreno diventa scivoloso (difficile) per la durata." },
+  { id: "crescita-delle-piante", name: "Crescita delle Piante", level: 3, school: "trasmutazione", classes: ["bardo", "druido", "ranger"], time: "1 azione", range: "45 m", comp: "V, S", duration: "Istantanea", desc: "Fa crescere rigogliosa la vegetazione in una vasta area, trasformandola in terreno difficile.", crunch: "Nessun danno: in modalità 'sovracrescita' rende terreno difficile un'area di 30 m di raggio; in modalità 'arricchimento' rende fertili i raccolti di un'area coltivata per un anno." },
+  { id: "muro-di-vento", name: "Muro di Vento", level: 3, school: "evocazione", classes: ["druido", "ranger"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Crea una parete di vento fortissimo che devia frecce, gas e piccole creature volanti.", crunch: "Nessun danno fisso: TS Forza per le creature Grandi o inferiori che tentano di attraversare il muro, altrimenti vengono respinte; devia frecce/dardi/gas e impedisce il volo di creature molto piccole." },
+  { id: "non-individuazione", name: "Non Individuazione", level: 3, school: "abiurazione", classes: ["bardo", "ranger", "mago"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Nasconde un oggetto o un luogo da ogni forma di divinazione magica.", crunch: "Nessun danno: nasconde il bersaglio (creatura, oggetto o luogo fino a 9 m) da ogni forma di divinazione magica per la durata." },
+  { id: "parlare-con-i-morti", name: "Parlare con i Morti", level: 3, school: "necromanzia", classes: ["chierico"], time: "1 azione", range: "3 m", comp: "V, S, M", duration: "10 minuti", desc: "Permette di rivolgere domande a un cadavere, che risponde con la conoscenza che aveva in vita.", crunch: "Nessun danno: il cadavere risponde a un massimo di 5 domande, in modo reticente o mendace se era ostile in vita." },
+  { id: "sfarfallio", name: "Sfarfallio", level: 3, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "1 minuto", desc: "Il lanciatore sfarfalla tra il piano materiale e quello etereo, diventando parzialmente intangibile.", crunch: "Nessun danno: a fine di ogni tuo turno tira 1d20, con 11+ passi sul Piano Etereo fino all'inizio del turno successivo, ottenendo resistenza a tutto il danno mentre sei sul Piano Etereo." },
+  { id: "animare-morti", name: "Animare Morti", level: 3, school: "necromanzia", classes: ["mago", "chierico"], time: "1 minuto", range: "3 m", comp: "V, S, M", duration: "Istantanea", desc: "Anima ossa o cadaveri, trasformandoli in servitori non morti sotto il controllo del lanciatore.", crunch: "Nessun danno dall'incantesimo in sé: anima fino a 2 non morti (scheletro o zombie) per lancio, che combattono con le proprie statistiche sotto il tuo controllo permanente (finché non li ricrei col rituale ogni 24 ore)." },
+  { id: "contrasto-alla-morte", name: "Contrasto alla Morte", level: 4, school: "abiurazione", classes: ["chierico", "paladino"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "8 ore", desc: "Protegge il bersaglio dalla morte per punti ferita a zero e dalla riduzione massima dei PF.", crunch: "Nessun danno: la prima volta che il bersaglio scenderebbe a 0 PF entro la durata, resta invece a 1 PF (una sola volta); immune ai dadi vita di sfinimento da PF massimi ridotti." },
+  { id: "dominare-bestia", name: "Dominare Bestia", level: 4, school: "ammaliamento", classes: ["druido"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Tenta di soggiogare la mente di una bestia, che il lanciatore può poi guidare con la volontà.", crunch: "Nessun danno: TS Saggezza nega (ripetibile ogni volta che il bersaglio subisce danno); come Dominare Persona ma limitato alle bestie." },
+  { id: "viticcio-afferrante", name: "Viticcio Afferrante", level: 4, school: "invocazione", classes: ["druido", "ranger"], time: "1 azione bonus", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Un lungo viticcio scaturisce dal terreno per afferrare e trascinare a sé una creatura.", crunch: "Nessun danno: TS Forza o Destrezza (a tua scelta) nega; se fallito, il bersaglio è trascinato fino a 6 m verso il viticcio e trattenuto." },
+  { id: "piaga", name: "Piaga", level: 4, school: "necromanzia", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Istantanea", desc: "Fa avvizzire un bersaglio con energia necromantica, infliggendogli un danno grave.", crunch: "8d8 danno necrotico; TS Costituzione dimezza (su piante o vegetali il TS ha svantaggio e il danno non viene dimezzato in caso di successo). +1d8 per ogni slot superiore al 4°." },
+  { id: "colpo-di-fiamma", name: "Colpo di Fiamma", level: 5, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Una colonna di fuoco divino divampa dal cielo su un punto scelto, incenerendo l'area.", crunch: "4d6 danno da fuoco + 4d6 danno radioso; TS Destrezza dimezza. +1d6 per tipo per ogni slot superiore al 5°." },
+  { id: "onda-distruttiva", name: "Onda Distruttiva", level: 5, school: "evocazione", classes: ["paladino"], time: "1 azione", range: "Personale", comp: "V", duration: "Istantanea", desc: "Un'onda di energia sacra o malvagia abbatte le creature vicine, ferendole gravemente.", crunch: "5d6 danno radioso o necrotico (a tua scelta) alle creature ostili entro 9 m; TS Costituzione dimezza il danno e nega la spinta di 3 m e la condizione prona." },
+  { id: "piaga-d-insetti", name: "Piaga d'Insetti", level: 5, school: "invocazione", classes: ["druido", "stregone"], time: "1 azione", range: "90 m", comp: "V, S", duration: "Concentrazione, fino a 10 minuti", desc: "Uno sciame di insetti punge tutti coloro che si trovano nell'area colpita.", crunch: "4d10 danno perforante nella sfera di 6 m; TS Costituzione dimezza. +1d10 per ogni slot superiore al 5°." },
+  { id: "sapienza-leggendaria", name: "Sapienza Leggendaria", level: 5, school: "divinazione", classes: ["bardo", "chierico", "mago"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Istantanea", desc: "Rivela informazioni note riguardo un oggetto, un luogo o una creatura leggendaria.", crunch: "Nessun danno: ottieni una o più informazioni note sull'argomento scelto, veritiere ma non necessariamente complete." },
+  { id: "modificare-memoria", name: "Modificare Memoria", level: 5, school: "ammaliamento", classes: ["bardo", "mago"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Altera i ricordi recenti di una creatura affascinata, cancellandoli o sostituendoli.", crunch: "Nessun danno: TS Saggezza nega (svantaggio se già affascinata da te); se fallito, mentre resta affascinata puoi cancellare o alterare fino a un'ora dei suoi ricordi recenti." },
+  { id: "sfera-antivita", name: "Sfera Antivita", level: 5, school: "abiurazione", classes: ["druido"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 8 ore", desc: "Crea una barriera invisibile che impedisce a creature e bestie ostili di avvicinarsi.", crunch: "Nessun danno: sfera di 3 m che impedisce a creature/bestie ostili di entrarvi o di attaccare attraverso di essa per la durata." },
+  { id: "nube-letale", name: "Nube Letale", level: 5, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "90 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Una nube di gas venefico giallo-verde si espande, avvelenando chiunque vi resti dentro.", crunch: "5d8 danno da veleno a ogni creatura che inizia il turno nella nube (sfera di 6 m, che si espande e può muoversi di 3 m/turno); TS Costituzione dimezza. +1d8 per ogni slot superiore al 5°." },
+  { id: "passo-tra-gli-alberi", name: "Passo tra gli Alberi", level: 5, school: "trasmutazione", classes: ["druido", "ranger"], time: "1 azione", range: "Vista", comp: "V, S", duration: "Concentrazione, fino a 1 ora", desc: "Permette di entrare in un albero e riemergere istantaneamente da un altro entro portata.", crunch: "Nessun danno: come azione, entri in un grosso albero ed esci istantaneamente da un altro entro 150 m, una volta per turno per la durata." },
+  { id: "malaugurio", name: "Malaugurio", level: 1, school: "ammaliamento", classes: ["bardo", "chierico"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Indebolisce fino a tre nemici, sottraendo una piccola penalità ad attacchi e tiri salvezza.", crunch: "Nessun danno diretto: TS Carisma nega per fino a 3 creature; se fallito, sottraggono 1d4 a ogni tiro per colpire e TS lanciato per la durata." },
+  { id: "marchio-del-cacciatore", name: "Marchio del Cacciatore", level: 1, school: "divinazione", classes: ["ranger"], time: "1 azione bonus", range: "27 m", comp: "V", duration: "Concentrazione, fino a 1 ora", desc: "Marchia un bersaglio, infliggendogli danno extra ogni volta che viene colpito e facilitandone il tracciamento.", crunch: "Nessun danno all'atto del lancio: ogni volta che colpisci il bersaglio marchiato con un attacco, infliggi +1d6 danno aggiuntivo; hai anche vantaggio alle prove per rintracciarlo." },
+  { id: "colpo-intrappolante", name: "Colpo Intrappolante", level: 1, school: "ammaliamento", classes: ["ranger"], time: "1 azione bonus", range: "Personale", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Il prossimo colpo andato a segno intrappola il bersaglio in viticci che ne impediscono il movimento.", crunch: "Al prossimo colpo con arma entro la durata: 1d6 danno perforante extra e TS Forza o trattenuto; se trattenuto, 1d6 danno perforante extra a ogni suo turno. +1d6 per ogni slot superiore al 1°." },
+  { id: "zona-di-verita", name: "Zona di Verità", level: 2, school: "ammaliamento", classes: ["chierico", "paladino"], time: "1 azione", range: "18 m", comp: "V", duration: "10 minuti", desc: "Chi si trova nell'area non può dire consapevolmente il falso per la durata.", crunch: "Nessun danno: TS Carisma per chi entra nella sfera di 4,5 m; se fallito, non può dire consapevolmente il falso per la durata (sa quando è sotto effetto)." },
+  { id: "raggio-lunare", name: "Raggio Lunare", level: 2, school: "evocazione", classes: ["druido"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Un raggio di luce argentea danneggia le creature che vi entrano o iniziano il turno al suo interno.", crunch: "2d10 danno radioso a chi entra nel cilindro di 1,5 m o inizia lì il turno; TS Costituzione dimezza (i mutaforma hanno svantaggio e sono forzati nella forma originale in caso di fallimento). +1d10 per ogni slot superiore al 2°." },
+  { id: "protezione-dalle-energie", name: "Protezione dalle Energie", level: 3, school: "abiurazione", classes: ["druido", "chierico", "mago", "ranger", "stregone"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Concede resistenza a un tipo di danno elementale scelto, per la durata.", crunch: "Nessun danno: resistenza al tipo di danno scelto (acido, freddo, fuoco, fulmine o tuono) per la durata." },
+  { id: "comunione-con-la-natura", name: "Comunione con la Natura", level: 5, school: "divinazione", classes: ["druido", "ranger"], time: "1 minuto", range: "Personale", comp: "V, S", duration: "Istantanea", desc: "Rivela informazioni sul terreno circostante, come la presenza di acqua, creature o insediamenti.", crunch: "Nessun danno: rivela informazioni sul terreno naturale entro 5 km; rituale." },
+  { id: "comunione", name: "Comunione", level: 5, school: "divinazione", classes: ["chierico"], time: "1 minuto", range: "Personale", comp: "V, S", duration: "1 minuto", desc: "Pone fino a tre domande a un'entità divina, ricevendo risposte veritiere a sì o no.", crunch: "Nessun danno: fino a 3 domande con risposta sì/no/incerto da un'entità della tua fede; rituale." },
+  { id: "santuario", name: "Santuario", level: 1, school: "abiurazione", classes: ["chierico"], time: "1 azione bonus", range: "9 m", comp: "V, S, M", duration: "1 minuto", desc: "Protegge una creatura: chi la attacca deve prima superare un tiro salvezza, pena il fallimento dell'attacco.", crunch: "Nessun danno: chi tenta di attaccare il bersaglio protetto deve prima superare un TS Saggezza o scegliere un altro bersaglio (l'effetto termina se il protetto attacca o lancia un incantesimo dannoso)." },
+  { id: "risata-orrenda-di-tasha", name: "Risata Orrenda di Tasha", level: 1, school: "ammaliamento", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Il bersaglio scoppia in una risata incontrollabile, cadendo a terra incapace di agire.", crunch: "Nessun danno: TS Saggezza nega (svantaggio se il bersaglio ha subito danno da poco); se fallito, prono e incapacitato dal ridere per la durata (può ripetere il TS quando subisce danno)." },
+  { id: "calma-delle-emozioni", name: "Calma delle Emozioni", level: 2, school: "ammaliamento", classes: ["bardo", "chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Sopprime le emozioni intense in un'area, placando ostilità o eliminando paura e charme.", crunch: "Nessun danno: TS Carisma per fino a 6 creature nella sfera di 6 m; se fallito, non possono attaccarsi a vicenda o subire danno da effetti emotivi (ostilità placata), oppure una creatura scelta è immune a paura e charme per la durata." },
+  { id: "immagine-fantasma", name: "Immagine Fantasma", level: 2, school: "illusione", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Crea un'illusione visiva di un oggetto o una creatura, priva di suoni o altri effetti sensoriali.", crunch: "TS Intelligenza nega la percezione dell'illusione come reale; se ingannata e l'illusione include elementi dannosi, la creatura subisce 1d6 danno psichico all'inizio di ogni suo turno finché resta ingannata o nell'area." },
+  { id: "nube-ripugnante", name: "Nube Ripugnante", level: 3, school: "invocazione", classes: ["bardo", "druido", "stregone"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Un gas nauseante riempie un'area, causando nausea a chi lo respira.", crunch: "Nessun danno diretto: TS Costituzione per chi è nella sfera di 6 m (ripetibile a ogni turno); se fallito, avvelenato e incapacitato (nausea) finché resta nell'area o non supera il TS." },
+  { id: "messaggero", name: "Messaggero", level: 3, school: "divinazione", classes: ["bardo", "chierico", "mago", "stregone", "warlock"], time: "1 azione", range: "Illimitata", comp: "V, S, M", duration: "1 turno", desc: "Invia un breve messaggio a una creatura nota ovunque si trovi, sullo stesso piano o altrove.", crunch: "Nessun danno: messaggio di 25 parole a una creatura nota ovunque si trovi (anche su un altro piano), con risposta immediata di pari lunghezza." },
+  { id: "scudo-di-fuoco", name: "Scudo di Fuoco", level: 4, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione bonus", range: "Personale", comp: "V, S, M", duration: "10 minuti", desc: "Avvolge il lanciatore in fiamme protettive che riducono un tipo di danno e ne infliggono ai nemici in mischia.", crunch: "Chi ti colpisce in mischia subisce 2d8 danno da fuoco (Manto Freddo) o da freddo (Manto Caldo), a tua scelta al lancio; ottieni anche resistenza al tipo di danno opposto (freddo o fuoco)." },
+  { id: "tentacoli-neri-di-evard", name: "Tentacoli Neri di Evard", level: 4, school: "evocazione", classes: ["mago"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Tentacoli scuri emergono dal terreno in un'area, afferrando e schiacciando chi vi si trova.", crunch: "3d6 danno contundente a chi inizia il turno nel cubo di 6 m; TS Forza nega il danno e il trattenimento (chi è già trattenuto subisce comunque il danno)." },
+  { id: "sembianza", name: "Sembianza", level: 5, school: "illusione", classes: ["bardo", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "8 ore", desc: "Altera l'aspetto di più creature volontarie, incluso volto, voce e vestiti, per l'intera durata.", crunch: "Nessun danno: altera l'aspetto (volto, voce, vestiti, altezza entro ±30 cm) di fino a 10 creature volontarie per la durata." },
+  { id: "consacrazione", name: "Consacrazione", level: 5, school: "abiurazione", classes: ["chierico", "druido"], time: "24 ore", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Santifica permanentemente un'area, conferendole effetti magici benefici scelti dal lanciatore.", crunch: "Nessun danno fisso: santifica un'area di 18 m di raggio con un effetto scelto (es. i non morti evocati lì subiscono danno radioso, o gli alleati ottengono un bonus); alcuni effetti opzionali infliggono danno (es. 'ostile' infligge 1d6 danno radioso/necrotico ai nemici che entrano)." },
+  { id: "legame-telepatico", name: "Legame Telepatico", level: 5, school: "divinazione", classes: ["bardo", "mago"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "1 ora", desc: "Crea un legame telepatico tra più creature volontarie, che possono comunicare mentalmente per la durata.", crunch: "Nessun danno: fino a 8 creature volontarie comunicano telepaticamente tra loro senza limiti di distanza (stesso piano) per la durata; rituale." },
+  { id: "rallentare", name: "Rallentare", level: 3, school: "trasmutazione", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Rallenta fino a sei creature in un'area, dimezzandone la velocità e penalizzando attacchi e tiri salvezza.", crunch: "Nessun danno: TS Saggezza per fino a 6 creature nel cubo di 12 m (ripetibile a fine turno); se fallito, velocità dimezzata, -2 a CA e TS di Destrezza, niente reazioni e azione o azione bonus (non entrambe) per turno." },
+  { id: "respirare-in-acqua", name: "Respirare in Acqua", level: 3, school: "trasmutazione", classes: ["druido", "ranger", "mago", "stregone"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "24 ore", desc: "Consente a un gruppo di creature di respirare sott'acqua per l'intera durata.", crunch: "Nessun danno: fino a 10 creature volontarie possono respirare sott'acqua per la durata; rituale." },
+  { id: "camminare-sulle-acque", name: "Camminare sulle Acque", level: 3, school: "trasmutazione", classes: ["chierico", "druido", "ranger"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "1 ora", desc: "Permette a un gruppo di creature di camminare sulla superficie di un liquido come fosse terreno solido.", crunch: "Nessun danno: fino a 10 creature volontarie camminano su qualsiasi superficie liquida come fosse terreno solido per la durata; rituale." },
+  { id: "evocare-elementale", name: "Evocare Elementale", level: 5, school: "invocazione", classes: ["druido", "mago", "stregone"], time: "1 minuto", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Evoca uno spirito elementale che assume una forma legata al tipo scelto, per combattere al fianco del lanciatore.", crunch: "Nessun danno dall'incantesimo in sé: evoca un elementale con GS fino a 5 (il danno dei suoi attacchi dipende dal profilo scelto), sotto il tuo controllo per la durata." },
+  { id: "offuscamento", name: "Offuscamento", level: 2, school: "illusione", classes: ["mago", "stregone"], time: "1 azione", range: "Personale", comp: "V", duration: "Concentrazione, fino a 1 minuto", desc: "Distorce l'aspetto del lanciatore, conferendo svantaggio agli attacchi in mischia e a distanza contro di lui.", crunch: "Nessun danno: gli attacchi contro di te hanno svantaggio per la durata (nessun effetto se sei accecato o cieco all'esito dell'attacco è irrilevante)." },
+  { id: "creare-cibo-e-acqua", name: "Creare Cibo e Acqua", level: 3, school: "invocazione", classes: ["chierico", "paladino"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Istantanea", desc: "Crea cibo e acqua sufficienti a sfamare un piccolo gruppo per un'intera giornata.", crunch: "Nessun danno: crea cibo insapore e acqua sufficienti per 5 creature per 24 ore." },
+  { id: "terreno-illusorio", name: "Terreno Illusorio", level: 4, school: "illusione", classes: ["bardo", "druido", "mago", "stregone"], time: "10 minuti", range: "90 m", comp: "V, S, M", duration: "24 ore", desc: "Fa apparire un'ampia area di terreno naturale come un paesaggio completamente diverso da quello reale.", crunch: "Nessun danno: illusione persistente su un cubo di 45 m di terreno naturale (non nasconde creature/oggetti/strutture), rituale." },
+  { id: "oscurita", name: "Oscurità", level: 2, school: "invocazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, M", duration: "Concentrazione, fino a 10 minuti", desc: "Estingue ogni fonte di luce in un'area, creando oscurità magica impenetrabile alla vista normale.", crunch: "Nessun danno: sfera di 4,5 m di oscurità magica, impenetrabile anche alla scurovisione, per la durata." },
+  { id: "freccia-acida-di-melf", name: "Freccia Acida di Melf", level: 2, school: "invocazione", classes: ["mago"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Istantanea", desc: "Una freccia d'acido colpisce infliggendo danno immediato e continua a corrodere il bersaglio nel turno successivo.", crunch: "4d4 danno da acido immediato (tiro per colpire con incantesimi) + 2d4 alla fine del suo prossimo turno; se manca, solo metà del danno immediato e nessun danno successivo. +1d4 a entrambi i danni per ogni slot superiore al 2°." },
+  { id: "localizzare-creatura", name: "Localizzare Creatura", level: 4, school: "divinazione", classes: ["bardo", "chierico", "druido", "paladino", "ranger"], time: "1 azione", range: "Personale", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Rivela la direzione verso una creatura nota o di un tipo specifico entro un ampio raggio.", crunch: "Nessun danno: rivela direzione e distanza verso una creatura nota (o del tipo scelto più vicina) entro 1.000 km, per la durata." },
+  { id: "scalare-come-un-ragno", name: "Scalare come un Ragno", level: 2, school: "trasmutazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Il bersaglio può camminare su superfici verticali e soffitti senza bisogno di arrampicarsi.", crunch: "Nessun danno: il bersaglio può camminare su superfici verticali e soffitti senza prova di scalata, mani libere, per la durata." },
+  { id: "fondersi-con-la-pietra", name: "Fondersi con la Pietra", level: 3, school: "trasmutazione", classes: ["chierico", "druido"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "8 ore", desc: "Il lanciatore si fonde con un blocco di pietra, nascondendosi al suo interno per la durata.", crunch: "Nessun danno: ti fondi in un blocco di pietra, indetettabile dall'esterno, per la durata (o finché non esci); rituale." },
+  { id: "modellare-la-pietra", name: "Modellare la Pietra", level: 4, school: "trasmutazione", classes: ["chierico", "druido", "mago"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Modella pietra, terra o simili nella forma desiderata, come se fossero argilla morbida.", crunch: "Nessun danno: rimodella un volume di pietra fino a 1,5 m per lato nella forma desiderata." },
+  { id: "forma-gassosa", name: "Forma Gassosa", level: 3, school: "trasmutazione", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "Contatto", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Trasforma il bersaglio in una nube gassosa, capace di infilarsi in ogni fessura e resistente a molti danni.", crunch: "Nessun danno: il bersaglio diventa una nube gassosa (velocità di volo 3 m, resistenza a danno contundente/perforante/tagliente non magico, incapace di attaccare o manipolare oggetti) per la durata." },
 
   /* --- Incantesimi aggiuntivi di alto livello (6°-9°), PHB 2014 --- */
-  { id: "barriera-di-lame", name: "Barriera di Lame", level: 6, school: "evocazione", classes: ["chierico"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea un muro fluttuante di lame roteanti che infligge danno tagliente a chiunque lo attraversi." },
-  { id: "danno", name: "Danno", level: 6, school: "necromanzia", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Canalizza energia malvagia che infligge danno necrotico devastante, capace di dimezzare i punti ferita massimi del bersaglio." },
-  { id: "banchetto-degli-eroi", name: "Banchetto degli Eroi", level: 6, school: "invocazione", classes: ["chierico"], time: "1 ora", range: "9 m", comp: "V, S, M", duration: "Istantanea", desc: "Un banchetto rituale che cura le malattie, immunizza dalla paura e concede saggezza, resistenza e punti ferita bonus ai partecipanti." },
-  { id: "interdizione", name: "Interdizione", level: 6, school: "abiurazione", classes: ["chierico"], time: "10 minuti", range: "Contatto", comp: "V, S, M", duration: "1 anno", desc: "Protegge una vasta area da teletrasporti, evocazioni e dall'ingresso di creature di allineamento scelto." },
-  { id: "creare-non-morti", name: "Creare Non Morti", level: 6, school: "necromanzia", classes: ["chierico", "warlock"], time: "1 minuto", range: "3 m", comp: "V, S, M", duration: "Istantanea", desc: "Trasforma fino a tre cadaveri in spettri servili che obbediscono ai comandi del lanciatore." },
-  { id: "alleato-planare", name: "Alleato Planare", level: 6, school: "invocazione", classes: ["chierico"], time: "10 minuti", range: "18 m", comp: "V", duration: "Istantanea", desc: "Chiama una creatura da un altro piano per prestare aiuto in cambio di un pagamento negoziato sul posto." },
-  { id: "camminata-nel-vento", name: "Camminata nel Vento", level: 6, school: "trasmutazione", classes: ["chierico", "druido"], time: "1 minuto", range: "9 m", comp: "V, S, M", duration: "8 ore", desc: "Il lanciatore e i suoi alleati si trasformano in nebbia vaporosa, ottenendo grande velocità di volo." },
-  { id: "muro-di-spine", name: "Muro di Spine", level: 6, school: "invocazione", classes: ["druido"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Fa crescere una barriera impenetrabile di rovi spinosi che infligge danno a chi tenta di attraversarla." },
-  { id: "cerchio-di-morte", name: "Cerchio di Morte", level: 6, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Istantanea", desc: "Una sfera di energia negativa esplode, infliggendo ingente danno necrotico a tutte le creature viventi nell'area." },
-  { id: "carne-in-pietra", name: "Carne in Pietra", level: 6, school: "trasmutazione", classes: ["mago", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Trasforma il bersaglio e il suo equipaggiamento in pietra solida, pietrificandolo se fallisce ripetuti tiri salvezza." },
-  { id: "suggestione-di-massa", name: "Suggestione di Massa", level: 6, school: "ammaliamento", classes: ["bardo", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, M", duration: "24 ore", desc: "Come Suggestione, ma influenza fino a dodici creature contemporaneamente con un suggerimento plausibile." },
-  { id: "contingenza", name: "Contingenza", level: 6, school: "invocazione", classes: ["mago"], time: "10 minuti", range: "Personale", comp: "V, S, M", duration: "10 giorni", desc: "Prepara un incantesimo di 5° livello o inferiore che scatta automaticamente al verificarsi di una condizione prestabilita." },
-  { id: "sfera-glaciale-di-otiluke", name: "Sfera Glaciale di Otiluke", level: 6, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Istantanea", desc: "Scaglia una sfera di ghiaccio che esplode infliggendo danno freddo e intrappolando i sopravvissuti nel ghiaccio." },
+  { id: "barriera-di-lame", name: "Barriera di Lame", level: 6, school: "evocazione", classes: ["chierico"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Crea un muro fluttuante di lame roteanti che infligge danno tagliente a chiunque lo attraversi.", crunch: "6d10 danno tagliente per chi attraversa il muro o inizia lì il turno; TS Destrezza dimezza." },
+  { id: "danno", name: "Danno", level: 6, school: "necromanzia", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Canalizza energia malvagia che infligge danno necrotico devastante, capace di dimezzare i punti ferita massimi del bersaglio.", crunch: "14d6 danno necrotico (nessun effetto su costrutti/non morti); TS Costituzione dimezza. Se fallito, i PF massimi del bersaglio si riducono di pari quantità fino al prossimo riposo lungo (muore se scendono a 0)." },
+  { id: "banchetto-degli-eroi", name: "Banchetto degli Eroi", level: 6, school: "invocazione", classes: ["chierico"], time: "1 ora", range: "9 m", comp: "V, S, M", duration: "Istantanea", desc: "Un banchetto rituale che cura le malattie, immunizza dalla paura e concede saggezza, resistenza e punti ferita bonus ai partecipanti.", crunch: "Nessun danno: chi partecipa guarisce da malattie/veleno, è immune a paura e veleno per 24 ore, +2d10 PF massimi per 24 ore e vantaggio ai TS di Saggezza." },
+  { id: "interdizione", name: "Interdizione", level: 6, school: "abiurazione", classes: ["chierico"], time: "10 minuti", range: "Contatto", comp: "V, S, M", duration: "1 anno", desc: "Protegge una vasta area da teletrasporti, evocazioni e dall'ingresso di creature di allineamento scelto.", crunch: "5d10 danno radioso o necrotico (a tua scelta al lancio) al tipo di creatura scelto che entra nell'area o inizia lì il turno; blocca anche teletrasporti ed evocazioni al suo interno." },
+  { id: "creare-non-morti", name: "Creare Non Morti", level: 6, school: "necromanzia", classes: ["chierico", "warlock"], time: "1 minuto", range: "3 m", comp: "V, S, M", duration: "Istantanea", desc: "Trasforma fino a tre cadaveri in spettri servili che obbediscono ai comandi del lanciatore.", crunch: "Nessun danno dall'incantesimo in sé: anima fino a 3 ghoul (o 1 spettro/gaunt spettrale ogni 2 slot superiori al 6°), sotto il tuo controllo finché non li ricrei ogni 24 ore." },
+  { id: "alleato-planare", name: "Alleato Planare", level: 6, school: "invocazione", classes: ["chierico"], time: "10 minuti", range: "18 m", comp: "V", duration: "Istantanea", desc: "Chiama una creatura da un altro piano per prestare aiuto in cambio di un pagamento negoziato sul posto.", crunch: "Nessun danno: la creatura richiamata presta servizio in cambio di un compenso negoziato (non garantito, dipende dalla sua disposizione)." },
+  { id: "camminata-nel-vento", name: "Camminata nel Vento", level: 6, school: "trasmutazione", classes: ["chierico", "druido"], time: "1 minuto", range: "9 m", comp: "V, S, M", duration: "8 ore", desc: "Il lanciatore e i suoi alleati si trasformano in nebbia vaporosa, ottenendo grande velocità di volo.", crunch: "Nessun danno: fino a 10 creature volontarie diventano nebbia gassosa con velocità di volo 90 m per la durata; resistenza a danno da armi non magiche mentre in questa forma." },
+  { id: "muro-di-spine", name: "Muro di Spine", level: 6, school: "invocazione", classes: ["druido"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Concentrazione, fino a 10 minuti", desc: "Fa crescere una barriera impenetrabile di rovi spinosi che infligge danno a chi tenta di attraversarla.", crunch: "7d8 danno perforante a chi entra nel muro quando appare o forza il passaggio attraverso di esso; TS Destrezza dimezza. +1d8 per ogni slot superiore al 6°." },
+  { id: "cerchio-di-morte", name: "Cerchio di Morte", level: 6, school: "necromanzia", classes: ["mago", "stregone", "warlock"], time: "1 azione", range: "45 m", comp: "V, S, M", duration: "Istantanea", desc: "Una sfera di energia negativa esplode, infliggendo ingente danno necrotico a tutte le creature viventi nell'area.", crunch: "8d6 danno necrotico nella sfera di 18 m (nessun effetto su non morti); TS Costituzione dimezza. +2d6 per ogni slot superiore al 6°." },
+  { id: "carne-in-pietra", name: "Carne in Pietra", level: 6, school: "trasmutazione", classes: ["mago", "warlock"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 minuto", desc: "Trasforma il bersaglio e il suo equipaggiamento in pietra solida, pietrificandolo se fallisce ripetuti tiri salvezza.", crunch: "Nessun danno: TS Costituzione nega (ripetibile a ogni tuo turno); un fallimento causa trattenimento, un secondo fallimento consecutivo causa pietrificazione permanente." },
+  { id: "suggestione-di-massa", name: "Suggestione di Massa", level: 6, school: "ammaliamento", classes: ["bardo", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V, M", duration: "24 ore", desc: "Come Suggestione, ma influenza fino a dodici creature contemporaneamente con un suggerimento plausibile.", crunch: "Nessun danno: TS Saggezza nega per fino a 12 creature; se fallito, seguono il corso d'azione suggerito finché non è completato o la durata termina." },
+  { id: "contingenza", name: "Contingenza", level: 6, school: "invocazione", classes: ["mago"], time: "10 minuti", range: "Personale", comp: "V, S, M", duration: "10 giorni", desc: "Prepara un incantesimo di 5° livello o inferiore che scatta automaticamente al verificarsi di una condizione prestabilita.", crunch: "Nessun danno proprio: lancia gratuitamente su te stesso un incantesimo di 5° livello o inferiore già preparato, quando si verifica il grilletto scelto entro 10 giorni." },
+  { id: "sfera-glaciale-di-otiluke", name: "Sfera Glaciale di Otiluke", level: 6, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "27 m", comp: "V, S, M", duration: "Istantanea", desc: "Scaglia una sfera di ghiaccio che esplode infliggendo danno freddo e intrappolando i sopravvissuti nel ghiaccio.", crunch: "10d6 danno freddo nella sfera di 18 m; TS Costituzione dimezza (se fallito il bersaglio resta anche intrappolato nel ghiaccio). +1d6 per ogni slot superiore al 6°." },
 
-  { id: "parola-divina", name: "Parola Divina", level: 7, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V", duration: "Istantanea", desc: "Pronuncia una parola sacra che acceca, assorda, atterrisce o uccide istantaneamente le creature nemiche in base ai loro punti ferita." },
-  { id: "tempesta-di-fuoco", name: "Tempesta di Fuoco", level: 7, school: "evocazione", classes: ["chierico", "druido"], time: "1 azione", range: "45 m", comp: "V", duration: "Istantanea", desc: "Fiamme letali erompono dal terreno in un'area vasta, incenerendo vegetazione e creature al suo interno." },
-  { id: "rifugio-magnifico-di-mordenkainen", name: "Rifugio Magnifico di Mordenkainen", level: 7, school: "invocazione", classes: ["mago"], time: "1 minuto", range: "36 m", comp: "V, S, M", duration: "24 ore", desc: "Crea una dimora extradimensionale lussuosa e sicura, completa di servitori spettrali, accessibile tramite una porta invisibile." },
-  { id: "simulacro", name: "Simulacro", level: 7, school: "illusione", classes: ["mago"], time: "12 ore", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Crea un duplicato di ghiaccio e neve di una creatura, fedele ma con la metà dei punti ferita massimi, che obbedisce al lanciatore." },
-  { id: "sequestro", name: "Sequestro", level: 7, school: "trasmutazione", classes: ["mago"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Finché non viene dissolto", desc: "Nasconde il bersaglio in uno stato di animazione sospesa all'interno di una tasca extradimensionale, invisibile e indistruttibile." },
-  { id: "evocare-un-celestiale", name: "Evocare un Celestiale", level: 7, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Richiama uno spirito celestiale che assume una forma angelica o animale per assistere il lanciatore in battaglia." },
+  { id: "parola-divina", name: "Parola Divina", level: 7, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V", duration: "Istantanea", desc: "Pronuncia una parola sacra che acceca, assorda, atterrisce o uccide istantaneamente le creature nemiche in base ai loro punti ferita.", crunch: "Nessun tiro per colpire né TS: l'effetto dipende dai PF attuali del bersaglio — 20 PF o meno: assordato 1 minuto; 30 o meno: assordato e accecato 10 minuti; 40 o meno: accecato, assordato e stordito 1 ora; 50 o meno: morte istantanea. Le creature estranee al piano sono bandite se hanno 40 PF o meno." },
+  { id: "tempesta-di-fuoco", name: "Tempesta di Fuoco", level: 7, school: "evocazione", classes: ["chierico", "druido"], time: "1 azione", range: "45 m", comp: "V", duration: "Istantanea", desc: "Fiamme letali erompono dal terreno in un'area vasta, incenerendo vegetazione e creature al suo interno.", crunch: "7d10 danno da fuoco a ogni creatura in una o più aree di 3 m contigue (fino a 10); TS Destrezza dimezza. Puoi escludere le aree occupate dai tuoi alleati." },
+  { id: "rifugio-magnifico-di-mordenkainen", name: "Rifugio Magnifico di Mordenkainen", level: 7, school: "invocazione", classes: ["mago"], time: "1 minuto", range: "36 m", comp: "V, S, M", duration: "24 ore", desc: "Crea una dimora extradimensionale lussuosa e sicura, completa di servitori spettrali, accessibile tramite una porta invisibile.", crunch: "Nessun danno: dimora extradimensionale sicura con servitori spettrali per la durata." },
+  { id: "simulacro", name: "Simulacro", level: 7, school: "illusione", classes: ["mago"], time: "12 ore", range: "Contatto", comp: "V, S, M", duration: "Istantanea", desc: "Crea un duplicato di ghiaccio e neve di una creatura, fedele ma con la metà dei punti ferita massimi, che obbedisce al lanciatore.", crunch: "Nessun danno dall'incantesimo: crea un duplicato leale con metà dei PF massimi dell'originale, incapace di recuperarli tramite riposo." },
+  { id: "sequestro", name: "Sequestro", level: 7, school: "trasmutazione", classes: ["mago"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Finché non viene dissolto", desc: "Nasconde il bersaglio in uno stato di animazione sospesa all'interno di una tasca extradimensionale, invisibile e indistruttibile.", crunch: "Nessun danno: TS Costituzione nega se non consenziente; se fallito, il bersaglio sparisce in animazione sospesa finché l'effetto non termina." },
+  { id: "evocare-un-celestiale", name: "Evocare un Celestiale", level: 7, school: "invocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Richiama uno spirito celestiale che assume una forma angelica o animale per assistere il lanciatore in battaglia.", crunch: "Nessun danno dall'incantesimo in sé: evoca un celestiale con GS fino a 4 (il suo danno dipende dal profilo scelto), amichevole verso di te." },
 
-  { id: "barriera-mentale", name: "Barriera Mentale", level: 8, school: "abiurazione", classes: ["bardo", "chierico", "mago"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "24 ore", desc: "Rende il bersaglio immune a ogni forma di divinazione, lettura della mente e controllo mentale per un giorno intero." },
-  { id: "demiplano", name: "Demiplano", level: 8, school: "evocazione", classes: ["mago", "warlock"], time: "1 azione", range: "18 m", comp: "S", duration: "1 ora", desc: "Crea una porta che conduce a una stanza vuota in un demipiano, utile come rifugio o prigione temporanea." },
-  { id: "telepatia", name: "Telepatia", level: 8, school: "invocazione", classes: ["mago"], time: "1 azione", range: "Illimitata", comp: "V, S, M", duration: "24 ore", desc: "Crea un legame telepatico con una creatura conosciuta ovunque si trovi sullo stesso piano, permettendo di comunicare mentalmente." },
-  { id: "intrappolare-lanima", name: "Intrappolare l'Anima", level: 8, school: "ammaliamento", classes: ["mago"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Intrappola l'anima di una creatura morente in un oggetto preparato, da cui può essere liberata solo rompendo l'oggetto." },
-  { id: "avvizzimento-orrendo", name: "Avvizzimento Orrendo di Abi-Dalzim", level: 8, school: "necromanzia", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Istantanea", desc: "Energia negativa avvizzisce la carne di tutte le creature in un cono, infliggendo danno necrotico devastante." },
-  { id: "nube-incendiaria", name: "Nube Incendiaria", level: 8, school: "trasmutazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "45 m", comp: "V, M", duration: "Concentrazione, fino a 1 minuto", desc: "Genera una nube fumogena che infligge danno da fuoco ogni turno e può essere spostata a comando." },
+  { id: "barriera-mentale", name: "Barriera Mentale", level: 8, school: "abiurazione", classes: ["bardo", "chierico", "mago"], time: "1 azione", range: "Contatto", comp: "V, S", duration: "24 ore", desc: "Rende il bersaglio immune a ogni forma di divinazione, lettura della mente e controllo mentale per un giorno intero.", crunch: "Nessun danno: immunità a divinazione, lettura/controllo mentale e danno psichico per 24 ore." },
+  { id: "demiplano", name: "Demiplano", level: 8, school: "evocazione", classes: ["mago", "warlock"], time: "1 azione", range: "18 m", comp: "S", duration: "1 ora", desc: "Crea una porta che conduce a una stanza vuota in un demipiano, utile come rifugio o prigione temporanea.", crunch: "Nessun danno: crea una porta verso una stanza vuota di 9 m per lato in un demipiano, per la durata." },
+  { id: "telepatia", name: "Telepatia", level: 8, school: "invocazione", classes: ["mago"], time: "1 azione", range: "Illimitata", comp: "V, S, M", duration: "24 ore", desc: "Crea un legame telepatico con una creatura conosciuta ovunque si trovi sullo stesso piano, permettendo di comunicare mentalmente.", crunch: "Nessun danno: comunicazione telepatica bidirezionale con una creatura nota sullo stesso piano, senza limiti di distanza, per 24 ore." },
+  { id: "intrappolare-lanima", name: "Intrappolare l'Anima", level: 8, school: "ammaliamento", classes: ["mago"], time: "1 azione", range: "18 m", comp: "V, S, M", duration: "Istantanea", desc: "Intrappola l'anima di una creatura morente in un oggetto preparato, da cui può essere liberata solo rompendo l'oggetto.", crunch: "Nessun danno: TS Carisma nega; se fallito, l'anima del bersaglio resta intrappolata nell'oggetto finché non viene liberata o l'oggetto distrutto." },
+  { id: "avvizzimento-orrendo", name: "Avvizzimento Orrendo di Abi-Dalzim", level: 8, school: "necromanzia", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S, M", duration: "Istantanea", desc: "Energia negativa avvizzisce la carne di tutte le creature in un cono, infliggendo danno necrotico devastante.", crunch: "12d8 danno necrotico (nessun effetto su costrutti/non morti); TS Costituzione dimezza." },
+  { id: "nube-incendiaria", name: "Nube Incendiaria", level: 8, school: "trasmutazione", classes: ["druido", "mago", "stregone"], time: "1 azione", range: "45 m", comp: "V, M", duration: "Concentrazione, fino a 1 minuto", desc: "Genera una nube fumogena che infligge danno da fuoco ogni turno e può essere spostata a comando.", crunch: "10d8 danno da fuoco a chi è nella sfera di 9 m o vi entra; TS Destrezza dimezza. Ripete il danno a ogni tuo turno mentre mantieni la concentrazione." },
 
-  { id: "proiezione-astrale", name: "Proiezione Astrale", level: 9, school: "necromanzia", classes: ["mago", "warlock"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Finché non viene dissolto", desc: "Proietta il lanciatore e i suoi alleati sul Piano Astrale, lasciando indietro i corpi fisici in trance." },
-  { id: "prigionia", name: "Prigionia", level: 9, school: "ammaliamento", classes: ["mago", "warlock"], time: "1 minuto", range: "9 m", comp: "V, S, M", duration: "Finché non viene dissolto", desc: "Imprigiona una creatura in un sonno eterno, in un vincolo che ne impedisce il movimento, oppure la bandisce in un'altra dimensione." },
-  { id: "cura-di-massa", name: "Cura di Massa", level: 9, school: "evocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Un'ondata di energia curativa risana fino a un'intera compagnia di alleati, ripristinando ingenti quantità di punti ferita." },
-  { id: "parola-di-potere-morte", name: "Parola di Potere: Morte", level: 9, school: "ammaliamento", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V", duration: "Istantanea", desc: "Pronuncia una parola di potere capace di uccidere istantaneamente un bersaglio con punti ferita sufficientemente bassi." },
-  { id: "assurdo", name: "Assurdo", level: 9, school: "ammaliamento", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Intrappola fino a dieci creature in incubi viventi, infliggendo danno psichico devastante ogni turno." },
+  { id: "proiezione-astrale", name: "Proiezione Astrale", level: 9, school: "necromanzia", classes: ["mago", "warlock"], time: "1 ora", range: "Contatto", comp: "V, S, M", duration: "Finché non viene dissolto", desc: "Proietta il lanciatore e i suoi alleati sul Piano Astrale, lasciando indietro i corpi fisici in trance.", crunch: "Nessun danno: proietta te e fino a 8 alleati volontari sul Piano Astrale (o su un altro piano), lasciando i corpi fisici in trance; se il corpo astrale muore, torni nel corpo con 0 PF." },
+  { id: "prigionia", name: "Prigionia", level: 9, school: "ammaliamento", classes: ["mago", "warlock"], time: "1 minuto", range: "9 m", comp: "V, S, M", duration: "Finché non viene dissolto", desc: "Imprigiona una creatura in un sonno eterno, in un vincolo che ne impedisce il movimento, oppure la bandisce in un'altra dimensione.", crunch: "Nessun danno: TS Saggezza nega; se fallito, il bersaglio subisce l'effetto scelto (sepoltura, incatenamento, minimizzazione, prigione onirica o esilio) finché l'incantesimo non viene dissolto." },
+  { id: "cura-di-massa", name: "Cura di Massa", level: 9, school: "evocazione", classes: ["chierico"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Un'ondata di energia curativa risana fino a un'intera compagnia di alleati, ripristinando ingenti quantità di punti ferita.", crunch: "Cura 700 PF totali, distribuiti come vuoi tra un numero qualsiasi di creature entro 18 m; elimina anche cecità, sordità e malattie dai bersagli curati." },
+  { id: "parola-di-potere-morte", name: "Parola di Potere: Morte", level: 9, school: "ammaliamento", classes: ["bardo", "mago", "stregone", "warlock"], time: "1 azione", range: "18 m", comp: "V", duration: "Istantanea", desc: "Pronuncia una parola di potere capace di uccidere istantaneamente un bersaglio con punti ferita sufficientemente bassi.", crunch: "Nessun tiro per colpire né TS: se il bersaglio ha 100 PF o meno, muore all'istante; altrimenti nessun effetto." },
+  { id: "assurdo", name: "Assurdo", level: 9, school: "ammaliamento", classes: ["mago", "stregone"], time: "1 azione", range: "36 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Intrappola fino a dieci creature in incubi viventi, infliggendo danno psichico devastante ogni turno.", crunch: "4d10 danno psichico per fino a 10 creature nella sfera di 9 m; TS Saggezza dimezza e nega lo spavento. Se fallito, spaventate e ripetono il danno a ogni turno finché non superano il TS." },
 ];
 
 const WARLOCK_PATRONS = [
@@ -1807,11 +2026,18 @@ const EQUIPMENT_CATALOG = [
 
 const mod = (score) => Math.floor((score - 10) / 2);
 const fmtMod = (m) => (m >= 0 ? `+${m}` : `${m}`);
+// Le velocità di razza sono memorizzate in piedi (com'è nel PHB), ma il resto dell'app esprime
+// ogni distanza in metri (gittate di incantesimi e armi): convertiamo qui, alla visualizzazione,
+// con la stessa equivalenza usata altrove nel file (1,5 m per ogni 5 ft, cioè un "quadretto").
+const ftToM = (ft) => (ft / 5) * 1.5;
 const getProficiencyBonus = (level) => Math.floor((Math.max(1, level || 1) - 1) / 4) + 2;
 const POINT_BUY_COST = { 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 7, 15: 9 };
 const POINT_BUY_TOTAL = 27;
 const getPointBuyCost = (score) => POINT_BUY_COST[score] ?? Infinity;
-const getPointBuySpent = (scores) => Object.values(scores).reduce((sum, v) => sum + (getPointBuyCost(Number(v)) || 0), 0);
+// I punteggi non ancora assegnati sono "" (nessuna caratteristica scelta ancora): li trattiamo
+// come costo 0, non come punteggio non valido, altrimenti la spesa totale mostrerebbe Infinity
+// finché non si sono compilate tutte e sei le caratteristiche.
+const getPointBuySpent = (scores) => Object.values(scores).reduce((sum, v) => sum + (v === "" || v === undefined ? 0 : getPointBuyCost(Number(v))), 0);
 
 function getRaceSelections(draft, race) {
   return { ability: draft.raceAbilityPicks || draft.halfElfPicks || [], skill: draft.raceSkillPicks || [] };
@@ -1863,13 +2089,18 @@ function computeAsiBonusForStore(store, clsId, classLevel) {
 }
 
 // Bonus di caratteristica totale da ASI/Talenti, sommato su TUTTE le classi del personaggio
-// (classe primaria + eventuale classe secondaria da multiclasse).
+// (classe primaria + eventuale classe secondaria da multiclasse), più l'eventuale talento
+// bonus concesso dalla razza (es. Umano variante) con la sua scelta di caratteristica.
 function getAsiBonus(draft) {
   const total = { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
   getClassEntries(draft).forEach(({ classId, level, store }) => {
     const b = computeAsiBonusForStore(store, classId, level);
     Object.keys(total).forEach((k) => { total[k] += b[k]; });
   });
+  const raceFeat = draft.raceFeatId ? getFeat(draft.raceFeatId) : null;
+  if (raceFeat && raceFeat.abilityChoice && draft.raceFeatAbilityChoice && total[draft.raceFeatAbilityChoice] !== undefined) {
+    total[draft.raceFeatAbilityChoice] += 1;
+  }
   return total;
 }
 
@@ -1886,9 +2117,13 @@ function computeChosenFeatsForStore(store, clsId, classLevel) {
     .filter(Boolean);
 }
 
-// Talenti scelti su TUTTE le classi del personaggio.
+// Talenti scelti su TUTTE le classi del personaggio, più l'eventuale talento bonus di razza
+// (es. Umano variante), che non è legato a nessun livello di classe.
 function getChosenFeats(draft) {
-  return getClassEntries(draft).flatMap(({ classId, level, store }) => computeChosenFeatsForStore(store, classId, level));
+  const classFeats = getClassEntries(draft).flatMap(({ classId, level, store }) => computeChosenFeatsForStore(store, classId, level));
+  const raceFeat = draft.raceFeatId ? getFeat(draft.raceFeatId) : null;
+  if (!raceFeat) return classFeats;
+  return [{ level: 1, feat: raceFeat, abilityPick: draft.raceFeatAbilityChoice || null, classId: "razza" }, ...classFeats];
 }
 
 /* ---------------------------------- MECCANICHE CALCOLATE ---------------------------------- */
@@ -1933,6 +2168,9 @@ function getClassMechanicsList(clsId, level, subclassId) {
   if (clsId === "barbaro") list.push({ key: "ira", label: "Usi dell'Ira", value: getRageUses(level) });
   if (clsId === "bardo") list.push({ key: "ispirazione", label: "Ispirazione Bardica", value: getBardicInspirationDie(level) });
   if (clsId === "monaco" && getKiPoints(level) > 0) list.push({ key: "ki", label: "Punti Ki", value: getKiPoints(level) });
+  if (clsId === "barbaro" && subclassId === "totem-aquila" && (level || 1) >= 14) {
+    list.push({ key: "volo-ira", label: "Velocità di Volo (in Ira)", value: "pari alla velocità" });
+  }
   const critRange = getCritRange(clsId, subclassId, level);
   if (critRange !== "20") list.push({ key: "critico", label: "Raggio di Critico", value: critRange });
   return list;
@@ -2022,12 +2260,11 @@ function validateCharacter(draft) {
   const errors = [];
   const race = RACES.find((r) => r.id === draft.raceId);
   const cls = CLASSES.find((c) => c.id === draft.classId);
-  const bg = BACKGROUNDS.find((b) => b.id === draft.backgroundId);
 
   if (!draft.name?.trim()) errors.push("Inserisci il nome del personaggio.");
   if (!race) errors.push("Seleziona una razza.");
   if (!cls) errors.push("Seleziona una classe.");
-  if (!bg) errors.push("Seleziona un background.");
+  errors.push(...getBackgroundValidationErrors(draft));
 
   if (draft.abilityMethod === "custom") {
     const values = Object.values(draft.baseScores).map(Number);
@@ -2045,6 +2282,14 @@ function validateCharacter(draft) {
 
   if (race?.extraSkillChoice && (draft.raceSkillPicks || []).length !== race.extraSkillChoice.count) {
     errors.push(`Scegli ${race.extraSkillChoice.count} abilità razziali.`);
+  }
+
+  if (race?.extraFeatChoice) {
+    const raceFeat = draft.raceFeatId ? getFeat(draft.raceFeatId) : null;
+    if (!raceFeat) errors.push(`Scegli il talento concesso da ${race.name}.`);
+    else if (raceFeat.abilityChoice && !raceFeat.abilityChoice.optional && !draft.raceFeatAbilityChoice) {
+      errors.push(`Scegli la caratteristica del talento "${raceFeat.name}" concesso da ${race.name}.`);
+    }
   }
 
   if (cls && (draft.classSkills || []).length < cls.skillChoices) {
@@ -2152,9 +2397,22 @@ function emptyDraft() {
     halfElfPicks: [],
     raceAbilityPicks: [],
     raceSkillPicks: [],
+    raceFeatId: null,
+    raceFeatAbilityChoice: null,
     classId: null,
     classSkills: [],
     backgroundId: null,
+    customBackgroundName: "",
+    customBackgroundSkills: [],
+    customBackgroundEquipment: "",
+    customBackgroundToolsLanguages: "",
+    customBackgroundFeatureName: "",
+    customBackgroundFeatureDesc: "",
+    personalityTrait1: "",
+    personalityTrait2: "",
+    ideal: "",
+    bond: "",
+    flaw: "",
     abilityMethod: "array",
     rolledPool: null,
     baseScores: { str: "", dex: "", con: "", int: "", wis: "", cha: "" },
@@ -2175,6 +2433,7 @@ function emptyDraft() {
     mysticArcanum: {},
     metamagicIds: [],
     invocationIds: [],
+    disciplineIds: [],
     pactBoonId: null,
     multiclass: null,
     currentHp: null,
@@ -2207,6 +2466,7 @@ function emptyMulticlass(classId) {
     mysticArcanum: {},
     metamagicIds: [],
     invocationIds: [],
+    disciplineIds: [],
     pactBoonId: null,
     bonusSkillPick: null,
   };
@@ -2224,6 +2484,44 @@ function computeFinalScores(draft) {
   return finalScores;
 }
 
+// Quanto manca a UNA classe incantatrice del personaggio per avere davvero finito lo step
+// Incantesimi: eventuale sottoclasse-prerequisito (dominio/ordine/patrono/circolo) scelta, e
+// trucchetti/incantesimi conosciuti al completo. Rispecchia esattamente i conteggi già
+// mostrati in ClassSpellSection, così la spunta non può mai disallinearsi da quel che si vede.
+function getCasterSpellStatus(clsId, chosenSubclassId, level, store, draft, finalScores) {
+  const caster = getEffectiveCasterInfo(clsId, chosenSubclassId);
+  if (!caster) return null;
+  const maxLevelReal = getMaxSpellLevel(clsId, level, chosenSubclassId);
+  if (maxLevelReal === 0) return { subclassChoiceOk: true, cantripsNeeded: 0, cantripsKnown: 0, spellsNeeded: 0, spellsKnown: 0 };
+
+  const abilityMod = mod(finalScores[caster.ability]);
+  const cantripsNeeded = caster.cantrips[Math.min(level, 20) - 1];
+  const spellsNeeded = getSpellsLimit(clsId, caster, level, abilityMod);
+  const dataMax = Math.min(maxLevelReal, MAX_DATA_SPELL_LEVEL);
+  const thirdCaster = isThirdCaster(clsId, chosenSubclassId);
+  const spellClassId = thirdCaster ? "mago" : clsId;
+
+  const subclassChoiceOk = clsId === "chierico" ? !!store.domainId
+    : clsId === "paladino" ? !!store.oathId
+    : clsId === "warlock" ? !!store.patronId
+    : clsId === "druido" ? !!store.circleId
+    : true;
+
+  const subclassSpellIds = clsId === "chierico" ? getDomainSpellIds(store.domainId, maxLevelReal)
+    : clsId === "paladino" ? getOathSpellIds(store.oathId, maxLevelReal)
+      : clsId === "druido" ? getCircleSpellIds(store.circleId, maxLevelReal)
+        : [];
+  const patronSpellIds = clsId === "warlock" && store.patronId ? getPatronSpellIds(store.patronId, maxLevelReal) : [];
+
+  const cantripOptions = SPELLS.filter((s) => s.level === 0 && s.classes.includes(spellClassId));
+  const spellOptions = SPELLS.filter((s) => s.level >= 1 && s.level <= dataMax && !subclassSpellIds.includes(s.id) && (s.classes.includes(spellClassId) || patronSpellIds.includes(s.id)));
+
+  const cantripsKnown = draft.spellsKnown.filter((id) => cantripOptions.some((s) => s.id === id)).length;
+  const spellsKnown = draft.spellsKnown.filter((id) => spellOptions.some((s) => s.id === id)).length;
+
+  return { subclassChoiceOk, cantripsNeeded, cantripsKnown, spellsNeeded, spellsKnown };
+}
+
 const STEPS = [
   { key: "razza", label: "Razza", icon: Users },
   { key: "classe", label: "Classe", icon: Sword },
@@ -2233,6 +2531,67 @@ const STEPS = [
   { key: "incantesimi", label: "Incantesimi", icon: Sparkles },
   { key: "riepilogo", label: "Riepilogo", icon: BookOpen },
 ];
+
+// Lo step ha i requisiti minimi per proseguire (usata per abilitare "Avanti"): solo i campi
+// davvero obbligatori, così scelte facoltative (flavour del background, corredo extra) non
+// bloccano mai la navigazione.
+function isStepComplete(key, draft) {
+  const race = RACES.find((r) => r.id === draft.raceId);
+  const cls = CLASSES.find((c) => c.id === draft.classId);
+  switch (key) {
+    case "razza":
+      return !!draft.raceId
+        && (!race?.extraAbilityChoice || (draft.raceAbilityPicks || []).length === race.extraAbilityChoice.count)
+        && (!race?.extraSkillChoice || (draft.raceSkillPicks || []).length === race.extraSkillChoice.count)
+        && (!race?.extraFeatChoice || (draft.raceFeatId && (!getFeat(draft.raceFeatId)?.abilityChoice || getFeat(draft.raceFeatId).abilityChoice.optional || draft.raceFeatAbilityChoice)));
+    case "classe":
+      return !!draft.classId && (draft.classSkills || []).length === cls?.skillChoices;
+    case "caratteristiche":
+      return validateCharacter({ ...draft, name: draft.name || "draft" }).filter((e) => e.includes("Point Buy") || e.includes("punteggi") || e.includes("caratteristiche")).length === 0;
+    case "background":
+      return getBackgroundValidationErrors(draft).length === 0;
+    case "equipaggiamento":
+    case "incantesimi":
+    case "riepilogo":
+      return true;
+    default:
+      return false;
+  }
+}
+
+// Spunta ✓ nella barra laterale: più severa di isStepComplete, perché per alcuni step il
+// "minimo per proseguire" non è un buon segnale di step davvero rifinito (background scelto
+// con un click ma senza personalità, nessun oggetto nel corredo, riepilogo con errori residui).
+function isStepFullyComplete(key, draft) {
+  switch (key) {
+    case "background":
+      return isStepComplete("background", draft)
+        && !!(draft.personalityTrait1 || "").trim()
+        && !!(draft.personalityTrait2 || "").trim()
+        && !!(draft.ideal || "").trim()
+        && !!(draft.bond || "").trim()
+        && !!(draft.flaw || "").trim();
+    case "equipaggiamento":
+      return (draft.inventory || []).length > 0;
+    case "incantesimi": {
+      if (!draft.classId) return false;
+      const casterEntries = getClassEntries(draft).filter((e) => getEffectiveCasterInfo(e.classId, e.subclassId));
+      if (casterEntries.length === 0) return true;
+      const finalScores = computeFinalScores(draft);
+      return casterEntries.every((e) => {
+        const status = getCasterSpellStatus(e.classId, e.subclassId, e.level, e.store, draft, finalScores);
+        if (!status) return true;
+        return status.subclassChoiceOk
+          && status.cantripsKnown >= status.cantripsNeeded
+          && status.spellsKnown >= status.spellsNeeded;
+      });
+    }
+    case "riepilogo":
+      return validateCharacter(draft).length === 0;
+    default:
+      return isStepComplete(key, draft);
+  }
+}
 
 const STORAGE_KEY = "dnd-characters-5e2014-v2";
 const RULESET_VERSION = "D&D 5e 2014";
@@ -2406,8 +2765,32 @@ function OptionCard({ selected, onClick, title, subtitle, children }) {
 
 /* ---------------------------------- STEP: RACE ---------------------------------- */
 
+// Raggruppa RACES per "famiglia" (es. Nano → Delle Colline / Delle Montagne), nell'ordine in
+// cui compaiono in RACES. Le razze senza sottorazze (es. Dragonide) restano famiglie di un solo membro.
+function getRaceFamilies() {
+  const families = [];
+  RACES.forEach((r) => {
+    const famName = r.family || r.name;
+    let fam = families.find((f) => f.name === famName);
+    if (!fam) { fam = { name: famName, members: [] }; families.push(fam); }
+    fam.members.push(r);
+  });
+  return families;
+}
+
 function StepRace({ draft, setDraft }) {
   const race = RACES.find((r) => r.id === draft.raceId);
+  const families = getRaceFamilies();
+  const currentFamilyName = race ? (race.family || race.name) : null;
+  // Famiglia "aperta" per la scelta della sottorazza: se l'utente non ha ancora cliccato
+  // nulla in questa sessione dello step, resta agganciata alla razza già selezionata (se c'è).
+  const [browsingFamily, setBrowsingFamily] = useState(null);
+  const activeFamilyName = browsingFamily || currentFamilyName;
+  const activeFamily = families.find((f) => f.name === activeFamilyName);
+
+  const selectRace = (r) => setDraft((d) => ({ ...d, raceId: r.id, raceAbilityPicks: [], raceSkillPicks: [], halfElfPicks: [], raceFeatId: null, raceFeatAbilityChoice: null }));
+  const raceFeat = draft.raceFeatId ? getFeat(draft.raceFeatId) : null;
+
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Scegli la stirpe</h2>
@@ -2415,25 +2798,54 @@ function StepRace({ draft, setDraft }) {
         La razza determina bonus alle caratteristiche, velocità e tratti innati.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1.5rem" }}>
-        {RACES.map((r) => (
-          <OptionCard
-            key={r.id}
-            selected={draft.raceId === r.id}
-            onClick={() => setDraft((d) => ({ ...d, raceId: r.id, raceAbilityPicks: [], raceSkillPicks: [], halfElfPicks: [] }))}
-            title={r.name}
-            subtitle={Object.entries(r.bonuses).map(([k, v]) => `${k.toUpperCase()} +${v}`).join(", ")}
-          >
-            <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{r.blurb}</p>
-          </OptionCard>
-        ))}
+        {families.map((fam) => {
+          const single = fam.members.length === 1;
+          const repr = single ? fam.members[0] : null;
+          const selected = single ? draft.raceId === repr.id : activeFamilyName === fam.name;
+          return (
+            <OptionCard
+              key={fam.name}
+              selected={selected}
+              onClick={() => { if (single) selectRace(repr); setBrowsingFamily(fam.name); }}
+              title={fam.name}
+              subtitle={single ? Object.entries(repr.bonuses).map(([k, v]) => `${k.toUpperCase()} +${v}`).join(", ") : `${fam.members.length} sottorazze`}
+            >
+              <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>
+                {single ? repr.blurb : fam.members.map((m) => m.subraceName || m.name).join(" · ")}
+              </p>
+            </OptionCard>
+          );
+        })}
       </div>
+
+      {activeFamily && activeFamily.members.length > 1 && (
+        <div style={{ marginTop: "1.25rem" }}>
+          <Divider />
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>
+            Sottorazza — {activeFamily.name}
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1.5rem" }}>
+            {activeFamily.members.map((r) => (
+              <OptionCard
+                key={r.id}
+                selected={draft.raceId === r.id}
+                onClick={() => selectRace(r)}
+                title={r.subraceName || r.name}
+                subtitle={Object.entries(r.bonuses).map(([k, v]) => `${k.toUpperCase()} +${v}`).join(", ") || "Nessun bonus di caratteristica fisso"}
+              >
+                <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{r.blurb}</p>
+              </OptionCard>
+            ))}
+          </div>
+        </div>
+      )}
 
       {race && (
         <div style={{ marginTop: "1.25rem" }}>
           <Divider />
           <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment }}>
             <span><b>Taglia:</b> {race.size}</span>
-            <span><b>Velocità:</b> {race.speed} ft</span>
+            <span><b>Velocità:</b> {ftToM(race.speed)} m</span>
             <span><b>Scurovisione:</b> {race.dark ? "Sì (18 m)" : "No"}</span>
           </div>
           <ul style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginTop: 10, paddingLeft: 18 }}>
@@ -2466,6 +2878,51 @@ function StepRace({ draft, setDraft }) {
                   return <Pill key={skill} active={picked} onClick={() => { if (disabled) return; setDraft((d) => ({ ...d, raceSkillPicks: picked ? (d.raceSkillPicks || []).filter((k) => k !== skill) : [...(d.raceSkillPicks || []), skill] })); }}>{skill}</Pill>;
                 })}
               </div>
+            </div>
+          )}
+          {race.extraFeatChoice && (
+            <div style={{ marginTop: 10 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 8 }}>
+                Scegli un talento (bonus di razza).
+              </p>
+              <select
+                value={draft.raceFeatId || ""}
+                onChange={(e) => setDraft((d) => ({ ...d, raceFeatId: e.target.value || null, raceFeatAbilityChoice: null }))}
+                style={{
+                  width: "100%", maxWidth: 420, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.5rem",
+                  borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8,
+                }}
+              >
+                <option value="">— Scegli un talento —</option>
+                {FEATS.map((f) => (
+                  <option key={f.id} value={f.id}>{f.name}</option>
+                ))}
+              </select>
+              {raceFeat && (
+                <div style={{ marginBottom: 8 }}>
+                  {raceFeat.prerequisite && (
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, fontStyle: "italic", color: C.wine, margin: "0 0 4px" }}>
+                      Prerequisito: {raceFeat.prerequisite}
+                    </p>
+                  )}
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{raceFeat.desc}</p>
+                </div>
+              )}
+              {raceFeat && raceFeat.abilityChoice && (
+                <select
+                  value={draft.raceFeatAbilityChoice || ""}
+                  onChange={(e) => setDraft((d) => ({ ...d, raceFeatAbilityChoice: e.target.value || null }))}
+                  style={{
+                    fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem 0.5rem",
+                    borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
+                  }}
+                >
+                  <option value="">{raceFeat.abilityChoice.optional ? "Bonus caratteristica (opzionale) — scegli" : "Bonus caratteristica del talento — scegli"}</option>
+                  {ABILITIES.filter((a) => raceFeat.abilityChoice.keys.includes(a.key)).map((a) => (
+                    <option key={a.key} value={a.key}>{a.name} (+1)</option>
+                  ))}
+                </select>
+              )}
             </div>
           )}
         </div>
@@ -2509,7 +2966,7 @@ function StepClass({ draft, setDraft }) {
             selected={draft.classId === c.id}
             onClick={() => setDraft((d) => ({ ...d, classId: c.id, classSkills: [], asiChoices: {}, levelChoiceType: {}, featChoices: {}, featAbilityChoices: {}, subclassId: null, resourcesUsed: {} }))}
             title={c.name}
-            subtitle={`d${c.hitDie} · ${c.primary}`}
+            subtitle={`Dado Vita: d${c.hitDie} · ${c.primary}`}
           >
             <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{c.blurb}</p>
           </OptionCard>
@@ -2594,8 +3051,9 @@ function StepClass({ draft, setDraft }) {
 
 /* ---------------------------------- STEP: ABILITIES ---------------------------------- */
 
-function AsiPicker({ store, updateStore, clsId, classLevel }) {
-  const asiLevels = clsId ? getUnlockedAsiLevels(clsId, classLevel) : [];
+function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels }) {
+  const allAsiLevels = clsId ? getUnlockedAsiLevels(clsId, classLevel) : [];
+  const asiLevels = onlyLevels ? allAsiLevels.filter((l) => onlyLevels.includes(l)) : allAsiLevels;
   if (!asiLevels.length) return null;
 
   const setAsiPick = (level, idx, value) => {
@@ -2724,7 +3182,7 @@ function StepAbilities({ draft, setDraft }) {
   const race = RACES.find((r) => r.id === draft.raceId);
   const cls = CLASSES.find((c) => c.id === draft.classId);
   const bonus = useMemo(() => getRaceBonus(race, draft.raceAbilityPicks || draft.halfElfPicks), [race, draft.raceAbilityPicks, draft.halfElfPicks]);
-  const asiBonus = useMemo(() => getAsiBonus(draft, draft.classId), [draft.asiChoices, draft.levelChoiceType, draft.featChoices, draft.featAbilityChoices, draft.classId, draft.level]);
+  const asiBonus = useMemo(() => getAsiBonus(draft, draft.classId), [draft.asiChoices, draft.levelChoiceType, draft.featChoices, draft.featAbilityChoices, draft.classId, draft.level, draft.raceFeatId, draft.raceFeatAbilityChoice]);
 
   const pool = draft.abilityMethod === "array" ? STANDARD_ARRAY : draft.rolledPool;
   const usesPool = draft.abilityMethod === "array" || draft.abilityMethod === "roll";
@@ -2810,7 +3268,7 @@ function StepAbilities({ draft, setDraft }) {
                   }}
                 >
                   <option value="">—</option>
-                  {(pool || []).map((v, i) => (
+                  {(pool ? [...pool].sort((x, y) => y - x) : []).map((v, i) => (
                     <option
                       key={i}
                       value={v}
@@ -2854,8 +3312,57 @@ function StepAbilities({ draft, setDraft }) {
 
 /* ---------------------------------- STEP: BACKGROUND ---------------------------------- */
 
+// Campo di testo libero per un aspetto "flavour" del personaggio (tratto, ideale, legame,
+// difetto): il giocatore può scrivere liberamente, oppure cliccare un suggerimento tratto
+// dalla tabella del background per riempire il campo con un solo click.
+function FlavorField({ label, value, onChange, suggestions }) {
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.wineDeep, margin: "0 0 6px" }}>{label}</p>
+      <textarea
+        value={value || ""}
+        onChange={(e) => onChange(e.target.value)}
+        rows={2}
+        placeholder="Scrivi liberamente, oppure scegli un suggerimento qui sotto…"
+        style={{
+          width: "100%", fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.5rem 0.6rem",
+          borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box",
+        }}
+      />
+      {suggestions && suggestions.length > 0 && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
+          {suggestions.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => onChange(s)}
+              title="Usa questo suggerimento"
+              style={{
+                cursor: "pointer", textAlign: "left", fontFamily: "'Spectral', serif", fontSize: 11.5,
+                padding: "0.3rem 0.55rem", borderRadius: 3, border: `1px solid ${C.parchmentLine}`,
+                background: "rgba(255,255,255,0.5)", color: C.textMuted, maxWidth: 260,
+              }}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function StepBackground({ draft, setDraft }) {
-  const bg = BACKGROUNDS.find((b) => b.id === draft.backgroundId);
+  const bg = getSelectedBackground(draft);
+  const isCustom = draft.backgroundId === CUSTOM_BACKGROUND_ID;
+
+  const toggleCustomSkill = (skill) => setDraft((d) => {
+    const picks = d.customBackgroundSkills || [];
+    const picked = picks.includes(skill);
+    if (picked) return { ...d, customBackgroundSkills: picks.filter((s) => s !== skill) };
+    if (picks.length >= 2) return d;
+    return { ...d, customBackgroundSkills: [...picks, skill] };
+  });
+
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Scegli il background</h2>
@@ -2872,13 +3379,104 @@ function StepBackground({ draft, setDraft }) {
             subtitle={b.skills.join(", ")}
           />
         ))}
+        <OptionCard
+          selected={isCustom}
+          onClick={() => setDraft((d) => ({ ...d, backgroundId: CUSTOM_BACKGROUND_ID }))}
+          title="Personalizzato"
+          subtitle="Costruito da zero"
+        >
+          <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>
+            Definisci competenze, corredo e tratto seguendo la regola "Personalizzare un Background" del PHB 2014.
+          </p>
+        </OptionCard>
       </div>
-      {bg && (
+
+      {isCustom && (
+        <div style={{ marginTop: "1.25rem" }}>
+          <Divider />
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>Background personalizzato</p>
+
+          <input
+            type="text" placeholder="Nome del background (es. Cacciatore di Taglie)"
+            value={draft.customBackgroundName || ""}
+            onChange={(e) => setDraft((d) => ({ ...d, customBackgroundName: e.target.value }))}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
+          />
+
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 8 }}>
+            Scegli 2 competenze ({(draft.customBackgroundSkills || []).length}/2).
+          </p>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+            {Object.keys(SKILL_ABILITY).map((skill) => (
+              <Pill key={skill} active={(draft.customBackgroundSkills || []).includes(skill)} onClick={() => toggleCustomSkill(skill)}>
+                {skill}
+              </Pill>
+            ))}
+          </div>
+
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 4 }}>
+            Corredo di partenza (una voce per riga)
+          </p>
+          <textarea
+            value={draft.customBackgroundEquipment || ""}
+            onChange={(e) => setDraft((d) => ({ ...d, customBackgroundEquipment: e.target.value }))}
+            rows={3}
+            placeholder={"Es.\nUn set di attrezzi da scasso\nUna borsa con 10 mo"}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, resize: "vertical", boxSizing: "border-box" }}
+          />
+
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 4 }}>
+            Strumenti o lingua aggiuntivi (opzionale)
+          </p>
+          <input
+            type="text" placeholder="Es. Strumenti da falegname, oppure una lingua a scelta"
+            value={draft.customBackgroundToolsLanguages || ""}
+            onChange={(e) => setDraft((d) => ({ ...d, customBackgroundToolsLanguages: e.target.value }))}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
+          />
+
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 4 }}>
+            Tratto di background — nome
+          </p>
+          <input
+            type="text" placeholder="Es. Rete di Informatori"
+            value={draft.customBackgroundFeatureName || ""}
+            onChange={(e) => setDraft((d) => ({ ...d, customBackgroundFeatureName: e.target.value }))}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8, boxSizing: "border-box" }}
+          />
+          <textarea
+            value={draft.customBackgroundFeatureDesc || ""}
+            onChange={(e) => setDraft((d) => ({ ...d, customBackgroundFeatureDesc: e.target.value }))}
+            rows={2}
+            placeholder="Cosa concede meccanicamente o narrativamente questo tratto? Concordalo con il Master."
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box" }}
+          />
+        </div>
+      )}
+
+      {!isCustom && bg && (
         <div style={{ marginTop: "1.25rem" }}>
           <Divider />
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, margin: "0 0 4px" }}>
             <b>Tratto — {bg.feature}:</b> {bg.featureDesc}
           </p>
+        </div>
+      )}
+
+      {bg && (
+        <div style={{ marginTop: "1.25rem" }}>
+          <Divider />
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 4px" }}>
+            Personalità
+          </p>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "0 0 12px" }}>
+            Facoltativo, ma dà spessore al personaggio: due tratti della personalità, un ideale, un legame e un difetto.
+          </p>
+          <FlavorField label="Tratto della personalità 1" value={draft.personalityTrait1} onChange={(v) => setDraft((d) => ({ ...d, personalityTrait1: v }))} suggestions={bg.personalityTraits} />
+          <FlavorField label="Tratto della personalità 2" value={draft.personalityTrait2} onChange={(v) => setDraft((d) => ({ ...d, personalityTrait2: v }))} suggestions={bg.personalityTraits} />
+          <FlavorField label="Ideale" value={draft.ideal} onChange={(v) => setDraft((d) => ({ ...d, ideal: v }))} suggestions={bg.ideals} />
+          <FlavorField label="Legame" value={draft.bond} onChange={(v) => setDraft((d) => ({ ...d, bond: v }))} suggestions={bg.bonds} />
+          <FlavorField label="Difetto" value={draft.flaw} onChange={(v) => setDraft((d) => ({ ...d, flaw: v }))} suggestions={bg.flaws} />
         </div>
       )}
     </div>
@@ -3131,7 +3729,7 @@ function InventoryManager({ draft, setDraft, allowAdd = true }) {
 
 function StepEquipment({ draft, setDraft }) {
   const cls = CLASSES.find((c) => c.id === draft.classId);
-  const bg = BACKGROUNDS.find((b) => b.id === draft.backgroundId);
+  const bg = getSelectedBackground(draft);
 
   return (
     <div>
@@ -3191,6 +3789,11 @@ function SpellRow({ spell, selected, disabled, onToggle }) {
         {selected && <Check size={14} color={C.wine} style={{ flexShrink: 0 }} />}
       </div>
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "3px 0 6px" }}>{spell.desc}</p>
+      {spell.crunch && (
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.wineDeep, margin: "0 0 6px", fontWeight: 600 }}>
+          <b style={{ fontFamily: "'Cinzel', serif", fontWeight: 700 }}>Meccanica:</b> {spell.crunch}
+        </p>
+      )}
       <div style={{ display: "flex", gap: 14, flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 11, color: C.textMuted }}>
         <span><b>Tempo:</b> {spell.time}</span>
         <span><b>Gittata:</b> {spell.range}</span>
@@ -3421,6 +4024,124 @@ function SpellManager({ draft, setDraft, showPlayTools = false }) {
         />
       ))}
     </div>
+  );
+}
+
+// Selettore Metamagia (Stregone), Invocazioni Occulte e Dono del Patto (Warlock): estratti
+// come componenti a sé stanti così da poter essere riusati sia nello step Incantesimi
+// (ClassSpellSection) sia nel modal di level-up, senza duplicare la logica di scelta.
+function MetamagicPicker({ store, updateStore, level }) {
+  const known = getMetamagicKnownCount(level);
+  if (known <= 0) return null;
+  const chosen = store.metamagicIds || [];
+  const toggle = (id) => updateStore((s) => {
+    const list = s.metamagicIds || [];
+    if (list.includes(id)) return { metamagicIds: list.filter((x) => x !== id) };
+    if (list.length >= known) return {};
+    return { metamagicIds: [...list, id] };
+  });
+  return (
+    <>
+      <Divider />
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+        Metamagia — scegline {known} ({chosen.length}/{known})
+      </h3>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+        Modifica un incantesimo lanciato spendendo Punti Stregoneria. Puoi usare una sola opzione di Metamagia per incantesimo, a meno che la descrizione non dica altrimenti.
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 10 }}>
+        {METAMAGIC_OPTIONS.map((m) => {
+          const active = chosen.includes(m.id);
+          return (
+            <div
+              key={m.id}
+              onClick={() => toggle(m.id)}
+              style={{
+                cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
+                background: active ? "rgba(122,32,40,0.06)" : "transparent",
+                borderRadius: 2, padding: "0.5rem 0.7rem",
+                opacity: !active && chosen.length >= known ? 0.5 : 1,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
+                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{m.name}</span>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, whiteSpace: "nowrap" }}>{m.cost}</span>
+              </div>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+function PactBoonPicker({ store, updateStore, level }) {
+  if ((level || 1) < 3) return null;
+  return (
+    <>
+      <Divider />
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Dono del Patto</h3>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
+        {PACT_BOONS.map((p) => (
+          <Pill key={p.id} active={store.pactBoonId === p.id} onClick={() => updateStore((s) => ({ pactBoonId: s.pactBoonId === p.id ? null : p.id }))}>
+            {p.name}
+          </Pill>
+        ))}
+      </div>
+      {store.pactBoonId && (
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px", fontStyle: "italic" }}>
+          {PACT_BOONS.find((p) => p.id === store.pactBoonId)?.desc}
+        </p>
+      )}
+    </>
+  );
+}
+
+function InvocationPicker({ store, updateStore, level }) {
+  const known = getInvocationsKnownCount(level);
+  if (known <= 0) return null;
+  const chosen = store.invocationIds || [];
+  const toggle = (id) => updateStore((s) => {
+    const list = s.invocationIds || [];
+    if (list.includes(id)) return { invocationIds: list.filter((x) => x !== id) };
+    if (list.length >= known) return {};
+    return { invocationIds: [...list, id] };
+  });
+  const available = WARLOCK_INVOCATIONS.filter((i) => i.minLevel <= (level || 1));
+  return (
+    <>
+      <Divider />
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+        Invocazioni Occulte — scegline {known} ({chosen.length}/{known})
+      </h3>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+        Alcune invocazioni richiedono un Dono del Patto specifico: verifica il prerequisito indicato prima di sceglierle.
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
+        {available.map((i) => {
+          const active = chosen.includes(i.id);
+          return (
+            <div
+              key={i.id}
+              onClick={() => toggle(i.id)}
+              style={{
+                cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
+                background: active ? "rgba(122,32,40,0.06)" : "transparent",
+                borderRadius: 2, padding: "0.5rem 0.7rem",
+                opacity: !active && chosen.length >= known ? 0.5 : 1,
+              }}
+            >
+              <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{i.name}</div>
+              {i.prereq && (
+                <div style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, fontStyle: "italic" }}>Richiede: {i.prereq}</div>
+              )}
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{i.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 }
 
@@ -3661,116 +4382,12 @@ function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spellSearch,
         </p>
       )}
 
-      {cls.id === "stregone" && getMetamagicKnownCount(entry.level) > 0 && (() => {
-        const known = getMetamagicKnownCount(entry.level);
-        const chosen = store.metamagicIds || [];
-        const toggle = (id) => updateStore((s) => {
-          const list = s.metamagicIds || [];
-          if (list.includes(id)) return { metamagicIds: list.filter((x) => x !== id) };
-          if (list.length >= known) return {};
-          return { metamagicIds: [...list, id] };
-        });
-        return (
-          <>
-            <Divider />
-            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
-              Metamagia — scegline {known} ({chosen.length}/{known})
-            </h3>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
-              Modifica un incantesimo lanciato spendendo Punti Stregoneria. Puoi usare una sola opzione di Metamagia per incantesimo, a meno che la descrizione non dica altrimenti.
-            </p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 10 }}>
-              {METAMAGIC_OPTIONS.map((m) => {
-                const active = chosen.includes(m.id);
-                return (
-                  <div
-                    key={m.id}
-                    onClick={() => toggle(m.id)}
-                    style={{
-                      cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
-                      background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                      borderRadius: 2, padding: "0.5rem 0.7rem",
-                      opacity: !active && chosen.length >= known ? 0.5 : 1,
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
-                      <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{m.name}</span>
-                      <span style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, whiteSpace: "nowrap" }}>{m.cost}</span>
-                    </div>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        );
-      })()}
+      {cls.id === "stregone" && <MetamagicPicker store={store} updateStore={updateStore} level={entry.level} />}
 
       {cls.id === "warlock" && (
         <>
-          {entry.level >= 3 && (
-            <>
-              <Divider />
-              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Dono del Patto</h3>
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
-                {PACT_BOONS.map((p) => (
-                  <Pill key={p.id} active={store.pactBoonId === p.id} onClick={() => updateStore((s) => ({ pactBoonId: s.pactBoonId === p.id ? null : p.id }))}>
-                    {p.name}
-                  </Pill>
-                ))}
-              </div>
-              {store.pactBoonId && (
-                <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px", fontStyle: "italic" }}>
-                  {PACT_BOONS.find((p) => p.id === store.pactBoonId)?.desc}
-                </p>
-              )}
-            </>
-          )}
-          {getInvocationsKnownCount(entry.level) > 0 && (() => {
-            const known = getInvocationsKnownCount(entry.level);
-            const chosen = store.invocationIds || [];
-            const toggle = (id) => updateStore((s) => {
-              const list = s.invocationIds || [];
-              if (list.includes(id)) return { invocationIds: list.filter((x) => x !== id) };
-              if (list.length >= known) return {};
-              return { invocationIds: [...list, id] };
-            });
-            const available = WARLOCK_INVOCATIONS.filter((i) => i.minLevel <= entry.level);
-            return (
-              <>
-                <Divider />
-                <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
-                  Invocazioni Occulte — scegline {known} ({chosen.length}/{known})
-                </h3>
-                <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
-                  Alcune invocazioni richiedono un Dono del Patto specifico: verifica il prerequisito indicato prima di sceglierle.
-                </p>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
-                  {available.map((i) => {
-                    const active = chosen.includes(i.id);
-                    return (
-                      <div
-                        key={i.id}
-                        onClick={() => toggle(i.id)}
-                        style={{
-                          cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
-                          background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                          borderRadius: 2, padding: "0.5rem 0.7rem",
-                          opacity: !active && chosen.length >= known ? 0.5 : 1,
-                        }}
-                      >
-                        <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{i.name}</div>
-                        {i.prereq && (
-                          <div style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, fontStyle: "italic" }}>Richiede: {i.prereq}</div>
-                        )}
-                        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{i.desc}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </>
-            );
-          })()}
+          <PactBoonPicker store={store} updateStore={updateStore} level={entry.level} />
+          <InvocationPicker store={store} updateStore={updateStore} level={entry.level} />
         </>
       )}
 
@@ -4356,10 +4973,61 @@ function RestControls({ draft, setDraft, maxHp, conMod }) {
   );
 }
 
+// Selettore delle Discipline Elementali (Monaco — Via dei Quattro Elementi). Segue lo stesso
+// pattern di Metamagia/Invocazioni Occulte: un numero di discipline "conosciute" cresce col
+// livello e il giocatore le sceglie da un elenco filtrato per prerequisito di livello.
+function ElementalDisciplinePicker({ store, updateStore, level, title = "Discipline Elementali" }) {
+  const known = getDisciplinesKnownCount(level);
+  if (known <= 0) return null;
+  const chosen = store.disciplineIds || [];
+  const toggle = (id) => updateStore((s) => {
+    const list = s.disciplineIds || [];
+    if (list.includes(id)) return { disciplineIds: list.filter((x) => x !== id) };
+    if (list.length >= known) return {};
+    return { disciplineIds: [...list, id] };
+  });
+  const automatic = ELEMENTAL_DISCIPLINES.filter((d) => d.automatic);
+  const available = ELEMENTAL_DISCIPLINES.filter((d) => !d.automatic && d.minLevel <= (level || 1));
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <Divider />
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+        {title} — scegline {known} ({chosen.length}/{known})
+      </h3>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+        Conosci sempre {automatic.map((d) => d.name).join(", ")} (gratuita, non conta nel totale). Le altre discipline costano Punti Ki ogni volta che le usi.
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
+        {available.map((d) => {
+          const active = chosen.includes(d.id);
+          return (
+            <div
+              key={d.id}
+              onClick={() => toggle(d.id)}
+              style={{
+                cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
+                background: active ? "rgba(122,32,40,0.06)" : "transparent",
+                borderRadius: 2, padding: "0.5rem 0.7rem",
+                opacity: !active && chosen.length >= known ? 0.5 : 1,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
+                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{d.name}</span>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, whiteSpace: "nowrap" }}>{d.kiCost} Ki</span>
+              </div>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{d.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
   const race = RACES.find((r) => r.id === draft.raceId);
   const cls = CLASSES.find((c) => c.id === draft.classId);
-  const bg = BACKGROUNDS.find((b) => b.id === draft.backgroundId);
+  const bg = getSelectedBackground(draft);
   const chosenSubclassId = cls ? getChosenSubclassId(draft, cls.id) : null;
 
   const mc = draft.multiclass && draft.multiclass.classId ? draft.multiclass : null;
@@ -4369,9 +5037,19 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
   const mcSubclassFeatures = mcCls ? getUnlockedSubclassFeatures(mcCls.id, mcChosenSubclassId, mc.level) : [];
   const mcUpdateStore = (fn) => setDraft((d) => ({ ...d, multiclass: { ...d.multiclass, ...fn(d.multiclass) } }));
 
+  // Stregone, Magia Selvaggia: tira lo Sconvolgimento (2 tiri da scegliere dal 14° livello, Caos Controllato).
+  const wildMagicLevel = (cls?.id === "stregone" && chosenSubclassId === "magia-selvaggia") ? draft.level
+    : (mcCls?.id === "stregone" && mcChosenSubclassId === "magia-selvaggia") ? mc.level
+    : 0;
+  const [wildSurgeRolls, setWildSurgeRolls] = useState(null);
+  const rollWildSurge = () => {
+    const times = wildMagicLevel >= 14 ? 2 : 1;
+    setWildSurgeRolls(Array.from({ length: times }, () => rollWildMagicSurge()));
+  };
+
   const totalLevel = getTotalCharacterLevel(draft);
   const raceBonus = useMemo(() => getRaceBonus(race, draft.raceAbilityPicks || draft.halfElfPicks), [race, draft.raceAbilityPicks, draft.halfElfPicks]);
-  const asiBonus = useMemo(() => getAsiBonus(draft), [draft.asiChoices, draft.levelChoiceType, draft.featChoices, draft.featAbilityChoices, draft.classId, draft.level, draft.multiclass]);
+  const asiBonus = useMemo(() => getAsiBonus(draft), [draft.asiChoices, draft.levelChoiceType, draft.featChoices, draft.featAbilityChoices, draft.classId, draft.level, draft.multiclass, draft.raceFeatId, draft.raceFeatAbilityChoice]);
   const finalScores = useMemo(() => computeFinalScores(draft), [draft]);
 
   const hp = cls ? computeMaxHp(draft, cls, race, mod(finalScores.con)) : null;
@@ -4576,11 +5254,33 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
         <MetricBox label="Background" value={bg ? bg.name : "—"} />
         <MetricBox label="Punti ferita" value={hp ?? "—"} />
         <MetricBox label="Classe Armatura (CA)" value={ac} hint={acSourceLabel} />
-        <MetricBox label="Velocità" value={race ? `${race.speed} ft` : "—"} />
+        <MetricBox label="Velocità" value={race ? `${ftToM(race.speed)} m` : "—"} />
         <MetricBox label="Bonus di competenza" value={fmtMod(prof)} />
         <MetricBox label="Iniziativa" value={fmtMod(initiative)} />
         <MetricBox label="Percezione passiva" value={passivePerception} />
       </div>
+
+      {bg && (bg.featureDesc || draft.personalityTrait1 || draft.personalityTrait2 || draft.ideal || draft.bond || draft.flaw) && (
+        <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.wineDeep, margin: "0 0 4px" }}>
+            Background — {bg.name}
+          </p>
+          {bg.featureDesc && (
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 8px" }}>
+              <b>{bg.feature}:</b> {bg.featureDesc}
+            </p>
+          )}
+          {(draft.personalityTrait1 || draft.personalityTrait2 || draft.ideal || draft.bond || draft.flaw) && (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 18px", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment }}>
+              {draft.personalityTrait1 && <p style={{ margin: 0 }}><b>Tratto:</b> {draft.personalityTrait1}</p>}
+              {draft.personalityTrait2 && <p style={{ margin: 0 }}><b>Tratto:</b> {draft.personalityTrait2}</p>}
+              {draft.ideal && <p style={{ margin: 0 }}><b>Ideale:</b> {draft.ideal}</p>}
+              {draft.bond && <p style={{ margin: 0 }}><b>Legame:</b> {draft.bond}</p>}
+              {draft.flaw && <p style={{ margin: 0 }}><b>Difetto:</b> {draft.flaw}</p>}
+            </div>
+          )}
+        </div>
+      )}
 
       {mcCls && (
         <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
@@ -4666,6 +5366,24 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
           onSetMethod={(lvl, val) => mcUpdateStore((s) => ({ hpPerLevel: { ...s.hpPerLevel, [lvl]: val } }))}
           levels={Array.from({ length: mc.level }, (_, i) => i + 1)}
           title={`Gestione PF per livello — ${mcCls.name} (secondaria)`}
+        />
+      )}
+
+      {cls && cls.id === "monaco" && chosenSubclassId === "quattro-elementi" && (
+        <ElementalDisciplinePicker
+          store={draft}
+          updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
+          level={draft.level}
+          title={mcCls ? `Discipline Elementali — ${cls.name} (primaria)` : "Discipline Elementali"}
+        />
+      )}
+
+      {mcCls && mcCls.id === "monaco" && mcChosenSubclassId === "quattro-elementi" && (
+        <ElementalDisciplinePicker
+          store={mc}
+          updateStore={mcUpdateStore}
+          level={mc.level}
+          title={`Discipline Elementali — ${mcCls.name} (secondaria)`}
         />
       )}
 
@@ -4787,6 +5505,30 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
           )}
         </>
       )}
+
+      {showPlayTools && wildMagicLevel > 0 && (
+        <div style={{ marginBottom: 18, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem" }}>
+          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 6px" }}>
+            🎲 Sconvolgimento di Magia Selvaggia
+          </h4>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 8px" }}>
+            Il Master può far scatenare questo effetto quando lanci un incantesimo da Stregone di 1° livello o superiore.
+            {wildMagicLevel >= 14 ? " Grazie a Caos Controllato tiri due volte e scegli l'effetto." : ""}
+          </p>
+          <GhostButton onClick={rollWildSurge}>Tira sulla tabella (d100)</GhostButton>
+          {wildSurgeRolls && (
+            <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
+              {wildSurgeRolls.map((r, i) => (
+                <div key={i} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.5rem 0.7rem" }}>
+                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.wine, margin: "0 0 4px" }}>Risultato: {r.roll}</p>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, margin: 0 }}>{r.text}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {(() => {
         const baseGroups = [];
         if (cls) {
@@ -4850,7 +5592,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
             {chosenFeats.map(({ level, feat, abilityPick, classId }) => (
               <div key={`${classId}-${level}`} style={{ marginBottom: 10 }}>
                 <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
-                  {feat.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>(liv. {level}{mcCls ? ` — ${CLASSES.find((c) => c.id === classId)?.name}` : ""})</span>
+                  {feat.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>({classId === "razza" ? "dalla razza" : `liv. ${level}${mcCls ? ` — ${CLASSES.find((c) => c.id === classId)?.name}` : ""}`})</span>
                   {abilityPick && (
                     <span style={{ color: C.forestDeep, fontWeight: 400 }}> — +1 {ABILITIES.find((a) => a.key === abilityPick)?.name}</span>
                   )}
@@ -5062,7 +5804,106 @@ function MetricBox({ label, value, hint }) {
   );
 }
 
-/* ---------------------------------- FIGHTING STYLE SELECTOR ---------------------------------- */
+/* ---------------------------------- LEVEL UP MODAL ---------------------------------- */
+// Riunisce in un unico popup, nell'ordine in cui vanno effettivamente decise, SOLO le scelte
+// sbloccate dal nuovo livello (sottoclasse, PF, ASI/Talento, stile di combattimento extra,
+// discipline/metamagia/invocazioni/dono del patto se il loro numero è appena aumentato).
+// Le variazioni puramente informative (nuove feature testuali, slot, risorse, critico) restano
+// in un riepilogo di sola lettura in fondo.
+function LevelUpModal({
+  clsId, className, fromLevel, toLevel, store, updateStore,
+  subclassOptions, chosenSubclassId, onChooseSubclass, changes, onClose,
+}) {
+  const cls = CLASSES.find((c) => c.id === clsId);
+  // Chierico/Paladino/Warlock/Druido scelgono dominio/giuramento/patrono/circolo altrove
+  // (non usano il campo "subclassId" generico): qui li escludiamo per non offrire un
+  // selettore che scriverebbe nel campo sbagliato.
+  const subclassJustUnlocked = clsId in SUBCLASS_CHOICE_LEVEL && subclassOptions.length > 0 && toLevel === SUBCLASS_CHOICE_LEVEL[clsId] && !chosenSubclassId;
+  const styleCountBefore = getFightingStyleCount(clsId, fromLevel, store.subclassId);
+  const styleCountAfter = getFightingStyleCount(clsId, toLevel, store.subclassId);
+  const showFightingStyle = styleCountAfter > styleCountBefore;
+  const showDisciplines = clsId === "monaco" && chosenSubclassId === "quattro-elementi" && getDisciplinesKnownCount(toLevel) > getDisciplinesKnownCount(fromLevel);
+  const showMetamagic = clsId === "stregone" && getMetamagicKnownCount(toLevel) > getMetamagicKnownCount(fromLevel);
+  const showPactBoon = clsId === "warlock" && toLevel === 3;
+  const showInvocations = clsId === "warlock" && getInvocationsKnownCount(toLevel) > getInvocationsKnownCount(fromLevel);
+
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "2rem" }}>
+      <div style={{ background: C.parchment, padding: "1.75rem", borderRadius: 4, maxWidth: 720, width: "100%", maxHeight: "88vh", overflowY: "auto", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
+          <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 22, color: C.wineDeep, margin: 0 }}>
+            Livello {toLevel}! <span style={{ color: C.textMuted, fontWeight: 400, fontSize: 15 }}>— {className}</span>
+          </h2>
+          <button onClick={onClose} aria-label="Chiudi" style={{ background: "transparent", border: "none", cursor: "pointer", color: C.textMuted, padding: 4 }}>
+            <X size={20} />
+          </button>
+        </div>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 6px" }}>
+          Completa qui le scelte sbloccate da questo livello. Puoi chiudere il popup in qualunque momento: le scelte restano modificabili anche in seguito, più in basso nella scheda.
+        </p>
+
+        {subclassJustUnlocked && (
+          <div style={{ marginTop: 14 }}>
+            <Divider />
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Sottoclasse — {cls?.name}</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem" }}>
+              {subclassOptions.map((s) => (
+                <OptionCard key={s.id} selected={chosenSubclassId === s.id} onClick={() => onChooseSubclass(s.id)} title={s.name}>
+                  <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
+                </OptionCard>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <HpLevelManager
+          cls={cls}
+          hpPerLevel={store.hpPerLevel}
+          onSetMethod={(lvl, val) => updateStore((s) => ({ hpPerLevel: { ...s.hpPerLevel, [lvl]: val } }))}
+          levels={[toLevel]}
+          title={`Punti Ferita — Livello ${toLevel}`}
+        />
+
+        <AsiPicker store={store} updateStore={updateStore} clsId={clsId} classLevel={toLevel} onlyLevels={[toLevel]} />
+
+        {showFightingStyle && (
+          <div style={{ marginTop: 14 }}>
+            <Divider />
+            <FightingStyleSelector store={store} updateStore={updateStore} clsId={clsId} classLevel={toLevel} label={`Stile di Combattimento — ${cls?.name}`} />
+          </div>
+        )}
+
+        {showDisciplines && <ElementalDisciplinePicker store={store} updateStore={updateStore} level={toLevel} />}
+        {showMetamagic && <MetamagicPicker store={store} updateStore={updateStore} level={toLevel} />}
+        {showPactBoon && <PactBoonPicker store={store} updateStore={updateStore} level={toLevel} />}
+        {showInvocations && <InvocationPicker store={store} updateStore={updateStore} level={toLevel} />}
+
+        {(changes.newFeatures.length > 0 || (changes.slotsChanged && changes.newSlots.length > 0) || changes.resourceChanges.length > 0 || changes.critChanged) && (
+          <div style={{ marginTop: 14 }}>
+            <Divider />
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Altre novità di questo livello</h3>
+            <ul style={{ margin: 0, paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment }}>
+              {changes.newFeatures.map((f) => (
+                <li key={f.name} style={{ marginBottom: 4 }}><b>{f.name}</b> — {f.desc}</li>
+              ))}
+              {changes.slotsChanged && changes.newSlots.length > 0 && (
+                <li style={{ marginBottom: 4 }}>Slot incantesimo aggiornati: {changes.newSlots.map((s) => `liv. ${s.level} × ${s.total}`).join(", ")}. Per aggiungere nuovi incantesimi conosciuti usa "Modifica".</li>
+              )}
+              {changes.resourceChanges.map((rc) => <li key={rc} style={{ marginBottom: 4 }}>{rc}</li>)}
+              {changes.critChanged && (
+                <li>Raggio di critico: {changes.oldCrit} → {changes.newCrit}.</li>
+              )}
+            </ul>
+          </div>
+        )}
+
+        <div style={{ marginTop: 18, display: "flex", justifyContent: "flex-end" }}>
+          <GoldButton onClick={onClose}>Fatto</GoldButton>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function PlayerSheet({ character, onBack, onSaveChanges }) {
   const [draft, setDraft] = useState(character);
@@ -5107,7 +5948,7 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
     const toLevel = fromLevel + 1;
     const changes = getLevelUpChanges(cls.id, getChosenSubclassId(draft, cls.id), fromLevel, toLevel);
     updateDraft((d) => ({ ...d, level: toLevel }));
-    setLevelUpInfo(changes);
+    setLevelUpInfo({ target: "primary", changes });
   };
 
   const handleMulticlassLevelUp = () => {
@@ -5116,7 +5957,7 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
     const toLevel = fromLevel + 1;
     const changes = getLevelUpChanges(mcCls.id, getChosenSubclassId(mc, mcCls.id), fromLevel, toLevel);
     updateDraft((d) => ({ ...d, multiclass: { ...d.multiclass, level: toLevel } }));
-    setLevelUpInfo(changes);
+    setLevelUpInfo({ target: "secondary", changes });
   };
 
   const handleConfirmMulticlass = (classId) => {
@@ -5158,33 +5999,35 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
         </div>
       </div>
 
-      {levelUpInfo && (
-        <div style={{ border: `1px solid ${C.gold}`, background: "#2a2317", padding: "0.9rem 1.1rem", marginBottom: 18, borderRadius: 3 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-            <b style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: C.gold }}>
-              Livello {levelUpInfo.toLevel}!
-            </b>
-            <button onClick={() => setLevelUpInfo(null)} style={{ background: "transparent", border: "none", cursor: "pointer", color: C.creamMuted, fontSize: 12, fontFamily: "'Spectral', serif" }}>
-              Ho capito, chiudi
-            </button>
-          </div>
-          <ul style={{ margin: 0, paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 13, color: C.cream }}>
-            <li>Aggiorna i PF nella sezione "Gestione PF per livello" qui sotto (media o tira il dado a mano).</li>
-            {levelUpInfo.newAsiLevels.length > 0 && (
-              <li>Nuovo Incremento del Punteggio di Caratteristica al livello {levelUpInfo.newAsiLevels.join(", ")}: assegnalo qui sotto.</li>
-            )}
-            {levelUpInfo.newFeatures.map((f) => (
-              <li key={f.name}>Nuova feature di sottoclasse: <b>{f.name}</b> — {f.desc}</li>
-            ))}
-            {levelUpInfo.slotsChanged && levelUpInfo.newSlots.length > 0 && (
-              <li>Slot incantesimo aggiornati: {levelUpInfo.newSlots.map((s) => `liv. ${s.level} × ${s.total}`).join(", ")}. Per aggiungere nuovi incantesimi conosciuti usa "Modifica".</li>
-            )}
-            {levelUpInfo.resourceChanges.map((rc) => <li key={rc}>{rc}</li>)}
-            {levelUpInfo.critChanged && (
-              <li>Raggio di critico: {levelUpInfo.oldCrit} → {levelUpInfo.newCrit}.</li>
-            )}
-          </ul>
-        </div>
+      {levelUpInfo && levelUpInfo.target === "primary" && cls && (
+        <LevelUpModal
+          clsId={cls.id}
+          className={cls.name}
+          fromLevel={levelUpInfo.changes.fromLevel}
+          toLevel={levelUpInfo.changes.toLevel}
+          store={draft}
+          updateStore={(fn) => updateDraft((d) => ({ ...d, ...fn(d) }))}
+          subclassOptions={subclassOptions}
+          chosenSubclassId={getChosenSubclassId(draft, cls.id)}
+          onChooseSubclass={(id) => updateDraft((d) => ({ ...d, subclassId: id }))}
+          changes={levelUpInfo.changes}
+          onClose={() => setLevelUpInfo(null)}
+        />
+      )}
+      {levelUpInfo && levelUpInfo.target === "secondary" && mcCls && (
+        <LevelUpModal
+          clsId={mcCls.id}
+          className={mcCls.name}
+          fromLevel={levelUpInfo.changes.fromLevel}
+          toLevel={levelUpInfo.changes.toLevel}
+          store={mc}
+          updateStore={mcUpdateStore}
+          subclassOptions={mcSubclassOptions}
+          chosenSubclassId={getChosenSubclassId(mc, mcCls.id)}
+          onChooseSubclass={(id) => mcUpdateStore(() => ({ subclassId: id }))}
+          changes={levelUpInfo.changes}
+          onClose={() => setLevelUpInfo(null)}
+        />
       )}
 
       {/* Sottoclasse - Classe Primaria */}
@@ -5358,7 +6201,74 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
 
 /* ---------------------------------- CHARACTER LIST ---------------------------------- */
 
-function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet, onDelete }) {
+const CANTRIP_LABEL = "Trucchetti";
+function spellLevelLabel(level) {
+  return level === 0 ? CANTRIP_LABEL : `Incantesimi di ${level}° livello`;
+}
+
+// Compendio consultabile di tutti gli incantesimi del gioco, indipendente da un personaggio:
+// chiunque può sfogliarlo dalla Dashboard, filtrando per classe e cercando per nome.
+function SpellCompendium({ onBack }) {
+  const [classFilter, setClassFilter] = useState("tutti");
+  const [search, setSearch] = useState("");
+
+  const classesWithSpells = CLASSES.filter((c) => SPELLS.some((s) => s.classes.includes(c.id)));
+  const searchTerm = search.trim().toLowerCase();
+  const filtered = SPELLS.filter((s) =>
+    (classFilter === "tutti" || s.classes.includes(classFilter)) &&
+    (!searchTerm || s.name.toLowerCase().includes(searchTerm))
+  );
+  const byLevel = {};
+  filtered.forEach((s) => { (byLevel[s.level] = byLevel[s.level] || []).push(s); });
+  const levels = Object.keys(byLevel).map(Number).sort((a, b) => a - b);
+  const sortByName = (a, b) => a.name.localeCompare(b.name, "it");
+
+  return (
+    <div>
+      <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18 }}>
+        I miei personaggi
+      </GhostButton>
+      <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>Compendio degli Incantesimi</h1>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.creamMuted, margin: "4px 0 1.25rem" }}>
+        {SPELLS.length} incantesimi del Manuale del Giocatore 2014, con danno, dadi e tiri salvezza. Sfoglia liberamente, senza bisogno di un personaggio.
+      </p>
+
+      <Frame>
+        <input
+          type="text" placeholder="Cerca un incantesimo per nome…" value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={{
+            width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.5rem 0.7rem",
+            borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 14, boxSizing: "border-box",
+          }}
+        />
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 18 }}>
+          <Pill active={classFilter === "tutti"} onClick={() => setClassFilter("tutti")}>Tutte le classi</Pill>
+          {classesWithSpells.map((c) => (
+            <Pill key={c.id} active={classFilter === c.id} onClick={() => setClassFilter(c.id)}>{c.name}</Pill>
+          ))}
+        </div>
+
+        {filtered.length === 0 ? (
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>Nessun incantesimo trovato.</p>
+        ) : (
+          levels.map((lvl) => (
+            <div key={lvl} style={{ marginBottom: 18 }}>
+              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+                {spellLevelLabel(lvl)} ({byLevel[lvl].length})
+              </h3>
+              {[...byLevel[lvl]].sort(sortByName).map((s) => (
+                <SpellRow key={s.id} spell={s} selected={false} disabled={false} onToggle={() => {}} />
+              ))}
+            </div>
+          ))
+        )}
+      </Frame>
+    </div>
+  );
+}
+
+function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium }) {
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   return (
@@ -5370,7 +6280,12 @@ function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet, onDele
             Dungeons &amp; Dragons · 5e 2014
           </p>
         </div>
-        <GoldButton icon={Plus} onClick={onNew}>Nuovo personaggio</GoldButton>
+        <div style={{ display: "flex", gap: 10 }}>
+          <GhostButton icon={BookOpen} onClick={onOpenCompendium} style={{ borderColor: C.gold, color: C.gold }}>
+            Compendio Incantesimi
+          </GhostButton>
+          <GoldButton icon={Plus} onClick={onNew}>Nuovo personaggio</GoldButton>
+        </div>
       </div>
 
       {loading ? (
@@ -5460,19 +6375,33 @@ function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet, onDele
 
 /* ---------------------------------- CREATOR ---------------------------------- */
 
+// Una classe (combinata con l'eventuale sottoclasse già scelta) può davvero lanciare
+// incantesimi? Prima ancora di scegliere una classe non c'è nulla da mostrare, quindi lo step
+// resta nascosto. Guerriero/Ladro dipendono poi dalla sottoclasse (Cavaliere Mistico/Furfante
+// Arcano); finché la sottoclasse non è ancora scelta assumiamo di sì, per non far sparire lo
+// step prima che l'utente abbia deciso.
+function draftCanEverCast(draft) {
+  const cls = CLASSES.find((c) => c.id === draft.classId);
+  if (!cls) return false;
+  if (getEffectiveCasterInfo(cls.id, draft.subclassId)) return true;
+  if ((cls.id === "guerriero" || cls.id === "ladro") && !draft.subclassId) return true;
+  return false;
+}
+
 function Creator({ draft, setDraft, onBack, onSave, saving }) {
   const [step, setStep] = useState(0);
-  const lastStep = STEPS.length - 1;
-  const selectedRace = RACES.find((r) => r.id === draft.raceId);
-  const selectedClass = CLASSES.find((c) => c.id === draft.classId);
-  const canGoNext =
-    (step === 0 && draft.raceId && (!selectedRace?.extraAbilityChoice || (draft.raceAbilityPicks || []).length === selectedRace.extraAbilityChoice.count) && (!selectedRace?.extraSkillChoice || (draft.raceSkillPicks || []).length === selectedRace.extraSkillChoice.count)) ||
-    (step === 1 && draft.classId && (draft.classSkills || []).length === selectedClass?.skillChoices) ||
-    (step === 2 && validateCharacter({ ...draft, name: draft.name || "draft" }).filter((e) => e.includes("Point Buy") || e.includes("punteggi") || e.includes("caratteristiche")).length === 0) ||
-    (step === 3 && draft.backgroundId) ||
-    step === 4 ||
-    step === 5 ||
-    step === lastStep;
+  const visibleSteps = useMemo(
+    () => STEPS.filter((s) => s.key !== "incantesimi" || draftCanEverCast(draft)),
+    [draft.classId, draft.subclassId]
+  );
+  const lastStep = visibleSteps.length - 1;
+  // Se cambiando classe/sottoclasse lo step "Incantesimi" sparisce, l'indice grezzo può restare
+  // fuori dai nuovi limiti (es. si era arrivati al Riepilogo): lo clampiamo qui, in lettura,
+  // invece che con un effect che richiamerebbe subito un altro render.
+  const clampedStep = Math.min(step, lastStep);
+  const currentKey = visibleSteps[clampedStep]?.key;
+
+  const canGoNext = !!currentKey && isStepComplete(currentKey, draft);
 
   return (
     <div style={{ display: "flex", gap: "1.75rem" }}>
@@ -5481,10 +6410,10 @@ function Creator({ draft, setDraft, onBack, onSave, saving }) {
           I miei personaggi
         </GhostButton>
         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          {STEPS.map((s, i) => {
+          {visibleSteps.map((s, i) => {
             const Icon = s.icon;
-            const active = i === step;
-            const done = i < step;
+            const active = i === clampedStep;
+            const done = isStepFullyComplete(s.key, draft);
             return (
               <button
                 key={s.key}
@@ -5517,25 +6446,25 @@ function Creator({ draft, setDraft, onBack, onSave, saving }) {
             Stato del personaggio
           </div>
           <div style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.cream, marginTop: 4, fontWeight: 700, lineHeight: 1.35 }}>
-            {draft.name || "Nuovo eroe"} · {STEPS[step].label}
+            {draft.name || "Nuovo eroe"} · {visibleSteps[clampedStep]?.label}
           </div>
         </div>
         <Frame>
-          {step === 0 && <StepRace draft={draft} setDraft={setDraft} />}
-          {step === 1 && <StepClass draft={draft} setDraft={setDraft} />}
-          {step === 2 && <StepAbilities draft={draft} setDraft={setDraft} />}
-          {step === 3 && <StepBackground draft={draft} setDraft={setDraft} />}
-          {step === 4 && <StepEquipment draft={draft} setDraft={setDraft} />}
-          {step === 5 && <SpellManager draft={draft} setDraft={setDraft} />}
-          {step === lastStep && <StepReview draft={draft} setDraft={setDraft} onSave={onSave} saving={saving} />}
+          {currentKey === "razza" && <StepRace draft={draft} setDraft={setDraft} />}
+          {currentKey === "classe" && <StepClass draft={draft} setDraft={setDraft} />}
+          {currentKey === "caratteristiche" && <StepAbilities draft={draft} setDraft={setDraft} />}
+          {currentKey === "background" && <StepBackground draft={draft} setDraft={setDraft} />}
+          {currentKey === "equipaggiamento" && <StepEquipment draft={draft} setDraft={setDraft} />}
+          {currentKey === "incantesimi" && <SpellManager draft={draft} setDraft={setDraft} />}
+          {currentKey === "riepilogo" && <StepReview draft={draft} setDraft={setDraft} onSave={onSave} saving={saving} />}
         </Frame>
 
-        {step < lastStep && (
+        {clampedStep < lastStep && (
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
-            <GhostButton icon={ChevronLeft} onClick={() => setStep((s) => Math.max(0, s - 1))} style={{ visibility: step === 0 ? "hidden" : "visible" }}>
+            <GhostButton icon={ChevronLeft} onClick={() => setStep((s) => Math.max(0, Math.min(s, lastStep) - 1))} style={{ visibility: clampedStep === 0 ? "hidden" : "visible" }}>
               Indietro
             </GhostButton>
-            <GoldButton icon={ChevronRight} disabled={!canGoNext} onClick={() => setStep((s) => Math.min(lastStep, s + 1))} style={{ flexDirection: "row-reverse" }}>
+            <GoldButton icon={ChevronRight} disabled={!canGoNext} onClick={() => setStep((s) => Math.min(lastStep, Math.min(s, lastStep) + 1))} style={{ flexDirection: "row-reverse" }}>
               Avanti
             </GoldButton>
           </div>
@@ -5678,7 +6607,12 @@ export default function App() {
           onOpen={handleOpen}
           onOpenSheet={handleOpenSheet}
           onDelete={handleDelete}
+          onOpenCompendium={() => setScreen("compendium")}
         />
+      )}
+
+      {screen === "compendium" && (
+        <SpellCompendium onBack={() => setScreen("list")} />
       )}
 
       {screen === "create" && (
