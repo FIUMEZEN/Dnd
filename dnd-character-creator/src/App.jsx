@@ -43,21 +43,39 @@ const ABILITIES = [
 
 const STANDARD_ARRAY = [15, 14, 13, 12, 10, 8];
 
+/* ---------------------------------- COMPETENZE (lingue e strumenti) ---------------------------------- */
+// Cataloghi condivisi usati dai selettori di competenza extra (razza/background/sottoclasse):
+// lingue standard/esotiche e le principali categorie di strumenti del PHB 2014.
+const LANGUAGES = [
+  "Comune", "Nanico", "Elfico", "Gigantesco", "Gnomesco", "Goblinoide", "Halfling", "Orchesco",
+  "Abissale", "Celestiale", "Draconico", "Infernale", "Primordiale", "Silvano", "Sottocomune",
+];
+const ARTISAN_TOOLS = [
+  "Strumenti da alchimista", "Strumenti da fabbro", "Forniture da birraio", "Strumenti da calzolaio",
+  "Utensili da falegname", "Strumenti da cartografo", "Utensili da vasaio", "Strumenti da cuoiaio",
+  "Set da gioielliere", "Strumenti da muratore", "Set da pittore", "Strumenti da tessitore",
+  "Strumenti da meccanico", "Utensili da vetraio", "Strumenti da falegname navale",
+];
+const GAMING_SETS = ["Dadi", "Carte da gioco", "Scacchi a Tre Giocatori", "Dragonchess"];
+const MUSICAL_INSTRUMENTS = [
+  "Cornamusa", "Tamburo", "Corno", "Liuto", "Lira", "Oboe", "Zufolo", "Salterio", "Viola", "Flauto",
+];
+
 const RACES = [
-  { id: "umano", name: "Umano", family: "Umano", subraceName: "Umano", size: "Medio", speed: 30, dark: false, bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 }, traits: ["Una lingua aggiuntiva a scelta"], blurb: "Versatile e ambizioso, l'umano si trova in ogni angolo del mondo." },
-  { id: "nano-colline", name: "Nano delle Colline", family: "Nano", subraceName: "Delle Colline", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, wis: 1 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Robustezza nanica: +1 PF per livello"], blurb: "Robusto e resistente, con una salute fuori dal comune." },
-  { id: "nano-montagne", name: "Nano delle Montagne", family: "Nano", subraceName: "Delle Montagne", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, str: 2 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico alle armature: competenza nelle armature leggere e medie"], blurb: "Un nano temprato dalle fortezze e dalla guerra." },
-  { id: "alto-elfo", name: "Alto Elfo", family: "Elfo", subraceName: "Alto Elfo", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, int: 1 }, traits: ["Retaggio fatato: vantaggio ai TS contro l'incantamento; la magia non può farti addormentare", "Trance: 4 ore di meditazione equivalgono a 8 ore di sonno", "Trucchetto: un trucchetto dalla lista del mago", "Addestramento alle armi elfiche"], blurb: "Elfo istruito e incline alla magia arcana.", elfSkillChoice: true },
-  { id: "elfo-boschi", name: "Elfo dei Boschi", family: "Elfo", subraceName: "Dei Boschi", size: "Medio", speed: 35, dark: true, bonuses: { dex: 2, wis: 1 }, traits: ["Retaggio fatato", "Trance", "Addestramento alle armi elfiche", "Maschera della natura: può tentare di nascondersi con copertura naturale leggera"], blurb: "Elfo legato alla foresta e alla vita selvaggia." },
-  { id: "drow", name: "Drow", family: "Elfo", subraceName: "Drow", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, cha: 1 }, traits: ["Retaggio fatato", "Trance", "Addestramento alle armi drow", "Sensibilità alla luce solare", "Magia drow: Luci danzanti; poi Faerie Fire e Oscurità ai livelli previsti"], blurb: "Elfo del Sottosuolo, dotato di potente magia innata." },
+  { id: "umano", name: "Umano", family: "Umano", subraceName: "Umano", size: "Medio", speed: 30, dark: false, bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 }, traits: ["Una lingua aggiuntiva a scelta"], blurb: "Versatile e ambizioso, l'umano si trova in ogni angolo del mondo.", proficiencyChoices: [{ key: "razza-umano-lingua", label: "Lingua aggiuntiva", type: "language", count: 1, options: LANGUAGES }] },
+  { id: "nano-colline", name: "Nano delle Colline", family: "Nano", subraceName: "Delle Colline", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, wis: 1 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico al combattimento: competenza con ascia bipenne, ascia, martello leggero, martello da guerra", "Robustezza nanica: +1 PF per livello"], blurb: "Robusto e resistente, con una salute fuori dal comune.", bonusProficiencies: { weapons: ["Ascia bipenne", "Ascia", "Martello leggero", "Martello da guerra"] }, proficiencyChoices: [{ key: "razza-nano-strumenti", label: "Strumenti da artigiano", type: "tool", count: 1, options: ["Strumenti da fabbro", "Forniture da birraio", "Strumenti da muratore"] }] },
+  { id: "nano-montagne", name: "Nano delle Montagne", family: "Nano", subraceName: "Delle Montagne", size: "Medio", speed: 25, dark: true, bonuses: { con: 2, str: 2 }, traits: ["Resistenza nanica: vantaggio ai TS contro veleno e resistenza ai danni da veleno", "Addestramento nanico al combattimento: competenza con ascia bipenne, ascia, martello leggero, martello da guerra", "Addestramento nanico alle armature: competenza nelle armature leggere e medie"], blurb: "Un nano temprato dalle fortezze e dalla guerra.", bonusProficiencies: { armor: ["Armatura leggera", "Armatura media"], weapons: ["Ascia bipenne", "Ascia", "Martello leggero", "Martello da guerra"] }, proficiencyChoices: [{ key: "razza-nano-strumenti", label: "Strumenti da artigiano", type: "tool", count: 1, options: ["Strumenti da fabbro", "Forniture da birraio", "Strumenti da muratore"] }] },
+  { id: "alto-elfo", name: "Alto Elfo", family: "Elfo", subraceName: "Alto Elfo", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, int: 1 }, traits: ["Retaggio fatato: vantaggio ai TS contro l'incantamento; la magia non può farti addormentare", "Sensi acuti: competenza in Percezione", "Trance: 4 ore di meditazione equivalgono a 8 ore di sonno", "Trucchetto: un trucchetto dalla lista del mago", "Addestramento alle armi elfiche"], blurb: "Elfo istruito e incline alla magia arcana.", bonusProficiencies: { skills: ["Percezione"], weapons: ["Spade lunghe", "Spade corte", "Archi corti", "Archi lunghi"] } },
+  { id: "elfo-boschi", name: "Elfo dei Boschi", family: "Elfo", subraceName: "Dei Boschi", size: "Medio", speed: 35, dark: true, bonuses: { dex: 2, wis: 1 }, traits: ["Retaggio fatato", "Sensi acuti: competenza in Percezione", "Trance", "Addestramento alle armi elfiche", "Maschera della natura: può tentare di nascondersi con copertura naturale leggera"], blurb: "Elfo legato alla foresta e alla vita selvaggia.", bonusProficiencies: { skills: ["Percezione"], weapons: ["Spade lunghe", "Spade corte", "Archi corti", "Archi lunghi"] } },
+  { id: "drow", name: "Drow", family: "Elfo", subraceName: "Drow", size: "Medio", speed: 30, dark: true, bonuses: { dex: 2, cha: 1 }, traits: ["Retaggio fatato", "Sensi acuti: competenza in Percezione", "Trance", "Addestramento alle armi drow", "Sensibilità alla luce solare", "Magia drow: Luci danzanti; poi Faerie Fire e Oscurità ai livelli previsti"], blurb: "Elfo del Sottosuolo, dotato di potente magia innata.", bonusProficiencies: { skills: ["Percezione"], weapons: ["Spade corte", "Rapiere", "Balestre a mano"] } },
   { id: "halfling-lightfoot", name: "Halfling Piedelesto", family: "Halfling", subraceName: "Piedelesto", size: "Piccolo", speed: 25, dark: false, bonuses: { dex: 2, cha: 1 }, traits: ["Fortunato: quando ottieni 1 su un d20, puoi ritirare il dado", "Coraggioso: vantaggio ai TS contro la condizione spaventato", "Agilità halfling: puoi muoverti attraverso lo spazio di creature più grandi", "Furtivo per natura: puoi nasconderti dietro una creatura almeno una taglia più grande"], blurb: "Agile e socievole, capace di passare inosservato." },
   { id: "halfling-stout", name: "Halfling Tozzo", family: "Halfling", subraceName: "Tozzo", size: "Piccolo", speed: 25, dark: false, bonuses: { dex: 2, con: 1 }, traits: ["Fortunato", "Coraggioso", "Agilità halfling", "Resilienza tozza: vantaggio ai TS contro veleno e resistenza ai danni da veleno"], blurb: "Un halfling robusto con una sorprendente resistenza." },
-  { id: "umano-variante", name: "Umano variante", family: "Umano", subraceName: "Variante", size: "Medio", speed: 30, dark: false, bonuses: {}, traits: ["Regola opzionale del Manuale del Giocatore 2014: richiede il permesso del Master.", "+1 a due caratteristiche diverse", "Competenza in un'abilità a scelta", "Un talento a scelta"], blurb: "Rinuncia ai bonus di caratteristica diffusi dell'umano comune in cambio di un profilo più definito fin dal primo livello: due incrementi mirati, un'abilità in più e un talento.", variant: true, extraAbilityChoice: { count: 2 }, extraSkillChoice: { count: 1 }, extraFeatChoice: true },
+  { id: "umano-variante", name: "Umano variante", family: "Umano", subraceName: "Variante", size: "Medio", speed: 30, dark: false, bonuses: {}, traits: ["Regola opzionale del Manuale del Giocatore 2014: richiede il permesso del Master.", "+1 a due caratteristiche diverse", "Competenza in un'abilità a scelta", "Una lingua aggiuntiva a scelta", "Un talento a scelta"], blurb: "Rinuncia ai bonus di caratteristica diffusi dell'umano comune in cambio di un profilo più definito fin dal primo livello: due incrementi mirati, un'abilità in più e un talento.", variant: true, extraAbilityChoice: { count: 2 }, extraSkillChoice: { count: 1 }, extraFeatChoice: true, proficiencyChoices: [{ key: "razza-umano-variante-lingua", label: "Lingua aggiuntiva", type: "language", count: 1, options: LANGUAGES }] },
   { id: "dragonide", name: "Dragonide", family: "Dragonide", subraceName: "Dragonide", size: "Medio", speed: 30, dark: false, bonuses: { str: 2, cha: 1 }, traits: ["Retaggio draconico", "Arma a soffio", "Resistenza ai danni associati al retaggio draconico"], blurb: "Discendente dei draghi, con un soffio elementale e una resistenza innata." },
   { id: "gnomo-foresta", name: "Gnomo della Foresta", family: "Gnomo", subraceName: "Della Foresta", size: "Piccolo", speed: 25, dark: true, bonuses: { int: 2, dex: 1 }, traits: ["Astuzia gnomica: vantaggio ai TS di Intelligenza, Saggezza e Carisma contro la magia", "Illusionista naturale: conosce Illusione Minore", "Parlare con le piccole bestie"], blurb: "Piccolo illusionista in sintonia con il mondo naturale." },
-  { id: "gnomo-roccia", name: "Gnomo delle Rocce", family: "Gnomo", subraceName: "Delle Rocce", size: "Piccolo", speed: 25, dark: true, bonuses: { int: 2, con: 1 }, traits: ["Astuzia gnomica", "Conoscenza dell'artigiano: competenza negli strumenti da artigiano scelti", "Congegno da orologiaio"], blurb: "Inventore curioso e ingegnoso, amante dei meccanismi." },
-  { id: "mezzelfo", name: "Mezzelfo", family: "Mezzelfo", subraceName: "Mezzelfo", size: "Medio", speed: 30, dark: true, bonuses: { cha: 2 }, extraAbilityChoice: { count: 2, exclude: ["cha"] }, extraSkillChoice: { count: 2 }, traits: ["Retaggio fatato", "Versatilità nelle abilità: competenza in due abilità a scelta"], blurb: "Tra due mondi, con un talento naturale per le relazioni e l'adattamento." },
-  { id: "mezzorco", name: "Mezzorco", family: "Mezzorco", subraceName: "Mezzorco", size: "Medio", speed: 30, dark: true, bonuses: { str: 2, con: 1 }, traits: ["Scurovisione", "Resistenza implacabile: a 0 PF, invece di cadere a 0, scendi a 1 PF una volta per riposo lungo", "Attacchi selvaggi: un dado di danno aggiuntivo su un critico con arma da mischia"], blurb: "Potente e tenace, con una ferocia difficile da fermare." },
+  { id: "gnomo-roccia", name: "Gnomo delle Rocce", family: "Gnomo", subraceName: "Delle Rocce", size: "Piccolo", speed: 25, dark: true, bonuses: { int: 2, con: 1 }, traits: ["Astuzia gnomica", "Conoscenza dell'artigiano: competenza negli strumenti da meccanico", "Congegno da orologiaio"], blurb: "Inventore curioso e ingegnoso, amante dei meccanismi.", bonusProficiencies: { tools: ["Strumenti da meccanico"] } },
+  { id: "mezzelfo", name: "Mezzelfo", family: "Mezzelfo", subraceName: "Mezzelfo", size: "Medio", speed: 30, dark: true, bonuses: { cha: 2 }, extraAbilityChoice: { count: 2, exclude: ["cha"] }, extraSkillChoice: { count: 2 }, traits: ["Retaggio fatato", "Versatilità nelle abilità: competenza in due abilità a scelta", "Una lingua aggiuntiva a scelta"], blurb: "Tra due mondi, con un talento naturale per le relazioni e l'adattamento.", proficiencyChoices: [{ key: "razza-mezzelfo-lingua", label: "Lingua aggiuntiva", type: "language", count: 1, options: LANGUAGES }] },
+  { id: "mezzorco", name: "Mezzorco", family: "Mezzorco", subraceName: "Mezzorco", size: "Medio", speed: 30, dark: true, bonuses: { str: 2, con: 1 }, traits: ["Scurovisione", "Minaccioso: competenza in Intimidire", "Resistenza implacabile: a 0 PF, invece di cadere a 0, scendi a 1 PF una volta per riposo lungo", "Attacchi selvaggi: un dado di danno aggiuntivo su un critico con arma da mischia"], blurb: "Potente e tenace, con una ferocia difficile da fermare.", bonusProficiencies: { skills: ["Intimidire"] } },
   { id: "tiefling", name: "Tiefling", family: "Tiefling", subraceName: "Tiefling", size: "Medio", speed: 30, dark: true, bonuses: { cha: 2, int: 1 }, traits: ["Resistenza infernale: resistenza al fuoco", "Eredità infernale: Taumaturgia; altri incantesimi ai livelli previsti"], blurb: "Portatore di un'eredità infernale e di una magia innata." },
 ];
 
@@ -319,6 +337,7 @@ const SUBCLASSES = {
     {
       id: "maestro-di-battaglia", name: "Maestro di Battaglia",
       blurb: "Studia l'arte della guerra e usa manovre tattiche per dominare il campo di battaglia.",
+      proficiencyChoices: [{ key: "sub-guerriero-maestro-strumenti", label: "Set di strumenti (Studioso di Guerra)", type: "tool", count: 1, options: [...ARTISAN_TOOLS, ...GAMING_SETS, ...MUSICAL_INSTRUMENTS] }],
       features: [
         { level: 3, name: "Superiorità in Combattimento", desc: "Impari 3 manovre tattiche a scelta, alimentate da Dadi Superiorità (d8). Le manovre conosciute salgono a 5 al 7° livello e a 7 al 15°.", resource: true },
         { level: 3, name: "Studioso di Guerra", desc: "Ottieni competenza in un set di strumenti a scelta." },
@@ -356,6 +375,7 @@ const SUBCLASSES = {
     {
       id: "assassino", name: "Assassino",
       blurb: "Colpisce nell'ombra, spesso prima ancora che il bersaglio sappia di essere in pericolo.",
+      bonusProficiencies: { tools: ["Kit da travestimento", "Kit da avvelenatore"] },
       features: [
         { level: 3, name: "Competenze dell'Assassino", desc: "Ottieni competenza in Kit da Travestimento e Kit da Avvelenatore." },
         { level: 3, name: "Assassinio", desc: "Hai vantaggio agli attacchi contro creature che non hanno ancora agito in combattimento. Ogni colpo a segno contro un bersaglio sorpreso è un critico automatico." },
@@ -602,7 +622,9 @@ const SUBCLASSES = {
   ],
   chierico: [
     {
-      id: "vita", name: "Dominio della Vita", blurb: "Guaritori per eccellenza, canalizzano energia vitale pura.", features: [
+      id: "vita", name: "Dominio della Vita", blurb: "Guaritori per eccellenza, canalizzano energia vitale pura.",
+      bonusProficiencies: { armor: ["Armatura pesante"] },
+      features: [
         { level: 2, name: "Channel Divinity: Preservare la Vita", desc: "Come azione, ripristini un totale di 5 × il tuo livello da Chierico PF, distribuiti tra le creature entro 9 m come vuoi (nessuna può superare la metà dei PF massimi; non guarisce costrutti o non morti). In alternativa puoi sempre scegliere l'opzione base Scacciare i Non Morti." },
       ]
     },
@@ -612,23 +634,35 @@ const SUBCLASSES = {
       ]
     },
     {
-      id: "guerra", name: "Dominio della Guerra", blurb: "Divinità della battaglia che guidano la lama e lo scudo dei loro fedeli.", features: [
+      id: "guerra", name: "Dominio della Guerra", blurb: "Divinità della battaglia che guidano la lama e lo scudo dei loro fedeli.",
+      bonusProficiencies: { armor: ["Armatura pesante"], weapons: ["Armi da guerra"] },
+      features: [
         { level: 2, name: "Channel Divinity: Colpo Guidato", desc: "Quando effettui un tiro per colpire, puoi usare Channel Divinity per ottenere +10 al tiro. In alternativa puoi sempre scegliere l'opzione base Scacciare i Non Morti." },
         { level: 6, name: "Channel Divinity: Benedizione del Dio della Guerra", desc: "Come reazione, quando una creatura entro 9 m effettua un tiro per colpire, puoi usare Channel Divinity per darle +10 al tiro." },
       ]
     },
     {
-      id: "tempesta", name: "Dominio della Tempesta", blurb: "Servitori delle divinità del cielo, del tuono e del mare in tempesta.", features: [
+      id: "tempesta", name: "Dominio della Tempesta", blurb: "Servitori delle divinità del cielo, del tuono e del mare in tempesta.",
+      bonusProficiencies: { armor: ["Armatura pesante"], weapons: ["Armi da guerra"] },
+      features: [
         { level: 2, name: "Channel Divinity: Ira Distruttiva", desc: "Quando tiri i danni per un incantesimo del Dominio della Tempesta o per Percuotere i Tuoni, puoi usare Channel Divinity per massimizzare quei dadi. In alternativa puoi sempre scegliere l'opzione base Scacciare i Non Morti." },
       ]
     },
     {
-      id: "natura", name: "Dominio della Natura", blurb: "Custodi del mondo naturale, alleati di bestie e piante.", features: [
+      id: "natura", name: "Dominio della Natura", blurb: "Custodi del mondo naturale, alleati di bestie e piante.",
+      bonusProficiencies: { armor: ["Armatura pesante"] },
+      proficiencyChoices: [{ key: "sub-chierico-natura-abilita", label: "Abilità (Discepolo della Natura)", type: "skill", count: 1, options: ["Addestrare Animali", "Natura", "Sopravvivenza"] }],
+      features: [
         { level: 2, name: "Channel Divinity: Ammaliare Animali e Piante", desc: "Come azione, ogni bestia o pianta entro 9 m deve superare un TS di Saggezza o essere affascinata da te per 1 minuto (o finché non subisce danno). In alternativa puoi sempre scegliere l'opzione base Scacciare i Non Morti." },
       ]
     },
     {
-      id: "conoscenza", name: "Dominio della Conoscenza", blurb: "Depositari di sapere antico e segreti dimenticati.", features: [
+      id: "conoscenza", name: "Dominio della Conoscenza", blurb: "Depositari di sapere antico e segreti dimenticati.",
+      proficiencyChoices: [
+        { key: "sub-chierico-conoscenza-abilita", label: "Abilità (Benedizioni della Conoscenza)", type: "skill", count: 2, options: ["Arcano", "Storia", "Natura", "Religione"] },
+        { key: "sub-chierico-conoscenza-lingue", label: "Lingue aggiuntive", type: "language", count: 2, options: LANGUAGES },
+      ],
+      features: [
         { level: 2, name: "Channel Divinity: Sapienza degli Evi", desc: "Come azione, ottieni competenza con un'abilità o strumento a tua scelta per 10 minuti. In alternativa puoi sempre scegliere l'opzione base Scacciare i Non Morti." },
       ]
     },
@@ -638,7 +672,9 @@ const SUBCLASSES = {
       ]
     },
     {
-      id: "morte", name: "Dominio della Morte", blurb: "Custodi oscuri della fine di ogni vita.", features: [
+      id: "morte", name: "Dominio della Morte", blurb: "Custodi oscuri della fine di ogni vita.",
+      bonusProficiencies: { weapons: ["Armi da guerra"] },
+      features: [
         { level: 2, name: "Channel Divinity: Tocco della Morte", desc: "Quando infliggi danno con un attacco in mischia, puoi usare Channel Divinity per infliggere danno necrotico aggiuntivo pari a 5 + il doppio del tuo livello da Chierico. In alternativa puoi sempre scegliere l'opzione base Scacciare i Non Morti." },
       ]
     },
@@ -963,6 +999,7 @@ function getAllClassResources(clsId, subclassId, level, mysticArcanum, chaMod) {
 const BACKGROUNDS = [
   {
     id: "accolito", name: "Accolito", skills: ["Intuizione", "Religione"], equipment: ["Un simbolo sacro", "Un libro di preghiere", "5 bastoncini d'incenso", "Una veste", "Un set da vestire comune", "Una borsa con 15 mo"], feature: "Rifugio dei Fedeli", featureDesc: "Trova vitto e alloggio gratuiti presso i templi del proprio culto.",
+    proficiencyChoices: [{ key: "bg-accolito-lingue", label: "Lingue aggiuntive", type: "language", count: 2, options: LANGUAGES }],
     personalityTraits: ["Cito scritture e parabole per quasi ogni occasione.", "Vedo segni della volontà divina in ogni evento, per quanto piccolo.", "Ho una fede incrollabile e cerco di trasmetterla agli altri.", "Tratto con gentilezza chiunque, a prescindere da come mi tratta."],
     ideals: ["Tradizione: I costumi antichi della mia fede vanno preservati.", "Carità: Aiuto chi ha bisogno, qualunque sia il costo per me.", "Fede: Confido che la mia divinità agisca attraverso di me.", "Conoscenza: I segreti del divino attendono chi li cerca con devozione."],
     bonds: ["Darei la vita per proteggere un membro del mio ordine.", "Cerco di ritrovare un antico testo sacro andato perduto.", "Il mio tempio d'origine è stato distrutto: voglio vederlo ricostruito.", "Devo tutto al sacerdote che mi ha cresciuto."],
@@ -970,6 +1007,8 @@ const BACKGROUNDS = [
   },
   {
     id: "criminale", name: "Criminale", skills: ["Inganno", "Furtività"], equipment: ["Un piede di porco", "Vestiti scuri comuni con cappuccio", "Una borsa con 15 mo"], feature: "Contatto Criminale", featureDesc: "Ha un referente affidabile nel sottobosco criminale locale.",
+    bonusProficiencies: { tools: ["Strumenti da scasso"] },
+    proficiencyChoices: [{ key: "bg-criminale-gioco", label: "Set di gioco", type: "tool", count: 1, options: GAMING_SETS }],
     personalityTraits: ["Ho sempre un piano di riserva per quando le cose vanno male.", "Resto calmo, non importa quale sia la situazione: sono abituato a mentire.", "Il pericolo mi eccita.", "Mi fido solo di chi ha già dimostrato di potersi fidare di me."],
     ideals: ["Onore: Non tradisco mai chi lavora con me.", "Libertà: Le catene sono fatte per essere spezzate.", "Avidità: Farò qualunque cosa per un guadagno abbastanza grande.", "Redenzione: C'è speranza di cambiare, per chiunque."],
     bonds: ["Sto pagando un debito che non posso ripagare.", "Qualcuno che amo è ancora impigliato nella mia vecchia vita criminale.", "Mi hanno incastrato per un crimine che non ho commesso e voglio giustizia.", "La mia banda è la mia unica vera famiglia."],
@@ -977,6 +1016,8 @@ const BACKGROUNDS = [
   },
   {
     id: "eroe-gente", name: "Eroe Popolare", skills: ["Addestrare Animali", "Sopravvivenza"], equipment: ["Un set da artigiano", "Una pala", "Una pentola di ferro", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Ospitalità Rustica", featureDesc: "La gente comune gli offre rifugio e aiuto discreto quando necessario.",
+    bonusProficiencies: { other: ["Veicoli terrestri"] },
+    proficiencyChoices: [{ key: "bg-eroe-gente-artigiano", label: "Strumenti da artigiano", type: "tool", count: 1, options: ARTISAN_TOOLS }],
     personalityTraits: ["Giudico le persone dalle loro azioni, non dalle loro parole.", "Se qualcuno ha bisogno d'aiuto, non chiedo mai nulla in cambio.", "Sono ingenuo e mi fido troppo facilmente.", "Lavoro sodo perché mi hanno insegnato che è l'unico modo per farcela."],
     ideals: ["Rispetto: La gente comune merita rispetto quanto i nobili.", "Uguaglianza indipendentemente da chi si è o si è nati.", "Libertà: I tiranni non devono opprimere il popolo.", "Destino: Nulla mi accade per caso, tutto ha uno scopo."],
     bonds: ["Un contadino locale mi ha aiutato quando ero nel bisogno: ora è come una famiglia.", "Combatto per chi non può difendersi da solo.", "Il mio villaggio contava su di me e l'ho deluso: voglio rimediare.", "Un tiranno locale mi ha rovinato la vita e voglio vederlo cadere."],
@@ -984,6 +1025,10 @@ const BACKGROUNDS = [
   },
   {
     id: "nobile", name: "Nobile", skills: ["Storia", "Persuasione"], equipment: ["Vestiti eleganti", "Un anello con sigillo", "Una pergamena di lignaggio", "Una borsa con 25 mo"], feature: "Posizione Privilegiata", featureDesc: "È accolto nell'alta società e ottiene udienze con i nobili locali.",
+    proficiencyChoices: [
+      { key: "bg-nobile-gioco", label: "Set di gioco", type: "tool", count: 1, options: GAMING_SETS },
+      { key: "bg-nobile-lingua", label: "Lingua aggiuntiva", type: "language", count: 1, options: LANGUAGES },
+    ],
     personalityTraits: ["Il mio linguaggio raffinato mi fa sembrare colto anche quando non lo sono.", "Sono abituato a farmi ubbidire e mi irrito quando qualcuno mi ignora.", "Ho un debole per il gioco d'azzardo, il vino o entrambi.", "Ricordo sempre nomi e volti, e non dimentico chi mi ha aiutato o insultato."],
     ideals: ["Nobile Obbligo: È mio dovere prendermi cura di chi ha meno di me.", "Ambizione: Voglio ottenere un titolo tutto mio.", "Famiglia: Il sangue viene prima di ogni altra cosa.", "Potere: Se ottengo abbastanza potere, potrò cambiare le cose in meglio."],
     bonds: ["Il mio buon nome vale più della mia vita.", "Devo dimostrare di meritare il mio titolo, non solo di averlo ereditato.", "Difenderei a costo della vita quelli sotto la mia protezione.", "Ho un rivale di lignaggio che disprezza tutto ciò che rappresento."],
@@ -991,6 +1036,7 @@ const BACKGROUNDS = [
   },
   {
     id: "saggio", name: "Sapiente", skills: ["Arcano", "Storia"], equipment: ["Una bottiglia d'inchiostro", "Una penna", "Un piccolo coltello", "Una lettera di un collega defunto", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Ricercatore", featureDesc: "Sa dove cercare quasi ogni informazione, anche se non la conosce già.",
+    proficiencyChoices: [{ key: "bg-saggio-lingue", label: "Lingue aggiuntive", type: "language", count: 2, options: LANGUAGES }],
     personalityTraits: ["Cito fonti e trattati anche quando nessuno me lo chiede.", "Sono affascinato da un particolare campo di studio, quasi ossessivamente.", "Trovo il modo di ricondurre ogni discussione a un argomento che conosco bene.", "Prendo appunti compulsivamente su qualunque cosa mi circondi."],
     ideals: ["Conoscenza: I segreti del mondo vanno scoperti e custoditi.", "Verità: I fatti contano più di ciò che le persone vogliono sentirsi dire.", "Autoperfezionamento: Lo studio è la via per diventare migliori.", "Bene Superiore: La mia conoscenza deve servire il bene di tutti."],
     bonds: ["Il libro che sto cercando potrebbe portare grande sapienza o grande rovina.", "Devo tutto alla biblioteca o all'accademia che mi ha formato.", "Sto seguendo le tracce di un maestro scomparso.", "Voglio dimostrare una teoria che gli altri studiosi deridono."],
@@ -998,6 +1044,8 @@ const BACKGROUNDS = [
   },
   {
     id: "soldato", name: "Soldato", skills: ["Atletica", "Intimidire"], equipment: ["L'insegna del proprio grado", "Un trofeo da un nemico caduto", "Un set di dadi", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Grado Militare", featureDesc: "I soldati fedeli al suo ex esercito lo riconoscono e rispettano il grado.",
+    bonusProficiencies: { other: ["Veicoli terrestri"] },
+    proficiencyChoices: [{ key: "bg-soldato-gioco", label: "Set di gioco", type: "tool", count: 1, options: GAMING_SETS }],
     personalityTraits: ["Affronto i problemi in modo diretto, quasi mai con diplomazia.", "Ho una battuta pronta per stemperare la tensione, anche nei momenti peggiori.", "Sono spietatamente pragmatico sul campo di battaglia.", "Mi metto sempre al servizio di chi è più debole nel gruppo."],
     ideals: ["Grande Bene: I nostri sacrifici sono nulla se avvantaggiano molti.", "Responsabilità: Faccio ciò che mi viene ordinato per il bene della causa.", "Indipendenza: Ho imparato a contare solo su me stesso in guerra.", "Vivere e Lasciar Vivere: Le battaglie inutili non giovano a nessuno."],
     bonds: ["Darei la vita per proteggere i soldati con cui ho servito.", "Il mio equipaggiamento è tutto ciò che mi resta della mia vita precedente.", "Mi manca la guerra: la vita civile mi sembra vuota.", "Un ufficiale mi ha tradito in battaglia e voglio giustizia."],
@@ -1005,6 +1053,7 @@ const BACKGROUNDS = [
   },
   {
     id: "marinaio", name: "Marinaio", skills: ["Atletica", "Percezione"], equipment: ["Un bastone", "15 metri di corda di seta", "Un portafortuna", "Vestiti comuni", "Una borsa con 10 mo"], feature: "Contatti nei Porti", featureDesc: "Trova rapidamente informazioni e passaggi nelle città portuali.",
+    bonusProficiencies: { tools: ["Strumenti da navigatore"], other: ["Veicoli acquatici"] },
     personalityTraits: ["Il mio linguaggio è colorito, anche in compagnia poco adatta.", "Divento irrequieto se resto a terra troppo a lungo.", "Sono superstizioso riguardo a maree, venti e presagi.", "Racconto storie di mare esagerate ad ogni occasione."],
     ideals: ["Rispetto: L'equipaggio si sostiene a vicenda, o affonda insieme.", "Libertà: Il mare non conosce padroni.", "Maestria: Voglio essere il miglior marinaio che le onde abbiano mai visto.", "Gente: Le persone comuni, non i governanti, fanno la vera differenza."],
     bonds: ["Darei la vita per il mio equipaggio.", "Sto cercando un tesoro leggendario nascosto in mare aperto.", "Devo tornare a saldare un debito d'onore in un porto lontano.", "La mia nave è tutto ciò che mi resta di un tempo felice."],
@@ -1012,6 +1061,7 @@ const BACKGROUNDS = [
   },
   {
     id: "ciarlatano", name: "Ciarlatano", skills: ["Inganno", "Rapidità di Mano"], equipment: ["Un set da travestimento", "Strumenti per falsificare documenti", "Vestiti eleganti", "Una borsa con 15 mo"], feature: "Falsa Identità", featureDesc: "Possiede una seconda identità completa di documenti e recapiti.",
+    bonusProficiencies: { tools: ["Kit da travestimento", "Kit da falsario"] },
     personalityTraits: ["Riesco a sembrare sincero anche quando sto mentendo spudoratamente.", "Ho una battuta o un aneddoto pronto per ogni situazione sociale.", "Studio gli altri per capire cosa vogliono sentirsi dire.", "Cambio accento e portamento a seconda di chi ho davanti."],
     ideals: ["Indipendenza: Nessuno mi dice come vivere.", "Fascino: Chi non riesce a sedurre una stanza non merita di comandarla.", "Redenzione: Ogni truffatore può, un giorno, diventare onesto.", "Avidità: Punto sempre al guadagno più grande possibile."],
     bonds: ["Una vecchia truffa è andata storta e qualcuno ne ha pagato le conseguenze al posto mio.", "Sto cercando di riscattarmi agli occhi di chi ho tradito.", "Ho un socio in affari poco puliti a cui devo lealtà.", "Un'identità falsa che uso è diventata più reale di quella vera."],
@@ -1019,6 +1069,10 @@ const BACKGROUNDS = [
   },
   {
     id: "artigiano-gilda", name: "Artigiano di Gilda", skills: ["Intuizione", "Persuasione"], equipment: ["Un set di strumenti da artigiano (a scelta)", "Una lettera di presentazione della gilda", "Un set di vestiti da viaggio", "Una borsa con 15 mo"], feature: "Membro di Gilda", featureDesc: "La sua gilda gli offre vitto, alloggio e sostegno politico nelle città in cui è presente, in cambio del rispetto delle sue regole e di una quota periodica.",
+    proficiencyChoices: [
+      { key: "bg-artigiano-gilda-artigiano", label: "Strumenti da artigiano", type: "tool", count: 1, options: ARTISAN_TOOLS },
+      { key: "bg-artigiano-gilda-lingua", label: "Lingua aggiuntiva", type: "language", count: 1, options: LANGUAGES },
+    ],
     personalityTraits: ["Giudico gli altri artigiani dalla qualità del loro lavoro, non dalle loro parole.", "Sono orgoglioso del mio mestiere fino quasi all'arroganza.", "Tratto ogni contratto come sacro.", "Ho un occhio attento per ogni dettaglio, anche il più piccolo."],
     ideals: ["Comunità: È dovere di tutti sostenere la propria gilda.", "Maestria: Il buon lavoro parla da sé.", "Prosperità: Il commercio onesto arricchisce tutti, non solo pochi.", "Ambizione: Voglio arrivare a guidare la mia gilda, un giorno."],
     bonds: ["La mia gilda mi ha dato tutto quello che ho: le devo lealtà.", "Sto cercando di riscattare il buon nome della mia famiglia nel mio mestiere.", "Un rivale di bottega ha rubato una mia idea e voglio giustizia.", "Sto risparmiando per aprire una bottega tutta mia."],
@@ -1026,6 +1080,8 @@ const BACKGROUNDS = [
   },
   {
     id: "eremita", name: "Eremita", skills: ["Medicina", "Religione"], equipment: ["Una cassa di pergamene con appunti di studio", "Una coperta invernale", "Un set di vestiti comuni", "Un kit da erborista", "Una borsa con 5 mo"], feature: "Scoperta", featureDesc: "Il lungo isolamento gli ha rivelato una verità straordinaria, il cui significato e la cui portata sono ancora da comprendere appieno.",
+    bonusProficiencies: { tools: ["Kit da erborista"] },
+    proficiencyChoices: [{ key: "bg-eremita-lingua", label: "Lingua aggiuntiva", type: "language", count: 1, options: LANGUAGES }],
     personalityTraits: ["Sono a disagio tra la folla e cerco sempre un angolo tranquillo.", "Parlo a voce alta con me stesso per abitudine, dopo anni di solitudine.", "Vedo la saggezza nelle piccole cose che gli altri ignorano.", "Diffido delle istituzioni: preferisco la mia sola compagnia."],
     ideals: ["Verità Interiore: L'illuminazione si trova solo nel silenzio e nella riflessione.", "Grande Bene: La mia scoperta deve essere condivisa, prima o poi, con il mondo.", "Solitudine: Le risposte migliori si trovano lontano dal rumore del mondo.", "Logica: I sentimenti non devono offuscare il ragionamento."],
     bonds: ["Il luogo del mio isolamento è sacro per me e lo difenderei.", "Sto cercando qualcuno degno di ricevere ciò che ho scoperto.", "Un evento del mio passato mi ha spinto a fuggire dal mondo, e ancora mi perseguita.", "Devo la vita a chi mi ha ospitato durante il mio isolamento."],
@@ -1033,6 +1089,7 @@ const BACKGROUNDS = [
   },
   {
     id: "forestiero", name: "Forestiero", skills: ["Atletica", "Sopravvivenza"], equipment: ["Un bastone da viaggio", "Una trappola da caccia", "Un trofeo di un animale ucciso personalmente", "Un set di vestiti da viaggio", "Una borsa con 10 mo"], feature: "Viandante", featureDesc: "Ricorda con precisione la disposizione del territorio attraversato e può sempre trovare cibo e acqua fresca per sé e fino a cinque compagni, se la zona ne offre.",
+    proficiencyChoices: [{ key: "bg-forestiero-strumento", label: "Strumento musicale", type: "tool", count: 1, options: MUSICAL_INSTRUMENTS }],
     personalityTraits: ["Mi sento più a mio agio nella natura selvaggia che tra le mura di una città.", "Parlo poco e vado dritto al punto.", "Osservo ogni ambiente come un potenziale pericolo o una potenziale risorsa.", "Sono leale fino alla fine con chi considero parte del mio branco."],
     ideals: ["Cambiamento: Il mondo naturale è in costante mutamento, e va accettato.", "Onore: Un cacciatore rispetta sempre la preda.", "Comunione: Sono parte della natura, non il suo padrone.", "Vendetta: Chi ha devastato la mia terra pagherà."],
     bonds: ["La mia terra d'origine è stata invasa o distrutta, e voglio riprenderla.", "Sto seguendo le tracce di chi ha ucciso la mia famiglia o il mio clan.", "Proteggo un luogo selvaggio sacro per il mio popolo.", "Un animale guida mi ha risparmiato la vita: gli devo lealtà."],
@@ -1040,6 +1097,8 @@ const BACKGROUNDS = [
   },
   {
     id: "intrattenitore", name: "Intrattenitore", skills: ["Acrobazia", "Intrattenere"], equipment: ["Uno strumento musicale (a scelta)", "Il favore di un ammiratore", "Un set di vestiti da intrattenitore", "Una borsa con 15 mo"], feature: "Seguito Popolare", featureDesc: "Trova sempre un luogo dove esibirsi gratuitamente in cambio di vitto e alloggio modesti, e la gente comune spesso lo protegge dalle autorità.",
+    bonusProficiencies: { tools: ["Kit da travestimento"] },
+    proficiencyChoices: [{ key: "bg-intrattenitore-strumento", label: "Strumento musicale", type: "tool", count: 1, options: MUSICAL_INSTRUMENTS }],
     personalityTraits: ["Non perdo mai occasione per intrattenere chi mi circonda.", "Ricordo ogni singolo elogio ricevuto, parola per parola.", "Mi annoio facilmente quando non sono al centro dell'attenzione.", "Vivo per il momento in cui il pubblico applaude."],
     ideals: ["Bellezza: Quando eseguo un'opera, creo qualcosa di senza tempo.", "Tradizione: Le storie e le canzoni antiche vanno preservate.", "Creatività: È sempre possibile trovare una soluzione originale.", "Grazia: Nessuna sfida può abbattere chi resta gentile e composto."],
     bonds: ["Il mio strumento (o il mio costume di scena) è il bene più prezioso che ho.", "Sto cercando il pubblico o il palcoscenico che darà senso alla mia carriera.", "Devo tutto alla compagnia che mi ha accolto quando non avevo nulla.", "Un rivale sul palco ha rovinato la mia reputazione, e voglio riscattarmi."],
@@ -1047,12 +1106,57 @@ const BACKGROUNDS = [
   },
   {
     id: "monello", name: "Monello", skills: ["Rapidità di Mano", "Furtività"], equipment: ["Un piccolo coltello", "Una mappa della città in cui è cresciuto", "Un topolino domestico", "Un ricordo dei genitori", "Un set di vestiti comuni", "Una borsa con 10 mo"], feature: "Segreti della Città", featureDesc: "Conosce vicoli, passaggi segreti e scorciatoie di una città: lui e chi lo accompagna possono muoversi al doppio della velocità normale mentre non sono in fretta a vista di tutti.",
+    bonusProficiencies: { tools: ["Kit da travestimento", "Strumenti da scasso"] },
     personalityTraits: ["Mi nascondo prima di tutto: guardo e ascolto prima di agire.", "Non mi separo mai da un piccolo oggetto che mi ricorda casa.", "Parlo lo slang di strada e faccio fatica con i modi raffinati.", "Nascondo il cibo per abitudine, non si sa mai."],
     ideals: ["Sopravvivenza: Fai quel che devi fare per andare avanti a domani.", "Popolo: Chi vive per strada deve aiutarsi a vicenda.", "Cambiamento: Il mondo va reso più giusto per chi non ha nulla.", "Aspirazione: Voglio dimostrare di valere più di dove sono nato."],
     bonds: ["Proteggo gli altri bambini di strada che ho lasciato indietro.", "Qualcuno mi ha salvato quando ero solo per strada, e gli devo tutto.", "Sto cercando la persona che ha causato la morte dei miei genitori.", "La mia città, per quanto dura sia stata con me, è comunque casa."],
     flaws: ["Rubo per abitudine, anche quando non ne ho bisogno.", "Non mi fido delle autorità, anche quando agiscono in buona fede.", "Nascondo le mie vere emozioni dietro una battuta o un silenzio.", "Faccio fatica a restare in un posto solo troppo a lungo."],
   },
 ];
+
+// Aggrega tutte le competenze "bonus" (fisse o a scelta) concesse da razza, background e
+// sottoclasse: armature, armi, strumenti, lingue e abilità. Le competenze base della classe
+// (armor/weapons in prosa su CLASSES) restano a parte, mostrate come testo esistente.
+function getGrantedProficiencies(draft) {
+  const race = RACES.find((r) => r.id === draft.raceId);
+  const bg = getSelectedBackground(draft);
+  const cls = CLASSES.find((c) => c.id === draft.classId);
+  const subclass = cls ? getSubclass(cls.id, getChosenSubclassId(draft, cls.id)) : null;
+  const profChoices = draft.profChoices || {};
+
+  const skills = new Set(), armor = new Set(), weapons = new Set(), tools = new Set(), languages = new Set(), other = new Set();
+
+  const addBonus = (bonus) => {
+    if (!bonus) return;
+    (bonus.skills || []).forEach((s) => skills.add(s));
+    (bonus.armor || []).forEach((s) => armor.add(s));
+    (bonus.weapons || []).forEach((s) => weapons.add(s));
+    (bonus.tools || []).forEach((s) => tools.add(s));
+    (bonus.languages || []).forEach((s) => languages.add(s));
+    (bonus.other || []).forEach((s) => other.add(s));
+  };
+  const addChoices = (specs) => {
+    (specs || []).forEach((spec) => {
+      (profChoices[spec.key] || []).forEach((value) => {
+        if (spec.type === "skill") skills.add(value);
+        else if (spec.type === "language") languages.add(value);
+        else if (spec.type === "tool") tools.add(value);
+      });
+    });
+  };
+
+  addBonus(race?.bonusProficiencies);
+  addChoices(race?.proficiencyChoices);
+  addBonus(bg?.bonusProficiencies);
+  addChoices(bg?.proficiencyChoices);
+  addBonus(subclass?.bonusProficiencies);
+  addChoices(subclass?.proficiencyChoices);
+
+  return {
+    skills: [...skills], armor: [...armor], weapons: [...weapons],
+    tools: [...tools], languages: [...languages], other: [...other],
+  };
+}
 
 const CUSTOM_BACKGROUND_ID = "personalizzato";
 
@@ -1091,6 +1195,13 @@ function getBackgroundValidationErrors(draft) {
     if (!(draft.customBackgroundFeatureName || "").trim() || !(draft.customBackgroundFeatureDesc || "").trim()) {
       errors.push("Descrivi il tratto (nome e testo) del background personalizzato.");
     }
+  } else {
+    const bg = BACKGROUNDS.find((b) => b.id === draft.backgroundId);
+    (bg?.proficiencyChoices || []).forEach((spec) => {
+      if (((draft.profChoices && draft.profChoices[spec.key]) || []).length !== spec.count) {
+        errors.push(`Scegli ${spec.count} opzioni per "${spec.label}".`);
+      }
+    });
   }
   return errors;
 }
@@ -2399,6 +2510,7 @@ function emptyDraft() {
     raceSkillPicks: [],
     raceFeatId: null,
     raceFeatAbilityChoice: null,
+    profChoices: {},
     classId: null,
     classSkills: [],
     backgroundId: null,
@@ -2543,9 +2655,13 @@ function isStepComplete(key, draft) {
       return !!draft.raceId
         && (!race?.extraAbilityChoice || (draft.raceAbilityPicks || []).length === race.extraAbilityChoice.count)
         && (!race?.extraSkillChoice || (draft.raceSkillPicks || []).length === race.extraSkillChoice.count)
-        && (!race?.extraFeatChoice || (draft.raceFeatId && (!getFeat(draft.raceFeatId)?.abilityChoice || getFeat(draft.raceFeatId).abilityChoice.optional || draft.raceFeatAbilityChoice)));
-    case "classe":
-      return !!draft.classId && (draft.classSkills || []).length === cls?.skillChoices;
+        && (!race?.extraFeatChoice || (draft.raceFeatId && (!getFeat(draft.raceFeatId)?.abilityChoice || getFeat(draft.raceFeatId).abilityChoice.optional || draft.raceFeatAbilityChoice)))
+        && areProfChoicesSatisfied(race?.proficiencyChoices, draft.profChoices);
+    case "classe": {
+      const subclass = getSubclass(draft.classId, draft.subclassId);
+      return !!draft.classId && (draft.classSkills || []).length === cls?.skillChoices
+        && areProfChoicesSatisfied(subclass?.proficiencyChoices, draft.profChoices);
+    }
     case "caratteristiche":
       return validateCharacter({ ...draft, name: draft.name || "draft" }).filter((e) => e.includes("Point Buy") || e.includes("punteggi") || e.includes("caratteristiche")).length === 0;
     case "background":
@@ -2581,9 +2697,11 @@ function isStepFullyComplete(key, draft) {
       return casterEntries.every((e) => {
         const status = getCasterSpellStatus(e.classId, e.subclassId, e.level, e.store, draft, finalScores);
         if (!status) return true;
+        const subclass = getSubclass(e.classId, e.subclassId);
         return status.subclassChoiceOk
           && status.cantripsKnown >= status.cantripsNeeded
-          && status.spellsKnown >= status.spellsNeeded;
+          && status.spellsKnown >= status.spellsNeeded
+          && areProfChoicesSatisfied(subclass?.proficiencyChoices, e.store.profChoices);
       });
     }
     case "riepilogo":
@@ -2708,10 +2826,11 @@ function GhostButton({ children, onClick, style, icon: Icon }) {
   );
 }
 
-function Pill({ children, active, onClick }) {
+function Pill({ children, active, onClick, disabled, title }) {
   return (
     <button
       onClick={onClick}
+      title={title}
       style={{
         fontFamily: "'Spectral', serif",
         fontSize: 13,
@@ -2720,9 +2839,10 @@ function Pill({ children, active, onClick }) {
         border: `1px solid ${active ? C.wine : C.parchmentLine}`,
         background: active ? "linear-gradient(180deg, #7d1f38 0%, #5e1729 100%)" : "rgba(255,255,255,0.2)",
         color: active ? C.cream : C.textOnParchment,
-        cursor: "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
         transition: "all 120ms ease",
         boxShadow: active ? `0 0 0 1px rgba(224,193,101,0.3) inset` : "none",
+        opacity: disabled ? 0.45 : 1,
       }}
     >
       {children}
@@ -2763,6 +2883,46 @@ function OptionCard({ selected, onClick, title, subtitle, children }) {
   );
 }
 
+// Picker generico "pill capped at count" per le proficiencyChoices (lingue/strumenti/abilità
+// a scelta) definite su razze, background e sottoclassi. `selected` è l'array già scelto per
+// questa `spec` (spec.key); `onToggle` riceve il singolo valore cliccato.
+function ProficiencyChoicePicker({ spec, selected, onToggle }) {
+  return (
+    <div style={{ marginTop: 10 }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 8 }}>
+        {spec.label} ({selected.length}/{spec.count}):
+      </p>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        {spec.options.map((opt) => {
+          const picked = selected.includes(opt);
+          const disabled = !picked && selected.length >= spec.count;
+          return (
+            <Pill key={opt} active={picked} onClick={() => { if (disabled) return; onToggle(opt); }}>
+              {opt}
+            </Pill>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Aggiorna draft.profChoices[spec.key] con un toggle capped at spec.count, seguendo lo stesso
+// pattern "updateStore((s) => partial)" usato altrove (Metamagia, Invocazioni, ecc.).
+function areProfChoicesSatisfied(specs, profChoices) {
+  return (specs || []).every((spec) => ((profChoices && profChoices[spec.key]) || []).length === spec.count);
+}
+
+function toggleProfChoice(updateStore, spec, value) {
+  updateStore((s) => {
+    const current = (s.profChoices && s.profChoices[spec.key]) || [];
+    const has = current.includes(value);
+    if (has) return { profChoices: { ...s.profChoices, [spec.key]: current.filter((v) => v !== value) } };
+    if (current.length >= spec.count) return {};
+    return { profChoices: { ...s.profChoices, [spec.key]: [...current, value] } };
+  });
+}
+
 /* ---------------------------------- STEP: RACE ---------------------------------- */
 
 // Raggruppa RACES per "famiglia" (es. Nano → Delle Colline / Delle Montagne), nell'ordine in
@@ -2788,7 +2948,12 @@ function StepRace({ draft, setDraft }) {
   const activeFamilyName = browsingFamily || currentFamilyName;
   const activeFamily = families.find((f) => f.name === activeFamilyName);
 
-  const selectRace = (r) => setDraft((d) => ({ ...d, raceId: r.id, raceAbilityPicks: [], raceSkillPicks: [], halfElfPicks: [], raceFeatId: null, raceFeatAbilityChoice: null }));
+  const selectRace = (r) => setDraft((d) => {
+    const profChoices = Object.fromEntries(Object.entries(d.profChoices || {}).filter(([k]) => !k.startsWith("razza-")));
+    const fixedSkills = r.bonusProficiencies?.skills || [];
+    const classSkills = (d.classSkills || []).filter((s) => !fixedSkills.includes(s));
+    return { ...d, raceId: r.id, raceAbilityPicks: [], raceSkillPicks: [], halfElfPicks: [], raceFeatId: null, raceFeatAbilityChoice: null, profChoices, classSkills };
+  });
   const raceFeat = draft.raceFeatId ? getFeat(draft.raceFeatId) : null;
 
   return (
@@ -2875,11 +3040,19 @@ function StepRace({ draft, setDraft }) {
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {Object.keys(SKILL_ABILITY).map((skill) => {
                   const picks = draft.raceSkillPicks || []; const picked = picks.includes(skill); const disabled = !picked && picks.length >= race.extraSkillChoice.count;
-                  return <Pill key={skill} active={picked} onClick={() => { if (disabled) return; setDraft((d) => ({ ...d, raceSkillPicks: picked ? (d.raceSkillPicks || []).filter((k) => k !== skill) : [...(d.raceSkillPicks || []), skill] })); }}>{skill}</Pill>;
+                  return <Pill key={skill} active={picked} onClick={() => { if (disabled) return; setDraft((d) => ({ ...d, raceSkillPicks: picked ? (d.raceSkillPicks || []).filter((k) => k !== skill) : [...(d.raceSkillPicks || []), skill], classSkills: picked ? d.classSkills : (d.classSkills || []).filter((s) => s !== skill) })); }}>{skill}</Pill>;
                 })}
               </div>
             </div>
           )}
+          {(race.proficiencyChoices || []).map((spec) => (
+            <ProficiencyChoicePicker
+              key={spec.key}
+              spec={spec}
+              selected={(draft.profChoices && draft.profChoices[spec.key]) || []}
+              onToggle={(value) => toggleProfChoice((fn) => setDraft((d) => ({ ...d, ...fn(d) })), spec, value)}
+            />
+          ))}
           {race.extraFeatChoice && (
             <div style={{ marginTop: 10 }}>
               <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 8 }}>
@@ -2935,7 +3108,12 @@ function StepRace({ draft, setDraft }) {
 
 function StepClass({ draft, setDraft }) {
   const cls = CLASSES.find((c) => c.id === draft.classId);
+  const race = RACES.find((r) => r.id === draft.raceId);
+  // Abilità già ottenute dalla razza (competenza fissa o a scelta): non selezionabili di nuovo
+  // dalla classe, per evitare di "sprecare" una scelta su una competenza duplicata.
+  const raceGrantedSkills = [...(race?.bonusProficiencies?.skills || []), ...(draft.raceSkillPicks || [])];
   const toggleSkill = (skill) => {
+    if (raceGrantedSkills.includes(skill)) return;
     setDraft((d) => {
       const has = d.classSkills.includes(skill);
       if (has) return { ...d, classSkills: d.classSkills.filter((s) => s !== skill) };
@@ -2991,11 +3169,20 @@ function StepClass({ draft, setDraft }) {
             Scegli {cls.skillChoices} competenze ({draft.classSkills.length}/{cls.skillChoices}):
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {cls.skillOptions.map((s) => (
-              <Pill key={s} active={draft.classSkills.includes(s)} onClick={() => toggleSkill(s)}>
-                {s}
-              </Pill>
-            ))}
+            {cls.skillOptions.map((s) => {
+              const grantedByRace = raceGrantedSkills.includes(s);
+              return (
+                <Pill
+                  key={s}
+                  active={draft.classSkills.includes(s) || grantedByRace}
+                  disabled={grantedByRace}
+                  title={grantedByRace ? "Già ottenuta dalla razza" : undefined}
+                  onClick={() => toggleSkill(s)}
+                >
+                  {s}{grantedByRace ? " (razza)" : ""}
+                </Pill>
+              );
+            })}
           </div>
 
           {/* <-- QUI INSERISCI IL FIGHTING STYLE SELECTOR --> */}
@@ -3034,13 +3221,25 @@ function StepClass({ draft, setDraft }) {
                   <OptionCard
                     key={s.id}
                     selected={getChosenSubclassId(draft, cls.id) === s.id}
-                    onClick={() => setDraft((d) => ({ ...d, subclassId: d.subclassId === s.id ? null : s.id }))}
+                    onClick={() => setDraft((d) => {
+                      const nextId = d.subclassId === s.id ? null : s.id;
+                      const profChoices = Object.fromEntries(Object.entries(d.profChoices || {}).filter(([k]) => !k.startsWith("sub-")));
+                      return { ...d, subclassId: nextId, profChoices };
+                    })}
                     title={s.name}
                   >
                     <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
                   </OptionCard>
                 ))}
               </div>
+              {(getSubclass(cls.id, draft.subclassId)?.proficiencyChoices || []).map((spec) => (
+                <ProficiencyChoicePicker
+                  key={spec.key}
+                  spec={spec}
+                  selected={(draft.profChoices && draft.profChoices[spec.key]) || []}
+                  onToggle={(value) => toggleProfChoice((fn) => setDraft((d) => ({ ...d, ...fn(d) })), spec, value)}
+                />
+              ))}
             </>
           )}
         </div>
@@ -3363,6 +3562,8 @@ function StepBackground({ draft, setDraft }) {
     return { ...d, customBackgroundSkills: [...picks, skill] };
   });
 
+  const clearBgProfChoices = (d) => Object.fromEntries(Object.entries(d.profChoices || {}).filter(([k]) => !k.startsWith("bg-")));
+
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Scegli il background</h2>
@@ -3374,14 +3575,14 @@ function StepBackground({ draft, setDraft }) {
           <OptionCard
             key={b.id}
             selected={draft.backgroundId === b.id}
-            onClick={() => setDraft((d) => ({ ...d, backgroundId: b.id }))}
+            onClick={() => setDraft((d) => ({ ...d, backgroundId: b.id, profChoices: clearBgProfChoices(d) }))}
             title={b.name}
             subtitle={b.skills.join(", ")}
           />
         ))}
         <OptionCard
           selected={isCustom}
-          onClick={() => setDraft((d) => ({ ...d, backgroundId: CUSTOM_BACKGROUND_ID }))}
+          onClick={() => setDraft((d) => ({ ...d, backgroundId: CUSTOM_BACKGROUND_ID, profChoices: clearBgProfChoices(d) }))}
           title="Personalizzato"
           subtitle="Costruito da zero"
         >
@@ -3460,6 +3661,14 @@ function StepBackground({ draft, setDraft }) {
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, margin: "0 0 4px" }}>
             <b>Tratto — {bg.feature}:</b> {bg.featureDesc}
           </p>
+          {(bg.proficiencyChoices || []).map((spec) => (
+            <ProficiencyChoicePicker
+              key={spec.key}
+              spec={spec}
+              selected={(draft.profChoices && draft.profChoices[spec.key]) || []}
+              onToggle={(value) => toggleProfChoice((fn) => setDraft((d) => ({ ...d, ...fn(d) })), spec, value)}
+            />
+          ))}
         </div>
       )}
 
@@ -4243,6 +4452,14 @@ function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spellSearch,
               Gli incantesimi di dominio sono sempre preparati gratuitamente e non contano nel numero di {caster.label.toLowerCase()}.
             </p>
           )}
+          {(getSubclass("chierico", store.domainId)?.proficiencyChoices || []).map((spec) => (
+            <ProficiencyChoicePicker
+              key={spec.key}
+              spec={spec}
+              selected={(store.profChoices && store.profChoices[spec.key]) || []}
+              onToggle={(value) => toggleProfChoice(updateStore, spec, value)}
+            />
+          ))}
         </div>
       )}
 
@@ -5079,7 +5296,8 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
     : hasDraconicResilience
       ? `Resilienza Draconica (13 + Destrezza)${equippedShield ? " + Scudo" : ""}${fightingStyleAcBonus > 0 ? " + Difesa" : ""}`
       : equippedShield ? "Solo scudo (senza armatura)" : "Senza armatura (10 + Destrezza)";
-  const allSkills = [...new Set([...(bg ? bg.skills : []), ...draft.classSkills, ...(draft.raceSkillPicks || []), ...(mc?.bonusSkillPick ? [mc.bonusSkillPick] : [])])];
+  const granted = getGrantedProficiencies(draft);
+  const allSkills = [...new Set([...(bg ? bg.skills : []), ...draft.classSkills, ...(draft.raceSkillPicks || []), ...(mc?.bonusSkillPick ? [mc.bonusSkillPick] : []), ...granted.skills])];
   const slots = getEffectiveSpellSlots(draft);
   const prof = getProficiencyBonus(totalLevel);
   const initiative = mod(finalScores.dex);
@@ -5679,6 +5897,32 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 18 }}>
         <b>Competenze nelle abilità:</b> {allSkills.length ? allSkills.join(", ") : "—"}
       </p>
+
+      {cls && (
+        <>
+          <Divider />
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Competenze</h3>
+          <div style={{ display: "grid", gap: 4, marginBottom: 18 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <b>Armature:</b> {[cls.armor, ...granted.armor].filter(Boolean).join("; ")}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <b>Armi:</b> {[cls.weapons, ...granted.weapons].filter(Boolean).join("; ")}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <b>Strumenti:</b> {granted.tools.length ? granted.tools.join(", ") : "—"}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <b>Lingue:</b> {granted.languages.length ? granted.languages.join(", ") : "—"}
+            </p>
+            {granted.other.length > 0 && (
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+                <b>Altro:</b> {granted.other.join(", ")}
+              </p>
+            )}
+          </div>
+        </>
+      )}
 
       <Divider />
       <InventoryManager draft={draft} setDraft={setDraft} allowAdd={showPlayTools} />
