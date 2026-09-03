@@ -1551,12 +1551,15 @@ function getFightingStyleAcBonus(store, clsId, wearingArmor = true) {
   }, 0);
 }
 
-function getFightingStyleDamageBonus(store, clsId, isMelee, isOneHanded) {
+// `duelingEligible` deve già incorporare TUTTI i requisiti di Duellante (mischia, impugnata
+// davvero a una mano — non versatile a due mani — e nessun'altra arma equipaggiata), non solo
+// "questa arma è a una mano": il chiamante è responsabile di calcolarlo correttamente.
+function getFightingStyleDamageBonus(store, clsId, isMelee, duelingEligible) {
   if (!store?.fightingStyles) return 0;
   const styles = FIGHTING_STYLES[clsId] || [];
   return store.fightingStyles.reduce((sum, id) => {
     const style = styles.find((s) => s.id === id);
-    if (isMelee && isOneHanded && style?.effects?.damageBonusMeleeOneHanded) {
+    if (isMelee && duelingEligible && style?.effects?.damageBonusMeleeOneHanded) {
       return sum + style.effects.damageBonusMeleeOneHanded;
     }
     return sum;
@@ -2595,6 +2598,16 @@ function formatItemStats(item) {
   }
   if (item.category === "scudo") return `CA ${item.ac}`;
   return item.desc || "";
+}
+
+// Impugnatura effettiva di un'arma: le armi a due mani sono sempre a due mani, quelle versatili
+// dipendono dal toggle scelto dal giocatore nell'Inventario (draft.twoHandedWeapons), tutte le
+// altre sono sempre a una mano.
+function getEffectiveGrip(draft, item) {
+  if (item.hands === "due mani") return "due mani";
+  const isVersatile = (item.properties || []).some((p) => p.includes("Versatile"));
+  if (isVersatile && (draft.twoHandedWeapons || {})[item.uid]) return "due mani";
+  return "una mano";
 }
 
 let uidCounter = 0;
@@ -5428,50 +5441,59 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
 
   const passivePerception = 10 + (skillsList.find((s) => s.name === "Percezione")?.bonus || 0);
 
+  // Le armi effettivamente "impugnate" sono solo quelle equipaggiate: gli stili di combattimento
+  // (Duellante, Combattimento con Due Armi, Armi Possenti) dipendono da COSA hai in mano in quel
+  // momento, non da ogni arma posseduta nello zaino. La coppia principale/secondaria per il
+  // Combattimento con Due Armi è la prima e la seconda arma equipaggiata a una mano (impugnatura
+  // effettiva, non il campo statico del catalogo), ed entrambe devono essere Leggere.
+  const equippedWeapons = draft.inventory.filter((i) => i.category === "arma" && i.equipped);
+  const equippedOneHanded = equippedWeapons.filter((w) => getEffectiveGrip(draft, w) === "una mano");
+  const mainHand = equippedOneHanded[0] || null;
+  const offHand = equippedOneHanded[1] || null;
+  const isLightWeapon = (w) => (w.properties || []).some((p) => p.includes("Leggera"));
+  const validTwoWeaponPair = !!(mainHand && offHand && isLightWeapon(mainHand) && isLightWeapon(offHand));
+
   const weaponAttacks = draft.inventory.filter((it) => it.category === "arma").map((it) => {
     const finesse = (it.properties || []).some((p) => p.includes("Finezza"));
     const ranged = (it.properties || []).some((p) => p.includes("Munizioni"));
     const abilityKey = finesse ? (mod(finalScores.dex) >= mod(finalScores.str) ? "dex" : "str") : ranged ? "dex" : "str";
     const abilityMod = mod(finalScores[abilityKey]);
 
-    // Bonus da Stili di Combattimento (classe primaria + multiclass)
+    // Bonus da Stili di Combattimento (classe primaria + multiclass) — solo se l'arma è equipaggiata.
     const styleStores = [draft, ...(draft.multiclass ? [draft.multiclass] : [])];
-    const attackStyleBonus = styleStores.reduce((sum, store) => {
+    const attackStyleBonus = it.equipped ? styleStores.reduce((sum, store) => {
       // Determina a quale classe appartiene questo store
       const storeClsId = store === draft ? draft.classId : (store.classId || null);
       return sum + getFightingStyleAttackBonus(store, storeClsId, ranged);
-    }, 0);
-    const isOneHanded = it.hands === "una mano";
-    const isTwoHanded = it.hands === "due mani";
+    }, 0) : 0;
+    const effectiveGrip = getEffectiveGrip(draft, it);
+    const isTwoHanded = effectiveGrip === "due mani";
     const isVersatile = (it.properties || []).some((p) => p.includes("Versatile"));
     const isMelee = !ranged;
 
+    // Duellante: solo l'unica arma equipaggiata, impugnata davvero a una mano.
+    const duelingEligible = it.equipped && isMelee && effectiveGrip === "una mano" && equippedWeapons.length === 1;
     const damageStyleBonus = styleStores.reduce(
       (sum, store) => {
         const storeClsId = store === draft ? draft.classId : (store.classId || null);
-        return sum + getFightingStyleDamageBonus(store, storeClsId, !ranged, isOneHanded);
+        return sum + getFightingStyleDamageBonus(store, storeClsId, isMelee, duelingEligible);
       },
       0
     );
-    // Check per Armi Pesanti (Great Weapon Fighting)
-    const canUseGreatWeapon = isMelee && (isTwoHanded || isVersatile);
+    // Armi Possenti: solo se l'arma è davvero impugnata a due mani (fissa, o versatile col toggle attivo).
+    const canUseGreatWeapon = it.equipped && isMelee && isTwoHanded;
     const hasGreatWeapon = styleStores.some((store) => getFightingStyleGreatWeapon(store));
     const greatWeaponActive = hasGreatWeapon && canUseGreatWeapon;
 
-    // Check per Due Armi (Two-Weapon Fighting)
+    // Combattimento con Due Armi: bonus solo sull'arma secondaria della coppia equipaggiata valida.
     const hasTwoWeapon = styleStores.some((store) => getFightingStyleTwoWeapon(store));
-    // Per l'attacco secondario, assumiamo che se c'è più di un'arma e la proprietà Leggera è presente
-    // NOTA: questa è una semplificazione, l'implementazione completa richiederebbe più stato
-    const isLight = (it.properties || []).some((p) => p.includes("Leggera"));
-    const isOffhand = draft.inventory.filter((i) => i.category === "arma").indexOf(it) > 0;
-    const twoWeaponBonus = hasTwoWeapon && isOffhand && isLight ? abilityMod : 0;
+    const isOffhandOfPair = validTwoWeaponPair && it.equipped && it.uid === offHand.uid;
+    const twoWeaponBonus = hasTwoWeapon && isOffhandOfPair ? abilityMod : 0;
 
     const proficient = isProficientWithWeapon(draft, it);
     const attackBonus = (proficient ? prof : 0) + abilityMod + attackStyleBonus;
     const damageBonus = abilityMod + damageStyleBonus + twoWeaponBonus;
-
-    // Flag per Protezione (reazione)
-    const hasProtection = styleStores.some((store) => getFightingStyleProtection(store));
+    const effectiveDamage = isTwoHanded ? (getVersatileDamage(it.properties) || it.damage) : it.damage;
 
     return {
       ...it,
@@ -5479,17 +5501,20 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
       attackBonus,
       proficient,
       damageMod: damageBonus,
+      damage: effectiveDamage,
       isMelee,
       isTwoHanded,
       isVersatile,
       greatWeaponActive, // Flag per mostrare che lo stile è attivo
-      hasProtection,     // Flag per mostrare che la reazione è disponibile
-      hasTwoWeaponFighting: hasTwoWeapon && isOffhand && isLight,
-      damageString: `${it.damage}${greatWeaponActive ? ' (ritira 1 e 2)' : ''}`
+      hasTwoWeaponFighting: hasTwoWeapon && isOffhandOfPair,
+      damageString: `${effectiveDamage}${greatWeaponActive ? ' (ritira 1 e 2)' : ''}`
     };
   });
 
-  const hasProtectionFlag = weaponAttacks.some(w => w.hasProtection);
+  // Protezione richiede di impugnare uno scudo (PHB 2014): la reazione non è disponibile solo
+  // perché lo stile è stato scelto, serve anche uno scudo equipaggiato.
+  const topStyleStores = [draft, ...(draft.multiclass ? [draft.multiclass] : [])];
+  const hasProtectionFlag = !!equippedShield && topStyleStores.some((store) => getFightingStyleProtection(store));
   const hasTwoWeaponFightingFlag = weaponAttacks.some(w => w.hasTwoWeaponFighting);
 
   const subclass = cls ? getSubclass(cls.id, chosenSubclassId) : null;
@@ -5995,9 +6020,14 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
                         non competente
                       </span>
                     )}
+                    {!w.equipped && (
+                      <span title="Non equipaggiata: gli Stili di Combattimento (Duellante, Due Armi, Armi Possenti) si applicano solo alle armi equipaggiate" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 11, color: C.textMuted, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0 4px" }}>
+                        non equipaggiata
+                      </span>
+                    )}
                   </span>
                   <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
-                    Attacco {fmtMod(attackBonus)} · Danno {w.damage}{fmtMod(damageBonus)} {w.damageType}
+                    Attacco {fmtMod(attackBonus)} · Danno {w.damageString}{fmtMod(damageBonus)} {w.damageType}
                   </span>
                 </div>
               );
