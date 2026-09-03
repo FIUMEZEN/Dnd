@@ -2629,7 +2629,7 @@ function Frame({ children, style, className = "" }) {
         border: `1px solid ${C.parchmentLine}`,
         boxShadow: `inset 0 0 0 4px rgba(255,255,255,0.32), inset 0 0 0 5px ${C.parchmentLine}, 0 18px 28px rgba(19,15,13,0.16)`,
         borderRadius: 2,
-        padding: "1.75rem",
+        padding: "var(--frame-padding)",
         position: "relative",
         ...style,
       }}
@@ -2797,7 +2797,7 @@ function StepRace({ draft, setDraft }) {
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1.25rem" }}>
         La razza determina bonus alle caratteristiche, velocità e tratti innati.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1.5rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1.5rem" }}>
         {families.map((fam) => {
           const single = fam.members.length === 1;
           const repr = single ? fam.members[0] : null;
@@ -2824,7 +2824,7 @@ function StepRace({ draft, setDraft }) {
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>
             Sottorazza — {activeFamily.name}
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1.5rem" }}>
             {activeFamily.members.map((r) => (
               <OptionCard
                 key={r.id}
@@ -2959,7 +2959,7 @@ function StepClass({ draft, setDraft }) {
         />
         <span style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: C.wineDeep, minWidth: 20 }}>{draft.level}</span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1.5rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1.5rem" }}>
         {CLASSES.map((c) => (
           <OptionCard
             key={c.id}
@@ -3029,7 +3029,7 @@ function StepClass({ draft, setDraft }) {
               <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
                 Scegli la sottoclasse del tuo personaggio.
               </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
                 {getSubclassOptions(cls.id).map((s) => (
                   <OptionCard
                     key={s.id}
@@ -3245,7 +3245,7 @@ function StepAbilities({ draft, setDraft }) {
         </div>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.9rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: "0.9rem" }}>
         {ABILITIES.map((a) => {
           const base = draft.baseScores[a.key];
           const final = (base === "" || base === undefined ? 10 : base) + (bonus[a.key] || 0) + (asiBonus[a.key] || 0);
@@ -3369,7 +3369,7 @@ function StepBackground({ draft, setDraft }) {
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1.25rem" }}>
         Racconta da dove viene il personaggio prima dell'avventura.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1.5rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1.5rem" }}>
         {BACKGROUNDS.map((b) => (
           <OptionCard
             key={b.id}
@@ -3739,7 +3739,7 @@ function StepEquipment({ draft, setDraft }) {
       </p>
 
       {cls && bg ? (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1.5rem", marginBottom: 20 }}>
           <div>
             <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>Corredo suggerito da {cls.name}</h3>
             <ul style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, paddingLeft: 18, margin: 0 }}>
@@ -5248,7 +5248,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
 
   return (
     <div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 18 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10, marginBottom: 18 }}>
         <MetricBox label="Razza" value={race ? race.name : "—"} />
         <MetricBox label="Classe" value={classLabel} hint={mcCls ? `Livello personaggio totale: ${totalLevel}` : undefined} />
         <MetricBox label="Background" value={bg ? bg.name : "—"} />
@@ -5271,7 +5271,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
             </p>
           )}
           {(draft.personalityTrait1 || draft.personalityTrait2 || draft.ideal || draft.bond || draft.flaw) && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 18px", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment }}>
+            <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "4px 18px", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment }}>
               {draft.personalityTrait1 && <p style={{ margin: 0 }}><b>Tratto:</b> {draft.personalityTrait1}</p>}
               {draft.personalityTrait2 && <p style={{ margin: 0 }}><b>Tratto:</b> {draft.personalityTrait2}</p>}
               {draft.ideal && <p style={{ margin: 0 }}><b>Ideale:</b> {draft.ideal}</p>}
@@ -5314,7 +5314,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
 
       <Divider />
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8, marginBottom: 18 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g6)", gap: 8, marginBottom: 18 }}>
         {ABILITIES.map((a) => (
           <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.6rem 0.3rem" }}>
             <div style={{ fontFamily: "'Cinzel', serif", fontSize: 10.5, color: C.textMuted }}>{a.name.slice(0, 3).toUpperCase()}</div>
@@ -5405,7 +5405,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
                 <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 6px" }}>
                   Stili di Combattimento — {cls.name}
                 </p>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10 }}>
                   {getSelectedFightingStyles(draft).map((styleId) => {
                     const style = getAvailableFightingStyles(cls.id).find((s) => s.id === styleId);
                     if (!style) return null;
@@ -5427,7 +5427,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
                 <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 6px" }}>
                   Stili di Combattimento — {mcCls.name}
                 </p>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10 }}>
                   {getSelectedFightingStyles(mc).map((styleId) => {
                     const style = getAvailableFightingStyles(mcCls.id).find((s) => s.id === styleId);
                     if (!style) return null;
@@ -5449,7 +5449,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
                 {mechanicsGroups.length > 1 && (
                   <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 6px" }}>{g.className}</p>
                 )}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10 }}>
                   {g.list.map((m) => <MetricBox key={m.key} label={m.label} value={m.value} />)}
                 </div>
               </div>
@@ -5610,7 +5610,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
 
       <Divider />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: 18 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1.5rem", marginBottom: 18 }}>
         <div>
           <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Tiri salvezza</h3>
           {savingThrows.map((s) => (
@@ -5773,7 +5773,7 @@ function FightingStyleSelector({ store, updateStore, clsId, classLevel, label = 
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "0 0 8px" }}>
         Scegli fino a {maxStyles} stile{maxStyles > 1 ? "i" : ""} di combattimento.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem" }}>
         {availableStyles.map((style) => {
           const isSelected = selectedStyles.includes(style.id);
           const isFull = selectedStyles.length >= maxStyles && !isSelected;
@@ -5832,8 +5832,8 @@ function LevelUpModal({
   const showInvocations = clsId === "warlock" && getInvocationsKnownCount(toLevel) > getInvocationsKnownCount(fromLevel);
 
   return (
-    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "2rem" }}>
-      <div style={{ background: C.parchment, padding: "1.75rem", borderRadius: 4, maxWidth: 720, width: "100%", maxHeight: "88vh", overflowY: "auto", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
+      <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 4, maxWidth: "var(--modal-max-width)", width: "100%", maxHeight: "88vh", overflowY: "auto", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
           <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 22, color: C.wineDeep, margin: 0 }}>
             Livello {toLevel}! <span style={{ color: C.textMuted, fontWeight: 400, fontSize: 15 }}>— {className}</span>
@@ -5850,7 +5850,7 @@ function LevelUpModal({
           <div style={{ marginTop: 14 }}>
             <Divider />
             <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Sottoclasse — {cls?.name}</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
               {subclassOptions.map((s) => (
                 <OptionCard key={s.id} selected={chosenSubclassId === s.id} onClick={() => onChooseSubclass(s.id)} title={s.name}>
                   <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
@@ -6075,7 +6075,7 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
               <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
                 Scegli la sottoclasse del tuo personaggio per questo livello.
               </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
                 {subclassOptions.map((s) => (
                   <OptionCard
                     key={s.id}
@@ -6117,7 +6117,7 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
               <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
                 Scegli la classe secondaria. I requisiti minimi (5e 2014) sono indicati per riferimento: l'app non blocca la scelta, la decisione finale spetta al tavolo di gioco.
               </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem", marginBottom: 10 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem", marginBottom: 10 }}>
                 {CLASSES.filter((c) => c.id !== draft.classId).map((c) => {
                   const prereq = checkMulticlassPrereq(finalScoresNow, c.id);
                   return (
@@ -6188,7 +6188,7 @@ function PlayerSheet({ character, onBack, onSaveChanges }) {
                     Disponibile dal livello {SUBCLASS_CHOICE_LEVEL[mcCls.id] || 3}.
                   </p>
                 ) : (
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
                     {mcSubclassOptions.map((s) => (
                       <OptionCard
                         key={s.id}
@@ -6303,14 +6303,14 @@ function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet, onDele
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: 12 }}>
         <div>
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>I tuoi personaggi</h1>
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.creamMuted, margin: "4px 0 0" }}>
             Dungeons &amp; Dragons · 5e 2014
           </p>
         </div>
-        <div style={{ display: "flex", gap: 10 }}>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <GhostButton icon={BookOpen} onClick={onOpenCompendium} style={{ borderColor: C.gold, color: C.gold }}>
             Compendio Incantesimi
           </GhostButton>
@@ -6332,7 +6332,7 @@ function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet, onDele
           <GoldButton icon={Plus} onClick={onNew}>Crea personaggio</GoldButton>
         </Frame>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1rem" }}>
           {characters.map((c) => {
             const race = RACES.find((r) => r.id === c.raceId);
             const cls = CLASSES.find((cl) => cl.id === c.classId);
@@ -6434,12 +6434,12 @@ function Creator({ draft, setDraft, onBack, onSave, saving }) {
   const canGoNext = !!currentKey && isStepComplete(currentKey, draft);
 
   return (
-    <div style={{ display: "flex", gap: "1.75rem" }}>
-      <div style={{ width: 210, flexShrink: 0, padding: "0.8rem 0.7rem", borderRadius: 2, background: "rgba(31, 24, 19, 0.7)", border: `1px solid rgba(224, 193, 101, 0.25)`, boxShadow: "inset 0 0 0 1px rgba(224, 193, 101, 0.08)" }}>
+    <div style={{ display: "flex", flexDirection: "var(--creator-flex-dir)", gap: "1.75rem" }}>
+      <div style={{ width: "var(--creator-sidebar-width)", flexShrink: 0, padding: "0.8rem 0.7rem", borderRadius: 2, background: "rgba(31, 24, 19, 0.7)", border: `1px solid rgba(224, 193, 101, 0.25)`, boxShadow: "inset 0 0 0 1px rgba(224, 193, 101, 0.08)" }}>
         <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18, width: "100%", justifyContent: "flex-start" }}>
           I miei personaggi
         </GhostButton>
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ display: "flex", flexDirection: "var(--creator-steps-dir)", gap: 4, overflowX: "auto" }}>
           {visibleSteps.map((s, i) => {
             const Icon = s.icon;
             const active = i === clampedStep;
@@ -6449,7 +6449,7 @@ function Creator({ draft, setDraft, onBack, onSave, saving }) {
                 key={s.key}
                 onClick={() => setStep(i)}
                 style={{
-                  display: "flex", alignItems: "center", gap: 10, textAlign: "left",
+                  display: "flex", alignItems: "center", gap: 10, textAlign: "left", flexShrink: 0, whiteSpace: "nowrap",
                   padding: "0.7rem 0.75rem", borderRadius: 3, border: `1px solid ${active ? "rgba(224,193,101,0.65)" : "transparent"}`, cursor: "pointer",
                   background: active ? "rgba(201,162,39,0.14)" : done ? "rgba(47,92,72,0.18)" : "transparent",
                   color: active ? C.gold : done ? C.cream : C.creamMuted,
@@ -6600,10 +6600,42 @@ export default function App() {
   };
 
   return (
-    <div style={{ background: C.ink, minHeight: "100vh", padding: "2rem", fontFamily: "'Spectral', serif" }}>
+    <div style={{ background: C.ink, minHeight: "100vh", padding: "var(--app-padding)", fontFamily: "'Spectral', serif" }}>
       <style>{`
         ${FONT_IMPORT}
         * { box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
+        body { overflow-x: hidden; }
+
+        /* Layout responsive SOLO per smartphone (≤640px): tablet e desktop restano invariati.
+           Le griglie a colonne fisse e le larghezze fisse dell'app referenziano queste variabili
+           invece di valori letterali, così il breakpoint è definito in un unico posto. */
+        :root {
+          --g2: 1fr 1fr;
+          --g3: repeat(3, 1fr);
+          --g6: repeat(6, 1fr);
+          --creator-flex-dir: row;
+          --creator-sidebar-width: 210px;
+          --creator-steps-dir: column;
+          --app-padding: 2rem;
+          --modal-max-width: 720px;
+          --modal-outer-padding: 2rem;
+          --frame-padding: 1.75rem;
+        }
+        @media (max-width: 640px) {
+          :root {
+            --g2: 1fr;
+            --g3: 1fr;
+            --g6: repeat(2, 1fr);
+            --creator-flex-dir: column;
+            --creator-sidebar-width: 100%;
+            --creator-steps-dir: row;
+            --app-padding: 0.85rem;
+            --modal-max-width: 100%;
+            --modal-outer-padding: 0.6rem;
+            --frame-padding: 1.1rem;
+          }
+        }
         input,
         select {
           color: ${C.textOnParchment};
