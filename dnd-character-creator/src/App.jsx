@@ -5349,7 +5349,11 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
         />
       )}
 
-      {cls && draft.level >= 2 && (
+      {/* In gioco (showPlayTools) assegnare i PF del nuovo livello è compito del popup di
+          level-up: qui, sulla scheda già salvata, la tabella storica di tutti i livelli è solo
+          ingombro. Resta visibile durante la creazione/modifica, dove serve per impostare i PF
+          di un personaggio creato direttamente a un livello superiore al 1°. */}
+      {!showPlayTools && cls && draft.level >= 2 && (
         <HpLevelManager
           cls={cls}
           hpPerLevel={draft.hpPerLevel}
@@ -5359,7 +5363,7 @@ function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
         />
       )}
 
-      {mcCls && (
+      {!showPlayTools && mcCls && (
         <HpLevelManager
           cls={mcCls}
           hpPerLevel={mc.hpPerLevel}
