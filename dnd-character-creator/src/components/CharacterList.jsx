@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, Crown, Pencil, Plus, Shield, Sword, Trash2, Wand2 } from "../icons";
+import { BookOpen, Crown, Pencil, Plus, Shield, Skull, Sword, Trash2, Wand2 } from "../icons";
 import { C } from "../theme";
 import { Frame, GhostButton, GoldButton } from "./primitives";
 import { RACES } from "../data/races";
@@ -7,7 +7,7 @@ import { CLASSES } from "../data/classes";
 import { mod } from "../lib/format";
 import { computeFinalScores, computeMaxHp, emptyDraft, getChosenSubclassId, getSubclass } from "../lib/character";
 
-export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium }) {
+export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium, onOpenMaster }) {
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   return (
@@ -22,6 +22,9 @@ export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet,
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <GhostButton icon={BookOpen} onClick={onOpenCompendium} style={{ borderColor: C.gold, color: C.gold }}>
             Compendio Incantesimi
+          </GhostButton>
+          <GhostButton icon={Skull} onClick={onOpenMaster} style={{ borderColor: C.wine, color: C.wine }}>
+            Sezione Master
           </GhostButton>
           <GoldButton icon={Plus} onClick={onNew}>Nuovo personaggio</GoldButton>
         </div>

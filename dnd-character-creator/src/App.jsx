@@ -1,22 +1,31 @@
 import { useState, useEffect, useCallback } from "react";
 import { C, FONT_IMPORT } from "./theme";
 import { emptyDraft, validateCharacter } from "./lib/character";
-import { STORAGE_KEY, storageAdapter } from "./lib/storage";
+import { emptyCreature, validateCreature } from "./lib/creature";
+import { STORAGE_KEY, CREATURES_STORAGE_KEY, storageAdapter } from "./lib/storage";
 import { PlayerSheet } from "./components/PlayerSheet";
 import { SpellCompendium } from "./components/SpellCompendium";
 import { CharacterList } from "./components/CharacterList";
 import { Creator } from "./components/Creator";
+import { MasterDashboard } from "./components/MasterDashboard";
+import { CreatureEditor } from "./components/CreatureEditor";
 
 /* ---------------------------------- APP ---------------------------------- */
 
 export default function App() {
   const [screen, setScreen] = useState("list");
+  const [compendiumFrom, setCompendiumFrom] = useState("list");
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [draft, setDraft] = useState(emptyDraft());
   const [sheetCharacter, setSheetCharacter] = useState(null);
   const [toast, setToast] = useState(null);
+
+  const [creatures, setCreatures] = useState([]);
+  const [creaturesLoading, setCreaturesLoading] = useState(true);
+  const [creatureSaving, setCreatureSaving] = useState(false);
+  const [creatureDraft, setCreatureDraft] = useState(emptyCreature());
 
   const loadCharacters = useCallback(async () => {
     setLoading(true);
@@ -31,7 +40,21 @@ export default function App() {
     }
   }, []);
 
+  const loadCreatures = useCallback(async () => {
+    setCreaturesLoading(true);
+    try {
+      const res = await storageAdapter.get(CREATURES_STORAGE_KEY, false);
+      const list = res && res.value ? JSON.parse(res.value) : [];
+      setCreatures(Array.isArray(list) ? list : []);
+    } catch (e) {
+      setCreatures([]);
+    } finally {
+      setCreaturesLoading(false);
+    }
+  }, []);
+
   useEffect(() => { loadCharacters(); }, [loadCharacters]);
+  useEffect(() => { loadCreatures(); }, [loadCreatures]);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -100,6 +123,57 @@ export default function App() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleNewCreature = () => {
+    setCreatureDraft(emptyCreature());
+    setScreen("master-edit");
+  };
+
+  const handleOpenCreature = (cr) => {
+    setCreatureDraft({ ...emptyCreature(), ...cr });
+    setScreen("master-edit");
+  };
+
+  const handleDeleteCreature = async (id) => {
+    const next = creatures.filter((c) => c.id !== id);
+    setCreatures(next);
+    try {
+      await storageAdapter.set(CREATURES_STORAGE_KEY, JSON.stringify(next), false);
+      showToast("Creatura eliminata.");
+    } catch (e) {
+      showToast("Non è stato possibile eliminare la creatura.");
+      loadCreatures();
+    }
+  };
+
+  const handleSaveCreature = async () => {
+    const errors = validateCreature(creatureDraft);
+    if (errors.length) { showToast(errors[0]); return; }
+    setCreatureSaving(true);
+    try {
+      const id = creatureDraft.id || `creature_${Date.now()}`;
+      const toSave = { ...creatureDraft, id };
+      const existingIdx = creatures.findIndex((c) => c.id === id);
+      const next = existingIdx >= 0
+        ? creatures.map((c, i) => (i === existingIdx ? toSave : c))
+        : [...creatures, toSave];
+      const result = await storageAdapter.set(CREATURES_STORAGE_KEY, JSON.stringify(next), false);
+      if (!result) throw new Error("save failed");
+      setCreatures(next);
+      setCreatureDraft(toSave);
+      showToast("Creatura salvata.");
+      setScreen("master");
+    } catch (e) {
+      showToast("Errore durante il salvataggio. Riprova.");
+    } finally {
+      setCreatureSaving(false);
+    }
+  };
+
+  const openCompendium = (from) => {
+    setCompendiumFrom(from);
+    setScreen("compendium");
   };
 
   return (
@@ -172,12 +246,35 @@ export default function App() {
           onOpen={handleOpen}
           onOpenSheet={handleOpenSheet}
           onDelete={handleDelete}
-          onOpenCompendium={() => setScreen("compendium")}
+          onOpenCompendium={() => openCompendium("list")}
+          onOpenMaster={() => setScreen("master")}
         />
       )}
 
       {screen === "compendium" && (
-        <SpellCompendium onBack={() => setScreen("list")} />
+        <SpellCompendium onBack={() => setScreen(compendiumFrom)} />
+      )}
+
+      {screen === "master" && (
+        <MasterDashboard
+          creatures={creatures}
+          loading={creaturesLoading}
+          onBack={() => setScreen("list")}
+          onNew={handleNewCreature}
+          onOpen={handleOpenCreature}
+          onDelete={handleDeleteCreature}
+          onOpenCompendium={() => openCompendium("master")}
+        />
+      )}
+
+      {screen === "master-edit" && (
+        <CreatureEditor
+          creature={creatureDraft}
+          setCreature={setCreatureDraft}
+          onBack={() => setScreen("master")}
+          onSave={handleSaveCreature}
+          saving={creatureSaving}
+        />
       )}
 
       {screen === "create" && (
