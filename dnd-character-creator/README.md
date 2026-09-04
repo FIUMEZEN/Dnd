@@ -14,3 +14,7 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the Oxlint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+
+## Salvataggio dati e backup
+
+L'app salva personaggi e creature in `localStorage`, sul dispositivo: nessun account, nessun server. Per proteggerti da una cancellazione accidentale dei dati del browser, usa i pulsanti "Esporta backup" / "Importa backup" in cima all'app per salvare (o ripristinare) un file `.json` con tutti i tuoi dati.

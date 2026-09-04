@@ -3,6 +3,8 @@ import { C, FONT_IMPORT } from "./theme";
 import { emptyDraft, validateCharacter } from "./lib/character";
 import { emptyCreature, instantiateFromBestiary, validateCreature } from "./lib/creature";
 import { STORAGE_KEY, CREATURES_STORAGE_KEY, storageAdapter } from "./lib/storage";
+import { requestPersistentStorage } from "./lib/backup";
+import { BackupControl } from "./components/BackupControl";
 import { PlayerSheet } from "./components/PlayerSheet";
 import { SpellCompendium } from "./components/SpellCompendium";
 import { CharacterList } from "./components/CharacterList";
@@ -58,6 +60,7 @@ export default function App() {
 
   useEffect(() => { loadCharacters(); }, [loadCharacters]);
   useEffect(() => { loadCreatures(); }, [loadCreatures]);
+  useEffect(() => { requestPersistentStorage(); }, []);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -263,6 +266,15 @@ export default function App() {
         select:focus, input:focus { outline: 2px solid ${C.gold}; outline-offset: 1px; }
         button:focus-visible { outline: 2px solid ${C.gold}; outline-offset: 2px; }
       `}</style>
+
+      <BackupControl
+        onImported={({ charactersImported, creaturesImported }) => {
+          loadCharacters();
+          loadCreatures();
+          showToast(`Backup importato: ${charactersImported} personaggi, ${creaturesImported} creature.`);
+        }}
+        onError={(msg) => showToast(msg)}
+      />
 
       {screen === "list" && (
         <CharacterList

@@ -94,6 +94,12 @@ export const Loader2 = (props) => (
 export const Pencil = (props) => (
   <Icon {...props}><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" /></Icon>
 );
+export const Download = (props) => (
+  <Icon {...props}><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M4 19h16" /></Icon>
+);
+export const Upload = (props) => (
+  <Icon {...props}><path d="M12 15V3" /><path d="m7 8 5-5 5 5" /><path d="M4 19h16" /></Icon>
+);
 
 export default {
   Sword,
@@ -117,4 +123,6 @@ export default {
   Skull,
   Loader2,
   Pencil,
+  Download,
+  Upload,
 };
