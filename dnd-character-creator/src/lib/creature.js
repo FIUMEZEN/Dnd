@@ -14,6 +14,8 @@ export function emptyCreature() {
     acNote: "",
     hp: 10,
     hpFormula: "",
+    currentHp: null,
+    tempHp: 0,
     speed: { camminare: 9, volare: 0, nuotare: 0, scavare: 0, scalare: 0, volareStazionario: false },
     abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
     saveProficiencies: [],
@@ -83,6 +85,17 @@ export function getSaveBonus(creature, key) {
 export function getSuggestedSkillBonus(creature, abilityKey, { expertise = false } = {}) {
   const pb = getEffectiveProficiencyBonus(creature);
   return mod(creature.abilities[abilityKey]) + pb * (expertise ? 2 : 1);
+}
+
+export function getMaxHp(creature) {
+  return Number(creature.hp) || 0;
+}
+export function getCurrentHp(creature) {
+  const max = getMaxHp(creature);
+  return creature.currentHp == null ? max : Math.min(creature.currentHp, max);
+}
+export function isCreatureDead(creature) {
+  return getCurrentHp(creature) <= 0;
 }
 
 export function getPassivePerception(creature) {

@@ -4,9 +4,9 @@ import { C } from "../theme";
 import { Frame, GhostButton, GoldButton } from "./primitives";
 import { CREATURE_SIZES } from "../data/creatures";
 import { fmtMod } from "../lib/format";
-import { getEffectiveProficiencyBonus } from "../lib/creature";
+import { getCurrentHp, getEffectiveProficiencyBonus, getMaxHp, isCreatureDead } from "../lib/creature";
 
-export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onDelete, onOpenCompendium }) {
+export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium }) {
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   return (
@@ -57,8 +57,8 @@ export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onD
                     <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "4px 0 0" }}>
                       {sizeLabel} {cr.type}{cr.typeTag ? ` (${cr.typeTag})` : ""} · GS {cr.cr} ({fmtMod(getEffectiveProficiencyBonus(cr))})
                     </p>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "2px 0 0" }}>
-                      CA {cr.ac} · {cr.hp} PF
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: isCreatureDead(cr) ? C.danger : C.textMuted, margin: "2px 0 0" }}>
+                      CA {cr.ac} · {getCurrentHp(cr)} / {getMaxHp(cr)} PF{isCreatureDead(cr) ? " · MORTO" : ""}
                     </p>
                   </div>
                   {isPendingDelete ? (
@@ -83,8 +83,11 @@ export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onD
                   )}
                 </div>
                 <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <GoldButton icon={Skull} onClick={() => onOpenSheet(cr)} style={{ padding: "0.5rem 0.9rem", fontSize: 13 }}>
+                    Scheda da Combattimento
+                  </GoldButton>
                   <GhostButton icon={Pencil} onClick={() => onOpen(cr)} style={{ borderColor: C.wine, color: C.wineDeep, background: "transparent" }}>
-                    Apri / Modifica
+                    Modifica
                   </GhostButton>
                 </div>
               </Frame>

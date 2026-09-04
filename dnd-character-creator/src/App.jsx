@@ -9,6 +9,7 @@ import { CharacterList } from "./components/CharacterList";
 import { Creator } from "./components/Creator";
 import { MasterDashboard } from "./components/MasterDashboard";
 import { CreatureEditor } from "./components/CreatureEditor";
+import { CreatureSheetView } from "./components/CreatureSheetView";
 
 /* ---------------------------------- APP ---------------------------------- */
 
@@ -26,6 +27,7 @@ export default function App() {
   const [creaturesLoading, setCreaturesLoading] = useState(true);
   const [creatureSaving, setCreatureSaving] = useState(false);
   const [creatureDraft, setCreatureDraft] = useState(emptyCreature());
+  const [sheetCreature, setSheetCreature] = useState(null);
 
   const loadCharacters = useCallback(async () => {
     setLoading(true);
@@ -133,6 +135,24 @@ export default function App() {
   const handleOpenCreature = (cr) => {
     setCreatureDraft({ ...emptyCreature(), ...cr });
     setScreen("master-edit");
+  };
+
+  const handleOpenCreatureSheet = (cr) => {
+    setSheetCreature({ ...emptyCreature(), ...cr });
+    setScreen("master-sheet");
+  };
+
+  const handleSaveCreatureSheetChanges = async (updatedCreature) => {
+    try {
+      const next = creatures.map((c) => (c.id === updatedCreature.id ? updatedCreature : c));
+      const result = await storageAdapter.set(CREATURES_STORAGE_KEY, JSON.stringify(next), false);
+      if (!result) throw new Error("save failed");
+      setCreatures(next);
+      setSheetCreature(updatedCreature);
+      showToast("Modifiche salvate.");
+    } catch (e) {
+      showToast("Errore durante il salvataggio. Riprova.");
+    }
   };
 
   const handleDeleteCreature = async (id) => {
@@ -262,6 +282,7 @@ export default function App() {
           onBack={() => setScreen("list")}
           onNew={handleNewCreature}
           onOpen={handleOpenCreature}
+          onOpenSheet={handleOpenCreatureSheet}
           onDelete={handleDeleteCreature}
           onOpenCompendium={() => openCompendium("master")}
         />
@@ -274,6 +295,14 @@ export default function App() {
           onBack={() => setScreen("master")}
           onSave={handleSaveCreature}
           saving={creatureSaving}
+        />
+      )}
+
+      {screen === "master-sheet" && sheetCreature && (
+        <CreatureSheetView
+          creature={sheetCreature}
+          onBack={() => setScreen("master")}
+          onSaveChanges={handleSaveCreatureSheetChanges}
         />
       )}
 
