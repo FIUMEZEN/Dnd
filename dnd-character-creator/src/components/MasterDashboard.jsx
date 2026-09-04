@@ -6,7 +6,7 @@ import { CREATURE_SIZES } from "../data/creatures";
 import { fmtMod } from "../lib/format";
 import { getCurrentHp, getEffectiveProficiencyBonus, getMaxHp, isCreatureDead } from "../lib/creature";
 
-export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium }) {
+export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium, onOpenBestiary }) {
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   return (
@@ -24,6 +24,9 @@ export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onO
           <GhostButton icon={BookOpen} onClick={onOpenCompendium} style={{ borderColor: C.gold, color: C.gold }}>
             Compendio Incantesimi
           </GhostButton>
+          <GhostButton icon={Skull} onClick={onOpenBestiary} style={{ borderColor: C.wine, color: C.wine }}>
+            Bestiario
+          </GhostButton>
           <GoldButton icon={Plus} onClick={onNew}>Nuova creatura</GoldButton>
         </div>
       </div>
@@ -37,9 +40,12 @@ export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onO
             Nessuna creatura ancora forgiata
           </p>
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 18px" }}>
-            Crea la tua prima creatura custom per popolare le tue avventure.
+            Crea la tua prima creatura custom, oppure parti da una del Bestiario e modificala.
           </p>
-          <GoldButton icon={Plus} onClick={onNew}>Crea creatura</GoldButton>
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+            <GoldButton icon={Plus} onClick={onNew}>Crea creatura</GoldButton>
+            <GhostButton icon={Skull} onClick={onOpenBestiary} style={{ borderColor: C.wine, color: C.wineDeep }}>Sfoglia il Bestiario</GhostButton>
+          </div>
         </Frame>
       ) : (
         <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1rem" }}>

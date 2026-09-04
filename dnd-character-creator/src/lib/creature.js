@@ -62,6 +62,41 @@ export function emptySpellGroup() {
   return { id: nextUid(), label: "A volontà", spellIds: [], customSpells: [] };
 }
 
+const nameDescList = (items) => (items || []).map((it) => ({ id: nextUid(), name: it.name || "", desc: it.desc || "" }));
+
+// Clona una voce del Bestiario (data/bestiary.js, un blocco statistiche "parziale" senza i campi
+// di gestione) in una nuova creatura completa e scollegata dal template: da qui in poi il Master
+// la modifica liberamente come qualunque creatura custom, senza intaccare il Bestiario.
+export function instantiateFromBestiary(entry) {
+  const base = emptyCreature();
+  const sc = entry.spellcasting || {};
+  return {
+    ...base,
+    ...entry,
+    id: null,
+    key: undefined,
+    speed: { ...base.speed, ...(entry.speed || {}) },
+    abilities: { ...base.abilities, ...(entry.abilities || {}) },
+    senses: { ...base.senses, ...(entry.senses || {}) },
+    saveProficiencies: [...(entry.saveProficiencies || [])],
+    saveOverrides: { ...(entry.saveOverrides || {}) },
+    skills: (entry.skills || []).map((s) => ({ id: nextUid(), name: s.name || "", bonus: s.bonus ?? 0 })),
+    traits: nameDescList(entry.traits),
+    actions: nameDescList(entry.actions),
+    bonusActions: nameDescList(entry.bonusActions),
+    reactions: nameDescList(entry.reactions),
+    legendaryActions: nameDescList(entry.legendaryActions),
+    lairActions: nameDescList(entry.lairActions),
+    spellcasting: {
+      ...base.spellcasting,
+      ...sc,
+      groups: (sc.groups || []).map((g) => ({
+        id: nextUid(), label: g.label || "", spellIds: [...(g.spellIds || [])], customSpells: [...(g.customSpells || [])],
+      })),
+    },
+  };
+}
+
 export function getCrProficiencyBonus(cr) {
   return CR_TABLE[cr]?.pb ?? 2;
 }

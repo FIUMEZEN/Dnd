@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { C, FONT_IMPORT } from "./theme";
 import { emptyDraft, validateCharacter } from "./lib/character";
-import { emptyCreature, validateCreature } from "./lib/creature";
+import { emptyCreature, instantiateFromBestiary, validateCreature } from "./lib/creature";
 import { STORAGE_KEY, CREATURES_STORAGE_KEY, storageAdapter } from "./lib/storage";
 import { PlayerSheet } from "./components/PlayerSheet";
 import { SpellCompendium } from "./components/SpellCompendium";
@@ -10,6 +10,7 @@ import { Creator } from "./components/Creator";
 import { MasterDashboard } from "./components/MasterDashboard";
 import { CreatureEditor } from "./components/CreatureEditor";
 import { CreatureSheetView } from "./components/CreatureSheetView";
+import { Bestiary } from "./components/Bestiary";
 
 /* ---------------------------------- APP ---------------------------------- */
 
@@ -129,6 +130,11 @@ export default function App() {
 
   const handleNewCreature = () => {
     setCreatureDraft(emptyCreature());
+    setScreen("master-edit");
+  };
+
+  const handleUseBestiaryEntry = (entry) => {
+    setCreatureDraft(instantiateFromBestiary(entry));
     setScreen("master-edit");
   };
 
@@ -285,7 +291,12 @@ export default function App() {
           onOpenSheet={handleOpenCreatureSheet}
           onDelete={handleDeleteCreature}
           onOpenCompendium={() => openCompendium("master")}
+          onOpenBestiary={() => setScreen("bestiary")}
         />
+      )}
+
+      {screen === "bestiary" && (
+        <Bestiary onBack={() => setScreen("master")} onUse={handleUseBestiaryEntry} />
       )}
 
       {screen === "master-edit" && (

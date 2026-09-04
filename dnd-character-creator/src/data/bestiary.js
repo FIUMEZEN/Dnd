@@ -1,0 +1,651 @@
+/* ---------------------------------- BESTIARIO ---------------------------------- */
+// Catalogo di mostri classici (SRD 5e 2014, tradotti in italiano) usati come PUNTO DI PARTENZA
+// per una creatura custom: selezionandone uno dal Bestiario se ne clona il blocco statistiche in
+// una nuova creatura completamente modificabile (vedi instantiateFromBestiary in lib/creature.js).
+// Le voci qui sotto sono volutamente "parziali": solo i campi del blocco statistiche vero e
+// proprio, non i campi di gestione (id, currentHp, tempHp, ecc.) che vengono aggiunti alla clonazione.
+// Numeri e formulazioni seguono da vicino l'SRD ma restano un punto di partenza: il Master può
+// sempre correggerli dall'editor dopo averli aggiunti.
+
+export const BESTIARY = [
+  // ---- GS 0 ----
+  {
+    key: "ratto", name: "Ratto", size: "minuscola", type: "Bestia", alignment: "Non allineato",
+    ac: 10, hp: 1, hpFormula: "1d4 - 1", speed: { camminare: 6 },
+    abilities: { str: 2, dex: 11, con: 9, int: 2, wis: 10, cha: 4 },
+    senses: { darkvision: 9 }, languages: "—", cr: "0",
+    traits: [{ name: "Olfatto Acuto", desc: "Il ratto ha vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto." }],
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +0 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno perforante." }],
+  },
+  {
+    key: "corvo", name: "Corvo", size: "minuscola", type: "Bestia", alignment: "Non allineato",
+    ac: 12, hp: 1, hpFormula: "1d4 - 1", speed: { camminare: 3, volare: 15 },
+    abilities: { str: 2, dex: 14, con: 8, int: 2, wis: 12, cha: 6 },
+    senses: {}, languages: "—", cr: "0",
+    traits: [{ name: "Mimetismo", desc: "Il corvo può imitare semplici suoni che ha sentito, come un discorso frammentario e un pianto di bambino. Una creatura che sente i suoni può capire che sono imitati con una prova di Saggezza (Intuizione) contrapposta alla prova di Carisma (Inganno) del corvo." }],
+    actions: [{ name: "Becco", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno perforante." }],
+  },
+  {
+    key: "gatto-selvatico", name: "Gatto Selvatico", size: "minuscola", type: "Bestia", alignment: "Non allineato",
+    ac: 12, hp: 2, hpFormula: "1d4", speed: { camminare: 12, scalare: 9 },
+    abilities: { str: 3, dex: 15, con: 10, int: 3, wis: 12, cha: 7 },
+    senses: {}, languages: "—", cr: "0",
+    skills: [{ name: "Percezione", bonus: 3 }],
+    traits: [],
+    actions: [{ name: "Artigli", desc: "Attacco con arma da mischia: +0 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno tagliente." }],
+  },
+
+  // ---- GS 1/8 ----
+  {
+    key: "kobold", name: "Kobold", size: "piccola", type: "Umanoide", typeTag: "kobold", alignment: "Legale malvagio",
+    ac: 12, hp: 5, hpFormula: "2d6 - 2", speed: { camminare: 9 },
+    abilities: { str: 7, dex: 15, con: 9, int: 8, wis: 7, cha: 8 },
+    senses: { darkvision: 18 }, languages: "Draconico", cr: "1/8",
+    traits: [
+      { name: "Sfortuna Innata", desc: "Se un kobold fallisce un tiro d'attacco, un tiro salvezza o una prova di caratteristica, può tirare nuovamente il dado con svantaggio se un suo alleato entro 1,5 m e non incapacitato spende la sua reazione per aiutarlo." },
+      { name: "Sensibilità alla Luce del Sole", desc: "Il kobold ha svantaggio ai tiri per colpire e alle prove di Saggezza (Percezione) basate sulla vista quando lui, il bersaglio o quanto sta cercando di percepire è alla luce del sole." },
+    ],
+    actions: [{ name: "Lancia", desc: "Attacco con arma da mischia o a distanza: +4 per colpire, portata 1,5 m o gittata 6/18 m, un bersaglio. Colpito: 4 (1d6 + 1) danni perforanti in mischia, o 3 (1d4 + 1) a distanza." }],
+  },
+  {
+    key: "topo-gigante", name: "Topo Gigante", size: "piccola", type: "Bestia", alignment: "Non allineato",
+    ac: 10, hp: 7, hpFormula: "2d6", speed: { camminare: 9 },
+    abilities: { str: 7, dex: 11, con: 11, int: 2, wis: 10, cha: 4 },
+    senses: { darkvision: 18 }, languages: "—", cr: "1/8",
+    traits: [{ name: "Olfatto Acuto", desc: "Il topo ha vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto." }],
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +2 per colpire, portata 1,5 m, un bersaglio. Colpito: 4 (1d4 + 2) danni perforanti." }],
+  },
+  {
+    key: "sciacallo", name: "Sciacallo", size: "piccola", type: "Bestia", alignment: "Non allineato",
+    ac: 12, hp: 3, hpFormula: "1d6", speed: { camminare: 12 },
+    abilities: { str: 8, dex: 15, con: 11, int: 3, wis: 12, cha: 6 },
+    senses: {}, languages: "—", cr: "1/8",
+    skills: [{ name: "Percezione", bonus: 3 }],
+    traits: [{ name: "Olfatto Acuto", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto." }, { name: "Tattiche di Branco", desc: "Vantaggio ai tiri per colpire contro una creatura se almeno un alleato dello sciacallo è entro 1,5 m dal bersaglio e non è incapacitato." }],
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 2 (1d4) danni perforanti." }],
+  },
+
+  // ---- GS 1/4 ----
+  {
+    key: "goblin", name: "Goblin", size: "piccola", type: "Umanoide", typeTag: "goblinoide", alignment: "Neutrale malvagio",
+    ac: 15, acNote: "armatura di cuoio, scudo", hp: 7, hpFormula: "2d6", speed: { camminare: 9 },
+    abilities: { str: 8, dex: 14, con: 10, int: 10, wis: 8, cha: 8 },
+    skills: [{ name: "Furtività", bonus: 6 }],
+    senses: { darkvision: 18 }, languages: "Comune, Goblinoide", cr: "1/4",
+    traits: [{ name: "Tattiche Nimbili", desc: "Il goblin può usare l'azione Scattare o Ritirarsi come azione bonus in ogni suo turno." }],
+    actions: [
+      { name: "Scimitarra", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 5 (1d6 + 2) danni taglienti." },
+      { name: "Arco Corto", desc: "Attacco con arma a distanza: +4 per colpire, gittata 24/96 m, un bersaglio. Colpito: 5 (1d6 + 2) danni perforanti." },
+    ],
+  },
+  {
+    key: "scheletro", name: "Scheletro", size: "media", type: "Non Morto", alignment: "Legale malvagio",
+    ac: 13, acNote: "armatura d'osso", hp: 13, hpFormula: "2d8 + 4", speed: { camminare: 9 },
+    abilities: { str: 10, dex: 14, con: 15, int: 6, wis: 8, cha: 5 },
+    vulnerabilities: "Contundente", immunities: "Veleno",
+    conditionImmunities: "Avvelenato, Esausto",
+    senses: { darkvision: 18 }, languages: "Capisce i linguaggi noti in vita ma non può parlare", cr: "1/4",
+    actions: [
+      { name: "Spada Corta", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 5 (1d6 + 2) danni perforanti." },
+      { name: "Arco Corto", desc: "Attacco con arma a distanza: +4 per colpire, gittata 24/96 m, un bersaglio. Colpito: 5 (1d6 + 2) danni perforanti." },
+    ],
+  },
+  {
+    key: "zombie", name: "Zombie", size: "media", type: "Non Morto", alignment: "Neutrale malvagio",
+    ac: 8, hp: 22, hpFormula: "3d8 + 9", speed: { camminare: 6 },
+    abilities: { str: 13, dex: 6, con: 16, int: 3, wis: 6, cha: 5 },
+    saveProficiencies: ["wis"],
+    immunities: "Veleno", conditionImmunities: "Avvelenato",
+    senses: { darkvision: 18 }, languages: "Capisce i linguaggi noti in vita ma non può parlare", cr: "1/4",
+    traits: [{ name: "Fortitudine da Non Morto", desc: "Se un danno riduce lo zombie a 0 PF, deve effettuare un tiro salvezza su Costituzione con CD 5 + danno subito (a meno che il danno non sia radioso o da un colpo critico). Se ha successo, scende a 1 PF invece che a 0." }],
+    actions: [{ name: "Pugno Poderoso", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 4 (1d6 + 1) danni contundenti." }],
+  },
+  {
+    key: "lupo", name: "Lupo", size: "media", type: "Bestia", alignment: "Non allineato",
+    ac: 13, acNote: "pelle spessa", hp: 11, hpFormula: "2d8 + 2", speed: { camminare: 12 },
+    abilities: { str: 12, dex: 15, con: 12, int: 3, wis: 12, cha: 6 },
+    skills: [{ name: "Percezione", bonus: 3 }, { name: "Furtività", bonus: 4 }],
+    senses: {}, languages: "—", cr: "1/4",
+    traits: [
+      { name: "Olfatto e Udito Acuti", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto o sull'udito." },
+      { name: "Tattiche di Branco", desc: "Vantaggio ai tiri per colpire contro una creatura se almeno un alleato del lupo è entro 1,5 m dal bersaglio e non è incapacitato." },
+    ],
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (2d4 + 2) danni perforanti. Se il bersaglio è una creatura, deve superare un TS su Forza (CD 11) o essere atterrato." }],
+  },
+  {
+    key: "serpente-velenoso-gigante", name: "Serpente Velenoso Gigante", size: "media", type: "Bestia", alignment: "Non allineato",
+    ac: 14, hp: 11, hpFormula: "2d8 + 2", speed: { camminare: 9, nuotare: 9 },
+    abilities: { str: 10, dex: 16, con: 12, int: 2, wis: 10, cha: 3 },
+    senses: { blindsight: 3 }, languages: "—", cr: "1/4",
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno perforante più 10 (3d6) danni da veleno. TS su Costituzione (CD 11) dimezza il danno da veleno." }],
+  },
+
+  // ---- GS 1/2 ----
+  {
+    key: "orco", name: "Orco", size: "media", type: "Umanoide", typeTag: "orco", alignment: "Caotico malvagio",
+    ac: 13, acNote: "armatura di pelle", hp: 15, hpFormula: "2d8 + 6", speed: { camminare: 12 },
+    abilities: { str: 16, dex: 12, con: 16, int: 7, wis: 11, cha: 10 },
+    skills: [{ name: "Intimidire", bonus: 2 }],
+    senses: { darkvision: 18 }, languages: "Comune, Orchesco", cr: "1/2",
+    traits: [{ name: "Aggressivo", desc: "Come azione bonus, l'orco può muoversi fino alla sua velocità verso un nemico a lui visibile." }],
+    actions: [{ name: "Ascia Bipenne", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 9 (1d12 + 3) danni taglienti." }],
+  },
+  {
+    key: "hobgoblin", name: "Hobgoblin", size: "media", type: "Umanoide", typeTag: "goblinoide", alignment: "Legale malvagio",
+    ac: 18, acNote: "cotta di maglia, scudo", hp: 11, hpFormula: "2d8 + 2", speed: { camminare: 9 },
+    abilities: { str: 13, dex: 12, con: 12, int: 10, wis: 10, cha: 9 },
+    senses: { darkvision: 18 }, languages: "Comune, Goblinoide", cr: "1/2",
+    traits: [{ name: "Coraggio del Gruppo", desc: "L'hobgoblin ha vantaggio ai tiri salvezza contro la paura finché è entro 9 m da un alleato non incapacitato." }],
+    actions: [
+      { name: "Spadone Lungo", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 6 (1d8 + 2) danni taglienti." },
+      { name: "Arco Lungo", desc: "Attacco con arma a distanza: +3 per colpire, gittata 45/180 m, un bersaglio. Colpito: 5 (1d8 + 1) danni perforanti." },
+    ],
+  },
+  {
+    key: "ghoul", name: "Ghoul", size: "media", type: "Non Morto", alignment: "Caotico malvagio",
+    ac: 12, hp: 22, hpFormula: "5d8", speed: { camminare: 9 },
+    abilities: { str: 13, dex: 15, con: 10, int: 7, wis: 10, cha: 6 },
+    immunities: "Veleno", conditionImmunities: "Avvelenato, Incantato, Esausto",
+    senses: { darkvision: 18 }, languages: "Comune", cr: "1/2",
+    actions: [
+      { name: "Morso", desc: "Attacco con arma da mischia: +2 per colpire, portata 1,5 m, un bersaglio. Colpito: 4 (2d4 - 1) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio che non sia un elfo o un non morto. Colpito: 6 (2d4 + 2) danni taglienti; il bersaglio deve superare un TS su Costituzione (CD 10) o essere paralizzato per 1 minuto." },
+    ],
+  },
+  {
+    key: "orso-nero", name: "Orso Nero", size: "media", type: "Bestia", alignment: "Non allineato",
+    ac: 11, hp: 19, hpFormula: "3d8 + 6", speed: { camminare: 12, scalare: 9, nuotare: 9 },
+    abilities: { str: 15, dex: 10, con: 14, int: 2, wis: 12, cha: 7 },
+    skills: [{ name: "Percezione", bonus: 3 }],
+    senses: {}, languages: "—", cr: "1/2",
+    traits: [{ name: "Olfatto Acuto", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto." }],
+    actions: [
+      { name: "Multiattacco", desc: "L'orso attacca con Morso e Artigli." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 5 (1d6 + 2) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (2d4 + 2) danni taglienti." },
+    ],
+  },
+  {
+    key: "gnoll", name: "Gnoll", size: "media", type: "Umanoide", typeTag: "gnoll", alignment: "Caotico malvagio",
+    ac: 15, acNote: "armatura di cuoio, scudo", hp: 22, hpFormula: "5d8", speed: { camminare: 9 },
+    abilities: { str: 14, dex: 12, con: 11, int: 6, wis: 10, cha: 7 },
+    senses: { darkvision: 18 }, languages: "Gnoll", cr: "1/2",
+    traits: [{ name: "Furia dell'Iena", desc: "Il gnoll ha vantaggio ai tiri per colpire in mischia contro una creatura ferita." }],
+    actions: [
+      { name: "Ascia Bipenne", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 8 (1d12 + 2) danni taglienti." },
+      { name: "Arco Corto", desc: "Attacco con arma a distanza: +3 per colpire, gittata 24/96 m, un bersaglio. Colpito: 5 (1d6 + 2) danni perforanti." },
+    ],
+  },
+
+  // ---- GS 1 ----
+  {
+    key: "orso-bruno", name: "Orso Bruno", size: "grande", type: "Bestia", alignment: "Non allineato",
+    ac: 11, hp: 34, hpFormula: "4d10 + 12", speed: { camminare: 12, scalare: 9 },
+    abilities: { str: 19, dex: 10, con: 16, int: 2, wis: 13, cha: 7 },
+    skills: [{ name: "Percezione", bonus: 3 }],
+    senses: {}, languages: "—", cr: "1",
+    traits: [{ name: "Olfatto Acuto", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto." }],
+    actions: [
+      { name: "Multiattacco", desc: "L'orso attacca con Morso e Artigli." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +6 per colpire, portata 1,5 m, un bersaglio. Colpito: 9 (1d8 + 5) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +6 per colpire, portata 1,5 m, un bersaglio. Colpito: 8 (1d6 + 5) danni taglienti." },
+    ],
+  },
+  {
+    key: "lupo-terrificante", name: "Lupo Terrificante", size: "grande", type: "Bestia", alignment: "Non allineato",
+    ac: 14, hp: 37, hpFormula: "5d10 + 10", speed: { camminare: 15 },
+    abilities: { str: 17, dex: 15, con: 15, int: 3, wis: 12, cha: 7 },
+    skills: [{ name: "Percezione", bonus: 3 }, { name: "Furtività", bonus: 4 }],
+    senses: {}, languages: "—", cr: "1",
+    traits: [
+      { name: "Olfatto e Udito Acuti", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto o sull'udito." },
+      { name: "Tattiche di Branco", desc: "Vantaggio ai tiri per colpire contro una creatura se almeno un alleato del lupo è entro 1,5 m dal bersaglio e non è incapacitato." },
+    ],
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 10 (2d6 + 3) danni perforanti; il bersaglio deve superare un TS su Forza (CD 13) o essere atterrato." }],
+  },
+  {
+    key: "ragno-gigante", name: "Ragno Gigante", size: "grande", type: "Bestia", alignment: "Non allineato",
+    ac: 14, hp: 26, hpFormula: "4d10 + 4", speed: { camminare: 9, scalare: 9 },
+    abilities: { str: 14, dex: 16, con: 12, int: 2, wis: 11, cha: 4 },
+    skills: [{ name: "Furtività", bonus: 7 }],
+    senses: { blindsight: 3, darkvision: 9 }, languages: "—", cr: "1",
+    traits: [
+      { name: "Camminatore di Ragnatele", desc: "Il ragno ignora le restrizioni al movimento causate da ragnatele." },
+      { name: "Senso della Ragnatela", desc: "Finché è in contatto con una ragnatela, il ragno conosce la posizione esatta di ogni altra creatura in contatto con la stessa ragnatela." },
+    ],
+    actions: [
+      { name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (1d8 + 3) danni perforanti più 9 (2d8) danni da veleno; TS su Costituzione (CD 11) dimezza il danno da veleno." },
+      { name: "Ragnatela (recupera 5-6)", desc: "Attacco a distanza con arma: +5 per colpire, gittata 18/36 m, un bersaglio. Colpito: il bersaglio è invischiato in una ragnatela e trattenuto finché non si libera (prova di Forza CD 12)." },
+    ],
+  },
+  {
+    key: "arpia", name: "Arpia", size: "media", type: "Mostruosità", alignment: "Caotico malvagio",
+    ac: 11, hp: 38, hpFormula: "7d8 + 7", speed: { camminare: 6, volare: 12 },
+    abilities: { str: 12, dex: 13, con: 13, int: 7, wis: 10, cha: 13 },
+    senses: {}, languages: "Comune", cr: "1",
+    actions: [
+      { name: "Multiattacco", desc: "L'arpia attacca due volte con gli Artigli." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 6 (2d4 + 2) danni taglienti." },
+      { name: "Canto Ammaliante", desc: "L'arpia canta una melodia magica. Ogni umanoide entro 90 m che la sente deve superare un TS su Saggezza (CD 11) o essere ammaliato finché il canto continua; una creatura ammaliata cammina verso l'arpia il più rapidamente possibile." },
+    ],
+  },
+  {
+    key: "bugbear", name: "Bugbear", size: "media", type: "Umanoide", typeTag: "goblinoide", alignment: "Caotico malvagio",
+    ac: 16, acNote: "armatura di pelle, scudo", hp: 27, hpFormula: "5d8 + 5", speed: { camminare: 9 },
+    abilities: { str: 15, dex: 14, con: 13, int: 8, wis: 11, cha: 9 },
+    skills: [{ name: "Furtività", bonus: 6 }],
+    senses: { darkvision: 18 }, languages: "Comune, Goblinoide", cr: "1",
+    traits: [{ name: "Attacco a Sorpresa", desc: "Se il bugbear coglie di sorpresa una creatura nel primo turno di combattimento, infligge 7 (2d6) danni extra con il suo primo attacco andato a segno." }],
+    actions: [{ name: "Mazzafrusto", desc: "Attacco con arma da mischia: +4 per colpire, portata 3 m, un bersaglio. Colpito: 11 (2d8 + 2) danni contundenti." }],
+  },
+  {
+    key: "coccodrillo-gigante", name: "Coccodrillo Gigante", size: "enorme", type: "Bestia", alignment: "Non allineato",
+    ac: 14, hp: 85, hpFormula: "9d12 + 27", speed: { camminare: 6, nuotare: 9 },
+    abilities: { str: 21, dex: 9, con: 17, int: 2, wis: 10, cha: 7 },
+    skills: [{ name: "Furtività", bonus: 2 }], senses: {}, languages: "—", cr: "5",
+    traits: [{ name: "Trattenere il Respiro", desc: "Il coccodrillo può trattenere il respiro per 30 minuti." }],
+    actions: [
+      { name: "Multiattacco", desc: "Il coccodrillo attacca una volta con il Morso e una volta con la Coda." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +8 per colpire, portata 1,5 m, un bersaglio. Colpito: 21 (3d10 + 5) danni perforanti; se il bersaglio è una creatura, viene afferrato (CD fuga 16) e non può essere trascinato da altri afferramenti." },
+      { name: "Coda", desc: "Attacco con arma da mischia: +8 per colpire, portata 3 m, un bersaglio non afferrato. Colpito: 14 (2d8 + 5) danni contundenti; se è una creatura, deve superare un TS su Forza (CD 16) o essere atterrata." },
+    ],
+  },
+
+  // ---- GS 2-3 ----
+  {
+    key: "ogre", name: "Ogre", size: "grande", type: "Gigante", alignment: "Caotico malvagio",
+    ac: 11, acNote: "armatura di pelle", hp: 59, hpFormula: "7d10 + 21", speed: { camminare: 12 },
+    abilities: { str: 19, dex: 8, con: 16, int: 5, wis: 7, cha: 7 },
+    senses: { darkvision: 18 }, languages: "Gigantesco, Comune", cr: "2",
+    actions: [{ name: "Mazza Ferrata", desc: "Attacco con arma da mischia: +6 per colpire, portata 1,5 m, un bersaglio. Colpito: 13 (2d8 + 4) danni contundenti." }],
+  },
+  {
+    key: "grifone", name: "Grifone", size: "grande", type: "Mostruosità", alignment: "Non allineato",
+    ac: 12, hp: 59, hpFormula: "7d10 + 21", speed: { camminare: 9, volare: 24 },
+    abilities: { str: 18, dex: 15, con: 16, int: 2, wis: 13, cha: 8 },
+    skills: [{ name: "Percezione", bonus: 5 }], senses: {}, languages: "—", cr: "2",
+    traits: [{ name: "Vista Acuta", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sulla vista." }],
+    actions: [
+      { name: "Multiattacco", desc: "Il grifone attacca con Becco e Artigli." },
+      { name: "Becco", desc: "Attacco con arma da mischia: +6 per colpire, portata 1,5 m, un bersaglio. Colpito: 10 (2d6 + 3) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +6 per colpire, portata 1,5 m, un bersaglio. Colpito: 13 (2d8 + 4) danni taglienti." },
+    ],
+  },
+  {
+    key: "ghast", name: "Ghast", size: "media", type: "Non Morto", alignment: "Caotico malvagio",
+    ac: 13, hp: 36, hpFormula: "8d8", speed: { camminare: 9 },
+    abilities: { str: 16, dex: 17, con: 10, int: 11, wis: 10, cha: 8 },
+    immunities: "Veleno", conditionImmunities: "Avvelenato",
+    senses: { darkvision: 18 }, languages: "Comune", cr: "2",
+    traits: [
+      { name: "Tanfo da Morto", desc: "Ogni creatura che inizia il proprio turno entro 1,5 m dal ghast deve superare un TS su Costituzione (CD 10) o essere avvelenata fino all'inizio del suo turno successivo." },
+      { name: "Fortitudine da Non Morto", desc: "Immune al condizione avvelenato (che infliggerebbe altrimenti debolezza)." },
+    ],
+    actions: [
+      { name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 12 (2d8 + 3) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio che non sia un elfo o un non morto. Colpito: 10 (2d6 + 3) danni taglienti; TS su Costituzione (CD 10) o paralizzato per 1 minuto." },
+    ],
+  },
+  {
+    key: "doppelganger", name: "Doppelganger", size: "media", type: "Mostruosità", alignment: "Neutrale", ac: 14,
+    hp: 52, hpFormula: "8d8 + 16", speed: { camminare: 9 },
+    abilities: { str: 11, dex: 18, con: 14, int: 11, wis: 12, cha: 14 },
+    skills: [{ name: "Intuizione", bonus: 3 }, { name: "Inganno", bonus: 6 }],
+    conditionImmunities: "Affascinato", senses: {}, languages: "Comune", cr: "3",
+    traits: [
+      { name: "Mutaforma", desc: "Il doppelganger può usare un'azione per trasformarsi in un umanoide di taglia piccola o media che ha visto, o per riprendere la sua forma vera. Le sue statistiche restano le stesse in ogni forma." },
+      { name: "Percezione delle Menti Ambigue", desc: "Il doppelganger ha vantaggio ai tiri salvezza contro ogni effetto che rileverebbe la sua natura mutaforma o leggerebbe i suoi pensieri." },
+    ],
+    actions: [
+      { name: "Multiattacco", desc: "Il doppelganger attacca due volte." },
+      { name: "Pugni", desc: "Attacco con arma da mischia: +6 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (1d6 + 4) danni contundenti." },
+    ],
+  },
+  {
+    key: "manticora", name: "Manticora", size: "grande", type: "Mostruosità", alignment: "Legale malvagio",
+    ac: 14, acNote: "armatura naturale", hp: 68, hpFormula: "8d10 + 24", speed: { camminare: 9, volare: 15 },
+    abilities: { str: 17, dex: 16, con: 17, int: 7, wis: 12, cha: 8 },
+    senses: {}, languages: "Comune", cr: "3",
+    actions: [
+      { name: "Multiattacco", desc: "La manticora attacca tre volte: una con il Morso e due con gli Artigli, oppure tre con la Coda a Spine (senza recupero)." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (1d8 + 3) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 6 (1d6 + 3) danni taglienti." },
+      { name: "Coda a Spine (recupera 3-4 spine, max 24)", desc: "Attacco a distanza con arma: +5 per colpire, gittata 30/36 m, un bersaglio. Colpito: 7 (1d8 + 3) danni perforanti." },
+    ],
+  },
+  {
+    key: "minotauro", name: "Minotauro", size: "grande", type: "Mostruosità", alignment: "Caotico malvagio",
+    ac: 14, acNote: "armatura naturale", hp: 76, hpFormula: "9d10 + 27", speed: { camminare: 12 },
+    abilities: { str: 18, dex: 11, con: 16, int: 6, wis: 16, cha: 9 },
+    skills: [{ name: "Percezione", bonus: 5 }], senses: { darkvision: 18 }, languages: "Comprende Abissale ma non parla", cr: "3",
+    traits: [
+      { name: "Carica", desc: "Se il minotauro si muove di almeno 3 m in linea retta verso un bersaglio e poi lo colpisce con un attacco di Corna nello stesso turno, il bersaglio subisce 9 (2d8) danni contundenti extra. Se il danno riduce il bersaglio a 0 PF, questo viene atterrato invece che ucciso." },
+      { name: "Fiuto Labirintico", desc: "Il minotauro può ripercorrere a memoria ogni percorso che ha già seguito." },
+    ],
+    actions: [{ name: "Ascia Bipenne Poderosa", desc: "Attacco con arma da mischia: +6 per colpire, portata 3 m, un bersaglio. Colpito: 17 (2d12 + 4) danni taglienti." }],
+  },
+  {
+    key: "orso-gufo", name: "Orso-Gufo", size: "grande", type: "Mostruosità", alignment: "Non allineato",
+    ac: 13, hp: 59, hpFormula: "7d10 + 21", speed: { camminare: 12 },
+    abilities: { str: 20, dex: 12, con: 17, int: 3, wis: 12, cha: 7 },
+    skills: [{ name: "Percezione", bonus: 3 }], senses: { darkvision: 18 }, languages: "—", cr: "3",
+    traits: [{ name: "Vista e Olfatto Acuti", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sulla vista o sull'olfatto." }],
+    actions: [
+      { name: "Multiattacco", desc: "L'orso-gufo attacca con Becco e Artigli." },
+      { name: "Becco", desc: "Attacco con arma da mischia: +7 per colpire, portata 1,5 m, un bersaglio. Colpito: 10 (1d10 + 5) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +7 per colpire, portata 1,5 m, un bersaglio. Colpito: 14 (2d8 + 5) danni taglienti." },
+    ],
+  },
+  {
+    key: "wight", name: "Wight", size: "media", type: "Non Morto", alignment: "Neutrale malvagio",
+    ac: 14, acNote: "armatura di cuoio borchiata", hp: 45, hpFormula: "6d8 + 18", speed: { camminare: 9 },
+    abilities: { str: 15, dex: 14, con: 16, int: 10, wis: 13, cha: 15 },
+    skills: [{ name: "Furtività", bonus: 4 }], resistances: "Necrotico",
+    immunities: "Veleno", conditionImmunities: "Avvelenato",
+    senses: { darkvision: 18 }, languages: "Le lingue conosciute in vita", cr: "3",
+    actions: [
+      { name: "Multiattacco", desc: "Il wight attacca due volte, solo una delle quali può essere con la Spada Corta Assorbivita." },
+      { name: "Spada Corta Assorbivita", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 6 (1d6 + 3) danni perforanti più 3 (1d6) danni necrotici; se il bersaglio è umanoide, deve superare un TS su Costituzione (CD 13) o i suoi PF massimi si riducono di una quantità pari al danno necrotico subito." },
+      { name: "Arco Lungo", desc: "Attacco con arma a distanza: +4 per colpire, gittata 45/180 m, un bersaglio. Colpito: 6 (1d8 + 2) danni perforanti." },
+    ],
+  },
+  {
+    key: "licantropo", name: "Licantropo (Uomo Lupo)", size: "media", type: "Umanoide", typeTag: "umano, licantropo", alignment: "Caotico malvagio",
+    ac: 12, hp: 58, hpFormula: "9d8 + 18", speed: { camminare: 9 },
+    abilities: { str: 15, dex: 13, con: 14, int: 10, wis: 11, cha: 10 },
+    skills: [{ name: "Percezione", bonus: 4 }], resistances: "Contundente, Perforante, Tagliente (da armi non magiche e non d'argento)",
+    senses: {}, languages: "Comune (non in forma di lupo)", cr: "3",
+    traits: [{ name: "Mutaforma", desc: "Può trasformarsi in un lupo gigante o in una forma ibrida uomo-lupo, e viceversa, come azione." }],
+    actions: [
+      { name: "Multiattacco (forma umana o ibrida)", desc: "In forma umana attacca due volte con la Spadaccia; in forma ibrida attacca con Morso e Artigli." },
+      { name: "Morso (forma di lupo o ibrida)", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 6 (1d8 + 2) danni perforanti; se umanoide, TS su Costituzione (CD 12) o infetto da licantropia." },
+    ],
+  },
+
+  // ---- GS 4-5 ----
+  {
+    key: "ettin", name: "Ettin", size: "grande", type: "Gigante", alignment: "Caotico malvagio",
+    ac: 12, acNote: "armatura naturale", hp: 85, hpFormula: "10d10 + 30", speed: { camminare: 12 },
+    abilities: { str: 21, dex: 8, con: 17, int: 6, wis: 10, cha: 8 },
+    skills: [{ name: "Percezione", bonus: 4 }], senses: { darkvision: 18 }, languages: "Gigantesco, Goblinoide", cr: "4",
+    traits: [{ name: "Due Teste", desc: "L'ettin ha vantaggio ai tiri per colpire e ai TS contro essere accecato, incantato, assordato, spaventato, stordito e privato dei sensi." }, { name: "Vigile", desc: "Con due teste, l'ettin non può essere colto di sorpresa mentre almeno una è sveglia." }],
+    actions: [
+      { name: "Multiattacco", desc: "L'ettin attacca una volta con Ascia da Battaglia e una volta con Mazza Chiodata." },
+      { name: "Ascia da Battaglia", desc: "Attacco con arma da mischia: +7 per colpire, portata 3 m, un bersaglio. Colpito: 14 (2d8 + 5) danni taglienti." },
+      { name: "Mazza Chiodata", desc: "Attacco con arma da mischia: +7 per colpire, portata 3 m, un bersaglio. Colpito: 15 (2d8 + 6) danni contundenti." },
+    ],
+  },
+  {
+    key: "spettro-fantasma", name: "Spettro (Fantasma)", size: "media", type: "Non Morto", alignment: "Qualsiasi allineamento",
+    ac: 11, hp: 45, hpFormula: "10d8", speed: { camminare: 0, volare: 12 },
+    abilities: { str: 7, dex: 13, con: 10, int: 10, wis: 12, cha: 17 },
+    resistances: "Acido, Fuoco, Fulmine, Tagliente, Perforante, Contundente da armi non magiche",
+    immunities: "Freddo, Necrotico, Veleno", conditionImmunities: "Afferrato, Paralizzato, Privo di Sensi (tranne che per la morte), Prono, Avvelenato, Trattenuto",
+    senses: { darkvision: 18 }, languages: "Le lingue conosciute in vita", cr: "4",
+    traits: [
+      { name: "Volo Stazionario", desc: "Lo spettro può volare e restare fermo a mezz'aria." },
+      { name: "Incorporeità", desc: "Lo spettro può muoversi attraverso oggetti e altre creature come se fossero terreno difficile. Subisce 5 (1d10) danni di forza se termina il turno dentro un oggetto." },
+    ],
+    actions: [{ name: "Tocco Consumante", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 17 (4d6 + 3) danni necrotici; il bersaglio vede i suoi PF massimi ridotti di pari quantità." }],
+  },
+  {
+    key: "troll", name: "Troll", size: "grande", type: "Gigante", alignment: "Caotico malvagio",
+    ac: 15, acNote: "armatura naturale", hp: 84, hpFormula: "8d10 + 40", speed: { camminare: 9 },
+    abilities: { str: 18, dex: 13, con: 20, int: 7, wis: 9, cha: 7 },
+    skills: [{ name: "Percezione", bonus: 2 }], senses: { darkvision: 18 }, languages: "Gigantesco", cr: "5",
+    traits: [{ name: "Rigenerazione", desc: "Il troll recupera 10 PF all'inizio del suo turno. Se subisce danni da acido o fuoco, questo tratto non funziona all'inizio del turno successivo. Muore solo se inizia il turno a 0 PF e non rigenera." }],
+    actions: [
+      { name: "Multiattacco", desc: "Il troll attacca una volta con il Morso e due volte con gli Artigli." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +7 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (1d6 + 4) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +7 per colpire, portata 3 m, un bersaglio. Colpito: 11 (2d6 + 4) danni taglienti." },
+    ],
+  },
+  {
+    key: "gigante-delle-colline", name: "Gigante delle Colline", size: "enorme", type: "Gigante", alignment: "Caotico malvagio",
+    ac: 13, acNote: "armatura di pelle", hp: 105, hpFormula: "10d12 + 40", speed: { camminare: 12 },
+    abilities: { str: 21, dex: 8, con: 19, int: 5, wis: 9, cha: 6 },
+    skills: [{ name: "Percezione", bonus: 2 }], senses: {}, languages: "Gigantesco", cr: "5",
+    actions: [
+      { name: "Multiattacco", desc: "Il gigante attacca due volte con la Mazza Ferrata." },
+      { name: "Mazza Ferrata", desc: "Attacco con arma da mischia: +9 per colpire, portata 3 m, un bersaglio. Colpito: 18 (3d8 + 5) danni contundenti." },
+      { name: "Masso (a distanza)", desc: "Attacco a distanza con arma: +9 per colpire, gittata 18/60 m, un bersaglio. Colpito: 30 (4d10 + 8) danni contundenti." },
+    ],
+  },
+
+  // ---- GS 6-9 ----
+  {
+    key: "mago", name: "Mago", size: "media", type: "Umanoide", typeTag: "umano", alignment: "Qualsiasi allineamento",
+    ac: 12, acNote: "15 con Scudo lanciato", hp: 40, hpFormula: "9d8", speed: { camminare: 9 },
+    abilities: { str: 9, dex: 14, con: 11, int: 17, wis: 12, cha: 11 },
+    skills: [{ name: "Arcano", bonus: 6 }, { name: "Storia", bonus: 6 }],
+    senses: {}, languages: "Quattro lingue a scelta", cr: "6",
+    traits: [],
+    actions: [
+      { name: "Pugnale", desc: "Attacco con arma da mischia o a distanza: +5 per colpire, portata 1,5 m o gittata 6/18 m, un bersaglio. Colpito: 4 (1d4 + 2) danni perforanti." },
+    ],
+    spellcasting: {
+      enabled: true, ability: "int",
+      note: "Il mago è un incantatore di 9° livello. La sua caratteristica da incantatore è l'Intelligenza (CD tiro salvezza incantesimi 14, +6 per colpire con incantesimi). Ha bisogno di un focus arcano per lanciare i suoi incantesimi.",
+      groups: [
+        { label: "Trucchetti (a volontà)", customSpells: ["Dardo di Fuoco", "Mano Magica", "Luce", "Prestidigitazione"] },
+        { label: "1° livello (4 slot)", customSpells: ["Scudo", "Individuazione del Magico", "Missile Magico"] },
+        { label: "2° livello (3 slot)", customSpells: ["Invisibilità", "Localizzazione di Oggetti"] },
+        { label: "3° livello (3 slot)", customSpells: ["Palla di Fuoco", "Dissolvi Magie"] },
+        { label: "4° livello (3 slot)", customSpells: ["Occhio Fatato", "Porta Dimensionale"] },
+        { label: "5° livello (1 slot)", customSpells: ["Cono di Freddo"] },
+      ],
+    },
+  },
+  {
+    key: "sacerdote", name: "Sacerdote", size: "media", type: "Umanoide", typeTag: "umano", alignment: "Qualsiasi allineamento",
+    ac: 13, acNote: "armatura di maglia scaglie", hp: 27, hpFormula: "5d8 + 5", speed: { camminare: 9 },
+    abilities: { str: 10, dex: 10, con: 12, int: 13, wis: 16, cha: 13 },
+    skills: [{ name: "Medicina", bonus: 7 }, { name: "Persuasione", bonus: 3 }, { name: "Religione", bonus: 4 }],
+    senses: {}, languages: "Due lingue a scelta", cr: "2",
+    actions: [{ name: "Mazza", desc: "Attacco con arma da mischia: +2 per colpire, portata 1,5 m, un bersaglio. Colpito: 3 (1d6) danni contundenti." }],
+    spellcasting: {
+      enabled: true, ability: "wis",
+      note: "Il sacerdote è un incantatore di 5° livello. La sua caratteristica da incantatore è la Saggezza (CD tiro salvezza incantesimi 12, +4 per colpire con incantesimi).",
+      groups: [
+        { label: "Trucchetti (a volontà)", customSpells: ["Fiamma Sacra", "Taumaturgia"] },
+        { label: "1° livello (4 slot)", customSpells: ["Cura Ferite", "Benedizione", "Purificare Cibo e Bevande"] },
+        { label: "2° livello (3 slot)", customSpells: ["Preghiera di Guarigione", "Silenzio"] },
+        { label: "3° livello (2 slot)", customSpells: ["Dissolvi Magie", "Localizzare una Creatura"] },
+      ],
+    },
+  },
+  {
+    key: "gigante-di-pietra", name: "Gigante di Pietra", size: "enorme", type: "Gigante", alignment: "Neutrale",
+    ac: 17, acNote: "armatura naturale", hp: 126, hpFormula: "11d12 + 55", speed: { camminare: 12 },
+    abilities: { str: 23, dex: 15, con: 20, int: 10, wis: 12, cha: 9 },
+    skills: [{ name: "Percezione", bonus: 5 }], senses: { darkvision: 18 }, languages: "Gigantesco", cr: "7",
+    saveProficiencies: ["dex", "con", "wis"],
+    actions: [
+      { name: "Multiattacco", desc: "Il gigante attacca due volte con il Bastone di Guerra." },
+      { name: "Bastone di Guerra", desc: "Attacco con arma da mischia: +12 per colpire, portata 4,5 m, un bersaglio. Colpito: 19 (3d8 + 6) danni contundenti." },
+      { name: "Masso (a distanza)", desc: "Attacco a distanza con arma: +9 per colpire, gittata 18/60 m, un bersaglio. Colpito: 28 (4d10 + 6) danni contundenti." },
+    ],
+  },
+  {
+    key: "sventratore-mentale", name: "Sventratore Mentale", size: "media", type: "Aberrazione", alignment: "Legale malvagio",
+    ac: 15, acNote: "armatura naturale", hp: 71, hpFormula: "13d8 + 13", speed: { camminare: 9 },
+    abilities: { str: 11, dex: 12, con: 12, int: 19, wis: 17, cha: 17 },
+    skills: [{ name: "Arcano", bonus: 8 }, { name: "Intuizione", bonus: 7 }, { name: "Percezione", bonus: 7 }, { name: "Furtività", bonus: 5 }],
+    senses: { darkvision: 36 }, languages: "Telepatia 36 m", cr: "7",
+    saveProficiencies: ["int", "wis", "cha"],
+    traits: [{ name: "Mangia Cervelli Magico", desc: "Se lo sventratore mentale colpisce un umanoide incapacitato con il Tentacolo, può usare la propria azione per divorarne il cervello, uccidendolo istantaneamente a meno che non superi un TS su Costituzione (CD 15)." }],
+    actions: [
+      { name: "Tentacoli", desc: "Attacco con arma da mischia: +7 per colpire, portata 1,5 m, un bersaglio. Colpito: 15 (2d10 + 4) danni psichici; se è un umanoide di taglia grande o inferiore, deve superare un TS su Saggezza (CD 15) o essere stordito fino alla fine del turno successivo dello sventratore mentale." },
+      { name: "Estrusione Mentale (recupera 5-6)", desc: "Lo sventratore mentale emette un'onda psichica in un cono di 18 m. Ogni creatura nell'area deve superare un TS su Intelligenza (CD 15), subendo 22 (4d10) danni psichici e restando stordita per 1 minuto se lo fallisce, o subendo metà danno senza altro effetto se ha successo." },
+    ],
+  },
+  {
+    key: "gigante-del-ghiaccio", name: "Gigante del Ghiaccio", size: "enorme", type: "Gigante", alignment: "Legale malvagio",
+    ac: 15, acNote: "armatura di pelliccia e piastre", hp: 138, hpFormula: "12d12 + 60", speed: { camminare: 12 },
+    abilities: { str: 23, dex: 9, con: 21, int: 9, wis: 10, cha: 12 },
+    resistances: "Freddo", senses: { darkvision: 18 }, languages: "Gigantesco", cr: "8",
+    saveProficiencies: ["con", "wis"],
+    actions: [
+      { name: "Multiattacco", desc: "Il gigante attacca due volte con l'Ascia Poderosa." },
+      { name: "Ascia Poderosa", desc: "Attacco con arma da mischia: +9 per colpire, portata 3 m, un bersaglio. Colpito: 19 (3d8 + 6) danni taglienti." },
+      { name: "Masso (a distanza)", desc: "Attacco a distanza con arma: +9 per colpire, gittata 18/60 m, un bersaglio. Colpito: 28 (4d10 + 6) danni contundenti." },
+    ],
+  },
+  {
+    key: "drago-verde-giovane", name: "Drago Verde Giovane", size: "grande", type: "Drago", alignment: "Legale malvagio",
+    ac: 18, acNote: "armatura naturale", hp: 136, hpFormula: "16d10 + 48", speed: { camminare: 12, volare: 24, nuotare: 12 },
+    abilities: { str: 19, dex: 12, con: 17, int: 16, wis: 13, cha: 15 },
+    saveProficiencies: ["dex", "con", "wis", "cha"],
+    skills: [{ name: "Percezione", bonus: 6 }, { name: "Furtività", bonus: 4 }],
+    immunities: "Veleno", conditionImmunities: "Avvelenato",
+    senses: { darkvision: 36 }, languages: "Comune, Draconico", cr: "8",
+    traits: [{ name: "Anfibio", desc: "Il drago può respirare sia aria sia acqua." }],
+    actions: [
+      { name: "Multiattacco", desc: "Il drago attacca tre volte: una con il Morso e due con gli Artigli." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +7 per colpire, portata 3 m, un bersaglio. Colpito: 15 (2d10 + 4) danni perforanti più 3 (1d6) danni da veleno." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +7 per colpire, portata 1,5 m, un bersaglio. Colpito: 11 (2d6 + 4) danni taglienti." },
+      { name: "Soffio di Gas Velenoso (recupera 5-6)", desc: "Il drago esala gas velenoso in un cono di 18 m. Ogni creatura nell'area deve superare un TS su Costituzione (CD 14), subendo 42 (12d6) danni da veleno se fallisce, o metà se ha successo." },
+    ],
+  },
+  {
+    key: "gigante-del-fuoco", name: "Gigante del Fuoco", size: "enorme", type: "Gigante", alignment: "Legale malvagio",
+    ac: 18, acNote: "armatura di piastre", hp: 162, hpFormula: "13d12 + 78", speed: { camminare: 9 },
+    abilities: { str: 25, dex: 9, con: 23, int: 10, wis: 14, cha: 13 },
+    resistances: "Fuoco",
+    saveProficiencies: ["con", "wis"],
+    senses: {}, languages: "Gigantesco", cr: "9",
+    actions: [
+      { name: "Multiattacco", desc: "Il gigante attacca due volte con la Grande Spada." },
+      { name: "Grande Spada", desc: "Attacco con arma da mischia: +11 per colpire, portata 3 m, un bersaglio. Colpito: 28 (6d6 + 7) danni taglienti." },
+      { name: "Masso (a distanza)", desc: "Attacco a distanza con arma: +11 per colpire, gittata 18/60 m, un bersaglio. Colpito: 29 (4d10 + 7) danni contundenti." },
+    ],
+  },
+
+  // ---- GS 13+ (showcase azioni leggendarie / della tana) ----
+  {
+    key: "vampiro", name: "Vampiro", size: "media", type: "Non Morto", typeTag: "vampiro", alignment: "Caotico malvagio",
+    ac: 16, acNote: "armatura naturale", hp: 144, hpFormula: "17d8 + 68", speed: { camminare: 9, scalare: 9, volare: 0 },
+    abilities: { str: 18, dex: 18, con: 18, int: 17, wis: 15, cha: 18 },
+    saveProficiencies: ["dex", "wis"],
+    skills: [{ name: "Percezione", bonus: 8 }, { name: "Furtività", bonus: 9 }],
+    resistances: "Necrotico; Contundente, Perforante, Tagliente da armi non magiche",
+    senses: { darkvision: 36 }, languages: "Le lingue conosciute in vita", cr: "13",
+    traits: [
+      { name: "Rigenerazione", desc: "Il vampiro recupera 20 PF all'inizio del suo turno se ha almeno 1 PF e non è alla luce solare o in acqua corrente. Se subisce danno radioso o da un piolo di legno nel cuore, questo tratto non funziona all'inizio del suo turno successivo." },
+      { name: "Debolezze del Vampiro", desc: "Il vampiro ha tre debolezze: non può entrare in una residenza senza essere invitato, subisce svantaggio in combattimento se inizia il turno in acqua corrente, e subisce danno se esposto alla luce solare diretta." },
+    ],
+    actions: [
+      { name: "Multiattacco (forma vampirica)", desc: "Il vampiro attacca due volte, solo una delle quali può essere un Morso." },
+      { name: "Pugni Micidiali", desc: "Attacco con arma da mischia: +9 per colpire, portata 1,5 m, un bersaglio. Colpito: 8 (2d4 + 3) danni contundenti; se il bersaglio è medio o più piccolo, deve superare un TS su Forza (CD 18) o essere atterrato." },
+      { name: "Morso (forma vampirica o pipistrello, solo se il bersaglio è incapacitato o afferrato)", desc: "Attacco con arma da mischia: +9 per colpire, portata 1,5 m, una creatura disposta, incapacitata o afferrata dal vampiro. Colpito: 7 (1d6 + 4) danni perforanti più 10 (3d6) danni necrotici; i PF massimi del bersaglio si riducono di pari quantità e il vampiro recupera PF pari a quel totale." },
+    ],
+    legendaryActionsCount: 3,
+    legendaryActionsNote: "Il vampiro può scegliere tra le opzioni seguenti. Può usarne solo una alla volta e solo alla fine del turno di un altro personaggio. Recupera le azioni spese all'inizio del suo turno.",
+    legendaryActions: [
+      { name: "Movimento", desc: "Il vampiro si muove fino alla sua velocità senza provocare attacchi di opportunità." },
+      { name: "Attacco (costa 2 azioni)", desc: "Il vampiro effettua un attacco con Pugni Micidiali." },
+      { name: "Sguardo Ipnotico (costa 2 azioni, solo se il vampiro non è alla luce solare)", desc: "Il vampiro fissa negli occhi una creatura a lui visibile entro 9 m. Il bersaglio deve superare un TS su Saggezza (CD 17) o restare ammaliato fino alla fine del prossimo turno del vampiro." },
+    ],
+    lairActions: [{ name: "Nebbia e Ombre", desc: "Nella sua tana, il vampiro può far calare nebbia soffocante o oscurare una zona, ostacolando la vista dei nemici, come azione della tana all'iniziativa 20." }],
+  },
+  {
+    key: "beholder", name: "Beholder", size: "grande", type: "Aberrazione", alignment: "Caotico malvagio",
+    ac: 18, acNote: "armatura naturale", hp: 180, hpFormula: "19d10 + 76", speed: { camminare: 0, volare: 9, volareStazionario: true },
+    abilities: { str: 10, dex: 14, con: 18, int: 17, wis: 15, cha: 17 },
+    saveProficiencies: ["int", "wis", "cha"],
+    skills: [{ name: "Percezione", bonus: 12 }],
+    conditionImmunities: "Prono", senses: { darkvision: 36 }, languages: "Approfondo", cr: "13",
+    traits: [{ name: "Cono Antimagico", desc: "Il beholder proietta un cono di antimagia in un arco di 150° e portata 45 m, che sopprime magia ed effetti magici simili a incantesimi come la sfera di antimagia." }],
+    actions: [
+      { name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 9 (2d4 + 4) danni perforanti." },
+      { name: "Raggi Oculari (tre a caso, non nel cono antimagico)", desc: "Il beholder spara tre dei suoi dieci raggi oculari a caso, scegliendo bersagli a lui visibili entro 36 m. Effetti variabili: raggio di paralisi, raggio necrotico (2d6+lvl), raggio di sonno, raggio di indebolimento, raggio di terrore, raggio di lentezza, raggio disintegrante, raggio pietrificante, raggio di annullamento magico, raggio di morte. Ogni raggio richiede un TS specifico (CD 16) come da SRD." },
+    ],
+  },
+  {
+    key: "drago-rosso-adulto", name: "Drago Rosso Adulto", size: "enorme", type: "Drago", alignment: "Caotico malvagio",
+    ac: 19, acNote: "armatura naturale", hp: 256, hpFormula: "19d20 + 76", speed: { camminare: 12, scalare: 12, volare: 24 },
+    abilities: { str: 27, dex: 10, con: 25, int: 16, wis: 13, cha: 21 },
+    saveProficiencies: ["dex", "con", "wis", "cha"],
+    skills: [{ name: "Percezione", bonus: 17 }, { name: "Furtività", bonus: 6 }],
+    immunities: "Fuoco",
+    senses: { darkvision: 36, truesight: 36 }, languages: "Comune, Draconico", cr: "17",
+    traits: [{ name: "Presenza Terrificante", desc: "Ogni creatura a scelta del drago entro 36 m che lo vede deve superare un TS su Saggezza (CD 19) o essere spaventata per 1 minuto." }],
+    actions: [
+      { name: "Multiattacco", desc: "Il drago può usare la Presenza Terrificante, poi attaccare tre volte: una con il Morso e due con gli Artigli." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +14 per colpire, portata 3 m, un bersaglio. Colpito: 19 (2d10 + 8) danni perforanti più 7 (2d6) danni da fuoco." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +14 per colpire, portata 1,5 m, un bersaglio. Colpito: 15 (2d6 + 8) danni taglienti." },
+      { name: "Coda", desc: "Attacco con arma da mischia: +14 per colpire, portata 4,5 m, un bersaglio. Colpito: 17 (2d8 + 8) danni contundenti." },
+      { name: "Soffio di Fuoco (recupera 5-6)", desc: "Il drago esala fuoco in un cono di 18 m. Ogni creatura nell'area deve superare un TS su Destrezza (CD 21), subendo 63 (18d6) danni da fuoco se fallisce, o metà se ha successo." },
+    ],
+    legendaryActionsCount: 3,
+    legendaryActionsNote: "Il drago può scegliere tra le opzioni seguenti. Può usarne solo una alla volta e solo alla fine del turno di un altro personaggio. Recupera le azioni spese all'inizio del suo turno.",
+    legendaryActions: [
+      { name: "Individuazione", desc: "Il drago effettua una prova di Saggezza (Percezione)." },
+      { name: "Attacco con la Coda", desc: "Il drago effettua un attacco con la Coda." },
+      { name: "Balzo alare (costa 2 azioni)", desc: "Il drago sbatte le ali. Ogni creatura entro 3 m dal drago deve superare un TS su Destrezza (CD 22) o subire 15 (2d6 + 8) danni contundenti ed essere atterrata. Il drago può poi volare fino a metà della sua velocità di volo." },
+    ],
+    lairActions: [
+      { name: "Scosse di Magma", desc: "Fessure nel terreno eruttano magma o gas surriscaldati in un punto scelto dal drago entro la sua tana, come azione della tana all'iniziativa 20." },
+      { name: "Vento Rovente", desc: "Un vento caldo e cinereo soffia attraverso la tana, imponendo svantaggio ai tiri per colpire a distanza in un'area scelta dal drago." },
+    ],
+  },
+
+  // ---- Extra basso livello per varietà di tipi ----
+  {
+    key: "melma-gelatinosa", name: "Melma Gelatinosa", size: "grande", type: "Melma", alignment: "Non allineato",
+    ac: 6, hp: 85, hpFormula: "10d10 + 30", speed: { camminare: 3 },
+    abilities: { str: 15, dex: 6, con: 16, int: 1, wis: 6, cha: 1 },
+    immunities: "Acido, Freddo, Fulmine", conditionImmunities: "Accecato, Affascinato, Assordato, Esausto, Prono",
+    senses: { blindsight: 18 }, languages: "—", cr: "2",
+    traits: [
+      { name: "Amorfa", desc: "La melma può muoversi attraverso uno spazio largo appena 2,5 cm senza doversi restringere." },
+      { name: "Trasparente", desc: "Anche quando è visibile, la melma è difficile da individuare: chi non la sta cercando attivamente deve superare una prova di Saggezza (Percezione) CD 15 per notarla." },
+    ],
+    actions: [{ name: "Pseudopode", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 10 (3d6) danni acidi; se indossa armatura non magica, questa si corrode e subisce un malus permanente di 1 alla CA." }],
+  },
+  {
+    key: "elementale-di-fuoco", name: "Elementale di Fuoco", size: "grande", type: "Elementale", alignment: "Neutrale",
+    ac: 13, hp: 102, hpFormula: "12d10 + 36", speed: { camminare: 15 },
+    abilities: { str: 10, dex: 17, con: 16, int: 6, wis: 10, cha: 7 },
+    immunities: "Veleno, Fuoco", conditionImmunities: "Afferrato, Prono, Trattenuto, Esausto, Paralizzato, Pietrificato, Avvelenato",
+    senses: { darkvision: 18 }, languages: "Ignan", cr: "5",
+    traits: [
+      { name: "Incendiario", desc: "L'elementale può dar fuoco a materiali infiammabili non indossati né trasportati con cui entra in contatto." },
+      { name: "Vulnerabile all'Acqua", desc: "Per ogni 1,5 m che attraversa in acqua, l'elementale subisce 1 danno da freddo." },
+    ],
+    actions: [
+      { name: "Multiattacco", desc: "L'elementale attacca due volte con il Tocco." },
+      { name: "Tocco", desc: "Attacco con arma da mischia: +6 per colpire, portata 1,5 m, un bersaglio. Colpito: 10 (2d6 + 3) danni da fuoco; se il bersaglio è una creatura o un oggetto infiammabile non indossato, prende fuoco." },
+    ],
+  },
+  {
+    key: "spettro-guardiano-di-pietra", name: "Guardiano di Pietra (Costrutto)", size: "grande", type: "Costrutto", alignment: "Non allineato",
+    ac: 17, acNote: "armatura naturale", hp: 133, hpFormula: "14d10 + 56", speed: { camminare: 9 },
+    abilities: { str: 18, dex: 9, con: 18, int: 3, wis: 11, cha: 1 },
+    immunities: "Veleno, Psichico", conditionImmunities: "Affascinato, Esausto, Impaurito, Paralizzato, Avvelenato",
+    senses: { darkvision: 18, blindsight: 18 }, languages: "Capisce i linguaggi del creatore ma non parla", cr: "7",
+    traits: [{ name: "Immunità agli Incantesimi", desc: "Il costrutto è immune a ogni incantesimo o effetto magico che permetta un tiro salvezza, a meno che non sia bersaglio unico." }],
+    actions: [{ name: "Multiattacco", desc: "Il costrutto attacca due volte con gli Slam." }, { name: "Slam", desc: "Attacco con arma da mischia: +8 per colpire, portata 1,5 m, un bersaglio. Colpito: 16 (2d10 + 5) danni contundenti." }],
+  },
+  {
+    key: "driade", name: "Driade", size: "media", type: "Fatato", alignment: "Neutrale",
+    ac: 11, acNote: "16 con Corazza di Corteccia", hp: 22, hpFormula: "5d8", speed: { camminare: 9 },
+    abilities: { str: 10, dex: 12, con: 11, int: 14, wis: 15, cha: 18 },
+    skills: [{ name: "Percezione", bonus: 4 }, { name: "Furtività", bonus: 5 }],
+    senses: { blindsight: 9 }, languages: "Silvano, Elfico", cr: "1",
+    traits: [{ name: "Incantesimo Innato", desc: "La caratteristica da incantatore della driade è il Carisma (CD 13). Può lanciare Enthrall e Comunione con la Natura senza componenti materiali; una volta al giorno può lanciare Ammaliare Persone." }],
+    actions: [{ name: "Spada Corta", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 5 (1d6 + 2) danni perforanti." }],
+    spellcasting: { enabled: true, ability: "cha", note: "Incantesimo innato: Ammaliare Persone (1/giorno), Enthrall e Comunione con la Natura (a volontà).", groups: [{ label: "A volontà", customSpells: ["Enthrall", "Comunione con la Natura"] }, { label: "1/giorno", customSpells: ["Ammaliare Persone"] }] },
+  },
+  {
+    key: "idra", name: "Idra", size: "enorme", type: "Mostruosità", alignment: "Non allineato",
+    ac: 15, acNote: "armatura naturale", hp: 172, hpFormula: "15d12 + 75", speed: { camminare: 9, nuotare: 9 },
+    abilities: { str: 20, dex: 12, con: 20, int: 2, wis: 10, cha: 7 },
+    skills: [{ name: "Percezione", bonus: 6 }], senses: { darkvision: 18 }, languages: "—", cr: "8",
+    traits: [
+      { name: "Multiplicazione delle Teste", desc: "Per ogni 10 danni subiti in un colpo, l'idra perde una testa. Alla fine del suo turno, se ha almeno una testa e non ha subito danno da fuoco dall'ultimo turno, le crescono due nuove teste per ogni testa persa. L'idra guadagna 10 PF massimi per ogni testa oltre la prima." },
+      { name: "Vigile", desc: "Con più teste, l'idra non può essere colta di sorpresa finché almeno una testa è sveglia." },
+    ],
+    actions: [{ name: "Morsi Multipli (una volta per testa)", desc: "Attacco con arma da mischia: +8 per colpire, portata 3 m, un bersaglio. Colpito: 10 (1d10 + 5) danni perforanti." }],
+  },
+];
