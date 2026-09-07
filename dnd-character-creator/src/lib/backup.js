@@ -13,17 +13,22 @@ export function requestPersistentStorage() {
   }
 }
 
-// Scarica un file .json con tutti i personaggi e le creature salvati sul dispositivo: un backup
-// che sopravvive a una cancellazione dei dati del browser, perché non è "dati del sito" ma un
-// file vero e proprio sul disco.
-export async function exportBackup() {
+// Scarica un file .json con i personaggi e le creature salvati sul dispositivo: un backup che
+// sopravvive a una cancellazione dei dati del browser, perché non è "dati del sito" ma un file
+// vero e proprio sul disco. Senza filtri esporta tutto; passando characterIds/creatureIds
+// esporta solo le voci con quegli id (singolo elemento o una selezione qualsiasi).
+export async function exportBackup({ characterIds, creatureIds } = {}) {
   const charactersRes = await storageAdapter.get(STORAGE_KEY, "[]");
   const creaturesRes = await storageAdapter.get(CREATURES_STORAGE_KEY, "[]");
+  let characters = JSON.parse(charactersRes.value || "[]");
+  let creatures = JSON.parse(creaturesRes.value || "[]");
+  if (characterIds) characters = characters.filter((c) => characterIds.includes(c.id));
+  if (creatureIds) creatures = creatures.filter((c) => creatureIds.includes(c.id));
   const payload = {
     version: BACKUP_VERSION,
     exportedAt: new Date().toISOString(),
-    characters: JSON.parse(charactersRes.value || "[]"),
-    creatures: JSON.parse(creaturesRes.value || "[]"),
+    characters,
+    creatures,
   };
 
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });

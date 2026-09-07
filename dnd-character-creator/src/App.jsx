@@ -322,6 +322,8 @@ export default function App() {
       `}</style>
 
       <BackupControl
+        characters={characters}
+        creatures={creatures}
         onImported={({ charactersImported, creaturesImported }) => {
           loadCharacters();
           loadCreatures();
