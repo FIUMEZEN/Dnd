@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { C, FONT_IMPORT } from "./theme";
 import { emptyDraft, validateCharacter } from "./lib/character";
 import { emptyCreature, instantiateFromBestiary, validateCreature } from "./lib/creature";
-import { STORAGE_KEY, CREATURES_STORAGE_KEY, storageAdapter } from "./lib/storage";
+import { emptyEncounter } from "./lib/encounter";
+import { STORAGE_KEY, CREATURES_STORAGE_KEY, ENCOUNTER_STORAGE_KEY, storageAdapter } from "./lib/storage";
 import { requestPersistentStorage } from "./lib/backup";
 import { BackupControl } from "./components/BackupControl";
 import { PlayerSheet } from "./components/PlayerSheet";
@@ -13,6 +14,7 @@ import { MasterDashboard } from "./components/MasterDashboard";
 import { CreatureEditor } from "./components/CreatureEditor";
 import { CreatureSheetView } from "./components/CreatureSheetView";
 import { Bestiary } from "./components/Bestiary";
+import { EncounterRunner } from "./components/EncounterRunner";
 
 /* ---------------------------------- APP ---------------------------------- */
 
@@ -31,6 +33,9 @@ export default function App() {
   const [creatureSaving, setCreatureSaving] = useState(false);
   const [creatureDraft, setCreatureDraft] = useState(emptyCreature());
   const [sheetCreature, setSheetCreature] = useState(null);
+
+  const [encounter, setEncounterState] = useState(emptyEncounter());
+  const [encounterLoading, setEncounterLoading] = useState(true);
 
   const loadCharacters = useCallback(async () => {
     setLoading(true);
@@ -58,9 +63,35 @@ export default function App() {
     }
   }, []);
 
+  const loadEncounter = useCallback(async () => {
+    setEncounterLoading(true);
+    try {
+      const res = await storageAdapter.get(ENCOUNTER_STORAGE_KEY, false);
+      const value = res && res.value ? JSON.parse(res.value) : null;
+      setEncounterState(value || emptyEncounter());
+    } catch (e) {
+      setEncounterState(emptyEncounter());
+    } finally {
+      setEncounterLoading(false);
+    }
+  }, []);
+
   useEffect(() => { loadCharacters(); }, [loadCharacters]);
   useEffect(() => { loadCreatures(); }, [loadCreatures]);
+  useEffect(() => { loadEncounter(); }, [loadEncounter]);
   useEffect(() => { requestPersistentStorage(); }, []);
+
+  // L'Incontro cambia ad ogni clic in combattimento (danno, iniziativa, turno): si salva da
+  // solo appena cambia, invece di richiedere un "Salva" esplicito come la Scheda Personaggio —
+  // qui la priorità è non perdere mai lo stato di un combattimento in corso.
+  useEffect(() => {
+    if (encounterLoading) return;
+    storageAdapter.set(ENCOUNTER_STORAGE_KEY, JSON.stringify(encounter), false);
+  }, [encounter, encounterLoading]);
+
+  const setEncounter = useCallback((updater) => {
+    setEncounterState((prev) => (typeof updater === "function" ? updater(prev) : updater));
+  }, []);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -200,6 +231,29 @@ export default function App() {
     }
   };
 
+  // Aggiornamenti "silenziosi" (nessun toast) usati dall'Incontro: durante un combattimento,
+  // PF/Concentrazione/TS contro la Morte cambiano ad ogni clic, e un toast per ognuno sarebbe
+  // solo rumore. Scrivono comunque subito su storage, a differenza della Scheda Personaggio
+  // (dove le modifiche restano in un draft locale finché non si preme "Salva modifiche").
+  const handleUpdateCharacterSilent = async (updatedCharacter) => {
+    const next = characters.map((c) => (c.id === updatedCharacter.id ? updatedCharacter : c));
+    setCharacters(next);
+    try {
+      await storageAdapter.set(STORAGE_KEY, JSON.stringify(next), false);
+    } catch (e) {
+      showToast("Errore durante il salvataggio del personaggio.");
+    }
+  };
+  const handleUpdateCreatureSilent = async (updatedCreature) => {
+    const next = creatures.map((c) => (c.id === updatedCreature.id ? updatedCreature : c));
+    setCreatures(next);
+    try {
+      await storageAdapter.set(CREATURES_STORAGE_KEY, JSON.stringify(next), false);
+    } catch (e) {
+      showToast("Errore durante il salvataggio della creatura.");
+    }
+  };
+
   const openCompendium = (from) => {
     setCompendiumFrom(from);
     setScreen("compendium");
@@ -304,11 +358,24 @@ export default function App() {
           onDelete={handleDeleteCreature}
           onOpenCompendium={() => openCompendium("master")}
           onOpenBestiary={() => setScreen("bestiary")}
+          onOpenEncounter={() => setScreen("encounter")}
         />
       )}
 
       {screen === "bestiary" && (
         <Bestiary onBack={() => setScreen("master")} onUse={handleUseBestiaryEntry} />
+      )}
+
+      {screen === "encounter" && (
+        <EncounterRunner
+          encounter={encounter}
+          setEncounter={setEncounter}
+          characters={characters}
+          creatures={creatures}
+          onUpdateCharacter={handleUpdateCharacterSilent}
+          onUpdateCreature={handleUpdateCreatureSilent}
+          onBack={() => setScreen("master")}
+        />
       )}
 
       {screen === "master-edit" && (

@@ -8,7 +8,7 @@ import { C } from "../theme";
 import { Divider, GhostButton, GoldButton, MetricBox } from "./primitives";
 import { AsiPicker, ElementalDisciplinePicker } from "./pickers";
 import { InventoryManager } from "./inventory";
-import { HpLevelManager, HpTracker, RestControls } from "./hp";
+import { HpLevelManager, HpTracker, RestControls, ConcentrationTracker, DeathSaveTracker } from "./hp";
 import { SpellManager, ResourceTracker } from "./spells";
 import { ABILITIES, SKILL_ABILITY } from "../data/core";
 import { RACES } from "../data/races";
@@ -16,13 +16,13 @@ import { CLASSES, MULTICLASS_PROFICIENCIES, MULTICLASS_BONUS_SKILL_CLASS } from 
 import { mod, fmtMod, ftToM, getProficiencyBonus, abilityKeyByName } from "../lib/format";
 import { getCircleSpellIds, getDomainSpellIds, getOathSpellIds, getMaxSpellLevel, getEffectiveCasterInfo, rollWildMagicSurge } from "../lib/casting";
 import {
-  computeFinalScores, computeMaxHp, getAllClassResources, getAsiBonus, getAvailableFightingStyles,
+  computeFinalScores, computeMaxHp, getAllClassResources, getArmorClass, getAsiBonus, getAvailableFightingStyles,
   getBaseClassFeatures, getChosenFeats, getChosenSubclassId, getClassEntries, getClassMechanicsList,
-  getEffectiveGrip, getEffectiveSpellSlots, getExpertiseCount, getFightingStyleAcBonus,
+  getEffectiveGrip, getEffectiveSpellSlots, getExpertiseCount,
   getFightingStyleAttackBonus, getFightingStyleDamageBonus, getFightingStyleGreatWeapon,
   getFightingStyleProtection, getFightingStyleTwoWeapon, getGrantedProficiencies, getRaceBonus,
   getSelectedBackground, getSelectedFightingStyles, getSubclass, getTotalCharacterLevel, getUnlockedSubclassFeatures,
-  getVersatileDamage, hasDraconicResilienceAc, hasFightingStyles, isProficientWithWeapon, validateCharacter,
+  getVersatileDamage, hasFightingStyles, isProficientWithWeapon, validateCharacter,
 } from "../lib/character";
 
 export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
@@ -54,32 +54,8 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
   const finalScores = useMemo(() => computeFinalScores(draft), [draft]);
 
   const hp = cls ? computeMaxHp(draft, cls, race, mod(finalScores.con)) : null;
-  const equippedArmor = draft.inventory.find((it) => it.category === "armatura" && it.equipped);
   const equippedShield = draft.inventory.find((it) => it.category === "scudo" && it.equipped);
-  const dexMod = mod(finalScores.dex);
-  const hasDraconicResilience = (cls && hasDraconicResilienceAc(cls.id, chosenSubclassId)) || (mcCls && hasDraconicResilienceAc(mcCls.id, mcChosenSubclassId));
-
-  // Calcolo CA con bonus da Stile "Difesa"
-  const fightingStyleAcBonus =
-    getFightingStyleAcBonus(draft, cls?.id, !!equippedArmor) +
-    (mcCls ? getFightingStyleAcBonus(mc, mcCls.id, !!equippedArmor) : 0);
-
-  let ac = 10 + dexMod + fightingStyleAcBonus;
-  if (equippedArmor) {
-    const base = parseInt(String(equippedArmor.ac), 10) || 10;
-    if (equippedArmor.tipo === "pesante") ac = base + fightingStyleAcBonus;
-    else if (equippedArmor.tipo === "media") ac = base + Math.min(2, dexMod) + fightingStyleAcBonus;
-    else ac = base + dexMod + fightingStyleAcBonus;
-  } else if (hasDraconicResilience) {
-    ac = 13 + dexMod + fightingStyleAcBonus;
-  }
-  const shieldBonus = equippedShield ? (parseInt(String(equippedShield.ac).replace("+", ""), 10) || 2) : 0;
-  ac += shieldBonus;
-  const acSourceLabel = equippedArmor
-    ? `${equippedArmor.name}${equippedShield ? " + Scudo" : ""}${fightingStyleAcBonus > 0 ? " + Difesa" : ""}`
-    : hasDraconicResilience
-      ? `Resilienza Draconica (13 + Destrezza)${equippedShield ? " + Scudo" : ""}${fightingStyleAcBonus > 0 ? " + Difesa" : ""}`
-      : equippedShield ? "Solo scudo (senza armatura)" : "Senza armatura (10 + Destrezza)";
+  const { ac, sourceLabel: acSourceLabel } = getArmorClass(draft);
   const granted = getGrantedProficiencies(draft);
   const allSkills = [...new Set([...(bg ? bg.skills : []), ...draft.classSkills, ...(draft.raceSkillPicks || []), ...(mc?.bonusSkillPick ? [mc.bonusSkillPick] : []), ...granted.skills])];
   const slots = getEffectiveSpellSlots(draft);
@@ -323,8 +299,21 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
 
       {showPlayTools && hp != null && (
         <>
-          <HpTracker maxHp={hp} draft={draft} setDraft={setDraft} />
+          <DeathSaveTracker draft={draft} setDraft={setDraft} maxHp={hp} />
+          <HpTracker maxHp={hp} draft={draft} setDraft={setDraft} conMod={mod(finalScores.con)} />
+          <ConcentrationTracker draft={draft} setDraft={setDraft} />
           <RestControls draft={draft} setDraft={setDraft} maxHp={hp} conMod={mod(finalScores.con)} />
+          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep }}>Esperienza (PE)</span>
+            <input
+              type="number" min={0} value={draft.xp || 0}
+              onChange={(e) => setDraft((d) => ({ ...d, xp: Math.max(0, Number(e.target.value) || 0) }))}
+              style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            />
+            <span style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, fontStyle: "italic" }}>
+              Informativa: il livello si aumenta sempre a mano con "Sali di livello".
+            </span>
+          </div>
         </>
       )}
 

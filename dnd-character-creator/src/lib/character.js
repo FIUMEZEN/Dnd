@@ -904,6 +904,59 @@ export function computeFinalScores(draft) {
   return finalScores;
 }
 
+// Calcolo della Classe Armatura: unica fonte di verità, usata sia dalla Scheda Personaggio sia
+// dall'Incontro (Sezione Master), così le due viste non possono mai disallinearsi tra loro.
+export function getArmorClass(draft) {
+  const cls = CLASSES.find((c) => c.id === draft.classId);
+  const chosenSubclassId = cls ? getChosenSubclassId(draft, cls.id) : null;
+  const mc = draft.multiclass && draft.multiclass.classId ? draft.multiclass : null;
+  const mcCls = mc ? CLASSES.find((c) => c.id === mc.classId) : null;
+  const mcChosenSubclassId = mcCls ? getChosenSubclassId(mc, mcCls.id) : null;
+
+  const dexMod = mod(computeFinalScores(draft).dex);
+  const hasDraconicResilience = (cls && hasDraconicResilienceAc(cls.id, chosenSubclassId)) || (mcCls && hasDraconicResilienceAc(mcCls.id, mcChosenSubclassId));
+
+  const equippedArmor = draft.inventory.find((it) => it.category === "armatura" && it.equipped);
+  const equippedShield = draft.inventory.find((it) => it.category === "scudo" && it.equipped);
+
+  const fightingStyleAcBonus =
+    getFightingStyleAcBonus(draft, cls?.id, !!equippedArmor) +
+    (mcCls ? getFightingStyleAcBonus(mc, mcCls.id, !!equippedArmor) : 0);
+
+  let ac = 10 + dexMod + fightingStyleAcBonus;
+  if (equippedArmor) {
+    const base = parseInt(String(equippedArmor.ac), 10) || 10;
+    if (equippedArmor.tipo === "pesante") ac = base + fightingStyleAcBonus;
+    else if (equippedArmor.tipo === "media") ac = base + Math.min(2, dexMod) + fightingStyleAcBonus;
+    else ac = base + dexMod + fightingStyleAcBonus;
+  } else if (hasDraconicResilience) {
+    ac = 13 + dexMod + fightingStyleAcBonus;
+  }
+  const shieldBonus = equippedShield ? (parseInt(String(equippedShield.ac).replace("+", ""), 10) || 2) : 0;
+  ac += shieldBonus;
+  const sourceLabel = equippedArmor
+    ? `${equippedArmor.name}${equippedShield ? " + Scudo" : ""}${fightingStyleAcBonus > 0 ? " + Difesa" : ""}`
+    : hasDraconicResilience
+      ? `Resilienza Draconica (13 + Destrezza)${equippedShield ? " + Scudo" : ""}${fightingStyleAcBonus > 0 ? " + Difesa" : ""}`
+      : equippedShield ? "Solo scudo (senza armatura)" : "Senza armatura (10 + Destrezza)";
+
+  return { ac, sourceLabel };
+}
+
+// Riepilogo delle statistiche da combattimento di un Personaggio (PF, CA, iniziativa), usato
+// dall'Incontro per non dover ricalcolare/duplicare la logica già presente nella Scheda.
+export function getCharacterCombatStats(draft) {
+  const cls = CLASSES.find((c) => c.id === draft.classId);
+  const race = RACES.find((r) => r.id === draft.raceId);
+  const finalScores = computeFinalScores(draft);
+  const conMod = mod(finalScores.con);
+  const dexMod = mod(finalScores.dex);
+  const maxHp = cls ? computeMaxHp(draft, cls, race, conMod) : null;
+  const currentHp = draft.currentHp == null ? maxHp : (maxHp == null ? draft.currentHp : Math.min(draft.currentHp, maxHp));
+  const { ac } = getArmorClass(draft);
+  return { maxHp, currentHp, tempHp: draft.tempHp || 0, ac, dexMod, initiativeMod: dexMod };
+}
+
 // Quanto manca a UNA classe incantatrice del personaggio per avere davvero finito lo step
 // Incantesimi: eventuale sottoclasse-prerequisito (dominio/ordine/patrono/circolo) scelta, e
 // trucchetti/incantesimi conosciuti al completo. Rispecchia esattamente i conteggi già
