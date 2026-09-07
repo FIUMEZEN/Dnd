@@ -1,0 +1,3 @@
+# Condizioni solo visive nell'Incontro, senza automazione meccanica
+
+Nell'Encounter Runner, le condizioni (Prono, Avvelenato, Spaventato, ecc.) applicate a un combattente sono solo un'etichetta/promemoria visivo: l'app non applica automaticamente i loro effetti meccanici (vantaggio/svantaggio sui tiri, riduzioni di velocità, ecc.). Scelta deliberata nonostante il resto del motore di calcolo (slot incantesimo, multiclasse, PF) sia molto automatizzato: automatizzare gli effetti di ogni condizione tocca ogni tiro del gioco ed è un motore di regole a sé, rimandato a un'iterazione successiva se necessario.
