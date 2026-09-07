@@ -696,6 +696,12 @@ export function validateCharacter(draft) {
     errors.push("Assegna tutti e sei i punteggi alle caratteristiche.");
   }
 
+  if (draft.abilityMethod === "manual") {
+    const values = Object.values(draft.baseScores);
+    if (values.some((v) => v === "" || v === undefined)) errors.push("Inserisci tutti e sei i punteggi alle caratteristiche.");
+    else if (values.map(Number).some((v) => !Number.isInteger(v) || v < 1 || v > 30)) errors.push("I punteggi inseriti manualmente devono essere numeri interi tra 1 e 30.");
+  }
+
   if (race?.extraAbilityChoice && (draft.raceAbilityPicks || []).length !== race.extraAbilityChoice.count) {
     errors.push(`Scegli ${race.extraAbilityChoice.count} caratteristiche per il bonus razziale.`);
   }

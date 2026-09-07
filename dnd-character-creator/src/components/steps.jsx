@@ -390,10 +390,16 @@ export function StepAbilities({ draft, setDraft }) {
         <Pill active={draft.abilityMethod === "array"} onClick={() => setMethod("array")}>Array standard</Pill>
         <Pill active={draft.abilityMethod === "roll"} onClick={() => setMethod("roll")}>Tiro dei dadi</Pill>
         <Pill active={draft.abilityMethod === "custom"} onClick={() => setMethod("custom")}>Point Buy</Pill>
+        <Pill active={draft.abilityMethod === "manual"} onClick={() => setMethod("manual")}>Inserimento libero</Pill>
       </div>
       {draft.abilityMethod === "custom" && (
         <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: getPointBuySpent(draft.baseScores) === POINT_BUY_TOTAL ? C.forestDeep : C.danger, margin: "0 0 16px" }}>
           Point Buy: {getPointBuySpent(draft.baseScores)}/{POINT_BUY_TOTAL} punti spesi. Punteggi consentiti: 8–15 prima dei bonus razziali.
+        </p>
+      )}
+      {draft.abilityMethod === "manual" && (
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 16px" }}>
+          Scrivi direttamente i punteggi base che vuoi (utile per personaggi già esistenti): nessun vincolo di regole o di punti.
         </p>
       )}
 
@@ -443,6 +449,13 @@ export function StepAbilities({ draft, setDraft }) {
                     </option>
                   ))}
                 </select>
+              ) : draft.abilityMethod === "manual" ? (
+                <input
+                  type="number" min={1} max={30} value={base === "" || base === undefined ? "" : base}
+                  onChange={(e) => setBase(a.key, e.target.value)}
+                  placeholder="—"
+                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                />
               ) : (
                 <select
                   value={base === "" || base === undefined ? "" : base}
