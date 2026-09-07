@@ -61,6 +61,12 @@ export const ChevronLeft = (props) => (
 export const ChevronRight = (props) => (
   <Icon {...props}><path d="m9 18 6-6-6-6" /></Icon>
 );
+export const ChevronDown = (props) => (
+  <Icon {...props}><path d="m6 9 6 6 6-6" /></Icon>
+);
+export const ChevronUp = (props) => (
+  <Icon {...props}><path d="m18 15-6-6-6 6" /></Icon>
+);
 export const Dices = (props) => (
   <Icon {...props}><rect x="4" y="5" width="16" height="14" rx="2" /><path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01" /><path d="m8 18 8-12" /></Icon>
 );

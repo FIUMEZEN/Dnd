@@ -5,7 +5,9 @@ import { emptyCreature, instantiateFromBestiary, validateCreature } from "./lib/
 import { emptyEncounter } from "./lib/encounter";
 import { STORAGE_KEY, CREATURES_STORAGE_KEY, ENCOUNTER_STORAGE_KEY, storageAdapter } from "./lib/storage";
 import { requestPersistentStorage } from "./lib/backup";
-import { syncCharacterToCampaign } from "./lib/campaignSync";
+import {
+  syncCharacterToCampaign, getMyCampaignCode, setMyCampaignCode, generateCampaignCode, subscribeToCampaign,
+} from "./lib/campaignSync";
 import { BackupControl } from "./components/BackupControl";
 import { PlayerSheet } from "./components/PlayerSheet";
 import { SpellCompendium } from "./components/SpellCompendium";
@@ -38,6 +40,13 @@ export default function App() {
 
   const [encounter, setEncounterState] = useState(emptyEncounter());
   const [encounterLoading, setEncounterLoading] = useState(true);
+
+  // Codice Campagna e Personaggi sincronizzati via Supabase: caricati/sottoscritti UNA volta
+  // qui, condivisi sia dal pannello Campagna sia dall'Incontro (che può aggiungere i PG dei
+  // giocatori come combattenti in sola lettura — vedi campaignCharacter in lib/encounter.js).
+  const [campaignCode, setCampaignCodeState] = useState(null);
+  const [campaignCodeLoaded, setCampaignCodeLoaded] = useState(false);
+  const [campaignEntries, setCampaignEntries] = useState([]);
 
   const loadCharacters = useCallback(async () => {
     setLoading(true);
@@ -82,6 +91,20 @@ export default function App() {
   useEffect(() => { loadCreatures(); }, [loadCreatures]);
   useEffect(() => { loadEncounter(); }, [loadEncounter]);
   useEffect(() => { requestPersistentStorage(); }, []);
+
+  useEffect(() => {
+    getMyCampaignCode().then((c) => { setCampaignCodeState(c); setCampaignCodeLoaded(true); });
+  }, []);
+  useEffect(() => {
+    if (!campaignCode) { setCampaignEntries([]); return; }
+    return subscribeToCampaign(campaignCode, setCampaignEntries);
+  }, [campaignCode]);
+
+  const regenerateCampaignCode = async () => {
+    const next = await setMyCampaignCode(generateCampaignCode());
+    setCampaignCodeState(next);
+    return next;
+  };
 
   // L'Incontro cambia ad ogni clic in combattimento (danno, iniziativa, turno): si salva da
   // solo appena cambia, invece di richiedere un "Salva" esplicito come la Scheda Personaggio —
@@ -364,7 +387,6 @@ export default function App() {
           onDelete={handleDeleteCreature}
           onOpenCompendium={() => openCompendium("master")}
           onOpenBestiary={() => setScreen("bestiary")}
-          onOpenEncounter={() => setScreen("encounter")}
           onOpenCampaign={() => setScreen("campaign")}
         />
       )}
@@ -379,14 +401,23 @@ export default function App() {
           setEncounter={setEncounter}
           characters={characters}
           creatures={creatures}
+          campaignEntries={campaignEntries}
           onUpdateCharacter={handleUpdateCharacterSilent}
           onUpdateCreature={handleUpdateCreatureSilent}
-          onBack={() => setScreen("master")}
+          onBack={() => setScreen("campaign")}
         />
       )}
 
       {screen === "campaign" && (
-        <CampaignPanel onBack={() => setScreen("master")} />
+        <CampaignPanel
+          code={campaignCode}
+          codeLoaded={campaignCodeLoaded}
+          entries={campaignEntries}
+          onGenerateCode={regenerateCampaignCode}
+          onBack={() => setScreen("master")}
+          onOpenEncounter={() => setScreen("encounter")}
+          onOpenBestiary={() => setScreen("bestiary")}
+        />
       )}
 
       {screen === "master-edit" && (

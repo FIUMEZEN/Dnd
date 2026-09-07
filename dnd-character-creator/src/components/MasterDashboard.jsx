@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { BookOpen, ChevronLeft, Pencil, Plus, Skull, Sword, Trash2, Users } from "../icons";
+import { BookOpen, ChevronLeft, Pencil, Plus, Skull, Trash2, Users } from "../icons";
 import { C } from "../theme";
 import { Frame, GhostButton, GoldButton } from "./primitives";
 import { CREATURE_SIZES } from "../data/creatures";
 import { fmtMod } from "../lib/format";
 import { getCurrentHp, getEffectiveProficiencyBonus, getMaxHp, isCreatureDead } from "../lib/creature";
 
-export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium, onOpenBestiary, onOpenEncounter, onOpenCampaign }) {
+export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium, onOpenBestiary, onOpenCampaign }) {
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   return (
@@ -26,9 +26,6 @@ export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onO
           </GhostButton>
           <GhostButton icon={Skull} onClick={onOpenBestiary} style={{ borderColor: C.wine, color: C.wine }}>
             Bestiario
-          </GhostButton>
-          <GhostButton icon={Sword} onClick={onOpenEncounter} style={{ borderColor: C.gold, color: C.gold }}>
-            Incontro
           </GhostButton>
           <GhostButton icon={Users} onClick={onOpenCampaign} style={{ borderColor: C.forest, color: C.forestDeep }}>
             Campagna

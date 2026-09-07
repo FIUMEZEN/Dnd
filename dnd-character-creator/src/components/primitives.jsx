@@ -21,6 +21,21 @@ export function Frame({ children, style, className = "" }) {
   );
 }
 
+// Barra PF visiva: colore in base alla percentuale di vita rimasta, più un segmento chiaro
+// per i PF temporanei (calcolato sopra il massimo, non incluso nella barra base).
+export function HpBar({ current, max, temp = 0 }) {
+  if (!max) return null;
+  const pct = Math.max(0, Math.min(1, current / max));
+  const color = pct <= 0.25 ? C.danger : pct <= 0.5 ? C.goldSoft : C.forest;
+  const tempPct = temp > 0 ? Math.min(1, temp / max) : 0;
+  return (
+    <div style={{ height: 6, borderRadius: 3, background: "rgba(0,0,0,0.12)", overflow: "hidden", display: "flex", marginTop: 6 }}>
+      <div style={{ width: `${pct * 100}%`, background: color, transition: "width 150ms ease" }} />
+      {tempPct > 0 && <div style={{ width: `${tempPct * 100}%`, background: C.forestDeep, opacity: 0.6 }} />}
+    </div>
+  );
+}
+
 export function Divider() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "1.25rem 0" }}>

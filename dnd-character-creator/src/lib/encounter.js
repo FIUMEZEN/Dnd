@@ -12,8 +12,12 @@ export function emptyEncounter() {
   return { id: null, name: "", round: 1, activeId: null, combatants: [] };
 }
 
-// refType: "character" | "creature" | "custom" (un combattente ad-hoc senza scheda, es. una
-// guardia generica creata al volo, con solo nome/CA/PF).
+// refType: "character" | "creature" | "campaignCharacter" | "custom" (un combattente ad-hoc
+// senza scheda, es. una guardia generica creata al volo, con solo nome/CA/PF).
+// I campi campaign* sono l'overlay LOCALE di un PG sincronizzato via Campagna: PF/Concentrazione/
+// TS Morte tracciati qui non toccano mai i dati sincronizzati né tornano al dispositivo del
+// giocatore (vedi getCombatantView e ADR sulla Campagna) — solo CA/PF massimi/livello arrivano
+// dallo snapshot condiviso, sempre calcolati con getCharacterCombatStats, mai duplicati a mano.
 export function emptyCombatant(refType, refId = null, name = "") {
   return {
     id: nextUid(),
@@ -25,6 +29,10 @@ export function emptyCombatant(refType, refId = null, name = "") {
     customMaxHp: 10,
     customCurrentHp: 10,
     customAc: 10,
+    campaignCurrentHp: null,
+    campaignTempHp: 0,
+    campaignConcentration: null,
+    campaignDeathSaves: null,
   };
 }
 
@@ -44,10 +52,32 @@ function missingView(combatant, label) {
   return { name: combatant.name || label, ac: null, maxHp: null, currentHp: null, tempHp: 0, dexMod: 0, isDead: false, source: null, missing: true };
 }
 
-// Risolve un Combattente nelle statistiche da mostrare/usare in gioco, leggendole sempre dalla
-// scheda/creatura di origine (mai una copia): un danno inflitto qui aggiorna la stessa scheda
-// che il giocatore vede altrove, e viceversa.
-export function getCombatantView(combatant, characters, creatures) {
+// Risolve un Combattente nelle statistiche da mostrare/usare in gioco. Per "character" e
+// "creature" legge sempre dalla scheda/creatura di origine (mai una copia): un danno inflitto
+// qui aggiorna la stessa scheda che il giocatore vede altrove, e viceversa. Per
+// "campaignCharacter" invece PF max/CA/livello arrivano dallo snapshot sincronizzato via
+// Campagna (sola lettura), ma i PF ATTUALI/temporanei/concentrazione/TS morte sono l'overlay
+// locale sul combattente stesso: un danno qui non tocca mai il personaggio del giocatore.
+export function getCombatantView(combatant, characters, creatures, campaignEntries = []) {
+  if (combatant.refType === "campaignCharacter") {
+    const entry = campaignEntries.find((e) => e.character_id === combatant.refId);
+    if (!entry) return missingView(combatant, "Personaggio di Campagna non trovato");
+    const source = entry.data;
+    const stats = getCharacterCombatStats(source);
+    const currentHp = combatant.campaignCurrentHp == null
+      ? stats.currentHp
+      : (stats.maxHp == null ? combatant.campaignCurrentHp : Math.min(combatant.campaignCurrentHp, stats.maxHp));
+    return {
+      name: combatant.name || source.name || "Personaggio",
+      ac: stats.ac,
+      maxHp: stats.maxHp,
+      currentHp,
+      tempHp: combatant.campaignTempHp || 0,
+      dexMod: stats.dexMod,
+      isDead: stats.maxHp != null && (currentHp ?? stats.maxHp) <= 0,
+      source,
+    };
+  }
   if (combatant.refType === "character") {
     const source = characters.find((c) => c.id === combatant.refId);
     if (!source) return missingView(combatant, "Personaggio non trovato");
@@ -91,11 +121,20 @@ export function getCombatantView(combatant, characters, creatures) {
   };
 }
 
-function getCharacterSources(combatants, characters) {
-  return combatants
+// PG locali + PG di Campagna contano entrambi come "Personaggi" per il bilanciamento
+// dell'Incontro (hanno un livello reale che pesa sulle soglie di PE) — ma solo i PG locali
+// compaiono nel pannello "Assegna PE" (vedi EncounterRunner), perché quello scrive sul
+// personaggio, cosa che per i PG di Campagna violerebbe la sola lettura.
+function getCharacterSources(combatants, characters, campaignEntries) {
+  const local = combatants
     .filter((c) => c.refType === "character")
     .map((c) => characters.find((ch) => ch.id === c.refId))
     .filter(Boolean);
+  const fromCampaign = combatants
+    .filter((c) => c.refType === "campaignCharacter")
+    .map((c) => campaignEntries.find((e) => e.character_id === c.refId)?.data)
+    .filter(Boolean);
+  return [...local, ...fromCampaign];
 }
 function getCreatureSources(combatants, creatures) {
   return combatants
@@ -144,8 +183,8 @@ export function getEncounterDifficulty(adjustedXp, thresholds) {
 
 // Bilanciamento dell'Incontro (DMG 2014): confronta il PE totale dei mostri presenti (corretto
 // dal moltiplicatore per il loro numero) con le soglie del gruppo di Personaggi presenti.
-export function getEncounterAssessment(combatants, characters, creatures) {
-  const characterSources = getCharacterSources(combatants, characters);
+export function getEncounterAssessment(combatants, characters, creatures, campaignEntries = []) {
+  const characterSources = getCharacterSources(combatants, characters, campaignEntries);
   const creatureSources = getCreatureSources(combatants, creatures);
 
   const thresholds = getPartyXpThresholds(characterSources);

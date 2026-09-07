@@ -3,9 +3,9 @@
 // Personaggio e della Scheda Creatura, mai duplicati) e condizioni come semplici etichette
 // visive (nessuna automazione meccanica — vedi ADR 0004).
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Dices, Plus, Skull, Sword, Trash2, Users, X } from "../icons";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Dices, Plus, Skull, Sword, Trash2, Users, X } from "../icons";
 import { C } from "../theme";
-import { Frame, GhostButton, GoldButton, MetricBox } from "./primitives";
+import { Frame, GhostButton, GoldButton, HpBar, MetricBox } from "./primitives";
 import { HpTracker, DeathSaveTracker, ConcentrationTracker } from "./hp";
 import { CONDITIONS } from "../data/creatures";
 import { mod, fmtMod } from "../lib/format";
@@ -16,7 +16,7 @@ import {
 } from "../lib/encounter";
 
 function CombatantIcon({ refType, size = 15, color }) {
-  if (refType === "character") return <Users size={size} color={color} />;
+  if (refType === "character" || refType === "campaignCharacter") return <Users size={size} color={color} />;
   if (refType === "creature") return <Skull size={size} color={color} />;
   return <Sword size={size} color={color} />;
 }
@@ -42,18 +42,21 @@ function CreatureCombatHp({ creature, maxHp, onUpdate }) {
   const addTemp = () => onUpdate({ ...creature, tempHp: Math.max(temp, Math.max(0, amount)) });
 
   return (
-    <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-      <span style={{ fontFamily: "'Cinzel', serif", fontSize: 17, color: current <= maxHp / 3 ? C.danger : C.textOnParchment }}>
-        {current} / {maxHp} PF{temp > 0 ? <span style={{ color: C.forestDeep, fontSize: 13 }}> (+{temp} temp)</span> : null}
-      </span>
-      <input
-        type="number" min={0} value={amount}
-        onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
-        style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
-      />
-      <GhostButton onClick={applyDamage} style={{ borderColor: C.danger, color: C.danger, padding: "0.3rem 0.7rem", fontSize: 12 }}>Danno</GhostButton>
-      <GoldButton onClick={applyHeal} style={{ padding: "0.3rem 0.7rem", fontSize: 12 }}>Cura</GoldButton>
-      <GhostButton onClick={addTemp} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.3rem 0.7rem", fontSize: 12 }}>+ Temp</GhostButton>
+    <div>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 17, color: current <= maxHp / 3 ? C.danger : C.textOnParchment }}>
+          {current} / {maxHp} PF{temp > 0 ? <span style={{ color: C.forestDeep, fontSize: 13 }}> (+{temp} temp)</span> : null}
+        </span>
+        <input
+          type="number" min={0} value={amount}
+          onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
+          style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+        />
+        <GhostButton onClick={applyDamage} style={{ borderColor: C.danger, color: C.danger, padding: "0.3rem 0.7rem", fontSize: 12 }}>Danno</GhostButton>
+        <GoldButton onClick={applyHeal} style={{ padding: "0.3rem 0.7rem", fontSize: 12 }}>Cura</GoldButton>
+        <GhostButton onClick={addTemp} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.3rem 0.7rem", fontSize: 12 }}>+ Temp</GhostButton>
+      </div>
+      <HpBar current={current} max={maxHp} temp={temp} />
     </div>
   );
 }
@@ -64,29 +67,32 @@ function CustomCombatHp({ combatant, onChange }) {
   const max = Number(combatant.customMaxHp) || 0;
   const current = combatant.customCurrentHp == null ? max : Math.min(combatant.customCurrentHp, max);
   return (
-    <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-      <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
-        CA
-        <input
-          type="number" value={combatant.customAc}
-          onChange={(e) => onChange({ ...combatant, customAc: Number(e.target.value) || 0 })}
-          style={{ width: 48, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
-        />
-      </label>
-      <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
-        PF
-        <input
-          type="number" value={current}
-          onChange={(e) => onChange({ ...combatant, customCurrentHp: Math.max(0, Number(e.target.value) || 0) })}
-          style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
-        />
-        /
-        <input
-          type="number" value={max}
-          onChange={(e) => onChange({ ...combatant, customMaxHp: Math.max(0, Number(e.target.value) || 0) })}
-          style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
-        />
-      </label>
+    <div>
+      <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+          CA
+          <input
+            type="number" value={combatant.customAc}
+            onChange={(e) => onChange({ ...combatant, customAc: Number(e.target.value) || 0 })}
+            style={{ width: 48, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+          />
+        </label>
+        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+          PF
+          <input
+            type="number" value={current}
+            onChange={(e) => onChange({ ...combatant, customCurrentHp: Math.max(0, Number(e.target.value) || 0) })}
+            style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+          />
+          /
+          <input
+            type="number" value={max}
+            onChange={(e) => onChange({ ...combatant, customMaxHp: Math.max(0, Number(e.target.value) || 0) })}
+            style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+          />
+        </label>
+      </div>
+      <HpBar current={current} max={max} />
     </div>
   );
 }
@@ -143,22 +149,26 @@ function ConditionTags({ conditions, onChange }) {
   );
 }
 
-export function EncounterRunner({ encounter, setEncounter, characters, creatures, onUpdateCharacter, onUpdateCreature, onBack }) {
+export function EncounterRunner({ encounter, setEncounter, characters, creatures, campaignEntries = [], onUpdateCharacter, onUpdateCreature, onBack }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const [addCharId, setAddCharId] = useState("");
   const [addCreatureId, setAddCreatureId] = useState("");
+  const [addCampaignId, setAddCampaignId] = useState("");
   const [customName, setCustomName] = useState("");
   const [customAc, setCustomAc] = useState(10);
   const [customHp, setCustomHp] = useState(10);
   const [xpOverrides, setXpOverrides] = useState({});
+  const [expandedDeadIds, setExpandedDeadIds] = useState(() => new Set());
 
   const combatants = encounter.combatants || [];
   const usedCharIds = new Set(combatants.filter((c) => c.refType === "character").map((c) => c.refId));
   const usedCreatureIds = new Set(combatants.filter((c) => c.refType === "creature").map((c) => c.refId));
+  const usedCampaignIds = new Set(combatants.filter((c) => c.refType === "campaignCharacter").map((c) => c.refId));
   const availableChars = characters.filter((c) => !usedCharIds.has(c.id));
   const availableCreatures = creatures.filter((c) => !usedCreatureIds.has(c.id));
+  const availableCampaignEntries = campaignEntries.filter((e) => !usedCampaignIds.has(e.character_id));
   const sorted = sortCombatantsByInitiative(combatants);
-  const assessment = getEncounterAssessment(combatants, characters, creatures);
+  const assessment = getEncounterAssessment(combatants, characters, creatures, campaignEntries);
   const characterCombatants = combatants
     .filter((c) => c.refType === "character")
     .map((c) => ({ combatant: c, source: characters.find((ch) => ch.id === c.refId) }))
@@ -193,6 +203,12 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
     addCombatant(emptyCombatant("creature", source.id, source.name));
     setAddCreatureId("");
   };
+  const addCampaignCharacter = () => {
+    const entry = campaignEntries.find((e) => e.character_id === addCampaignId);
+    if (!entry) return;
+    addCombatant(emptyCombatant("campaignCharacter", entry.character_id, entry.data?.name));
+    setAddCampaignId("");
+  };
   const addCustom = () => {
     if (!customName.trim()) return;
     const c = emptyCombatant("custom", null, customName.trim());
@@ -204,7 +220,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
   };
 
   const rollInitiativeFor = (combatant) => {
-    const view = getCombatantView(combatant, characters, creatures);
+    const view = getCombatantView(combatant, characters, creatures, campaignEntries);
     const roll = rollD20();
     updateCombatant(combatant.id, { initiative: roll + view.dexMod });
   };
@@ -212,7 +228,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
     setEncounter((e) => ({
       ...e,
       combatants: e.combatants.map((c) => {
-        const view = getCombatantView(c, characters, creatures);
+        const view = getCombatantView(c, characters, creatures, campaignEntries);
         return { ...c, initiative: rollD20() + view.dexMod };
       }),
     }));
@@ -243,7 +259,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
 
   return (
     <div>
-      <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18 }}>Sezione Master</GhostButton>
+      <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18 }}>Campagna</GhostButton>
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: 12 }}>
         <div>
@@ -271,7 +287,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
         </div>
       </div>
 
-      {(characterCombatants.length > 0 || assessment.monsterCount > 0) && (
+      {(assessment.partySize > 0 || assessment.monsterCount > 0) && (
         <Frame style={{ marginBottom: 18 }}>
           <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 10px" }}>Bilanciamento dell'Incontro</h3>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: assessment.difficulty ? 10 : 0 }}>
@@ -333,6 +349,19 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
             {availableCreatures.map((c) => <option key={c.id} value={c.id}>{c.name || "Senza nome"}</option>)}
           </select>
           <GhostButton icon={Plus} onClick={addCreature} disabled={!addCreatureId} style={{ borderColor: C.wine, color: C.wineDeep }}>Aggiungi Creatura</GhostButton>
+
+          {campaignEntries.length > 0 && (
+            <>
+              <select
+                value={addCampaignId} onChange={(e) => setAddCampaignId(e.target.value)}
+                style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+              >
+                <option value="">Scegli un PG dalla Campagna…</option>
+                {availableCampaignEntries.map((e) => <option key={e.character_id} value={e.character_id}>{e.data?.name || "Senza nome"}</option>)}
+              </select>
+              <GhostButton icon={Plus} onClick={addCampaignCharacter} disabled={!addCampaignId} style={{ borderColor: C.forest, color: C.forestDeep }}>Aggiungi da Campagna</GhostButton>
+            </>
+          )}
         </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
           <input
@@ -363,62 +392,127 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {sorted.map((combatant) => {
-            const view = getCombatantView(combatant, characters, creatures);
+            const view = getCombatantView(combatant, characters, creatures, campaignEntries);
             const isActive = combatant.id === encounter.activeId;
-            const conMod = combatant.refType === "character" && view.source ? mod(computeFinalScores(view.source).con) : 0;
+            const isLocalPg = combatant.refType === "character" && view.source;
+            const isCampaignPg = combatant.refType === "campaignCharacter" && view.source;
+            const conMod = (isLocalPg || isCampaignPg) ? mod(computeFinalScores(view.source).con) : 0;
             const setCharDraft = (updater) => {
               const next = typeof updater === "function" ? updater(view.source) : updater;
               onUpdateCharacter(next);
             };
+            // PG di Campagna: PF/Concentrazione/TS Morte sono un overlay SOLO locale sul
+            // combattente (mai scritti sul personaggio sincronizzato né rimandati al giocatore —
+            // vedi ADR sulla Campagna). Riusa HpTracker/ConcentrationTracker/DeathSaveTracker
+            // senza modificarli, passando un "draft virtuale" costruito dallo snapshot + overlay.
+            const campaignDraft = isCampaignPg ? {
+              ...view.source,
+              currentHp: combatant.campaignCurrentHp,
+              tempHp: combatant.campaignTempHp || 0,
+              concentration: combatant.campaignConcentration,
+              deathSaves: combatant.campaignDeathSaves,
+            } : null;
+            const setCampaignDraft = (updater) => {
+              const next = typeof updater === "function" ? updater(campaignDraft) : updater;
+              updateCombatant(combatant.id, {
+                campaignCurrentHp: next.currentHp,
+                campaignTempHp: next.tempHp,
+                campaignConcentration: next.concentration,
+                campaignDeathSaves: next.deathSaves,
+              });
+            };
+
+            // I mostri/combattenti ad-hoc "morti" (0 PF, RAW) si comprimono di default per
+            // ridurre lo scrolling con molti nemici — i PG restano sempre espansi perché a 0 PF
+            // servono i Tiri Salvezza contro la Morte, non la semplice rimozione dalla vista.
+            const collapsible = view.isDead && (combatant.refType === "creature" || combatant.refType === "custom");
+            const collapsed = collapsible && !expandedDeadIds.has(combatant.id);
+            const toggleDeadExpanded = () => setExpandedDeadIds((prev) => {
+              const next = new Set(prev);
+              if (next.has(combatant.id)) next.delete(combatant.id); else next.add(combatant.id);
+              return next;
+            });
 
             return (
-              <Frame key={combatant.id} style={{ padding: "1rem 1.25rem", border: isActive ? `2px solid ${C.gold}` : undefined }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10, marginBottom: 10 }}>
+              <Frame key={combatant.id} style={{ padding: collapsed ? "0.6rem 1.25rem" : "1rem 1.25rem", border: isActive ? `2px solid ${C.gold}` : undefined, opacity: collapsed ? 0.7 : 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10, marginBottom: collapsed ? 0 : 10 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                     <CombatantIcon refType={combatant.refType} color={C.wine} />
+                    {isActive && (
+                      <span style={{ fontFamily: "'Cinzel', serif", fontSize: 11, color: C.inkDeep, background: C.gold, borderRadius: 10, padding: "0.15rem 0.5rem", letterSpacing: 0.5 }}>
+                        ▶ TURNO
+                      </span>
+                    )}
                     <span style={{ fontFamily: "'Cinzel', serif", fontSize: 16, color: view.isDead ? C.danger : C.textOnParchment }}>
                       {view.name}{view.isDead ? " · MORTO" : ""}{view.missing ? " (mancante)" : ""}
                     </span>
-                    {view.ac != null && (
+                    {view.ac != null && !collapsed && (
                       <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>CA {view.ac}</span>
                     )}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
-                      Iniziativa
-                      <input
-                        type="number" value={combatant.initiative ?? ""}
-                        onChange={(e) => updateCombatant(combatant.id, { initiative: e.target.value === "" ? null : Number(e.target.value) })}
-                        style={{ width: 52, fontFamily: "'Cinzel', serif", fontSize: 14, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", textAlign: "center" }}
-                      />
-                    </label>
-                    <GhostButton onClick={() => rollInitiativeFor(combatant)} style={{ padding: "0.3rem 0.5rem", fontSize: 12, borderColor: C.parchmentLine }}>
-                      🎲{view.dexMod ? ` ${fmtMod(view.dexMod)}` : ""}
-                    </GhostButton>
+                    {collapsible && (
+                      <GhostButton onClick={toggleDeadExpanded} style={{ padding: "0.3rem 0.5rem", fontSize: 12, borderColor: C.parchmentLine, color: C.textMuted }}>
+                        {collapsed ? <ChevronDown size={13} /> : <ChevronUp size={13} />}
+                      </GhostButton>
+                    )}
+                    {!collapsed && (
+                      <>
+                        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+                          Iniziativa
+                          <input
+                            type="number" value={combatant.initiative ?? ""}
+                            onChange={(e) => updateCombatant(combatant.id, { initiative: e.target.value === "" ? null : Number(e.target.value) })}
+                            style={{ width: 52, fontFamily: "'Cinzel', serif", fontSize: 14, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", textAlign: "center" }}
+                          />
+                        </label>
+                        <GhostButton onClick={() => rollInitiativeFor(combatant)} style={{ padding: "0.3rem 0.5rem", fontSize: 12, borderColor: C.parchmentLine }}>
+                          🎲{view.dexMod ? ` ${fmtMod(view.dexMod)}` : ""}
+                        </GhostButton>
+                      </>
+                    )}
                     <button onClick={() => removeCombatant(combatant.id)} aria-label="Rimuovi dall'Incontro" style={{ background: "transparent", border: "none", cursor: "pointer", color: C.danger, padding: 4 }}>
                       <X size={16} />
                     </button>
                   </div>
                 </div>
 
+                {collapsed && (
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>
+                    0 / {view.maxHp} PF
+                  </p>
+                )}
+
+                {!collapsed && (
                 <div style={{ marginBottom: 10 }}>
                   <ConditionTags conditions={combatant.conditions || []} onChange={(next) => updateCombatant(combatant.id, { conditions: next })} />
                 </div>
+                )}
 
-                {combatant.refType === "character" && view.source && (
+                {!collapsed && isLocalPg && (
                   <>
                     <HpTracker maxHp={view.maxHp} draft={view.source} setDraft={setCharDraft} conMod={conMod} />
                     <DeathSaveTracker draft={view.source} setDraft={setCharDraft} maxHp={view.maxHp} />
                     <ConcentrationTracker draft={view.source} setDraft={setCharDraft} />
                   </>
                 )}
-                {combatant.refType === "creature" && view.source && (
+                {!collapsed && isCampaignPg && (
+                  <>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.textMuted, fontStyle: "italic", margin: "0 0 6px" }}>
+                      PG di Campagna: i PF qui sotto sono solo per te, non toccano la scheda del giocatore.
+                    </p>
+                    <HpTracker maxHp={view.maxHp} draft={campaignDraft} setDraft={setCampaignDraft} conMod={conMod} />
+                    <DeathSaveTracker draft={campaignDraft} setDraft={setCampaignDraft} maxHp={view.maxHp} />
+                    <ConcentrationTracker draft={campaignDraft} setDraft={setCampaignDraft} />
+                  </>
+                )}
+                {!collapsed && combatant.refType === "creature" && view.source && (
                   <CreatureCombatHp creature={view.source} maxHp={view.maxHp} onUpdate={onUpdateCreature} />
                 )}
-                {combatant.refType === "custom" && (
+                {!collapsed && combatant.refType === "custom" && (
                   <CustomCombatHp combatant={combatant} onChange={(next) => updateCombatant(combatant.id, next)} />
                 )}
-                {view.missing && (
+                {!collapsed && view.missing && (
                   <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.danger, margin: 0 }}>
                     La scheda originale non è più disponibile (probabilmente eliminata). Rimuovi questo combattente dall'Incontro.
                   </p>

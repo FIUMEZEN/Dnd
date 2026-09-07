@@ -4,7 +4,7 @@
 // Tiri Salvezza contro la Morte (DeathSaveTracker).
 import { useState } from "react";
 import { C } from "../theme";
-import { Divider, Pill, GhostButton, GoldButton } from "./primitives";
+import { Divider, Pill, GhostButton, GoldButton, HpBar } from "./primitives";
 import { CLASSES } from "../data/classes";
 import { SPELLS } from "../data/spells";
 import { fmtMod } from "../lib/format";
@@ -225,6 +225,7 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
             Concentrato su {draft.concentration.spellName}
           </span>
         )}
+        <HpBar current={current} max={maxHp} temp={temp} />
       </div>
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <input
