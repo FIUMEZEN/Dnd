@@ -1,6 +1,7 @@
 export const STORAGE_KEY = "dnd-characters-5e2014-v2";
 export const CREATURES_STORAGE_KEY = "dnd-creatures-5e2014-v1";
 export const ENCOUNTER_STORAGE_KEY = "dnd-encounter-5e2014-v1";
+export const CAMPAIGN_CODE_STORAGE_KEY = "dnd-campaign-code-v1";
 
 export const storageAdapter = {
   async get(key, fallback) {

@@ -5,6 +5,7 @@ import { emptyCreature, instantiateFromBestiary, validateCreature } from "./lib/
 import { emptyEncounter } from "./lib/encounter";
 import { STORAGE_KEY, CREATURES_STORAGE_KEY, ENCOUNTER_STORAGE_KEY, storageAdapter } from "./lib/storage";
 import { requestPersistentStorage } from "./lib/backup";
+import { syncCharacterToCampaign } from "./lib/campaignSync";
 import { BackupControl } from "./components/BackupControl";
 import { PlayerSheet } from "./components/PlayerSheet";
 import { SpellCompendium } from "./components/SpellCompendium";
@@ -15,6 +16,7 @@ import { CreatureEditor } from "./components/CreatureEditor";
 import { CreatureSheetView } from "./components/CreatureSheetView";
 import { Bestiary } from "./components/Bestiary";
 import { EncounterRunner } from "./components/EncounterRunner";
+import { CampaignPanel } from "./components/CampaignPanel";
 
 /* ---------------------------------- APP ---------------------------------- */
 
@@ -121,6 +123,7 @@ export default function App() {
       setCharacters(next);
       setSheetCharacter(updatedCharacter);
       showToast("Modifiche salvate.");
+      syncCharacterToCampaign(updatedCharacter);
     } catch (e) {
       showToast("Errore durante il salvataggio. Riprova.");
     }
@@ -154,6 +157,7 @@ export default function App() {
       setCharacters(next);
       setDraft(toSave);
       showToast("Personaggio salvato.");
+      syncCharacterToCampaign(toSave);
       setScreen("list");
     } catch (e) {
       showToast("Errore durante il salvataggio. Riprova.");
@@ -361,6 +365,7 @@ export default function App() {
           onOpenCompendium={() => openCompendium("master")}
           onOpenBestiary={() => setScreen("bestiary")}
           onOpenEncounter={() => setScreen("encounter")}
+          onOpenCampaign={() => setScreen("campaign")}
         />
       )}
 
@@ -378,6 +383,10 @@ export default function App() {
           onUpdateCreature={handleUpdateCreatureSilent}
           onBack={() => setScreen("master")}
         />
+      )}
+
+      {screen === "campaign" && (
+        <CampaignPanel onBack={() => setScreen("master")} />
       )}
 
       {screen === "master-edit" && (

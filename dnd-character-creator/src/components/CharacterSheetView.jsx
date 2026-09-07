@@ -252,6 +252,18 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
         <MetricBox label="Percezione passiva" value={passivePerception} />
       </div>
 
+      <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep }}>Codice Campagna</span>
+        <input
+          type="text" placeholder="Facoltativo — dal tuo Master" value={draft.campaignCode || ""}
+          onChange={(e) => setDraft((d) => ({ ...d, campaignCode: e.target.value.toUpperCase() }))}
+          style={{ width: 140, fontFamily: "'Cinzel', serif", fontSize: 13.5, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", letterSpacing: 1 }}
+        />
+        <span style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, fontStyle: "italic" }}>
+          Se lo inserisci, il tuo Master vedrà questo personaggio (in sola lettura) nella sua Campagna.
+        </span>
+      </div>
+
       {bg && (bg.featureDesc || draft.personalityTrait1 || draft.personalityTrait2 || draft.ideal || draft.bond || draft.flaw) && (
         <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.wineDeep, margin: "0 0 4px" }}>
