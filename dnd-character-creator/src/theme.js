@@ -16,6 +16,11 @@ export const C = {
   cream: "#f1e9d8",
   creamMuted: "#c9bda4",
   danger: "#a4372f",
+  // Varianti più chiare di wine/forest/danger, per testo/bordi di bottoni sullo sfondo scuro
+  // (C.ink): le versioni "Deep" e quelle base hanno contrasto WCAG troppo basso lì (1.4–2.7:1),
+  // anche se sono perfette sulla pergamena chiara. Usare queste due SOLO fuori dai <Frame>.
+  wineBright: "#d9705f",
+  forestBright: "#57a67c",
 };
 
 export const FONT_IMPORT =

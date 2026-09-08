@@ -281,6 +281,21 @@ export default function App() {
     }
   };
 
+  // Crea subito una nuova Creatura (dal Bestiario o "mostro veloce") dall'Incontro, senza il
+  // giro Sezione Master → Editor → Salva: finisce nella libreria del Master esattamente come
+  // una creatura creata a mano, così può essere riusata in incontri futuri. Ritorna la creatura
+  // salvata (con id) perché il chiamante la aggiunga subito come combattente.
+  const handleCreateCreature = (creatureData) => {
+    const id = `creature_${Date.now()}`;
+    const toSave = { ...creatureData, id };
+    const next = [...creatures, toSave];
+    setCreatures(next);
+    storageAdapter.set(CREATURES_STORAGE_KEY, JSON.stringify(next), false).catch(() => {
+      showToast("Errore durante il salvataggio della creatura.");
+    });
+    return toSave;
+  };
+
   const openCompendium = (from) => {
     setCompendiumFrom(from);
     setScreen("compendium");
@@ -404,6 +419,7 @@ export default function App() {
           campaignEntries={campaignEntries}
           onUpdateCharacter={handleUpdateCharacterSilent}
           onUpdateCreature={handleUpdateCreatureSilent}
+          onCreateCreature={handleCreateCreature}
           onBack={() => setScreen("campaign")}
         />
       )}

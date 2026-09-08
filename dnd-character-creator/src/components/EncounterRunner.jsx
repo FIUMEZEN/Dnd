@@ -7,13 +7,22 @@ import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Dices, Plus, Skull, 
 import { C } from "../theme";
 import { Frame, GhostButton, GoldButton, HpBar, MetricBox } from "./primitives";
 import { HpTracker, DeathSaveTracker, ConcentrationTracker } from "./hp";
-import { CONDITIONS } from "../data/creatures";
+import { CONDITIONS, CR_OPTIONS } from "../data/creatures";
+import { BESTIARY } from "../data/bestiary";
 import { mod, fmtMod } from "../lib/format";
 import { computeFinalScores } from "../lib/character";
+import { emptyCreature, instantiateFromBestiary } from "../lib/creature";
 import {
   emptyCombatant, rollD20, sortCombatantsByInitiative, getCombatantView,
   getEncounterAssessment, splitXpEvenly,
 } from "../lib/encounter";
+
+const crSortValue = (cr) => {
+  if (!cr.includes("/")) return Number(cr);
+  const [num, den] = cr.split("/").map(Number);
+  return num / den;
+};
+const BESTIARY_SORTED = [...BESTIARY].sort((a, b) => crSortValue(a.cr) - crSortValue(b.cr) || a.name.localeCompare(b.name, "it"));
 
 function CombatantIcon({ refType, size = 15, color }) {
   if (refType === "character" || refType === "campaignCharacter") return <Users size={size} color={color} />;
@@ -149,11 +158,15 @@ function ConditionTags({ conditions, onChange }) {
   );
 }
 
-export function EncounterRunner({ encounter, setEncounter, characters, creatures, campaignEntries = [], onUpdateCharacter, onUpdateCreature, onBack }) {
+export function EncounterRunner({ encounter, setEncounter, characters, creatures, campaignEntries = [], onUpdateCharacter, onUpdateCreature, onCreateCreature, onBack }) {
   const [confirmReset, setConfirmReset] = useState(false);
-  const [addCharId, setAddCharId] = useState("");
   const [addCreatureId, setAddCreatureId] = useState("");
   const [addCampaignId, setAddCampaignId] = useState("");
+  const [addBestiaryKey, setAddBestiaryKey] = useState("");
+  const [quickName, setQuickName] = useState("");
+  const [quickCr, setQuickCr] = useState("1");
+  const [quickAc, setQuickAc] = useState(12);
+  const [quickHp, setQuickHp] = useState(10);
   const [customName, setCustomName] = useState("");
   const [customAc, setCustomAc] = useState(10);
   const [customHp, setCustomHp] = useState(10);
@@ -161,10 +174,8 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
   const [expandedDeadIds, setExpandedDeadIds] = useState(() => new Set());
 
   const combatants = encounter.combatants || [];
-  const usedCharIds = new Set(combatants.filter((c) => c.refType === "character").map((c) => c.refId));
   const usedCreatureIds = new Set(combatants.filter((c) => c.refType === "creature").map((c) => c.refId));
   const usedCampaignIds = new Set(combatants.filter((c) => c.refType === "campaignCharacter").map((c) => c.refId));
-  const availableChars = characters.filter((c) => !usedCharIds.has(c.id));
   const availableCreatures = creatures.filter((c) => !usedCreatureIds.has(c.id));
   const availableCampaignEntries = campaignEntries.filter((e) => !usedCampaignIds.has(e.character_id));
   const sorted = sortCombatantsByInitiative(combatants);
@@ -191,12 +202,6 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
 
   const addCombatant = (combatant) => setEncounter((e) => ({ ...e, combatants: [...e.combatants, combatant] }));
 
-  const addCharacter = () => {
-    const source = characters.find((c) => c.id === addCharId);
-    if (!source) return;
-    addCombatant(emptyCombatant("character", source.id, source.name));
-    setAddCharId("");
-  };
   const addCreature = () => {
     const source = creatures.find((c) => c.id === addCreatureId);
     if (!source) return;
@@ -208,6 +213,32 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
     if (!entry) return;
     addCombatant(emptyCombatant("campaignCharacter", entry.character_id, entry.data?.name));
     setAddCampaignId("");
+  };
+  // Dal Bestiario direttamente nell'Incontro: clona la voce SRD in una Creatura vera e propria
+  // (stessa conversione usata dal pulsante "Usa come base" in Sezione Master → Bestiario),
+  // la salva subito nella libreria del Master e la aggiunge come combattente — senza il giro
+  // Bestiario → Editor → Salva → torna all'Incontro.
+  const addFromBestiary = () => {
+    const entry = BESTIARY.find((m) => m.key === addBestiaryKey);
+    if (!entry) return;
+    const created = onCreateCreature(instantiateFromBestiary(entry));
+    addCombatant(emptyCombatant("creature", created.id, created.name));
+    setAddBestiaryKey("");
+  };
+  // Mostro veloce: crea al volo una Creatura vera (non solo un combattente ad-hoc) con un GS,
+  // così conta subito nel Bilanciamento dell'Incontro — a differenza del "Combattente ad-hoc"
+  // qui sotto, pensato per comparse/ostacoli che non devono influenzare il calcolo dei PE.
+  const addQuickMonster = () => {
+    if (!quickName.trim()) return;
+    const created = onCreateCreature({
+      ...emptyCreature(),
+      name: quickName.trim(),
+      cr: quickCr,
+      ac: Number(quickAc) || 10,
+      hp: Number(quickHp) || 1,
+    });
+    addCombatant(emptyCombatant("creature", created.id, created.name));
+    setQuickName(""); setQuickCr("1"); setQuickAc(12); setQuickHp(10);
   };
   const addCustom = () => {
     if (!customName.trim()) return;
@@ -278,11 +309,11 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
           <GoldButton icon={ChevronRight} onClick={advanceTurn} disabled={combatants.length === 0}>Turno successivo</GoldButton>
           {confirmReset ? (
             <>
-              <GhostButton onClick={resetEncounter} style={{ borderColor: C.danger, color: C.danger }}>Conferma reset</GhostButton>
+              <GhostButton onClick={resetEncounter} style={{ borderColor: C.wineBright, color: C.wineBright }}>Conferma reset</GhostButton>
               <GhostButton onClick={() => setConfirmReset(false)}>Annulla</GhostButton>
             </>
           ) : (
-            <GhostButton icon={Trash2} onClick={() => setConfirmReset(true)} style={{ borderColor: C.danger, color: C.danger }}>Nuovo Incontro</GhostButton>
+            <GhostButton icon={Trash2} onClick={() => setConfirmReset(true)} style={{ borderColor: C.wineBright, color: C.wineBright }}>Nuovo Incontro</GhostButton>
           )}
         </div>
       </div>
@@ -333,15 +364,6 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
         <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 10px" }}>Aggiungi combattenti</h3>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
           <select
-            value={addCharId} onChange={(e) => setAddCharId(e.target.value)}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
-          >
-            <option value="">Scegli un Personaggio…</option>
-            {availableChars.map((c) => <option key={c.id} value={c.id}>{c.name || "Senza nome"}</option>)}
-          </select>
-          <GhostButton icon={Plus} onClick={addCharacter} disabled={!addCharId} style={{ borderColor: C.wine, color: C.wineDeep }}>Aggiungi PG</GhostButton>
-
-          <select
             value={addCreatureId} onChange={(e) => setAddCreatureId(e.target.value)}
             style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           >
@@ -362,6 +384,43 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
               <GhostButton icon={Plus} onClick={addCampaignCharacter} disabled={!addCampaignId} style={{ borderColor: C.forest, color: C.forestDeep }}>Aggiungi da Campagna</GhostButton>
             </>
           )}
+
+          <select
+            value={addBestiaryKey} onChange={(e) => setAddBestiaryKey(e.target.value)}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", maxWidth: 220 }}
+          >
+            <option value="">Scegli dal Bestiario…</option>
+            {BESTIARY_SORTED.map((m) => <option key={m.key} value={m.key}>{m.name} (GS {m.cr})</option>)}
+          </select>
+          <GhostButton icon={Plus} onClick={addFromBestiary} disabled={!addBestiaryKey} style={{ borderColor: C.wine, color: C.wineDeep }}>
+            Aggiungi dal Bestiario
+          </GhostButton>
+        </div>
+
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, fontStyle: "italic", margin: "2px 0 10px" }}>
+          "Dal Bestiario" e "Mostro veloce" creano una vera Creatura (finisce anche nella tua libreria in Sezione Master e conta nel Bilanciamento PE); il "Combattente ad-hoc" qui sotto resta solo in questo Incontro e non ha un GS.
+        </p>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: 14 }}>
+          <input
+            type="text" placeholder="Mostro veloce (nome)" value={quickName}
+            onChange={(e) => setQuickName(e.target.value)}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+          />
+          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+            GS
+            <select value={quickCr} onChange={(e) => setQuickCr(e.target.value)} style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}>
+              {CR_OPTIONS.map((cr) => <option key={cr} value={cr}>{cr}</option>)}
+            </select>
+          </label>
+          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+            CA
+            <input type="number" value={quickAc} onChange={(e) => setQuickAc(e.target.value)} style={{ width: 50, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
+          </label>
+          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+            PF
+            <input type="number" value={quickHp} onChange={(e) => setQuickHp(e.target.value)} style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
+          </label>
+          <GhostButton icon={Plus} onClick={addQuickMonster} disabled={!quickName.trim()} style={{ borderColor: C.wine, color: C.wineDeep }}>Aggiungi mostro</GhostButton>
         </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
           <input
@@ -386,7 +445,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
           <Sword size={28} color={C.gold} style={{ marginBottom: 10 }} />
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 16, color: C.textOnParchment, margin: 0 }}>Nessun combattente nell'Incontro</p>
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "6px 0 0" }}>
-            Aggiungi Personaggi, Creature o combattenti ad-hoc qui sopra per iniziare.
+            Aggiungi PG dalla Campagna, Creature o combattenti ad-hoc qui sopra per iniziare.
           </p>
         </Frame>
       ) : (

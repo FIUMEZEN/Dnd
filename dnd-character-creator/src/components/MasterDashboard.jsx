@@ -24,10 +24,10 @@ export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onO
           <GhostButton icon={BookOpen} onClick={onOpenCompendium} style={{ borderColor: C.gold, color: C.gold }}>
             Compendio Incantesimi
           </GhostButton>
-          <GhostButton icon={Skull} onClick={onOpenBestiary} style={{ borderColor: C.wine, color: C.wine }}>
+          <GhostButton icon={Skull} onClick={onOpenBestiary} style={{ borderColor: C.wineBright, color: C.wineBright }}>
             Bestiario
           </GhostButton>
-          <GhostButton icon={Users} onClick={onOpenCampaign} style={{ borderColor: C.forest, color: C.forestDeep }}>
+          <GhostButton icon={Users} onClick={onOpenCampaign} style={{ borderColor: C.forestBright, color: C.forestBright }}>
             Campagna
           </GhostButton>
           <GoldButton icon={Plus} onClick={onNew}>Nuova creatura</GoldButton>

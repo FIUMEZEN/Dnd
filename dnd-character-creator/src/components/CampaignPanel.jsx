@@ -53,7 +53,7 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
         </div>
         {supabase && (
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <GhostButton icon={Skull} onClick={onOpenBestiary} style={{ borderColor: C.wine, color: C.wine }}>
+            <GhostButton icon={Skull} onClick={onOpenBestiary} style={{ borderColor: C.wineBright, color: C.wineBright }}>
               Bestiario
             </GhostButton>
             <GoldButton icon={Sword} onClick={onOpenEncounter}>Incontro</GoldButton>

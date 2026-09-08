@@ -15,12 +15,18 @@ export function spellLevelLabel(level) {
 // chiunque può sfogliarlo dalla Dashboard, filtrando per classe e cercando per nome.
 export function SpellCompendium({ onBack }) {
   const [classFilter, setClassFilter] = useState("tutti");
+  const [levelFilter, setLevelFilter] = useState("tutti");
+  const [schoolFilter, setSchoolFilter] = useState("tutti");
   const [search, setSearch] = useState("");
 
   const classesWithSpells = CLASSES.filter((c) => SPELLS.some((s) => s.classes.includes(c.id)));
+  const levelsAvailable = [...new Set(SPELLS.map((s) => s.level))].sort((a, b) => a - b);
+  const schoolsAvailable = [...new Set(SPELLS.map((s) => s.school))].filter(Boolean).sort((a, b) => a.localeCompare(b, "it"));
   const searchTerm = search.trim().toLowerCase();
   const filtered = SPELLS.filter((s) =>
     (classFilter === "tutti" || s.classes.includes(classFilter)) &&
+    (levelFilter === "tutti" || s.level === levelFilter) &&
+    (schoolFilter === "tutti" || s.school === schoolFilter) &&
     (!searchTerm || s.name.toLowerCase().includes(searchTerm))
   );
   const byLevel = {};
@@ -47,10 +53,22 @@ export function SpellCompendium({ onBack }) {
             borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 14, boxSizing: "border-box",
           }}
         />
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 18 }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
           <Pill active={classFilter === "tutti"} onClick={() => setClassFilter("tutti")}>Tutte le classi</Pill>
           {classesWithSpells.map((c) => (
             <Pill key={c.id} active={classFilter === c.id} onClick={() => setClassFilter(c.id)}>{c.name}</Pill>
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
+          <Pill active={levelFilter === "tutti"} onClick={() => setLevelFilter("tutti")}>Tutti i livelli</Pill>
+          {levelsAvailable.map((lvl) => (
+            <Pill key={lvl} active={levelFilter === lvl} onClick={() => setLevelFilter(lvl)}>{lvl === 0 ? CANTRIP_LABEL : `${lvl}° livello`}</Pill>
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 18 }}>
+          <Pill active={schoolFilter === "tutti"} onClick={() => setSchoolFilter("tutti")}>Tutte le scuole</Pill>
+          {schoolsAvailable.map((sc) => (
+            <Pill key={sc} active={schoolFilter === sc} onClick={() => setSchoolFilter(sc)}>{sc[0].toUpperCase() + sc.slice(1)}</Pill>
           ))}
         </div>
 

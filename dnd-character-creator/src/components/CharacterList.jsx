@@ -23,7 +23,7 @@ export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet,
           <GhostButton icon={BookOpen} onClick={onOpenCompendium} style={{ borderColor: C.gold, color: C.gold }}>
             Compendio Incantesimi
           </GhostButton>
-          <GhostButton icon={Skull} onClick={onOpenMaster} style={{ borderColor: C.wine, color: C.wine }}>
+          <GhostButton icon={Skull} onClick={onOpenMaster} style={{ borderColor: C.wineBright, color: C.wineBright }}>
             Sezione Master
           </GhostButton>
           <GoldButton icon={Plus} onClick={onNew}>Nuovo personaggio</GoldButton>
