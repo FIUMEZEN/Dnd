@@ -20,8 +20,17 @@ export function SpellCompendium({ onBack }) {
   const [search, setSearch] = useState("");
 
   const classesWithSpells = CLASSES.filter((c) => SPELLS.some((s) => s.classes.includes(c.id)));
-  const levelsAvailable = [...new Set(SPELLS.map((s) => s.level))].sort((a, b) => a - b);
-  const schoolsAvailable = [...new Set(SPELLS.map((s) => s.school))].filter(Boolean).sort((a, b) => a.localeCompare(b, "it"));
+  // Livelli e scuole disponibili si restringono alla classe scelta, così non si vedono opzioni
+  // che per quella classe non esistono (es. scuole precluse, o livelli che non raggiunge).
+  const spellsForClass = classFilter === "tutti" ? SPELLS : SPELLS.filter((s) => s.classes.includes(classFilter));
+  const levelsAvailable = [...new Set(spellsForClass.map((s) => s.level))].sort((a, b) => a - b);
+  const schoolsAvailable = [...new Set(spellsForClass.map((s) => s.school))].filter(Boolean).sort((a, b) => a.localeCompare(b, "it"));
+  const setClass = (id) => {
+    setClassFilter(id);
+    const forClass = id === "tutti" ? SPELLS : SPELLS.filter((s) => s.classes.includes(id));
+    if (levelFilter !== "tutti" && !forClass.some((s) => s.level === levelFilter)) setLevelFilter("tutti");
+    if (schoolFilter !== "tutti" && !forClass.some((s) => s.school === schoolFilter)) setSchoolFilter("tutti");
+  };
   const searchTerm = search.trim().toLowerCase();
   const filtered = SPELLS.filter((s) =>
     (classFilter === "tutti" || s.classes.includes(classFilter)) &&
@@ -54,9 +63,9 @@ export function SpellCompendium({ onBack }) {
           }}
         />
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
-          <Pill active={classFilter === "tutti"} onClick={() => setClassFilter("tutti")}>Tutte le classi</Pill>
+          <Pill active={classFilter === "tutti"} onClick={() => setClass("tutti")}>Tutte le classi</Pill>
           {classesWithSpells.map((c) => (
-            <Pill key={c.id} active={classFilter === c.id} onClick={() => setClassFilter(c.id)}>{c.name}</Pill>
+            <Pill key={c.id} active={classFilter === c.id} onClick={() => setClass(c.id)}>{c.name}</Pill>
           ))}
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
