@@ -193,7 +193,8 @@ export const MULTICLASS_BONUS_SKILL_CLASS = ["bardo", "ladro", "ranger"];
 
 export const BASE_CLASS_FEATURES = {
   barbaro: [
-    { level: 1, name: "Attacco Sconsiderato", desc: "Quando effettui il tuo primo attacco nel turno, puoi decidere di attaccare in modo sconsiderato: ottieni vantaggio ai tiri per colpire in mischia con Forza, ma gli attacchi contro di te hanno vantaggio fino al tuo turno successivo." },
+    { level: 1, name: "Ira", desc: "Come azione bonus nel tuo turno puoi entrare in Ira (vedi \"Usi dell'Ira\" tra le risorse di classe). Finché dura, se non indossi un'armatura pesante: vantaggio ai tiri e ai TS di Forza; bonus ai danni sui tuoi attacchi in mischia con Forza (+2, +3 dal 9° livello, +4 dal 16°); resistenza ai danni contundenti, perforanti e taglienti. Non puoi lanciare né mantenere la concentrazione su incantesimi mentre sei in Ira. Dura fino a 1 minuto: termina prima se resti privo di sensi, oppure se un tuo turno finisce senza che tu abbia attaccato un nemico o subito danno dall'ultimo turno (puoi anche terminarla tu, come azione bonus)." },
+    { level: 2, name: "Attacco Sconsiderato", desc: "Quando effettui il tuo primo attacco nel turno, puoi decidere di attaccare in modo sconsiderato: ottieni vantaggio ai tiri per colpire in mischia con Forza, ma gli attacchi contro di te hanno vantaggio fino al tuo turno successivo." },
     { level: 2, name: "Percezione del Pericolo", desc: "Vantaggio ai tiri salvezza su Destrezza contro effetti che puoi vedere, come trappole e incantesimi, a meno che tu non sia accecato, sordo o incapace di agire." },
     { level: 7, name: "Istinto Ferino", desc: "Vantaggio ai tiri di iniziativa; se sei sorpreso e non sei incapacitato, puoi comunque agire nel tuo primo turno, ma devi entrare in Ira prima di fare altro." },
     { level: 9, name: "Critico Brutale", desc: "Puoi tirare un dado di danno extra dell'arma (poi due al 13°, tre al 17°) quando ottieni un colpo critico in mischia." },
@@ -209,17 +210,22 @@ export const BASE_CLASS_FEATURES = {
     { level: 20, name: "Ispirazione Superiore", desc: "Se hai esaurito tutti i dadi di Ispirazione Bardica, ne recuperi uno quando tiri l'iniziativa." },
   ],
   chierico: [
+    { level: 2, name: "Channel Divinity", desc: "Come azione, scegli uno dei tuoi effetti di Channel Divinity (Scacciare i Non Morti, più le opzioni del tuo Dominio) e attivalo; ogni effetto che richiede un TS usa la tua CD incantesimi da Chierico. Recuperi tutti gli usi con un riposo breve o lungo." },
     { level: 2, name: "Scacciare i Non Morti", desc: "Come opzione di Channel Divinity, ogni non morto entro 9 m che ti veda o senta deve superare un TS su Saggezza o essere Scacciato per 1 minuto (fugge da te se può)." },
     { level: 10, name: "Intervento Divino", desc: "Puoi implorare la tua divinità per un intervento miracoloso (1/riposo lungo); il DM decide l'effetto in base a tiro percentuale ≤ livello da Chierico." },
   ],
   druido: [
+    { level: 2, name: "Forma Selvaggia", desc: "Come azione, assumi la forma di una bestia che hai già visto (GS massimo 1/4 al 2° livello, 1/2 al 4°, 1 all'8°; niente velocità di volo prima del 8°, né di nuoto prima del 4°). Dura ore pari a metà del tuo livello da Druido (arrotondato per difetto), o finché non scendi a 0 PF nella forma o la termini prima come azione bonus. Usi le tue caratteristiche mentali e i tuoi TS/competenze, ma i PF, la velocità e le azioni fisiche sono quelle della bestia (niente componenti verbali/materiali degli incantesimi). Si ricarica con un riposo breve o lungo (vedi \"Usi della Forma Selvaggia\")." },
     { level: 18, name: "Corpo Senza Tempo", desc: "L'invecchiamento magico non ti influenza più e non puoi essere invecchiato magicamente." },
     { level: 20, name: "Arcidruido", desc: "Puoi usare la Forma Selvaggia un numero illimitato di volte; ignori inoltre le componenti verbali e somatiche dei tuoi incantesimi da Druido, purché tu non indossi armatura metallica." },
   ],
   guerriero: [
+    { level: 1, name: "Secondo Fiato", desc: "Come azione bonus nel tuo turno, recuperi 1d10 + il tuo livello da Guerriero punti ferita (vedi \"Secondo Fiato\" tra le risorse di classe). Una volta usato, serve un riposo breve o lungo per riottenerlo." },
+    { level: 2, name: "Azione Impetuosa", desc: "Come azione bonus nel tuo turno, ottieni un'azione extra da usare subito (non può essere usata per lanciare un incantesimo). Una volta per riposo breve o lungo (due dal 17° livello, ma solo una volta per turno)." },
     { level: 9, name: "Indomabile (nota)", desc: "Se rilanci un TS con Indomabile, devi usare il nuovo risultato anche se peggiore." },
   ],
   ladro: [
+    { level: 1, name: "Attacco Furtivo", desc: "Una volta per turno, infliggi danno extra (vedi \"Attacco Furtivo\" tra le meccaniche di classe) a una creatura colpita con un'arma con Finezza o a distanza, se hai vantaggio al tiro per colpire. Non serve vantaggio se un altro nemico del bersaglio è entro 1,5 m da esso, non è incapace di agire, e tu non hai svantaggio al tiro." },
     { level: 1, name: "Azione Scaltra", desc: "Puoi usare un'azione bonus in ogni tuo turno per Scattare, Disimpegnarti o Nasconderti." },
     { level: 5, name: "Schivata Prodigiosa", desc: "Quando un attaccante che puoi vedere ti colpisce con un attacco, puoi usare la tua reazione per dimezzare il danno subito." },
     { level: 6, name: "Competenza Esperta", desc: "Scegli altre due abilità (o una abilità e i tuoi arnesi da scasso) in cui sei competente: il bonus di competenza è raddoppiato per quelle prove." },
@@ -237,6 +243,7 @@ export const BASE_CLASS_FEATURES = {
   ],
   monaco: [
     { level: 1, name: "Arti Marziali", desc: "Con armi semplici e spade corte, e senza armi o armatura, puoi usare Destrezza al posto di Forza per colpire e danneggiare; il dado del danno non armato cresce col livello (d4→d10)." },
+    { level: 2, name: "Punti Ki", desc: "Spendendo Punti Ki (come azione bonus, tranne dove indicato) puoi: Raffica di Colpi — dopo l'azione di Attacco, effettuare due attacchi senza armi in più come azione bonus (1 Ki); Difesa Paziente — usare l'azione di Schivare come azione bonus (1 Ki); Passo del Vento — usare Disimpegnarsi o Scattare come azione bonus, con salto raddoppiato per il turno (1 Ki). Ricarichi tutti i Punti Ki con un riposo breve o lungo (almeno 30 minuti di meditazione)." },
     { level: 2, name: "Movimento Senza Armatura", desc: "La tua velocità aumenta quando non indossi armatura né usi scudo (+3 m al 2°, valore crescente col livello)." },
     { level: 3, name: "Deviare Proiettili", desc: "Puoi usare la reazione per ridurre il danno di un attacco a distanza con arma di 1d10 + Destrezza + livello da Monaco; se lo riduci a 0 puoi afferrare il proiettile e persino rilanciarlo." },
     { level: 4, name: "Caduta Attutita", desc: "Puoi usare la reazione per ridurre a 0 il danno da caduta." },
@@ -250,6 +257,9 @@ export const BASE_CLASS_FEATURES = {
     { level: 20, name: "Io Perfetto", desc: "Se tiri l'iniziativa senza Punti Ki rimasti, ne recuperi 4." },
   ],
   paladino: [
+    { level: 1, name: "Percezione Divina", desc: "Come azione, per 1 minuto percepisci la posizione di ogni celestiale, demone o non morto entro 18 m non dietro copertura totale (ne conosci il tipo ma non l'identità); percepisci anche la presenza di un luogo o oggetto consacrato o profanato nella stessa area. Usi limitati (vedi \"Percezione Divina\" tra le risorse di classe), recuperi tutti con un riposo lungo." },
+    { level: 1, name: "Imposizione delle Mani", desc: "Hai una riserva di potere curativo (vedi \"Imposizione delle Mani\" tra le risorse di classe) che si ricarica con un riposo lungo. Come azione, tocca una creatura e ripristina PF pari a quanto vuoi, fino a esaurire la riserva; puoi invece spendere 5 punti della riserva per curare una malattia o neutralizzare un veleno nel bersaglio, invece di curare PF." },
+    { level: 3, name: "Channel Divinity", desc: "Come azione, scegli uno dei tuoi effetti di Channel Divinity (le due opzioni del tuo Giuramento) e attivalo. Recuperi l'unico uso con un riposo breve o lungo." },
     { level: 6, name: "Aura di Protezione", desc: "Tu e le creature amiche entro 3 m aggiungete il vostro modificatore di Carisma (minimo +1) a ogni tiro salvezza." },
     { level: 10, name: "Aura di Coraggio", desc: "Tu e le creature amiche entro 3 m non potete essere spaventati mentre sei cosciente." },
     { level: 11, name: "Colpo Sacro", desc: "I tuoi attacchi in mischia con arma infliggono danno radioso extra pari al tuo modificatore di Carisma (minimo 1)." },

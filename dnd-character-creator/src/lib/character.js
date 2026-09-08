@@ -152,7 +152,7 @@ export function getBaseClassResources(clsId, level, mysticArcanum, chaMod) {
   const resources = [];
   const lvl = level || 1;
   if (clsId === "guerriero") {
-    resources.push({ key: "scatto-avanti", name: `Scatto in Avanti (recupera 1d10+${lvl} PF)`, max: 1, resetOn: "short" });
+    resources.push({ key: "scatto-avanti", name: `Secondo Fiato (recupera 1d10+${lvl} PF)`, max: 1, resetOn: "short" });
     if (lvl >= 2) {
       resources.push({ key: "azione-impetuosa", name: "Azione Impetuosa (azione extra nel turno)", max: lvl >= 17 ? 2 : 1, resetOn: "short" });
     }
