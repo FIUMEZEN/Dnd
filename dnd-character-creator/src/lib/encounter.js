@@ -49,7 +49,7 @@ export function sortCombatantsByInitiative(combatants) {
 }
 
 function missingView(combatant, label) {
-  return { name: combatant.name || label, ac: null, maxHp: null, currentHp: null, tempHp: 0, dexMod: 0, isDead: false, source: null, missing: true };
+  return { name: combatant.name || label, ac: null, maxHp: null, currentHp: null, tempHp: 0, initiativeMod: 0, isDead: false, source: null, missing: true };
 }
 
 // Risolve un Combattente nelle statistiche da mostrare/usare in gioco. Per "character" e
@@ -73,7 +73,7 @@ export function getCombatantView(combatant, characters, creatures, campaignEntri
       maxHp: stats.maxHp,
       currentHp,
       tempHp: combatant.campaignTempHp || 0,
-      dexMod: stats.dexMod,
+      initiativeMod: stats.initiativeMod,
       isDead: stats.maxHp != null && (currentHp ?? stats.maxHp) <= 0,
       source,
     };
@@ -88,7 +88,7 @@ export function getCombatantView(combatant, characters, creatures, campaignEntri
       maxHp: stats.maxHp,
       currentHp: stats.currentHp,
       tempHp: stats.tempHp,
-      dexMod: stats.dexMod,
+      initiativeMod: stats.initiativeMod,
       isDead: stats.maxHp != null && (stats.currentHp ?? stats.maxHp) <= 0,
       source,
     };
@@ -102,7 +102,7 @@ export function getCombatantView(combatant, characters, creatures, campaignEntri
       maxHp: getMaxHp(source),
       currentHp: getCurrentHp(source),
       tempHp: source.tempHp || 0,
-      dexMod: mod(source.abilities?.dex ?? 10),
+      initiativeMod: mod(source.abilities?.dex ?? 10),
       isDead: isCreatureDead(source),
       source,
     };
@@ -115,7 +115,7 @@ export function getCombatantView(combatant, characters, creatures, campaignEntri
     maxHp: max,
     currentHp: current,
     tempHp: 0,
-    dexMod: 0,
+    initiativeMod: 0,
     isDead: current <= 0,
     source: null,
   };

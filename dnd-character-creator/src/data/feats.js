@@ -33,18 +33,18 @@ export const FEATS = [
   },
   {
     id: "resistente", name: "Resistente", abilityChoice: { keys: ["con"], max: 20 },
-    desc: "+1 a Costituzione (max 20). Ogni volta che spendi un Dado Vita per recuperare punti ferita, ottieni un minimo di 2 + il doppio del tuo modificatore di Costituzione. Quando arrivi a 0 PF senza morire, riprendi conoscenza con almeno 1 PF."
+    desc: "+1 a Costituzione (max 20). Ogni volta che tiri un Dado Vita per recuperare punti ferita, il minimo che recuperi dal tiro è pari al doppio del tuo modificatore di Costituzione (minimo 2)."
   },
   {
     id: "adepto-elementale", name: "Adepto Elementale", prerequisite: "Capacità di lanciare almeno un incantesimo",
     desc: "Scegli un tipo di danno (acido, freddo, fuoco, fulmine o tuono): gli incantesimi di quel tipo ignorano la resistenza al danno del bersaglio, e i tiri di danno relativi non possono ottenere risultati minimi da 1 (contano come 2). Ripetibile per un altro tipo."
   },
   {
-    id: "lottatore", name: "Lottatore", abilityChoice: { keys: ["str"], max: 20 },
+    id: "lottatore", name: "Lottatore", prerequisite: "Forza 13+", abilityChoice: { keys: ["str"], max: 20 },
     desc: "+1 a Forza (max 20). Vantaggio alle prove di Atletica per afferrare una creatura. Se hai già afferrato una creatura, l'attacco in mischia contro un altro bersaglio ha svantaggio a meno che tu non rinunci ad afferrarla."
   },
   {
-    id: "maestro-armi-pesanti", name: "Maestro d'Armi Pesanti", prerequisite: "Competenza in armi da mischia pesanti",
+    id: "maestro-armi-pesanti", name: "Maestro d'Armi Pesanti", prerequisite: null,
     desc: "Colpi critici o uccisioni con arma da mischia ti concedono un'azione bonus per un attacco in mischia aggiuntivo. Puoi accettare -5 al tiro per colpire con un'arma pesante per ottenere +10 ai danni."
   },
   {
@@ -53,7 +53,7 @@ export const FEATS = [
   },
   {
     id: "armatura-leggera-esperto", name: "Esperto di Armature Leggere", prerequisite: null,
-    desc: "Ottieni competenza nelle armature leggere. Se hai già Destrezza 13+ e competenza nelle armature leggere, +1 a Destrezza (max 20).", abilityChoice: { keys: ["dex"], max: 20, optional: true }
+    desc: "Ottieni competenza nelle armature leggere. +1 a Forza o Destrezza (max 20).", abilityChoice: { keys: ["str", "dex"], max: 20 }
   },
   {
     id: "maestro-armatura-pesante", name: "Maestro dell'Armatura Pesante", prerequisite: "Competenza nelle armature pesanti", abilityChoice: { keys: ["str"], max: 20 },
@@ -66,10 +66,6 @@ export const FEATS = [
   {
     id: "mente-acuta", name: "Mente Acuta", abilityChoice: { keys: ["int"], max: 20 },
     desc: "+1 a Intelligenza (max 20). Conosci sempre l'ora esatta senza orologio. Sai sempre quanti giorni mancano al prossimo solstizio, equinozio o novilunio. Ricordi perfettamente qualsiasi cosa vista o udita negli ultimi 30 giorni."
-  },
-  {
-    id: "armatura-leggera", name: "Armatura Leggera (Talento)", prerequisite: "Nessuna competenza nelle armature",
-    desc: "Ottieni competenza nelle armature leggere. Nota: questo talento è ridondante se la classe fornisce già tale competenza."
   },
   {
     id: "linguista", name: "Linguista", abilityChoice: { keys: ["int"], max: 20 },
@@ -100,8 +96,12 @@ export const FEATS = [
     desc: "La tua velocità aumenta di 3 m. Scattare su terreno difficile non ti costa movimento extra. Quando attacchi in mischia un bersaglio, non subisci attacchi di opportunità da esso per il resto del turno, indipendentemente dal colpire o meno."
   },
   {
-    id: "armatura-media-esperto", name: "Esperto di Armature Medie", prerequisite: null,
-    desc: "Ottieni competenza nelle armature medie e negli scudi. Nota: ridondante se la classe fornisce già tali competenze."
+    id: "armatura-media-esperto", name: "Esperto di Armature Medie", prerequisite: "Competenza nelle armature leggere", abilityChoice: { keys: ["str", "dex"], max: 20 },
+    desc: "+1 a Forza o Destrezza (max 20). Ottieni competenza nelle armature medie e negli scudi."
+  },
+  {
+    id: "armatura-pesante-esperto", name: "Esperto di Armature Pesanti", prerequisite: "Competenza nelle armature medie", abilityChoice: { keys: ["str"], max: 20 },
+    desc: "+1 a Forza (max 20). Ottieni competenza nelle armature pesanti."
   },
   {
     id: "combattente-cavallo", name: "Combattente a Cavallo", prerequisite: null,
@@ -112,7 +112,7 @@ export const FEATS = [
     desc: "+1 a Intelligenza o Saggezza (max 20). +5 alla percezione passiva. Se puoi vedere le labbra di una creatura mentre parla in una lingua che comprendi, puoi leggerle anche se non riesci a sentire."
   },
   {
-    id: "maestro-arma-asta", name: "Maestro d'Arma in Asta", prerequisite: "Competenza con alabarda, lancia, falcione o bastone ferrato",
+    id: "maestro-arma-asta", name: "Maestro d'Arma in Asta", prerequisite: null,
     desc: "Come azione bonus, puoi colpire con l'estremità opposta dell'arma (1d4 contundente). Mentre impugni una di queste armi, le altre creature che entrano nella tua portata subiscono un attacco di opportunità."
   },
   {
@@ -132,11 +132,11 @@ export const FEATS = [
     desc: "Quando colpisci con un attacco di opportunità, la velocità del bersaglio diventa 0 per il resto del turno. Le creature provocano il tuo attacco di opportunità anche se scattano. Quando una creatura entro 1,5 m attacca un bersaglio diverso da te, puoi usare la reazione per attaccarla."
   },
   {
-    id: "tiratore-scelto", name: "Tiratore Scelto", prerequisite: "Competenza con armi a distanza",
+    id: "tiratore-scelto", name: "Tiratore Scelto", prerequisite: null,
     desc: "Attaccare a distanza in mischia con nemici a portata non impone svantaggio. Ignori copertura leggera e mezza copertura per il tiro per colpire. Puoi accettare -5 al tiro per colpire con un'arma a distanza per ottenere +10 ai danni."
   },
   {
-    id: "maestro-scudo", name: "Maestro dello Scudo", prerequisite: "Competenza con gli scudi",
+    id: "maestro-scudo", name: "Maestro dello Scudo", prerequisite: null,
     desc: "Se attacchi nel tuo turno, puoi usare l'azione bonus per spingere con lo scudo una creatura entro 1,5 m (TS di Forza o cade prona). Puoi aggiungere il bonus dello scudo ai TS di Destrezza contro effetti che colpiscono solo te. Come reazione, puoi ottenere vantaggio a un singolo TS di Destrezza contro un effetto che colpisce anche altri."
   },
   {

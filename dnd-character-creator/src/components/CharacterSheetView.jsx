@@ -23,6 +23,7 @@ import {
   getFightingStyleProtection, getFightingStyleTwoWeapon, getGrantedProficiencies, getRaceBonus,
   getSelectedBackground, getSelectedFightingStyles, getSubclass, getTotalCharacterLevel, getUnlockedSubclassFeatures,
   getVersatileDamage, hasFightingStyles, isProficientWithWeapon, validateCharacter,
+  getInitiativeMod, getSpeed, hasFeat,
 } from "../lib/character";
 
 export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
@@ -56,11 +57,12 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
   const hp = cls ? computeMaxHp(draft, cls, race, mod(finalScores.con)) : null;
   const equippedShield = draft.inventory.find((it) => it.category === "scudo" && it.equipped);
   const { ac, sourceLabel: acSourceLabel } = getArmorClass(draft);
+  const { speed, sourceLabel: speedSourceLabel } = getSpeed(draft, race);
   const granted = getGrantedProficiencies(draft);
   const allSkills = [...new Set([...(bg ? bg.skills : []), ...draft.classSkills, ...(draft.raceSkillPicks || []), ...(mc?.bonusSkillPick ? [mc.bonusSkillPick] : []), ...granted.skills])];
   const slots = getEffectiveSpellSlots(draft);
   const prof = getProficiencyBonus(totalLevel);
-  const initiative = mod(finalScores.dex);
+  const initiative = getInitiativeMod(draft);
 
   const savingThrows = ABILITIES.map((a) => {
     const proficient = !!((cls && cls.saves.some((s) => abilityKeyByName(s) === a.key)) || (mcCls && mcCls.saves.some((s) => abilityKeyByName(s) === a.key)));
@@ -83,7 +85,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
     return { name, key, proficient, expert, bonus: mod(finalScores[key]) + (proficient ? prof : 0) + (expert ? prof : 0) };
   }).sort((a, b) => a.name.localeCompare(b.name));
 
-  const passivePerception = 10 + (skillsList.find((s) => s.name === "Percezione")?.bonus || 0);
+  const passivePerception = 10 + (skillsList.find((s) => s.name === "Percezione")?.bonus || 0) + (hasFeat(draft, "osservatore") ? 5 : 0);
 
   // Le armi effettivamente "impugnate" sono solo quelle equipaggiate: gli stili di combattimento
   // (Duellante, Combattimento con Due Armi, Armi Possenti) dipendono da COSA hai in mano in quel
@@ -246,7 +248,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
         <MetricBox label="Background" value={bg ? bg.name : "—"} />
         <MetricBox label="Punti ferita" value={hp ?? "—"} />
         <MetricBox label="Classe Armatura (CA)" value={ac} hint={acSourceLabel} />
-        <MetricBox label="Velocità" value={race ? `${ftToM(race.speed)} m` : "—"} />
+        <MetricBox label="Velocità" value={race ? `${ftToM(speed)} m` : "—"} hint={speedSourceLabel} />
         <MetricBox label="Bonus di competenza" value={fmtMod(prof)} />
         <MetricBox label="Iniziativa" value={fmtMod(initiative)} />
         <MetricBox label="Percezione passiva" value={passivePerception} />

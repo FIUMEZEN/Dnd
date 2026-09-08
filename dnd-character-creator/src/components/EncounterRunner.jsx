@@ -253,14 +253,14 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
   const rollInitiativeFor = (combatant) => {
     const view = getCombatantView(combatant, characters, creatures, campaignEntries);
     const roll = rollD20();
-    updateCombatant(combatant.id, { initiative: roll + view.dexMod });
+    updateCombatant(combatant.id, { initiative: roll + view.initiativeMod });
   };
   const rollAllInitiative = () => {
     setEncounter((e) => ({
       ...e,
       combatants: e.combatants.map((c) => {
         const view = getCombatantView(c, characters, creatures, campaignEntries);
-        return { ...c, initiative: rollD20() + view.dexMod };
+        return { ...c, initiative: rollD20() + view.initiativeMod };
       }),
     }));
   };
@@ -526,7 +526,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                           />
                         </label>
                         <GhostButton onClick={() => rollInitiativeFor(combatant)} style={{ padding: "0.3rem 0.5rem", fontSize: 12, borderColor: C.parchmentLine }}>
-                          🎲{view.dexMod ? ` ${fmtMod(view.dexMod)}` : ""}
+                          🎲{view.initiativeMod ? ` ${fmtMod(view.initiativeMod)}` : ""}
                         </GhostButton>
                       </>
                     )}

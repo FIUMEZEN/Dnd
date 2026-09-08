@@ -546,6 +546,19 @@ export function getChosenFeats(draft) {
   return [{ level: 1, feat: raceFeat, abilityPick: draft.raceFeatAbilityChoice || null, classId: "razza" }, ...classFeats];
 }
 
+// Il personaggio ha scelto questo talento (via ASI o talento bonus di razza), su qualunque
+// classe. Usato per i bonus numerici di alcuni talenti (Vigile, Osservatore, Robusto, ...) che
+// altrimenti resterebbero solo testo descrittivo senza toccare i valori calcolati della Scheda.
+export function hasFeat(draft, featId) {
+  return getChosenFeats(draft).some((f) => f.feat.id === featId);
+}
+
+// Modificatore di iniziativa: Destrezza, +5 col talento Vigile (Alert) — unica fonte usata sia
+// dalla Scheda sia dall'Incontro (che tira l'iniziativa per i PG), per non disallinearle.
+export function getInitiativeMod(draft) {
+  return mod(computeFinalScores(draft).dex) + (hasFeat(draft, "vigile") ? 5 : 0);
+}
+
 /* ---------------------------------- MECCANICHE CALCOLATE ---------------------------------- */
 
 export function getAttacksPerAction(clsId, level, subclassId) {
@@ -628,11 +641,60 @@ export function computeMaxHp(draft, cls, race, conMod) {
     }
   }
   if (race?.id === "nano-colline") hp += level + mcLevel;
+  if (hasFeat(draft, "robusto")) hp += 2 * (level + mcLevel);
   return hp;
 }
 
 export function hasDraconicResilienceAc(clsId, subclassId) {
   return clsId === "stregone" && subclassId === "progenie-draconica";
+}
+
+// Difesa senza Armatura: Barbaro (10 + Destrezza + Costituzione, scudo permesso) e Monaco
+// (10 + Destrezza + Saggezza, solo se non impugna anche uno scudo). Ritorna la caratteristica
+// da sommare, o null se la classe non ha questo tratto.
+export function getUnarmoredDefenseAbility(clsId) {
+  if (clsId === "barbaro") return "con";
+  if (clsId === "monaco") return "wis";
+  return null;
+}
+
+// Bonus di velocità del Movimento senza Armatura del Monaco per livello (PHB 2014): +3 m dal
+// 2°, poi sale ogni 4 livelli. Richiede di non indossare armatura né impugnare uno scudo.
+const MONK_UNARMORED_MOVEMENT_BONUS_FT = [[18, 30], [14, 25], [10, 20], [6, 15], [2, 10]];
+function getMonkUnarmoredMovementBonusFt(level) {
+  const entry = MONK_UNARMORED_MOVEMENT_BONUS_FT.find(([lvl]) => level >= lvl);
+  return entry ? entry[1] : 0;
+}
+
+// Velocità effettiva: parte da quella razziale e aggiunge i bonus che dipendono da equip/livello
+// (Movimento Veloce del Barbaro, Movimento senza Armatura del Monaco) — nessuno dei due tocca il
+// dato razziale grezzo, quindi vive qui invece che in data/races.js.
+export function getSpeed(draft, race) {
+  const base = race?.speed || 0;
+  const cls = CLASSES.find((c) => c.id === draft.classId);
+  const mc = draft.multiclass && draft.multiclass.classId ? draft.multiclass : null;
+  const mcCls = mc ? CLASSES.find((c) => c.id === mc.classId) : null;
+  const equippedArmor = draft.inventory.find((it) => it.category === "armatura" && it.equipped);
+  const equippedShield = draft.inventory.find((it) => it.category === "scudo" && it.equipped);
+
+  let bonus = 0;
+  const sources = [];
+  const hasBarbaro = cls?.id === "barbaro" || mcCls?.id === "barbaro";
+  if (hasBarbaro && (!equippedArmor || equippedArmor.tipo !== "pesante")) {
+    bonus += 10;
+    sources.push("Movimento Veloce");
+  }
+  if (!equippedArmor && !equippedShield) {
+    if (cls?.id === "monaco") {
+      const monkBonus = getMonkUnarmoredMovementBonusFt(draft.level || 1);
+      if (monkBonus > 0) { bonus += monkBonus; sources.push("Movimento senza Armatura"); }
+    }
+    if (mcCls?.id === "monaco") {
+      const monkBonus = getMonkUnarmoredMovementBonusFt(mc.level || 1);
+      if (monkBonus > 0) { bonus += monkBonus; sources.push("Movimento senza Armatura"); }
+    }
+  }
+  return { speed: base + bonus, sourceLabel: sources.length ? sources.join(" + ") : null };
 }
 
 export function getLevelUpChanges(clsId, subclassId, fromLevel, toLevel) {
@@ -919,8 +981,10 @@ export function getArmorClass(draft) {
   const mcCls = mc ? CLASSES.find((c) => c.id === mc.classId) : null;
   const mcChosenSubclassId = mcCls ? getChosenSubclassId(mc, mcCls.id) : null;
 
-  const dexMod = mod(computeFinalScores(draft).dex);
+  const finalScores = computeFinalScores(draft);
+  const dexMod = mod(finalScores.dex);
   const hasDraconicResilience = (cls && hasDraconicResilienceAc(cls.id, chosenSubclassId)) || (mcCls && hasDraconicResilienceAc(mcCls.id, mcChosenSubclassId));
+  const unarmoredAbilities = new Set([cls && getUnarmoredDefenseAbility(cls.id), mcCls && getUnarmoredDefenseAbility(mcCls.id)].filter(Boolean));
 
   const equippedArmor = draft.inventory.find((it) => it.category === "armatura" && it.equipped);
   const equippedShield = draft.inventory.find((it) => it.category === "scudo" && it.equipped);
@@ -930,21 +994,34 @@ export function getArmorClass(draft) {
     (mcCls ? getFightingStyleAcBonus(mc, mcCls.id, !!equippedArmor) : 0);
 
   let ac = 10 + dexMod + fightingStyleAcBonus;
+  let sourceLabel = "Senza armatura (10 + Destrezza)";
   if (equippedArmor) {
     const base = parseInt(String(equippedArmor.ac), 10) || 10;
     if (equippedArmor.tipo === "pesante") ac = base + fightingStyleAcBonus;
     else if (equippedArmor.tipo === "media") ac = base + Math.min(2, dexMod) + fightingStyleAcBonus;
     else ac = base + dexMod + fightingStyleAcBonus;
-  } else if (hasDraconicResilience) {
-    ac = 13 + dexMod + fightingStyleAcBonus;
+    sourceLabel = `${equippedArmor.name}${equippedShield ? " + Scudo" : ""}${fightingStyleAcBonus > 0 ? " + Difesa" : ""}`;
+  } else {
+    // Senza armatura: prendi il migliore tra i tratti di Difesa senza Armatura posseduti e la
+    // Resilienza Draconica (rarissimo averne più di uno, ma un personaggio multiclasse potrebbe).
+    // Quella del Monaco richiede di non impugnare neanche uno scudo (RAW); quella del Barbaro sì.
+    if (unarmoredAbilities.has("con")) {
+      const withCon = 10 + dexMod + mod(finalScores.con);
+      if (withCon > ac) { ac = withCon; sourceLabel = "Difesa senza Armatura (10 + Destrezza + Costituzione)"; }
+    }
+    if (unarmoredAbilities.has("wis") && !equippedShield) {
+      const withWis = 10 + dexMod + mod(finalScores.wis);
+      if (withWis > ac) { ac = withWis; sourceLabel = "Difesa senza Armatura (10 + Destrezza + Saggezza)"; }
+    }
+    if (hasDraconicResilience) {
+      const withDraconic = 13 + dexMod + fightingStyleAcBonus;
+      if (withDraconic > ac) { ac = withDraconic; sourceLabel = "Resilienza Draconica (13 + Destrezza)"; }
+    }
+    if (equippedShield && ac === 10 + dexMod + fightingStyleAcBonus) sourceLabel = "Solo scudo (senza armatura)";
+    else if (equippedShield) sourceLabel += " + Scudo";
   }
   const shieldBonus = equippedShield ? (parseInt(String(equippedShield.ac).replace("+", ""), 10) || 2) : 0;
   ac += shieldBonus;
-  const sourceLabel = equippedArmor
-    ? `${equippedArmor.name}${equippedShield ? " + Scudo" : ""}${fightingStyleAcBonus > 0 ? " + Difesa" : ""}`
-    : hasDraconicResilience
-      ? `Resilienza Draconica (13 + Destrezza)${equippedShield ? " + Scudo" : ""}${fightingStyleAcBonus > 0 ? " + Difesa" : ""}`
-      : equippedShield ? "Solo scudo (senza armatura)" : "Senza armatura (10 + Destrezza)";
 
   return { ac, sourceLabel };
 }
@@ -960,7 +1037,7 @@ export function getCharacterCombatStats(draft) {
   const maxHp = cls ? computeMaxHp(draft, cls, race, conMod) : null;
   const currentHp = draft.currentHp == null ? maxHp : (maxHp == null ? draft.currentHp : Math.min(draft.currentHp, maxHp));
   const { ac } = getArmorClass(draft);
-  return { maxHp, currentHp, tempHp: draft.tempHp || 0, ac, dexMod, initiativeMod: dexMod };
+  return { maxHp, currentHp, tempHp: draft.tempHp || 0, ac, dexMod, initiativeMod: getInitiativeMod(draft) };
 }
 
 // Quanto manca a UNA classe incantatrice del personaggio per avere davvero finito lo step
