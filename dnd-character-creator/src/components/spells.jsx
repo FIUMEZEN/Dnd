@@ -316,7 +316,9 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
   const finalScores = computeFinalScores(draft);
   const abilityMod = mod(finalScores[caster.ability]);
   const abilityName = ABILITIES.find((a) => a.key === caster.ability).name;
-  const cantripsCount = caster.cantrips[Math.min(entry.level, 20) - 1];
+  // Circolo della Terra (Druido): trucchetto bonus dal 2° livello, oltre al normale progresso di classe.
+  const isLandCircleDruid = cls.id === "druido" && entry.level >= 2 && chosenSubclassId && chosenSubclassId !== "circolo-luna";
+  const cantripsCount = caster.cantrips[Math.min(entry.level, 20) - 1] + (isLandCircleDruid ? 1 : 0);
   const spellsLimit = getSpellsLimit(cls.id, caster, entry.level, abilityMod);
   const preparedPerDay = caster.type === "spellbook" ? getPreparedPerDay(caster, entry.level, abilityMod) : null;
   const dataMax = Math.min(maxLevelReal, MAX_DATA_SPELL_LEVEL);
@@ -435,7 +437,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
               </Pill>
             ))}
           </div>
-          {circle && circle.id === "circolo-terra" && (
+          {circle && circle.id !== "circolo-luna" && (
             <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi del Circolo della Terra sono sempre preparati gratuitamente e non contano nel numero di {caster.label.toLowerCase()}.
             </p>

@@ -2,9 +2,10 @@ import { ARTISAN_TOOLS, GAMING_SETS, MUSICAL_INSTRUMENTS, SKILL_ABILITY, LANGUAG
 
 // Feature del Circolo della Terra (condivisa tra tutte le voci druido)
 export const DRUID_CIRCLE_LAND_FEATURES = [
+  { level: 2, name: "Trucchetto Bonus", desc: "Impari un trucchetto da Druido aggiuntivo a tua scelta: non conta nel numero di trucchetti da Druido che conosci (vedi \"Trucchetti\" nella sezione Incantesimi)." },
   { level: 2, name: "Recupero Naturale", desc: "Durante un riposo breve, una volta al giorno, puoi recuperare slot incantesimo con livello totale pari a metà del tuo livello da Druido (arrotondato per eccesso), nessuno di 6° livello o superiore." },
   { level: 6, name: "Passo della Natura", desc: "Il terreno difficile creato da piante non ti costa movimento extra; hai vantaggio ai TS contro piante create o manipulate magicamente per ostacolarti." },
-  { level: 10, name: "Protezione della Natura", desc: "Sei immune alla condizione avvelenato e alle malattie; non puoi essere affascinato o spaventato da elementali o fate." },
+  { level: 10, name: "Protezione della Natura", desc: "Sei immune al veleno (danno e condizione avvelenato) e alle malattie; non puoi essere affascinato o spaventato da elementali o fate." },
   { level: 14, name: "Rifugio della Natura", desc: "Bestie e piante devono superare un TS di Saggezza (CD = la tua CD degli incantesimi) per attaccarti; se falliscono, devono scegliere un altro bersaglio se possibile." },
 ];
 
