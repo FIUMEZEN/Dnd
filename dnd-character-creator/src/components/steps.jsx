@@ -7,6 +7,7 @@ import { C } from "../theme";
 import { Divider, GhostButton, OptionCard, Pill, ProficiencyChoicePicker } from "./primitives";
 import { AsiPicker, FightingStyleSelector } from "./pickers";
 import { InventoryManager } from "./inventory";
+import { ClassEquipmentKit, BackgroundEquipmentKit } from "./equipmentKit";
 import { ABILITIES, SKILL_ABILITY, STANDARD_ARRAY } from "../data/core";
 import { RACES } from "../data/races";
 import { CLASSES, SUBCLASS_CHOICE_LEVEL } from "../data/classes";
@@ -532,14 +533,21 @@ export function FlavorField({ label, value, onChange, suggestions }) {
 export function StepBackground({ draft, setDraft }) {
   const bg = getSelectedBackground(draft);
   const isCustom = draft.backgroundId === CUSTOM_BACKGROUND_ID;
+  const race = RACES.find((r) => r.id === draft.raceId);
+  // Abilità già ottenute da razza o classe: non selezionabili di nuovo nel background
+  // personalizzato, per lo stesso motivo per cui la classe esclude quelle già date dalla razza.
+  const alreadyGrantedSkills = [...(race?.bonusProficiencies?.skills || []), ...(draft.raceSkillPicks || []), ...(draft.classSkills || [])];
 
-  const toggleCustomSkill = (skill) => setDraft((d) => {
-    const picks = d.customBackgroundSkills || [];
-    const picked = picks.includes(skill);
-    if (picked) return { ...d, customBackgroundSkills: picks.filter((s) => s !== skill) };
-    if (picks.length >= 2) return d;
-    return { ...d, customBackgroundSkills: [...picks, skill] };
-  });
+  const toggleCustomSkill = (skill) => {
+    if (alreadyGrantedSkills.includes(skill)) return;
+    setDraft((d) => {
+      const picks = d.customBackgroundSkills || [];
+      const picked = picks.includes(skill);
+      if (picked) return { ...d, customBackgroundSkills: picks.filter((s) => s !== skill) };
+      if (picks.length >= 2) return d;
+      return { ...d, customBackgroundSkills: [...picks, skill] };
+    });
+  };
 
   const clearBgProfChoices = (d) => Object.fromEntries(Object.entries(d.profChoices || {}).filter(([k]) => !k.startsWith("bg-")));
 
@@ -587,11 +595,20 @@ export function StepBackground({ draft, setDraft }) {
             Scegli 2 competenze ({(draft.customBackgroundSkills || []).length}/2).
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
-            {Object.keys(SKILL_ABILITY).map((skill) => (
-              <Pill key={skill} active={(draft.customBackgroundSkills || []).includes(skill)} onClick={() => toggleCustomSkill(skill)}>
-                {skill}
-              </Pill>
-            ))}
+            {Object.keys(SKILL_ABILITY).map((skill) => {
+              const granted = alreadyGrantedSkills.includes(skill);
+              return (
+                <Pill
+                  key={skill}
+                  active={(draft.customBackgroundSkills || []).includes(skill) || granted}
+                  disabled={granted}
+                  title={granted ? "Già ottenuta da razza o classe" : undefined}
+                  onClick={() => toggleCustomSkill(skill)}
+                >
+                  {skill}{granted ? " (razza/classe)" : ""}
+                </Pill>
+              );
+            })}
           </div>
 
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 4 }}>
@@ -688,15 +705,14 @@ export function StepEquipment({ draft, setDraft }) {
         <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1.5rem", marginBottom: 20 }}>
           <div>
             <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>Corredo suggerito da {cls.name}</h3>
-            <ul style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, paddingLeft: 18, margin: 0 }}>
-              {cls.equipment.map((e, i) => <li key={i} style={{ marginBottom: 4 }}>{e}</li>)}
-            </ul>
+            <ClassEquipmentKit cls={cls} setDraft={setDraft} />
           </div>
           <div>
             <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.forestDeep, margin: "0 0 8px" }}>Corredo suggerito da {bg.name}</h3>
-            <ul style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, paddingLeft: 18, margin: 0 }}>
+            <ul style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, paddingLeft: 18, margin: "0 0 4px" }}>
               {bg.equipment.map((e, i) => <li key={i} style={{ marginBottom: 4 }}>{e}</li>)}
             </ul>
+            <BackgroundEquipmentKit bg={bg} setDraft={setDraft} />
           </div>
         </div>
       ) : (

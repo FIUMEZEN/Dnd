@@ -4,7 +4,12 @@ export const CLASSES = [
     armor: "Armature leggere e medie, scudi", weapons: "Armi semplici e da guerra",
     weaponProficiency: { simple: true, martial: true },
     skillChoices: 2, skillOptions: ["Addestrare Animali", "Atletica", "Intimidire", "Natura", "Percezione", "Sopravvivenza"],
-    equipment: ["Un'ascia bipenne oppure un'arma da mischia da guerra", "Due asce da lancio", "Uno zaino da esploratore", "Quattro giavellotti"],
+    equipmentKit: [
+      [{ label: "Un'ascia bipenne", parts: [{ item: "ascia-bipenne" }] }, { label: "Un'arma da mischia da guerra", category: "guerra-mischia" }],
+      [{ label: "Due asce da lancio", parts: [{ item: "ascia-da-lancio", qty: 2 }] }],
+      [{ label: "Uno zaino da esploratore", parts: [{ item: "zaino-da-esploratore" }] }],
+      [{ label: "Quattro giavellotti", parts: [{ item: "giavellotto", qty: 4 }] }],
+    ],
     blurb: "Canalizza una furia primordiale che lo rende inarrestabile in battaglia.",
   },
   {
@@ -12,7 +17,12 @@ export const CLASSES = [
     armor: "Armature leggere", weapons: "Armi semplici, spade lunghe, rapiere, spade corte, balestre a mano",
     weaponProficiency: { simple: true, specific: ["spada-lunga", "rapiera", "spada-corta", "balestra-a-mano"] },
     skillChoices: 3, skillOptions: ["Acrobazia", "Addestrare Animali", "Arcano", "Atletica", "Inganno", "Indagare", "Intimidire", "Intrattenere", "Intuizione", "Medicina", "Natura", "Percezione", "Persuasione", "Religione", "Rapidità di Mano", "Furtività", "Sopravvivenza", "Storia"],
-    equipment: ["Una spada corta oppure un'arma semplice", "Uno strumento musicale a scelta", "Uno zaino da intrattenitore", "Un'armatura di cuoio e un pugnale"],
+    equipmentKit: [
+      [{ label: "Una spada corta", parts: [{ item: "spada-corta" }] }, { label: "Un'arma semplice", category: "semplice" }],
+      [{ label: "Uno strumento musicale a scelta", parts: [{ item: "strumento-musicale" }] }],
+      [{ label: "Uno zaino da intrattenitore", parts: [{ item: "zaino-da-intrattenitore" }] }],
+      [{ label: "Un'armatura di cuoio e un pugnale", parts: [{ item: "armatura-di-cuoio" }, { item: "pugnale" }] }],
+    ],
     blurb: "Intreccia musica e magia per ispirare alleati e disarmare nemici.",
   },
   {
@@ -20,7 +30,12 @@ export const CLASSES = [
     armor: "Armature leggere e medie, scudi", weapons: "Armi semplici",
     weaponProficiency: { simple: true },
     skillChoices: 2, skillOptions: ["Storia", "Intuizione", "Medicina", "Persuasione", "Religione"],
-    equipment: ["Una mazza oppure una spada corta", "Un'armatura a scaglie o di cuoio", "Una balestra leggera con 20 quadrelli oppure un'arma semplice", "Uno zaino da religioso, uno scudo e un simbolo sacro"],
+    equipmentKit: [
+      [{ label: "Una mazza", parts: [{ item: "mazza" }] }, { label: "Una spada corta", parts: [{ item: "spada-corta" }] }],
+      [{ label: "Un'armatura a scaglie", parts: [{ item: "corazza-a-scaglie" }] }, { label: "Un'armatura di cuoio", parts: [{ item: "armatura-di-cuoio" }] }],
+      [{ label: "Una balestra leggera con 20 quadrelli", parts: [{ item: "balestra-leggera" }, { item: "quadrello", qty: 20 }] }, { label: "Un'arma semplice", category: "semplice" }],
+      [{ label: "Uno zaino da religioso, uno scudo e un simbolo sacro", parts: [{ item: "zaino-da-religioso" }, { item: "scudo" }, { item: "simbolo-sacro" }] }],
+    ],
     blurb: "Canalizza il potere divino della propria fede a beneficio dei compagni.",
   },
   {
@@ -28,7 +43,11 @@ export const CLASSES = [
     armor: "Armature leggere e medie non metalliche, scudi non metallici", weapons: "Bastoni, pugnali, dardi, giavellotti, mazze, falcetti, fionde, lance",
     weaponProficiency: { specific: ["bastone", "pugnale", "giavellotto", "mazza", "falcetto", "fionda", "lancia"] },
     skillChoices: 2, skillOptions: ["Arcano", "Addestrare Animali", "Intuizione", "Medicina", "Natura", "Percezione", "Religione", "Sopravvivenza"],
-    equipment: ["Uno scudo di legno oppure un'arma semplice", "Un falcetto oppure un'arma da mischia semplice", "Un'armatura di cuoio, un set da erborista e un focus druidico"],
+    equipmentKit: [
+      [{ label: "Uno scudo di legno", parts: [{ item: "scudo" }] }, { label: "Un'arma semplice", category: "semplice" }],
+      [{ label: "Un falcetto", parts: [{ item: "falcetto" }] }, { label: "Un'arma da mischia semplice", category: "semplice-mischia" }],
+      [{ label: "Un'armatura di cuoio, un set da erborista e un focus druidico", parts: [{ item: "armatura-di-cuoio" }, { item: "set-da-erborista" }, { item: "focus-druidico" }] }],
+    ],
     blurb: "Custode della natura selvaggia, capace di assumerne le forme.",
   },
   {
@@ -36,7 +55,12 @@ export const CLASSES = [
     armor: "Tutte le armature, scudi", weapons: "Armi semplici e da guerra",
     weaponProficiency: { simple: true, martial: true },
     skillChoices: 2, skillOptions: ["Acrobazia", "Addestrare Animali", "Atletica", "Storia", "Intuizione", "Intimidire", "Percezione", "Sopravvivenza"],
-    equipment: ["Un'armatura a maglia oppure un'armatura leggera", "Un'arma da mischia da guerra con uno scudo, oppure due armi da mischia da guerra", "Una balestra leggera con 20 quadrelli oppure due asce da lancio", "Uno zaino da esploratore o da dungeon"],
+    equipmentKit: [
+      [{ label: "Un'armatura a maglia", parts: [{ item: "cotta-di-maglia" }] }, { label: "Un'armatura leggera", category: "leggera", isArmor: true }],
+      [{ label: "Un'arma da mischia da guerra con uno scudo", category: "guerra-mischia", extra: [{ item: "scudo" }] }, { label: "Due armi da mischia da guerra", category: "guerra-mischia", qty: 2 }],
+      [{ label: "Una balestra leggera con 20 quadrelli", parts: [{ item: "balestra-leggera" }, { item: "quadrello", qty: 20 }] }, { label: "Due asce da lancio", parts: [{ item: "ascia-da-lancio", qty: 2 }] }],
+      [{ label: "Uno zaino da esploratore", parts: [{ item: "zaino-da-esploratore" }] }, { label: "Uno zaino da dungeon", parts: [{ item: "zaino-da-dungeon" }] }],
+    ],
     blurb: "Maestro delle armi e delle tattiche di combattimento in ogni forma.",
   },
   {
@@ -44,7 +68,11 @@ export const CLASSES = [
     armor: "Armature leggere", weapons: "Armi semplici, balestre a mano, spade corte, spade lunghe, rapiere",
     weaponProficiency: { simple: true, specific: ["balestra-a-mano", "spada-corta", "spada-lunga", "rapiera"] },
     skillChoices: 4, skillOptions: ["Acrobazia", "Atletica", "Inganno", "Intuizione", "Intimidire", "Indagare", "Percezione", "Rapidità di Mano", "Furtività", "Persuasione"],
-    equipment: ["Una spada corta oppure una spada lunga", "Un arco corto con faretra da 20 frecce oppure una spada corta", "Uno zaino da ladro, un'armatura di cuoio, due pugnali e strumenti da scasso"],
+    equipmentKit: [
+      [{ label: "Una spada corta", parts: [{ item: "spada-corta" }] }, { label: "Una spada lunga", parts: [{ item: "spada-lunga" }] }],
+      [{ label: "Un arco corto con faretra da 20 frecce", parts: [{ item: "arco-corto" }, { item: "freccia", qty: 20 }] }, { label: "Una spada corta", parts: [{ item: "spada-corta" }] }],
+      [{ label: "Uno zaino da ladro, un'armatura di cuoio, due pugnali e strumenti da scasso", parts: [{ item: "zaino-da-ladro" }, { item: "armatura-di-cuoio" }, { item: "pugnale", qty: 2 }, { item: "kit-da-scasso" }] }],
+    ],
     blurb: "Agile ed elusivo, colpisce nei punti deboli prima di sparire nell'ombra.",
   },
   {
@@ -52,7 +80,11 @@ export const CLASSES = [
     armor: "Nessuna", weapons: "Pugnali, dardi, fionde, bastoni, balestre leggere",
     weaponProficiency: { specific: ["pugnale", "fionda", "bastone", "balestra-leggera"] },
     skillChoices: 2, skillOptions: ["Arcano", "Storia", "Intuizione", "Indagare", "Medicina", "Religione"],
-    equipment: ["Un bastone oppure un pugnale", "Una borsa di componenti oppure un focus arcano", "Uno zaino da studioso e un libro degli incantesimi"],
+    equipmentKit: [
+      [{ label: "Un bastone", parts: [{ item: "bastone" }] }, { label: "Un pugnale", parts: [{ item: "pugnale" }] }],
+      [{ label: "Una borsa di componenti", parts: [{ item: "borsa-di-componenti" }] }, { label: "Un focus arcano", parts: [{ item: "focus-arcano" }] }],
+      [{ label: "Uno zaino da studioso e un libro degli incantesimi", parts: [{ item: "zaino-da-studioso" }, { item: "libro-degli-incantesimi" }] }],
+    ],
     blurb: "Studioso dell'arcano, plasma la realtà attraverso la conoscenza magica.",
   },
   {
@@ -60,7 +92,11 @@ export const CLASSES = [
     armor: "Nessuna", weapons: "Armi semplici, spade corte",
     weaponProficiency: { simple: true, specific: ["spada-corta"] },
     skillChoices: 2, skillOptions: ["Acrobazia", "Atletica", "Storia", "Intuizione", "Religione", "Furtività"],
-    equipment: ["Una spada corta oppure un'arma semplice", "Dieci dardi oppure uno zaino da esploratore", "Uno zaino da religioso e un set di attrezzi o uno strumento musicale"],
+    equipmentKit: [
+      [{ label: "Una spada corta", parts: [{ item: "spada-corta" }] }, { label: "Un'arma semplice", category: "semplice" }],
+      [{ label: "Uno zaino da dungeon", parts: [{ item: "zaino-da-dungeon" }] }, { label: "Uno zaino da esploratore", parts: [{ item: "zaino-da-esploratore" }] }],
+      [{ label: "Dieci dardi", parts: [{ item: "dardo", qty: 10 }] }],
+    ],
     blurb: "Disciplina corpo e spirito fino a trasformarli in un'arma perfetta.",
   },
   {
@@ -68,7 +104,11 @@ export const CLASSES = [
     armor: "Tutte le armature, scudi", weapons: "Armi semplici e da guerra",
     weaponProficiency: { simple: true, martial: true },
     skillChoices: 2, skillOptions: ["Atletica", "Intuizione", "Intimidire", "Medicina", "Persuasione", "Religione"],
-    equipment: ["Un'arma da mischia da guerra con uno scudo, oppure due armi da mischia da guerra", "Cinque giavellotti oppure un'arma da mischia semplice", "Uno zaino da religioso, un'armatura pesante e un simbolo sacro"],
+    equipmentKit: [
+      [{ label: "Un'arma da mischia da guerra con uno scudo", category: "guerra-mischia", extra: [{ item: "scudo" }] }, { label: "Due armi da mischia da guerra", category: "guerra-mischia", qty: 2 }],
+      [{ label: "Cinque giavellotti", parts: [{ item: "giavellotto", qty: 5 }] }, { label: "Un'arma da mischia semplice", category: "semplice-mischia" }],
+      [{ label: "Uno zaino da religioso, un'armatura pesante e un simbolo sacro", parts: [{ item: "zaino-da-religioso" }, { item: "cotta-di-maglia" }, { item: "simbolo-sacro" }] }],
+    ],
     blurb: "Ha giurato un voto sacro e lo difende con spada e devozione.",
   },
   {
@@ -76,7 +116,11 @@ export const CLASSES = [
     armor: "Armature leggere e medie, scudi", weapons: "Armi semplici e da guerra",
     weaponProficiency: { simple: true, martial: true },
     skillChoices: 3, skillOptions: ["Addestrare Animali", "Atletica", "Intuizione", "Indagare", "Natura", "Percezione", "Furtività", "Sopravvivenza"],
-    equipment: ["Un'armatura a scaglie o di cuoio", "Due spade corte oppure due armi da mischia semplici", "Uno zaino da esploratore, un arco lungo e una faretra da 20 frecce"],
+    equipmentKit: [
+      [{ label: "Un'armatura a scaglie", parts: [{ item: "corazza-a-scaglie" }] }, { label: "Un'armatura di cuoio", parts: [{ item: "armatura-di-cuoio" }] }],
+      [{ label: "Due spade corte", parts: [{ item: "spada-corta", qty: 2 }] }, { label: "Due armi da mischia semplici", category: "semplice-mischia", qty: 2 }],
+      [{ label: "Uno zaino da esploratore, un arco lungo e una faretra da 20 frecce", parts: [{ item: "zaino-da-esploratore" }, { item: "arco-lungo" }, { item: "freccia", qty: 20 }] }],
+    ],
     blurb: "Cacciatore ed esploratore, legge i segni della natura selvaggia.",
   },
   {
@@ -84,7 +128,11 @@ export const CLASSES = [
     armor: "Nessuna", weapons: "Pugnali, dardi, fionde, bastoni, balestre leggere",
     weaponProficiency: { specific: ["pugnale", "fionda", "bastone", "balestra-leggera"] },
     skillChoices: 2, skillOptions: ["Arcano", "Inganno", "Intuizione", "Intimidire", "Persuasione", "Religione"],
-    equipment: ["Una balestra leggera con 20 quadrelli oppure un'arma semplice", "Una borsa di componenti oppure un focus arcano", "Uno zaino da studioso e due pugnali"],
+    equipmentKit: [
+      [{ label: "Una balestra leggera con 20 quadrelli", parts: [{ item: "balestra-leggera" }, { item: "quadrello", qty: 20 }] }, { label: "Un'arma semplice", category: "semplice" }],
+      [{ label: "Una borsa di componenti", parts: [{ item: "borsa-di-componenti" }] }, { label: "Un focus arcano", parts: [{ item: "focus-arcano" }] }],
+      [{ label: "Uno zaino da studioso e due pugnali", parts: [{ item: "zaino-da-studioso" }, { item: "pugnale", qty: 2 }] }],
+    ],
     blurb: "La magia scorre nel suo sangue, innata e a tratti incontrollabile.",
   },
   {
@@ -92,7 +140,11 @@ export const CLASSES = [
     armor: "Armature leggere", weapons: "Armi semplici",
     weaponProficiency: { simple: true },
     skillChoices: 2, skillOptions: ["Arcano", "Inganno", "Storia", "Intimidire", "Indagare", "Natura", "Religione"],
-    equipment: ["Una balestra leggera con 20 quadrelli oppure un'arma semplice", "Una borsa di componenti oppure un focus arcano, e uno zaino da studioso", "Un'armatura di cuoio e due pugnali"],
+    equipmentKit: [
+      [{ label: "Una balestra leggera con 20 quadrelli", parts: [{ item: "balestra-leggera" }, { item: "quadrello", qty: 20 }] }, { label: "Un'arma semplice", category: "semplice" }],
+      [{ label: "Una borsa di componenti e uno zaino da studioso", parts: [{ item: "borsa-di-componenti" }, { item: "zaino-da-studioso" }] }, { label: "Un focus arcano e uno zaino da studioso", parts: [{ item: "focus-arcano" }, { item: "zaino-da-studioso" }] }],
+      [{ label: "Un'armatura di cuoio e due pugnali", parts: [{ item: "armatura-di-cuoio" }, { item: "pugnale", qty: 2 }] }],
+    ],
     blurb: "Ha stretto un patto con un'entità di potere immenso e oscuro.",
   },
 ];
@@ -215,7 +267,7 @@ export const BASE_CLASS_FEATURES = {
     { level: 10, name: "Intervento Divino", desc: "Puoi implorare la tua divinità per un intervento miracoloso (1/riposo lungo); il DM decide l'effetto in base a tiro percentuale ≤ livello da Chierico." },
   ],
   druido: [
-    { level: 2, name: "Forma Selvaggia", desc: "Come azione, assumi la forma di una bestia che hai già visto (GS massimo 1/4 al 2° livello, 1/2 al 4°, 1 all'8°; niente velocità di volo prima del 8°, né di nuoto prima del 4°). Dura ore pari a metà del tuo livello da Druido (arrotondato per difetto), o finché non scendi a 0 PF nella forma o la termini prima come azione bonus. Usi le tue caratteristiche mentali e i tuoi TS/competenze, ma i PF, la velocità e le azioni fisiche sono quelle della bestia (niente componenti verbali/materiali degli incantesimi). Si ricarica con un riposo breve o lungo (vedi \"Usi della Forma Selvaggia\")." },
+    { level: 2, name: "Forma Selvaggia", desc: "Come azione, assumi la forma di una bestia che hai già visto (Grado di Sfida, GS, massimo 1/4 al 2° livello, 1/2 al 4°, 1 all'8°; niente velocità di volo prima del 8°, né di nuoto prima del 4°). Dura ore pari a metà del tuo livello da Druido (arrotondato per difetto), o finché non scendi a 0 PF nella forma o la termini prima come azione bonus. Usi le tue caratteristiche mentali e i tuoi TS/competenze, ma i PF, la velocità e le azioni fisiche sono quelle della bestia (niente componenti verbali/materiali degli incantesimi). Si ricarica con un riposo breve o lungo (vedi \"Usi della Forma Selvaggia\")." },
     { level: 18, name: "Corpo Senza Tempo", desc: "L'invecchiamento magico non ti influenza più e non puoi essere invecchiato magicamente." },
     { level: 20, name: "Arcidruido", desc: "Puoi usare la Forma Selvaggia un numero illimitato di volte; ignori inoltre le componenti verbali e somatiche dei tuoi incantesimi da Druido, purché tu non indossi armatura metallica." },
   ],
