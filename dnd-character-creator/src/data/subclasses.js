@@ -436,7 +436,7 @@ export const SUBCLASSES = {
     {
       id: "circolo-luna", name: "Circolo della Luna", blurb: "Guerrieri mutaforma che portano la furia della natura selvaggia in prima persona, in combattimento.", features: [
         { level: 2, name: "Forma Selvaggia in Combattimento", desc: "Puoi assumere Forma Selvaggia come azione bonus invece che come azione; mentre sei trasformato, puoi usare un'azione bonus e spendere uno slot incantesimo per recuperare PF pari a 1d8 per livello dello slot." },
-        { level: 2, name: "Forme del Circolo", desc: "Puoi assumere forma di bestie con GS fino a 1 già dal 2° livello (anziché GS 1/4-1/2 della Forma Selvaggia base), a prescindere dal tuo livello da Druido." },
+        { level: 2, name: "Forme del Circolo", desc: "Puoi assumere forma di bestie con Grado di Sfida (GS) fino a 1 già dal 2° livello (anziché GS 1/4-1/2 della Forma Selvaggia base), a prescindere dal tuo livello da Druido." },
         { level: 6, name: "Colpo Primordiale", desc: "I tuoi attacchi senza armi in Forma Selvaggia sono considerati magici ai fini del superamento di resistenze e immunità al danno." },
         { level: 10, name: "Forma Selvaggia Elementale", desc: "Spendendo due usi di Forma Selvaggia, puoi trasformarti in un elementale d'aria, terra, fuoco o acqua." },
         { level: 14, name: "Mille Forme", desc: "Puoi lanciare Mutare Aspetto a volontà, senza consumare uno slot incantesimo." },

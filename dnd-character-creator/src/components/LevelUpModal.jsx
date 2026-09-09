@@ -1,11 +1,11 @@
 import { X } from "../icons";
 import { C } from "../theme";
 import { Divider, GoldButton, OptionCard } from "./primitives";
-import { AsiPicker, ElementalDisciplinePicker, FightingStyleSelector, InvocationPicker, MetamagicPicker, PactBoonPicker } from "./pickers";
+import { AsiPicker, ElementalDisciplinePicker, FightingStyleSelector, InvocationPicker, ManeuverPicker, MetamagicPicker, PactBoonPicker } from "./pickers";
 import { HpLevelManager } from "./hp";
 import { CLASSES, SUBCLASS_CHOICE_LEVEL } from "../data/classes";
 import { getFightingStyleCount } from "../lib/character";
-import { getDisciplinesKnownCount, getInvocationsKnownCount, getMetamagicKnownCount } from "../lib/casting";
+import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
 
 /* ---------------------------------- LEVEL UP MODAL ---------------------------------- */
 // Riunisce in un unico popup, nell'ordine in cui vanno effettivamente decise, SOLO le scelte
@@ -29,6 +29,7 @@ export function LevelUpModal({
   const showMetamagic = clsId === "stregone" && getMetamagicKnownCount(toLevel) > getMetamagicKnownCount(fromLevel);
   const showPactBoon = clsId === "warlock" && toLevel === 3;
   const showInvocations = clsId === "warlock" && getInvocationsKnownCount(toLevel) > getInvocationsKnownCount(fromLevel);
+  const showManeuvers = clsId === "guerriero" && chosenSubclassId === "maestro-di-battaglia" && getManeuversKnownCount(toLevel) > getManeuversKnownCount(fromLevel);
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
@@ -80,6 +81,7 @@ export function LevelUpModal({
         {showMetamagic && <MetamagicPicker store={store} updateStore={updateStore} level={toLevel} />}
         {showPactBoon && <PactBoonPicker store={store} updateStore={updateStore} level={toLevel} />}
         {showInvocations && <InvocationPicker store={store} updateStore={updateStore} level={toLevel} />}
+        {showManeuvers && <ManeuverPicker store={store} updateStore={updateStore} level={toLevel} />}
 
         {(changes.newFeatures.length > 0 || (changes.slotsChanged && changes.newSlots.length > 0) || changes.resourceChanges.length > 0 || changes.critChanged) && (
           <div style={{ marginTop: 14 }}>

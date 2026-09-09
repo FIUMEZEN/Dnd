@@ -6,7 +6,7 @@ import React, { useState, useMemo } from "react";
 import { Save, Loader2 } from "../icons";
 import { C } from "../theme";
 import { Divider, GhostButton, GoldButton, MetricBox } from "./primitives";
-import { AsiPicker, ElementalDisciplinePicker } from "./pickers";
+import { AsiPicker, ElementalDisciplinePicker, ManeuverPicker } from "./pickers";
 import { InventoryManager } from "./inventory";
 import { HpLevelManager, HpTracker, RestControls, ConcentrationTracker, DeathSaveTracker } from "./hp";
 import { SpellManager, ResourceTracker } from "./spells";
@@ -407,6 +407,24 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
           updateStore={mcUpdateStore}
           level={mc.level}
           title={`Discipline Elementali — ${mcCls.name} (secondaria)`}
+        />
+      )}
+
+      {cls && cls.id === "guerriero" && chosenSubclassId === "maestro-di-battaglia" && (
+        <ManeuverPicker
+          store={draft}
+          updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
+          level={draft.level}
+          title={mcCls ? `Manovre — ${cls.name} (primaria)` : "Manovre — Maestro di Battaglia"}
+        />
+      )}
+
+      {mcCls && mcCls.id === "guerriero" && mcChosenSubclassId === "maestro-di-battaglia" && (
+        <ManeuverPicker
+          store={mc}
+          updateStore={mcUpdateStore}
+          level={mc.level}
+          title={`Manovre — ${mcCls.name} (secondaria)`}
         />
       )}
 

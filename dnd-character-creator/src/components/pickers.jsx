@@ -5,12 +5,12 @@ import { C } from "../theme";
 import { Divider, Pill, OptionCard } from "./primitives";
 import { ABILITIES } from "../data/core";
 import { FEATS } from "../data/feats";
-import { METAMAGIC_OPTIONS, PACT_BOONS, WARLOCK_INVOCATIONS, ELEMENTAL_DISCIPLINES } from "../data/spells";
+import { METAMAGIC_OPTIONS, PACT_BOONS, WARLOCK_INVOCATIONS, ELEMENTAL_DISCIPLINES, MANEUVERS } from "../data/spells";
 import {
   getUnlockedAsiLevels, getLevelChoiceType, getFeat,
   getAvailableFightingStyles, getFightingStyleCount, getSelectedFightingStyles,
 } from "../lib/character";
-import { getMetamagicKnownCount, getInvocationsKnownCount, getDisciplinesKnownCount } from "../lib/casting";
+import { getMetamagicKnownCount, getInvocationsKnownCount, getDisciplinesKnownCount, getManeuversKnownCount } from "../lib/casting";
 
 export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels }) {
   const allAsiLevels = clsId ? getUnlockedAsiLevels(clsId, classLevel) : [];
@@ -349,6 +349,49 @@ export function ElementalDisciplinePicker({ store, updateStore, level, title = "
                 <span style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, whiteSpace: "nowrap" }}>{d.kiCost} Ki</span>
               </div>
               <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{d.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function ManeuverPicker({ store, updateStore, level, title = "Manovre — Maestro di Battaglia" }) {
+  const known = getManeuversKnownCount(level);
+  if (known <= 0) return null;
+  const chosen = store.maneuverIds || [];
+  const toggle = (id) => updateStore((s) => {
+    const list = s.maneuverIds || [];
+    if (list.includes(id)) return { maneuverIds: list.filter((x) => x !== id) };
+    if (list.length >= known) return {};
+    return { maneuverIds: [...list, id] };
+  });
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <Divider />
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+        {title} — scegline {known} ({chosen.length}/{known})
+      </h3>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+        Ogni manovra si attiva spendendo un Dado Superiorità. Quando impone un tiro salvezza, la CD è 8 + bonus di competenza + modificatore di Forza o Destrezza (a tua scelta, in base all'arma usata).
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
+        {MANEUVERS.map((m) => {
+          const active = chosen.includes(m.id);
+          return (
+            <div
+              key={m.id}
+              onClick={() => toggle(m.id)}
+              style={{
+                cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
+                background: active ? "rgba(122,32,40,0.06)" : "transparent",
+                borderRadius: 2, padding: "0.5rem 0.7rem",
+                opacity: !active && chosen.length >= known ? 0.5 : 1,
+              }}
+            >
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{m.name}</span>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
             </div>
           );
         })}

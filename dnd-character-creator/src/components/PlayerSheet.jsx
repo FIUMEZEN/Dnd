@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Loader2, Save, Plus } from "../icons";
+import { ChevronLeft, ChevronRight, Loader2, Save, X } from "../icons";
 import { C } from "../theme";
 import { Frame, Divider, GhostButton, GoldButton, OptionCard } from "./primitives";
 import { FightingStyleSelector } from "./pickers";
@@ -9,8 +9,9 @@ import { RACES } from "../data/races";
 import { CLASSES, SUBCLASS_CHOICE_LEVEL } from "../data/classes";
 import {
   checkMulticlassPrereq, computeFinalScores, emptyMulticlass, getChosenSubclassId,
-  getLevelUpChanges, getSubclass, getSubclassOptions, getTotalCharacterLevel, hasFightingStyles,
+  getFightingStyleCount, getLevelUpChanges, getSubclass, getSubclassOptions, getTotalCharacterLevel, hasFightingStyles,
 } from "../lib/character";
+import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
 
 export function PlayerSheet({ character, onBack, onSaveChanges }) {
   const [draft, setDraft] = useState(character);
@@ -22,8 +23,17 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
   // livellamento non fosse mai avvenuto. Ogni aggiornamento del draft nel resto dell'app usa
   // sempre spread immutabili, quindi tenere un semplice riferimento all'oggetto precedente basta.
   const [levelUpSnapshot, setLevelUpSnapshot] = useState(null);
-  const [addingMulticlass, setAddingMulticlass] = useState(false);
+  // Se il personaggio ha una sola classe, "Sali di livello" chiede prima a quale classe va il
+  // nuovo livello (quella attuale o una nuova, per iniziare a multiclassare): è l'unico momento
+  // in cui una seconda classe può nascere, in linea con le regole (il multiclasse si sceglie
+  // proprio quando si guadagna un livello).
+  const [levelUpClassChoice, setLevelUpClassChoice] = useState(false);
   const [confirmRemoveMc, setConfirmRemoveMc] = useState(false);
+  // "Torna indietro di un livello": correzione per errori nel livellamento, non fa parte delle
+  // regole ufficiali. Richiede conferma perché scarta le scelte fatte all'ultimo livello (PF,
+  // ASI/Talento, stile di combattimento extra, e le manovre/discipline/invocazioni/metamagia in
+  // eccesso rispetto al nuovo livello più basso).
+  const [levelDownTarget, setLevelDownTarget] = useState(null); // null | "primary" | "secondary"
 
   const race = RACES.find((r) => r.id === draft.raceId);
   const cls = CLASSES.find((c) => c.id === draft.classId);
@@ -64,6 +74,27 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
     setLevelUpInfo({ target: "primary", changes });
   };
 
+  // Punto di ingresso del bottone "Sali di livello": se il personaggio non ha ancora una
+  // seconda classe, chiede prima a quale classe assegnare il livello, prima di procedere.
+  const startLevelUp = () => {
+    if (!cls || totalLevel >= 20) return;
+    if (mcCls) {
+      handleLevelUp();
+      return;
+    }
+    setLevelUpClassChoice(true);
+  };
+
+  const chooseLevelUpCurrentClass = () => {
+    setLevelUpClassChoice(false);
+    handleLevelUp();
+  };
+
+  const chooseLevelUpNewClass = (classId) => {
+    setLevelUpClassChoice(false);
+    handleConfirmMulticlass(classId);
+  };
+
   const handleMulticlassLevelUp = () => {
     if (!mcCls || totalLevel >= 20) return;
     const fromLevel = mc.level;
@@ -93,12 +124,62 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
   const handleConfirmMulticlass = (classId) => {
     updateDraft((d) => ({ ...d, multiclass: emptyMulticlass(classId) }));
-    setAddingMulticlass(false);
   };
 
   const handleRemoveMulticlass = () => {
     updateDraft((d) => ({ ...d, multiclass: null }));
     setConfirmRemoveMc(false);
+  };
+
+  // Scarta le scelte del livello che si sta togliendo e ritaglia ogni scelta cumulativa
+  // (stile di combattimento, manovre, discipline, invocazioni, metamagia) al numero massimo
+  // consentito dal nuovo livello più basso, così il personaggio resta sempre in uno stato valido.
+  const buildLevelDownUpdate = (classId, store, oldLevel) => {
+    const newLevel = oldLevel - 1;
+    const asiChoices = { ...store.asiChoices }; delete asiChoices[oldLevel];
+    const featChoices = { ...store.featChoices }; delete featChoices[oldLevel];
+    const featAbilityChoices = { ...store.featAbilityChoices }; delete featAbilityChoices[oldLevel];
+    const levelChoiceType = { ...store.levelChoiceType }; delete levelChoiceType[oldLevel];
+    const hpPerLevel = { ...store.hpPerLevel }; delete hpPerLevel[oldLevel];
+
+    const subclassUnlockLevel = SUBCLASS_CHOICE_LEVEL[classId] || 3;
+    const clearSubclass = classId in SUBCLASS_CHOICE_LEVEL && newLevel < subclassUnlockLevel;
+    const subclassId = clearSubclass ? null : store.subclassId;
+
+    const update = {
+      level: newLevel, asiChoices, featChoices, featAbilityChoices, levelChoiceType, hpPerLevel, subclassId,
+    };
+
+    const styleCount = getFightingStyleCount(classId, newLevel, subclassId);
+    if ((store.fightingStyles || []).length > styleCount) update.fightingStyles = store.fightingStyles.slice(0, styleCount);
+
+    if (classId === "guerriero" && subclassId === "maestro-di-battaglia") {
+      const known = getManeuversKnownCount(newLevel);
+      if ((store.maneuverIds || []).length > known) update.maneuverIds = store.maneuverIds.slice(0, known);
+    }
+    if (classId === "monaco" && subclassId === "quattro-elementi") {
+      const known = getDisciplinesKnownCount(newLevel);
+      if ((store.disciplineIds || []).length > known) update.disciplineIds = store.disciplineIds.slice(0, known);
+    }
+    if (classId === "stregone") {
+      const known = getMetamagicKnownCount(newLevel);
+      if ((store.metamagicIds || []).length > known) update.metamagicIds = store.metamagicIds.slice(0, known);
+    }
+    if (classId === "warlock") {
+      const known = getInvocationsKnownCount(newLevel);
+      if ((store.invocationIds || []).length > known) update.invocationIds = store.invocationIds.slice(0, known);
+      if (newLevel < 3) update.pactBoonId = null;
+    }
+    return update;
+  };
+
+  const confirmLevelDown = () => {
+    if (levelDownTarget === "primary" && cls && draft.level > 1) {
+      updateDraft((d) => ({ ...d, ...buildLevelDownUpdate(cls.id, d, d.level) }));
+    } else if (levelDownTarget === "secondary" && mcCls && mc.level > 1) {
+      mcUpdateStore((s) => buildLevelDownUpdate(mcCls.id, s, s.level));
+    }
+    setLevelDownTarget(null);
   };
 
   return (
@@ -114,8 +195,18 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
           </p>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {cls && draft.level > 1 && (
+            <GhostButton onClick={() => setLevelDownTarget("primary")} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 12 }}>
+              Torna indietro di un livello{mcCls ? ` — ${cls.name}` : ""}
+            </GhostButton>
+          )}
+          {mcCls && mc.level > 1 && (
+            <GhostButton onClick={() => setLevelDownTarget("secondary")} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 12 }}>
+              Torna indietro di un livello — {mcCls.name}
+            </GhostButton>
+          )}
           {cls && draft.level < 20 && totalLevel < 20 && (
-            <GhostButton icon={ChevronRight} onClick={handleLevelUp} style={{ borderColor: C.gold, color: C.gold, flexDirection: "row-reverse" }}>
+            <GhostButton icon={ChevronRight} onClick={startLevelUp} style={{ borderColor: C.gold, color: C.gold, flexDirection: "row-reverse" }}>
               Sali di livello{mcCls ? ` — ${cls.name}` : ""}
             </GhostButton>
           )}
@@ -129,6 +220,72 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
           </GoldButton>
         </div>
       </div>
+
+      {levelUpClassChoice && cls && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
+          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 4, maxWidth: "var(--modal-max-width)", width: "100%", maxHeight: "88vh", overflowY: "auto", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
+              <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 22, color: C.wineDeep, margin: 0 }}>
+                Livello {totalLevel + 1}! <span style={{ color: C.textMuted, fontWeight: 400, fontSize: 15 }}>— a quale classe lo assegni?</span>
+              </h2>
+              <button onClick={() => setLevelUpClassChoice(false)} aria-label="Annulla" title="Annulla" style={{ background: "transparent", border: "none", cursor: "pointer", color: C.textMuted, padding: 4 }}>
+                <X size={20} />
+              </button>
+            </div>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 12px" }}>
+              Puoi proseguire con la classe attuale, oppure iniziare a multiclassare aggiungendo una nuova classe a questo livello.
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem", marginBottom: 14 }}>
+              <OptionCard selected={false} onClick={chooseLevelUpCurrentClass} title={`${cls.name} ${draft.level + 1}`}>
+                <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>Continua a salire con la classe attuale.</p>
+              </OptionCard>
+            </div>
+            <Divider />
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "12px 0 6px" }}>
+              Oppure inizia a multiclassare
+            </h3>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+              I requisiti minimi (5e 2014) sono indicati per riferimento: l'app non blocca la scelta, la decisione finale spetta al tavolo di gioco.
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
+              {CLASSES.filter((c) => c.id !== draft.classId).map((c) => {
+                const prereq = checkMulticlassPrereq(finalScoresNow, c.id);
+                return (
+                  <OptionCard key={c.id} selected={false} onClick={() => chooseLevelUpNewClass(c.id)} title={c.name}>
+                    <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12, color: prereq.met ? C.forestDeep : C.wine, margin: 0 }}>
+                      Requisito: {prereq.text} {prereq.met ? "✓ soddisfatto" : "✗ non soddisfatto"}
+                    </p>
+                  </OptionCard>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {levelDownTarget && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
+          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 4, maxWidth: 480, width: "100%", border: `1px solid ${C.danger}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+            <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 18, color: C.wineDeep, margin: "0 0 8px" }}>
+              Tornare al livello {(levelDownTarget === "primary" ? draft.level : mc?.level) - 1}?
+            </h2>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 16px" }}>
+              Non è una regola ufficiale: è pensato per correggere un errore nel livellamento. Perderai le scelte fatte all'ultimo livello (Punti Ferita, ASI/Talento, stile di combattimento) e le eventuali manovre, discipline, invocazioni o opzioni di metamagia in eccesso rispetto al nuovo livello.
+            </p>
+            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+              <GhostButton onClick={() => setLevelDownTarget(null)} style={{ borderColor: C.parchmentLine, color: C.textMuted }}>
+                Annulla
+              </GhostButton>
+              <button
+                onClick={confirmLevelDown}
+                style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "0.55rem 1rem", fontFamily: "'Spectral', serif", fontSize: 13 }}
+              >
+                Sì, torna indietro
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {levelUpInfo && levelUpInfo.target === "primary" && cls && (
         <LevelUpModal
@@ -215,42 +372,9 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
         </h3>
 
         {!mcCls ? (
-          addingMulticlass ? (
-            <>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
-                Scegli la classe secondaria. I requisiti minimi (5e 2014) sono indicati per riferimento: l'app non blocca la scelta, la decisione finale spetta al tavolo di gioco.
-              </p>
-              <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem", marginBottom: 10 }}>
-                {CLASSES.filter((c) => c.id !== draft.classId).map((c) => {
-                  const prereq = checkMulticlassPrereq(finalScoresNow, c.id);
-                  return (
-                    <OptionCard
-                      key={c.id}
-                      selected={false}
-                      onClick={() => handleConfirmMulticlass(c.id)}
-                      title={c.name}
-                    >
-                      <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12, color: prereq.met ? C.forestDeep : C.wine, margin: 0 }}>
-                        Requisito: {prereq.text} {prereq.met ? "✓ soddisfatto" : "✗ non soddisfatto"}
-                      </p>
-                    </OptionCard>
-                  );
-                })}
-              </div>
-              <GhostButton onClick={() => setAddingMulticlass(false)} style={{ borderColor: C.parchmentLine, color: C.textMuted }}>
-                Annulla
-              </GhostButton>
-            </>
-          ) : (
-            <>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 10px" }}>
-                Il personaggio ha una sola classe. Puoi aggiungerne una seconda per multiclassare.
-              </p>
-              <GoldButton icon={Plus} onClick={() => setAddingMulticlass(true)} style={{ padding: "0.55rem 1rem", fontSize: 13 }}>
-                Aggiungi classe secondaria
-              </GoldButton>
-            </>
-          )
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: 0 }}>
+            Il personaggio ha una sola classe. Per aggiungerne una seconda, usa "Sali di livello" qui sopra: potrai scegliere se il prossimo livello va alla classe attuale o segna l'inizio di una seconda classe.
+          </p>
         ) : (
           <>
             <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 10px" }}>

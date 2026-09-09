@@ -1,7 +1,7 @@
 import {
   CASTER_INFO, THIRD_CASTER_INFO, THIRD_CASTER_SLOTS, FULL_CASTER_SLOTS, WARLOCK_PACT,
   MYSTIC_ARCANUM_UNLOCK_LEVEL, METAMAGIC_OPTIONS, WILD_MAGIC_SURGE_TABLE, WARLOCK_INVOCATIONS,
-  ELEMENTAL_DISCIPLINES, DIVINE_DOMAINS, PALADIN_OATHS, WARLOCK_PATRONS, DRUID_CIRCLES,
+  ELEMENTAL_DISCIPLINES, DIVINE_DOMAINS, PALADIN_OATHS, WARLOCK_PATRONS, DRUID_CIRCLES, MANEUVERS,
 } from "../data/spells";
 
 export function isThirdCaster(clsId, subclassId) {
@@ -67,6 +67,17 @@ export function getDisciplinesKnownCount(level) {
 }
 export function getElementalDiscipline(id) {
   return ELEMENTAL_DISCIPLINES.find((d) => d.id === id) || null;
+}
+
+export function getManeuversKnownCount(level) {
+  const lvl = level || 1;
+  if (lvl >= 15) return 7;
+  if (lvl >= 7) return 5;
+  if (lvl >= 3) return 3;
+  return 0;
+}
+export function getManeuver(id) {
+  return MANEUVERS.find((m) => m.id === id) || null;
 }
 
 export function getSpellSlots(clsId, level, subclassId) {
