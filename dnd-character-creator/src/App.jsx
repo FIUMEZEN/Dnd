@@ -19,6 +19,7 @@ import { CreatureSheetView } from "./components/CreatureSheetView";
 import { Bestiary } from "./components/Bestiary";
 import { EncounterRunner } from "./components/EncounterRunner";
 import { CampaignPanel } from "./components/CampaignPanel";
+import { TopNav } from "./components/TopNav";
 
 /* ---------------------------------- APP ---------------------------------- */
 
@@ -361,19 +362,48 @@ export default function App() {
         }
         select:focus, input:focus { outline: 2px solid ${C.gold}; outline-offset: 1px; }
         button:focus-visible { outline: 2px solid ${C.gold}; outline-offset: 2px; }
+
+        /* Micro-animazioni: dissolvenza tra schermate, comparsa/scomparsa del toast, hover più
+           vivo sulle card cliccabili. Tutte rispettano prefers-reduced-motion. */
+        @keyframes screenIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .screen-fade { animation: screenIn 260ms ease; }
+
+        @keyframes toastLife {
+          0% { opacity: 0; transform: translate(-50%, 14px); }
+          8% { opacity: 1; transform: translate(-50%, 0); }
+          88% { opacity: 1; transform: translate(-50%, 0); }
+          100% { opacity: 0; transform: translate(-50%, 8px); }
+        }
+
+        .hover-lift { transition: transform 160ms ease, box-shadow 160ms ease; }
+        .hover-lift:hover { transform: translateY(-3px); box-shadow: 0 14px 24px rgba(19,15,13,0.28); }
+
+        @media (prefers-reduced-motion: reduce) {
+          .screen-fade, .hover-lift { animation: none !important; transition: none !important; }
+          .hover-lift:hover { transform: none; }
+        }
       `}</style>
 
-      <BackupControl
-        characters={characters}
-        creatures={creatures}
-        onImported={({ charactersImported, creaturesImported }) => {
-          loadCharacters();
-          loadCreatures();
-          showToast(`Backup importato: ${charactersImported} personaggi, ${creaturesImported} creature.`);
-        }}
-        onError={(msg) => showToast(msg)}
-      />
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, flexWrap: "wrap", marginBottom: "1.5rem" }}>
+        <TopNav screen={screen} onNavigate={setScreen} onOpenCompendium={() => openCompendium(screen === "compendium" ? compendiumFrom : screen)} />
+        <div style={{ marginLeft: "auto" }}>
+          <BackupControl
+            characters={characters}
+            creatures={creatures}
+            onImported={({ charactersImported, creaturesImported }) => {
+              loadCharacters();
+              loadCreatures();
+              showToast(`Backup importato: ${charactersImported} personaggi, ${creaturesImported} creature.`);
+            }}
+            onError={(msg) => showToast(msg)}
+          />
+        </div>
+      </div>
 
+      <div key={screen} className="screen-fade">
       {screen === "list" && (
         <CharacterList
           characters={characters}
@@ -382,8 +412,6 @@ export default function App() {
           onOpen={handleOpen}
           onOpenSheet={handleOpenSheet}
           onDelete={handleDelete}
-          onOpenCompendium={() => openCompendium("list")}
-          onOpenMaster={() => setScreen("master")}
         />
       )}
 
@@ -395,12 +423,10 @@ export default function App() {
         <MasterDashboard
           creatures={creatures}
           loading={creaturesLoading}
-          onBack={() => setScreen("list")}
           onNew={handleNewCreature}
           onOpen={handleOpenCreature}
           onOpenSheet={handleOpenCreatureSheet}
           onDelete={handleDeleteCreature}
-          onOpenCompendium={() => openCompendium("master")}
           onOpenBestiary={() => setScreen("bestiary")}
           onOpenCampaign={() => setScreen("campaign")}
         />
@@ -471,12 +497,14 @@ export default function App() {
           onSaveChanges={handleSaveSheetChanges}
         />
       )}
+      </div>
 
       {toast && (
         <div style={{
-          position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)",
+          position: "fixed", bottom: 24, left: "50%",
           background: C.forestDeep, color: C.cream, padding: "0.7rem 1.4rem", borderRadius: 3,
           border: `1px solid ${C.gold}`, fontFamily: "'Spectral', serif", fontSize: 13.5, zIndex: 50,
+          animation: "toastLife 2.2s ease forwards", boxShadow: "0 10px 24px rgba(19,15,13,0.35)",
         }}>
           {toast}
         </div>

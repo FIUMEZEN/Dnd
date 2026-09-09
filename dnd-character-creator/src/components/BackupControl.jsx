@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Download, Upload } from "../icons";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Download, Save, Upload } from "../icons";
 import { C } from "../theme";
 import { GhostButton, GoldButton } from "./primitives";
 import { RACES } from "../data/races";
@@ -96,12 +96,23 @@ function ExportPicker({ characters, creatures, onClose, onExport }) {
   );
 }
 
-// Barra sempre visibile in cima all'app: esporta/importa un file .json con personaggi e creature
-// salvati sul dispositivo, come rete di sicurezza contro una cancellazione dei dati del browser
-// (localStorage non sopravvive a un "cancella dati di navigazione") e per condividerli con altri.
+// Un solo pulsante "Backup", stile pillola coerente con la barra di navigazione: apre un piccolo
+// menu con le due azioni (prima erano due pulsanti sempre visibili). Esporta/importa un file
+// .json con personaggi e creature salvati sul dispositivo, come rete di sicurezza contro una
+// cancellazione dei dati del browser (localStorage non sopravvive a un "cancella dati di
+// navigazione") e per condividerli con altri.
 export function BackupControl({ characters = [], creatures = [], onImported, onError }) {
   const fileInputRef = useRef(null);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onClickOutside = (e) => { if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false); };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [menuOpen]);
 
   const handleExport = async (characterIds, creatureIds) => {
     setPickerOpen(false);
@@ -112,7 +123,10 @@ export function BackupControl({ characters = [], creatures = [], onImported, onE
     }
   };
 
-  const handleImportClick = () => fileInputRef.current?.click();
+  const handleImportClick = () => {
+    setMenuOpen(false);
+    fileInputRef.current?.click();
+  };
 
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
@@ -127,13 +141,49 @@ export function BackupControl({ characters = [], creatures = [], onImported, onE
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
-      <GhostButton icon={Download} onClick={() => setPickerOpen(true)} style={{ borderColor: C.gold, color: C.gold, padding: "0.4rem 0.8rem", fontSize: 12.5 }}>
-        Esporta backup
-      </GhostButton>
-      <GhostButton icon={Upload} onClick={handleImportClick} style={{ borderColor: C.gold, color: C.gold, padding: "0.4rem 0.8rem", fontSize: 12.5 }}>
-        Importa backup
-      </GhostButton>
+    <div ref={menuRef} style={{ position: "relative" }}>
+      <button
+        onClick={() => setMenuOpen((v) => !v)}
+        style={{
+          display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 12.5,
+          letterSpacing: 0.3, padding: "0.5rem 1.1rem", borderRadius: 4, border: `1px solid ${C.parchmentLine}22`,
+          background: C.inkPanel, color: menuOpen ? C.gold : C.creamMuted, cursor: "pointer",
+          transition: "color 200ms ease",
+        }}
+      >
+        <Save size={13} />
+        Backup
+        <ChevronDown size={12} style={{ transform: menuOpen ? "rotate(180deg)" : "none", transition: "transform 200ms ease" }} />
+      </button>
+
+      {menuOpen && (
+        <div
+          className="screen-fade"
+          style={{
+            position: "absolute", top: "calc(100% + 6px)", right: 0, zIndex: 40, minWidth: 200,
+            background: C.inkPanel, border: `1px solid ${C.parchmentLine}33`, borderRadius: 4,
+            boxShadow: "0 14px 28px rgba(19,15,13,0.4)", overflow: "hidden",
+          }}
+        >
+          <button
+            onClick={() => { setMenuOpen(false); setPickerOpen(true); }}
+            style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "0.7rem 1rem", background: "transparent", border: "none", cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 13, color: C.cream, textAlign: "left" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+          >
+            <Download size={14} color={C.gold} /> Esporta backup
+          </button>
+          <button
+            onClick={handleImportClick}
+            style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "0.7rem 1rem", background: "transparent", border: "none", cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 13, color: C.cream, textAlign: "left" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+          >
+            <Upload size={14} color={C.gold} /> Importa backup
+          </button>
+        </div>
+      )}
+
       <input ref={fileInputRef} type="file" accept="application/json,.json" onChange={handleFileChange} style={{ display: "none" }} />
 
       {pickerOpen && (

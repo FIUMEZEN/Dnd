@@ -1,18 +1,16 @@
 import { useState } from "react";
-import { BookOpen, ChevronLeft, Pencil, Plus, Skull, Trash2, Users } from "../icons";
+import { Pencil, Plus, Skull, Trash2, Users } from "../icons";
 import { C } from "../theme";
 import { Frame, GhostButton, GoldButton } from "./primitives";
 import { CREATURE_SIZES } from "../data/creatures";
 import { fmtMod } from "../lib/format";
 import { getCurrentHp, getEffectiveProficiencyBonus, getMaxHp, isCreatureDead } from "../lib/creature";
 
-export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onOpenSheet, onDelete, onOpenCompendium, onOpenBestiary, onOpenCampaign }) {
+export function MasterDashboard({ creatures, loading, onNew, onOpen, onOpenSheet, onDelete, onOpenBestiary, onOpenCampaign }) {
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   return (
     <div>
-      <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18 }}>I miei personaggi</GhostButton>
-
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: 12 }}>
         <div>
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>Sezione Master</h1>
@@ -21,9 +19,6 @@ export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onO
           </p>
         </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <GhostButton icon={BookOpen} onClick={onOpenCompendium} style={{ borderColor: C.gold, color: C.gold }}>
-            Compendio Incantesimi
-          </GhostButton>
           <GhostButton icon={Skull} onClick={onOpenBestiary} style={{ borderColor: C.wineBright, color: C.wineBright }}>
             Bestiario
           </GhostButton>
@@ -56,7 +51,7 @@ export function MasterDashboard({ creatures, loading, onBack, onNew, onOpen, onO
             const sizeLabel = CREATURE_SIZES.find((s) => s.key === cr.size)?.name || cr.size;
             const isPendingDelete = pendingDeleteId === cr.id;
             return (
-              <Frame key={cr.id} style={{ padding: "1.25rem 1.4rem" }}>
+              <Frame key={cr.id} className="hover-lift" style={{ padding: "1.25rem 1.4rem" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                   <div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
