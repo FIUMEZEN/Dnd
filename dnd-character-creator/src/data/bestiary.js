@@ -34,6 +34,29 @@ export const BESTIARY = [
     traits: [],
     actions: [{ name: "Artigli", desc: "Attacco con arma da mischia: +0 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno tagliente." }],
   },
+  {
+    key: "pipistrello", name: "Pipistrello", size: "minuscola", type: "Bestia", alignment: "Non allineato",
+    ac: 12, hp: 1, hpFormula: "1d4 - 1", speed: { camminare: 1.5, volare: 9 },
+    abilities: { str: 2, dex: 15, con: 8, int: 2, wis: 12, cha: 4 },
+    senses: { blindsight: 18 }, languages: "—", cr: "0",
+    traits: [
+      { name: "Ecolocalizzazione", desc: "Il pipistrello non può usare la vista mentre è privo dell'udito o si trova in un'area di silenzio magico." },
+      { name: "Udito Acuto", desc: "Il pipistrello ha vantaggio ai tiri di Saggezza (Percezione) basati sull'udito." },
+    ],
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +0 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno perforante." }],
+  },
+  {
+    key: "civetta", name: "Civetta", size: "minuscola", type: "Bestia", alignment: "Non allineato",
+    ac: 11, hp: 1, hpFormula: "1d4 - 1", speed: { camminare: 1.5, volare: 18 },
+    abilities: { str: 3, dex: 13, con: 8, int: 2, wis: 12, cha: 7 },
+    senses: { darkvision: 36 }, languages: "—", cr: "0",
+    skills: [{ name: "Percezione", bonus: 3 }, { name: "Furtività", bonus: 3 }],
+    traits: [
+      { name: "Volo Radente", desc: "La civetta non provoca attacchi di opportunità quando vola via dalla portata di un nemico." },
+      { name: "Udito e Vista Acuti", desc: "La civetta ha vantaggio ai tiri di Saggezza (Percezione) basati sull'udito o sulla vista." },
+    ],
+    actions: [{ name: "Artigli", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno tagliente." }],
+  },
 
   // ---- GS 1/8 ----
   {
@@ -63,6 +86,14 @@ export const BESTIARY = [
     skills: [{ name: "Percezione", bonus: 3 }],
     traits: [{ name: "Olfatto Acuto", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto." }, { name: "Tattiche di Branco", desc: "Vantaggio ai tiri per colpire contro una creatura se almeno un alleato dello sciacallo è entro 1,5 m dal bersaglio e non è incapacitato." }],
     actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 2 (1d4) danni perforanti." }],
+  },
+  {
+    key: "cervo", name: "Cervo", size: "media", type: "Bestia", alignment: "Non allineato",
+    ac: 13, hp: 4, hpFormula: "1d8", speed: { camminare: 15 },
+    abilities: { str: 11, dex: 16, con: 11, int: 2, wis: 14, cha: 5 },
+    senses: {}, languages: "—", cr: "1/8",
+    traits: [],
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +2 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno perforante." }],
   },
 
   // ---- GS 1/4 ----
@@ -119,6 +150,45 @@ export const BESTIARY = [
     senses: { blindsight: 3 }, languages: "—", cr: "1/4",
     actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 1 danno perforante più 10 (3d6) danni da veleno. TS su Costituzione (CD 11) dimezza il danno da veleno." }],
   },
+  {
+    key: "pantera", name: "Pantera", size: "media", type: "Bestia", alignment: "Non allineato",
+    ac: 12, hp: 13, hpFormula: "3d8", speed: { camminare: 15, scalare: 12 },
+    abilities: { str: 14, dex: 15, con: 10, int: 3, wis: 14, cha: 7 },
+    senses: {}, languages: "—", cr: "1/4",
+    skills: [{ name: "Percezione", bonus: 4 }, { name: "Furtività", bonus: 4 }],
+    traits: [
+      { name: "Olfatto Acuto", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto." },
+      { name: "Balzo", desc: "Se la pantera si muove di almeno 6 m in linea retta verso una creatura e poi la colpisce con un attacco di Artigli nello stesso turno, quella creatura deve superare un TS su Forza (CD 12) o essere atterrata. Se il bersaglio è prono, la pantera può effettuare un attacco di Morso contro di esso come azione bonus." },
+    ],
+    actions: [
+      { name: "Morso", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 5 (1d6 + 2) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 4 (1d4 + 2) danni taglienti." },
+    ],
+  },
+  {
+    key: "rana-gigante", name: "Rana Gigante", size: "media", type: "Bestia", alignment: "Non allineato",
+    ac: 11, hp: 18, hpFormula: "4d8", speed: { camminare: 9, nuotare: 9 },
+    abilities: { str: 12, dex: 13, con: 11, int: 2, wis: 10, cha: 3 },
+    senses: { darkvision: 9 }, languages: "—", cr: "1/4",
+    skills: [{ name: "Percezione", bonus: 2 }, { name: "Furtività", bonus: 3 }],
+    traits: [
+      { name: "Anfibia", desc: "La rana può respirare sia in aria che in acqua." },
+      { name: "Salto Prodigioso", desc: "Con o senza rincorsa, la rana può effettuare un salto in lungo fino a 6 m e un salto in alto fino a 3 m." },
+    ],
+    actions: [{ name: "Morso", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 4 (1d6 + 1) danni perforanti e il bersaglio è afferrato (CD fuga 11). Finché dura la presa, il bersaglio è trattenuto e la rana non può mordere un altro bersaglio." }],
+  },
+  {
+    key: "gufo-gigante", name: "Gufo Gigante", size: "grande", type: "Bestia", alignment: "Neutrale",
+    ac: 12, hp: 19, hpFormula: "3d10 + 3", speed: { camminare: 1.5, volare: 18 },
+    abilities: { str: 13, dex: 15, con: 12, int: 8, wis: 13, cha: 10 },
+    senses: { darkvision: 36 }, languages: "Gufesco; comprende Comune, Elfico e Silvano ma non può parlarli", cr: "1/4",
+    skills: [{ name: "Percezione", bonus: 5 }, { name: "Furtività", bonus: 4 }],
+    traits: [
+      { name: "Volo Radente", desc: "Il gufo non provoca attacchi di opportunità quando vola via dalla portata di un nemico." },
+      { name: "Udito e Vista Acuti", desc: "Il gufo ha vantaggio ai tiri di Saggezza (Percezione) basati sull'udito o sulla vista." },
+    ],
+    actions: [{ name: "Artigli", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 8 (2d6 + 1) danni taglienti." }],
+  },
 
   // ---- GS 1/2 ----
   {
@@ -163,6 +233,32 @@ export const BESTIARY = [
       { name: "Multiattacco", desc: "L'orso attacca con Morso e Artigli." },
       { name: "Morso", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 5 (1d6 + 2) danni perforanti." },
       { name: "Artigli", desc: "Attacco con arma da mischia: +3 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (2d4 + 2) danni taglienti." },
+    ],
+  },
+  {
+    key: "scimmia", name: "Scimmia", size: "media", type: "Bestia", alignment: "Non allineato",
+    ac: 12, hp: 19, hpFormula: "3d8 + 6", speed: { camminare: 9, scalare: 9 },
+    abilities: { str: 16, dex: 14, con: 14, int: 6, wis: 12, cha: 7 },
+    senses: {}, languages: "—", cr: "1/2",
+    skills: [{ name: "Atletica", bonus: 5 }, { name: "Percezione", bonus: 3 }],
+    traits: [],
+    actions: [
+      { name: "Multiattacco", desc: "La scimmia effettua due attacchi con Pugno." },
+      { name: "Pugno", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 6 (1d6 + 3) danni contundenti." },
+      { name: "Masso", desc: "Attacco con arma a distanza: +5 per colpire, gittata 7,5/15 m, un bersaglio. Colpito: 6 (1d6 + 3) danni contundenti." },
+    ],
+  },
+  {
+    key: "coccodrillo", name: "Coccodrillo", size: "grande", type: "Bestia", alignment: "Non allineato",
+    ac: 12, hp: 19, hpFormula: "3d8 + 6", speed: { camminare: 6, nuotare: 9 },
+    abilities: { str: 15, dex: 10, con: 13, int: 2, wis: 10, cha: 5 },
+    senses: {}, languages: "—", cr: "1/2",
+    skills: [{ name: "Furtività", bonus: 2 }],
+    traits: [{ name: "Trattenere il Respiro", desc: "Il coccodrillo può trattenere il respiro per 15 minuti." }],
+    actions: [
+      { name: "Multiattacco", desc: "Il coccodrillo effettua un attacco di Morso e uno di Coda; non può attaccare con la Coda una creatura già afferrata dal Morso." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (1d10 + 2) danni perforanti e il bersaglio è afferrato (CD fuga 12); il coccodrillo può afferrare un solo bersaglio alla volta." },
+      { name: "Coda", desc: "Attacco con arma da mischia: +4 per colpire, portata 1,5 m, un bersaglio non afferrato dal coccodrillo. Colpito: 9 (2d6 + 2) danni contundenti." },
     ],
   },
   {
@@ -216,6 +312,22 @@ export const BESTIARY = [
     actions: [
       { name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (1d8 + 3) danni perforanti più 9 (2d8) danni da veleno; TS su Costituzione (CD 11) dimezza il danno da veleno." },
       { name: "Ragnatela (recupera 5-6)", desc: "Attacco a distanza con arma: +5 per colpire, gittata 18/36 m, un bersaglio. Colpito: il bersaglio è invischiato in una ragnatela e trattenuto finché non si libera (prova di Forza CD 12)." },
+    ],
+  },
+  {
+    key: "tigre", name: "Tigre", size: "media", type: "Bestia", alignment: "Non allineato",
+    ac: 12, hp: 37, hpFormula: "5d8 + 15", speed: { camminare: 12 },
+    abilities: { str: 17, dex: 15, con: 14, int: 3, wis: 12, cha: 8 },
+    senses: {}, languages: "—", cr: "1",
+    skills: [{ name: "Percezione", bonus: 3 }, { name: "Furtività", bonus: 4 }],
+    traits: [
+      { name: "Olfatto Acuto", desc: "Vantaggio ai tiri di Saggezza (Percezione) basati sull'olfatto." },
+      { name: "Balzo", desc: "Se la tigre si muove di almeno 6 m in linea retta verso una creatura e poi la colpisce con un attacco di Artigli nello stesso turno, quella creatura deve superare un TS su Forza (CD 13) o essere atterrata. Se il bersaglio è prono, la tigre può effettuare un attacco di Morso contro di esso come azione bonus." },
+    ],
+    actions: [
+      { name: "Multiattacco", desc: "La tigre effettua un attacco di Morso e uno di Artigli." },
+      { name: "Morso", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 8 (1d10 + 3) danni perforanti." },
+      { name: "Artigli", desc: "Attacco con arma da mischia: +5 per colpire, portata 1,5 m, un bersaglio. Colpito: 7 (1d8 + 3) danni taglienti." },
     ],
   },
   {

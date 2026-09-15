@@ -143,8 +143,17 @@ export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "
   );
 }
 
+// Ordine fisso, non ricavato da un oggetto (che in JS non garantisce l'ordine delle chiavi
+// numeriche) — così Danno/Cura/+PF Temporanei restano sempre nello stesso ordine sullo schermo.
+const HP_ACTIONS = [
+  { key: "danno", label: "Danno" },
+  { key: "cura", label: "Cura" },
+  { key: "temp", label: "+ PF Temporanei" },
+];
+
 export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
   const [amount, setAmount] = useState(1);
+  const [action, setAction] = useState("danno"); // "danno" | "cura" | "temp" — quale azione applica il numero qui sotto
   const [pendingCheck, setPendingCheck] = useState(null); // { dc, rolled }
   const current = draft.currentHp == null ? maxHp : Math.min(draft.currentHp, maxHp);
   const temp = draft.tempHp || 0;
@@ -203,6 +212,12 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
   const addTempHp = () => {
     setDraft((d) => ({ ...d, tempHp: Math.max(d.tempHp || 0, Math.max(0, amount)) }));
   };
+  const applyAction = () => {
+    if (action === "danno") applyDamage();
+    else if (action === "cura") applyHeal();
+    else addTempHp();
+  };
+  const actionColor = { danno: C.danger, cura: C.gold, temp: C.forestDeep }[action];
 
   const resolveCheck = (success) => {
     if (!success) setDraft((d) => ({ ...d, concentration: null }));
@@ -227,21 +242,41 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
         )}
         <HpBar current={current} max={maxHp} temp={temp} />
       </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
+        {HP_ACTIONS.map(({ key, label }) => {
+          const color = { danno: C.danger, cura: C.gold, temp: C.forestDeep }[key];
+          const isActive = action === key;
+          return (
+            <button
+              key={key}
+              onClick={() => setAction(key)}
+              style={{
+                fontFamily: "'Spectral', serif", fontSize: 12.5, padding: "0.4rem 0.8rem", borderRadius: 3,
+                border: `1px solid ${color}`, cursor: "pointer", transition: "all 120ms ease",
+                background: isActive ? color : "transparent",
+                color: isActive ? C.cream : color,
+              }}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <input
           type="number" min={0} value={amount}
           onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
           style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
         />
-        <GhostButton onClick={applyDamage} style={{ borderColor: C.danger, color: C.danger, padding: "0.4rem 0.8rem", fontSize: 12.5 }}>
-          Danno
-        </GhostButton>
-        <GoldButton onClick={applyHeal} style={{ padding: "0.4rem 0.8rem", fontSize: 12.5 }}>
-          Cura
-        </GoldButton>
-        <GhostButton onClick={addTempHp} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.4rem 0.8rem", fontSize: 12.5 }}>
-          + PF Temporanei
-        </GhostButton>
+        <button
+          onClick={applyAction}
+          style={{
+            fontFamily: "'Cinzel', serif", fontSize: 12.5, padding: "0.45rem 1rem", borderRadius: 3,
+            border: "none", cursor: "pointer", background: actionColor, color: C.cream,
+          }}
+        >
+          Applica {HP_ACTIONS.find((a) => a.key === action).label}
+        </button>
       </div>
 
       {pendingCheck && (
@@ -759,7 +794,7 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
                 }}
                 disabled={hdToSpend <= 0}
               >
-                Spendi {hdToSpend} HD
+                Spendi {hdToSpend} DV
               </GoldButton>
             </div>
           </div>

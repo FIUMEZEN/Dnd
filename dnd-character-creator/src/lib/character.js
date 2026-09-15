@@ -103,6 +103,15 @@ export function getSubclass(clsId, subclassId) {
   return getSubclassOptions(clsId).find((s) => s.id === subclassId) || null;
 }
 
+// Limiti di Forma Selvaggia (Druido, PHB 2014): GS massimo e se sono già sbloccate forme con
+// velocità di volo o di nuoto. Il Circolo della Luna ottiene GS 1 già dal 2° livello ("Forme del
+// Circolo"), ma non rimuove i limiti su volo/nuoto, che restano legati al livello da Druido.
+export function getWildShapeInfo(clsId, circleId, level) {
+  if (clsId !== "druido" || (level || 1) < 2) return null;
+  const maxCr = circleId === "circolo-luna" ? "1" : level >= 8 ? "1" : level >= 4 ? "1/2" : "1/4";
+  return { maxCr, canSwim: level >= 4, canFly: level >= 8 };
+}
+
 export function getUnlockedSubclassFeatures(clsId, subclassId, level) {
   const sub = getSubclass(clsId, subclassId);
   if (!sub) return [];

@@ -188,11 +188,13 @@ export function ResourceTracker({ resource, used, onSetUsed }) {
       </div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         {Array.from({ length: resource.max }).map((_, i) => {
-          const isUsed = i < usedCount;
+          // I pallini si consumano da destra verso sinistra: quelli già spesi restano a destra,
+          // quelli ancora disponibili a sinistra.
+          const isUsed = i >= resource.max - usedCount;
           return (
             <button
               key={i}
-              onClick={() => setUsed(isUsed ? i : i + 1)}
+              onClick={() => setUsed(isUsed ? resource.max - i - 1 : resource.max - i)}
               title={isUsed ? "Segna come disponibile" : "Segna come usato"}
               style={{
                 width: 18, height: 18, borderRadius: "50%", cursor: "pointer",

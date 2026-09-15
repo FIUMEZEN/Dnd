@@ -141,13 +141,17 @@ export function getPassivePerception(creature) {
   return 10 + perceptionBonus;
 }
 
+// Numeri non interi (es. 1.5 m per creature Minuscole) si scrivono con la virgola decimale
+// italiana, come già avviene ovunque nell'app per le portate delle armi ("1,5 m").
+const fmtM = (n) => String(n).replace(".", ",");
+
 export function formatSpeed(speed) {
   if (!speed) return "—";
-  const parts = [`${speed.camminare || 0} m`];
-  if (speed.volare > 0) parts.push(`volare ${speed.volare} m${speed.volareStazionario ? " (in stazionario)" : ""}`);
-  if (speed.nuotare > 0) parts.push(`nuotare ${speed.nuotare} m`);
-  if (speed.scavare > 0) parts.push(`scavare ${speed.scavare} m`);
-  if (speed.scalare > 0) parts.push(`scalare ${speed.scalare} m`);
+  const parts = [`${fmtM(speed.camminare || 0)} m`];
+  if (speed.volare > 0) parts.push(`volare ${fmtM(speed.volare)} m${speed.volareStazionario ? " (in stazionario)" : ""}`);
+  if (speed.nuotare > 0) parts.push(`nuotare ${fmtM(speed.nuotare)} m`);
+  if (speed.scavare > 0) parts.push(`scavare ${fmtM(speed.scavare)} m`);
+  if (speed.scalare > 0) parts.push(`scalare ${fmtM(speed.scalare)} m`);
   return parts.join(", ");
 }
 

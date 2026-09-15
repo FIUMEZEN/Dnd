@@ -7,6 +7,7 @@ import { Save, Loader2 } from "../icons";
 import { C } from "../theme";
 import { Divider, GhostButton, GoldButton, MetricBox } from "./primitives";
 import { AsiPicker, ElementalDisciplinePicker, ManeuverPicker } from "./pickers";
+import { WildShapeForms } from "./wildShape";
 import { InventoryManager } from "./inventory";
 import { HpLevelManager, HpTracker, RestControls, ConcentrationTracker, DeathSaveTracker } from "./hp";
 import { SpellManager, ResourceTracker } from "./spells";
@@ -425,6 +426,24 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
           updateStore={mcUpdateStore}
           level={mc.level}
           title={`Manovre — ${mcCls.name} (secondaria)`}
+        />
+      )}
+
+      {cls && cls.id === "druido" && (
+        <WildShapeForms
+          clsId={cls.id}
+          circleId={chosenSubclassId}
+          level={draft.level}
+          title={mcCls ? `Forma Selvaggia — ${cls.name} (primaria)` : undefined}
+        />
+      )}
+
+      {mcCls && mcCls.id === "druido" && (
+        <WildShapeForms
+          clsId={mcCls.id}
+          circleId={mcChosenSubclassId}
+          level={mc.level}
+          title={`Forma Selvaggia — ${mcCls.name} (secondaria)`}
         />
       )}
 

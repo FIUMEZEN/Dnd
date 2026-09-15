@@ -10,6 +10,7 @@ import { CLASSES, SUBCLASS_CHOICE_LEVEL } from "../data/classes";
 import {
   checkMulticlassPrereq, computeFinalScores, emptyMulticlass, getChosenSubclassId,
   getFightingStyleCount, getLevelUpChanges, getSubclass, getSubclassOptions, getTotalCharacterLevel, hasFightingStyles,
+  validateCharacter,
 } from "../lib/character";
 import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
 
@@ -47,6 +48,10 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
   const mcSubclassUnlocked = mcCls && mcSubclassOptions.length > 0 && mc.level >= (SUBCLASS_CHOICE_LEVEL[mcCls.id] || 3);
   const totalLevel = getTotalCharacterLevel(draft);
   const finalScoresNow = computeFinalScores(draft);
+  // Le stesse regole del riepilogo di creazione, riusate qui: dopo un livellamento (o qualunque
+  // altra modifica) restano scelte da completare (sottoclasse, ASI/Talento, stile di
+  // combattimento...) finché non le fai, e "Salva modifiche" da solo non lo segnala in alcun modo.
+  const validationErrors = validateCharacter(draft);
 
   const updateDraft = (updater) => {
     setDirty(true);
@@ -220,6 +225,15 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
           </GoldButton>
         </div>
       </div>
+
+      {validationErrors.length > 0 && (
+        <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 18, borderRadius: 2 }}>
+          <b style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.danger }}>Scelte ancora da completare</b>
+          <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.danger }}>
+            {validationErrors.map((e) => <li key={e}>{e}</li>)}
+          </ul>
+        </div>
+      )}
 
       {levelUpClassChoice && cls && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
