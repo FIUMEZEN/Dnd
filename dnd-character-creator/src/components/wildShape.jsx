@@ -19,11 +19,11 @@ const crValue = (cr) => {
   return num / den;
 };
 
-function BeastCard({ beast }) {
+function BeastCard({ beast, locked, lockReason }) {
   const [open, setOpen] = useState(false);
   const sizeLabel = CREATURE_SIZES.find((s) => s.key === beast.size)?.name || beast.size;
   return (
-    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.6rem 0.8rem", marginBottom: 8 }}>
+    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.6rem 0.8rem", marginBottom: 8, opacity: locked ? 0.65 : 1 }}>
       <button
         onClick={() => setOpen((o) => !o)}
         style={{
@@ -34,8 +34,9 @@ function BeastCard({ beast }) {
         <span style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textOnParchment }}>
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />} {beast.name}
         </span>
-        <span style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, whiteSpace: "nowrap" }}>
+        <span style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, whiteSpace: "nowrap", textAlign: "right" }}>
           GS {beast.cr} · CA {beast.ac} · {beast.hp} PF · {formatSpeed(beast.speed)}
+          {lockReason && <><br />{lockReason}</>}
         </span>
       </button>
       {open && (
@@ -81,16 +82,37 @@ function BeastCard({ beast }) {
   );
 }
 
+// Perché una bestia non è (ancora) assumibile con Forma Selvaggia, per il messaggio sotto la
+// scheda: aiuta a capire se serve solo aspettare un livello o se manca nuoto/volo.
+function lockReasonFor(beast, info, everMaxCrValue) {
+  const needsFly = beast.speed?.volare > 0;
+  const needsSwim = beast.speed?.nuotare > 0;
+  if (crValue(beast.cr) > everMaxCrValue) return null; // mai raggiungibile: gestita a parte
+  if (crValue(beast.cr) > crValue(info.maxCr)) return "Richiede un livello da Druido più alto";
+  if (needsFly && !info.canFly) return "Richiede velocità di volo (Druido 8+)";
+  if (needsSwim && !info.canSwim) return "Richiede velocità di nuoto (Druido 4+)";
+  return "Non ancora disponibile";
+}
+
 export function WildShapeForms({ clsId, circleId, level, title }) {
   const info = getWildShapeInfo(clsId, circleId, level);
   if (!info) return null;
   const maxCrValue = crValue(info.maxCr);
-  const available = BESTIARY
+  // Il tetto di GS che la Forma Selvaggia può mai raggiungere, a qualunque livello e Circolo
+  // (PHB 2014): usiamo il livello 8 come proiezione, che dà sempre il GS, il nuoto e il volo massimi.
+  const everInfo = getWildShapeInfo(clsId, circleId, 8);
+  const everMaxCrValue = crValue(everInfo.maxCr);
+
+  const beasts = BESTIARY
     .filter((m) => m.type === "Bestia")
-    .filter((m) => crValue(m.cr) <= maxCrValue)
-    .filter((m) => info.canFly || !(m.speed?.volare > 0))
-    .filter((m) => info.canSwim || !(m.speed?.nuotare > 0))
     .sort((a, b) => crValue(a.cr) - crValue(b.cr) || a.name.localeCompare(b.name, "it"));
+
+  const available = beasts.filter(
+    (m) => crValue(m.cr) <= maxCrValue && (info.canFly || !(m.speed?.volare > 0)) && (info.canSwim || !(m.speed?.nuotare > 0))
+  );
+  const availableKeys = new Set(available.map((m) => m.key));
+  const future = beasts.filter((m) => !availableKeys.has(m.key) && crValue(m.cr) <= everMaxCrValue);
+  const neverReachable = beasts.filter((m) => crValue(m.cr) > everMaxCrValue);
 
   return (
     <div style={{ marginBottom: 18 }}>
@@ -107,6 +129,34 @@ export function WildShapeForms({ clsId, circleId, level, title }) {
         </p>
       ) : (
         available.map((b) => <BeastCard key={b.key} beast={b} />)
+      )}
+
+      {future.length > 0 && (
+        <>
+          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.wineDeep, margin: "14px 0 4px" }}>
+            Sbloccabili più avanti
+          </h4>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, margin: "0 0 8px" }}>
+            Bestie che questo Druido potrà assumere salendo di livello (o cambiando Circolo), ma non ancora.
+          </p>
+          {future.map((b) => (
+            <BeastCard key={b.key} beast={b} locked lockReason={lockReasonFor(b, info, everMaxCrValue)} />
+          ))}
+        </>
+      )}
+
+      {neverReachable.length > 0 && (
+        <>
+          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.wineDeep, margin: "14px 0 4px" }}>
+            Mai raggiungibili con Forma Selvaggia
+          </h4>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, margin: "0 0 8px" }}>
+            Esistono nel catalogo (utili al Master, es. per Evoca Animali o creature evocate), ma superano il GS massimo che la Forma Selvaggia può mai raggiungere (GS {everInfo.maxCr}), a qualsiasi livello.
+          </p>
+          {neverReachable.map((b) => (
+            <BeastCard key={b.key} beast={b} locked lockReason={`GS ${b.cr} — oltre il tetto di ${everInfo.maxCr}`} />
+          ))}
+        </>
       )}
     </div>
   );
