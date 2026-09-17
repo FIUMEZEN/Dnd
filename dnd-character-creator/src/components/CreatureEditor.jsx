@@ -509,7 +509,12 @@ export function CreatureEditor({ creature, setCreature, onBack, onSave, saving }
       {errors.length > 0 && (
         <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.danger, marginTop: 14 }}>{errors[0]}</p>
       )}
-      <div style={{ marginTop: 18, display: "flex", justifyContent: "flex-end", gap: 10 }}>
+      <div
+        style={{
+          position: "sticky", bottom: 0, zIndex: 40, display: "flex", justifyContent: "flex-end", gap: 10,
+          marginTop: 18, padding: "0.75rem 0", background: C.ink, borderTop: `1px solid ${C.parchmentLine}44`,
+        }}
+      >
         <GoldButton icon={saving ? Loader2 : Save} disabled={saving} onClick={onSave}>
           {saving ? "Salvataggio…" : "Salva creatura"}
         </GoldButton>

@@ -34,7 +34,13 @@ export function LevelUpModal({
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
       <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 4, maxWidth: "var(--modal-max-width)", width: "100%", maxHeight: "88vh", overflowY: "auto", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
+        <div
+          style={{
+            position: "sticky", top: 0, zIndex: 10, background: C.parchment,
+            display: "flex", justifyContent: "space-between", alignItems: "flex-start",
+            marginBottom: 4, paddingBottom: 4,
+          }}
+        >
           <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 22, color: C.wineDeep, margin: 0 }}>
             Livello {toLevel}! <span style={{ color: C.textMuted, fontWeight: 400, fontSize: 15 }}>— {className}</span>
           </h2>
@@ -102,7 +108,12 @@ export function LevelUpModal({
           </div>
         )}
 
-        <div style={{ marginTop: 18, display: "flex", justifyContent: "flex-end" }}>
+        <div
+          style={{
+            position: "sticky", bottom: 0, zIndex: 10, background: C.parchment,
+            marginTop: 18, paddingTop: 10, display: "flex", justifyContent: "flex-end",
+          }}
+        >
           <GoldButton onClick={onConfirm}>Fatto</GoldButton>
         </div>
       </div>
