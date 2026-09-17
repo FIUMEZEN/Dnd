@@ -1,6 +1,6 @@
 # D&D Character Creator
 
-App per la creazione e gestione di Personaggi, incantesimi e Creature per D&D 5e (edizione 2014). Sessione individuale a browser (nessuna sincronizzazione tra dispositivi), usata sia lato giocatore che lato Master.
+App per la creazione e gestione di Personaggi, incantesimi e Creature per D&D 5e (edizione 2014). Dati salvati in locale nel browser (nessun account/login); l'unica sincronizzazione tra dispositivi è quella opzionale verso la Campagna del Master (vedi sotto), in sola lettura e per singolo Personaggio. Usata sia lato giocatore che lato Master.
 
 ## Language
 
@@ -21,6 +21,12 @@ _Avoid_: House rule (implica qualcosa di non ufficiale)
 
 **Ingombro**:
 La Regola Variante del PHB che riduce la velocità di un Personaggio in base al peso trasportato rispetto a soglie derivate dal punteggio di Forza.
+
+**Campagna**:
+Il pannello del Master che mostra in tempo reale, in sola lettura, i Personaggi dei giocatori collegati tramite il Codice Campagna. Nessun account: il codice è l'unica chiave, condiviso "a fiducia" come il link di un documento.
+
+**Codice Campagna**:
+Il codice generato dal Master e condiviso con i giocatori per collegare (o, rigenerandolo, scollegare) i loro Personaggi alla sua Campagna.
 
 **Incontro**:
 Una sessione di combattimento live che unisce Personaggi e Creature in un unico ordine di iniziativa, con turni, PF e condizioni tracciati in tempo reale dal Master. Uno solo alla volta: aprirne uno nuovo sostituisce quello in corso.
