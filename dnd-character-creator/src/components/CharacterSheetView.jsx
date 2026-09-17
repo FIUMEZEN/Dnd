@@ -276,6 +276,22 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         <MetricBox label="Percezione passiva" value={passivePerception} />
       </div>
 
+      {/* PE si assegna e si segue durante il gioco (il Master la dà a fine Incontro): non ha
+          senso nel Riepilogo di creazione, dove un personaggio nuovo parte comunque da 0. */}
+      {showPlayTools && (
+        <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep }}>Esperienza (PE)</span>
+          <input
+            type="number" min={0} value={draft.xp || 0}
+            onChange={(e) => setDraft((d) => ({ ...d, xp: Math.max(0, Number(e.target.value) || 0) }))}
+            style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+          />
+          <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
+            Informativa: il livello si aumenta sempre a mano con "Sali di livello".
+          </span>
+        </div>
+      )}
+
       <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep }}>Codice Campagna</span>
         <input
@@ -415,54 +431,56 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         </div>
       </div>
 
-      {cls && (
-        <>
-          <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Competenze</h3>
-          <div style={{ display: "grid", gap: 4, marginBottom: 18 }}>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
-              <b>Armature:</b> {[cls.armor, ...granted.armor].filter(Boolean).join("; ")}
-            </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
-              <b>Armi:</b> {[cls.weapons, ...granted.weapons].filter(Boolean).join("; ")}
-            </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
-              <b>Strumenti:</b> {granted.tools.length ? granted.tools.join(", ") : "—"}
-            </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
-              <b>Lingue:</b> {granted.languages.length ? granted.languages.join(", ") : "—"}
-            </p>
-            {granted.other.length > 0 && (
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
-                <b>Altro:</b> {granted.other.join(", ")}
-              </p>
-            )}
-          </div>
-        </>
-      )}
     </>
   );
 
   /* ------------------------------ COMBATTIMENTO ----------------------------- */
   const combattimentoContent = (
     <>
+      {/* Attacchi in cima: è la prima cosa che serve quando tocca a te agire in combattimento,
+          non l'ultima come prima (dopo PF, riposi, meccaniche e risorse di classe). */}
+      {weaponAttacks.length > 0 && (
+        <>
+          <Divider />
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Attacchi</h3>
+          <div style={{ marginBottom: 18 }}>
+            {weaponAttacks.map((w) => {
+              // I bonus degli Stili di Combattimento sono già inclusi in weaponAttacks.
+              const attackBonus = w.attackBonus;
+              const damageBonus = w.damageMod;
+
+              return (
+                <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0.7rem", border: `1px solid ${w.proficient ? C.parchmentLine : C.wine}`, borderRadius: 6, marginBottom: 6 }}>
+                  <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
+                    {w.name}
+                    {!w.proficient && (
+                      <span title="Nessuna competenza con questa arma: il bonus di competenza non è incluso nel tiro per colpire" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.wine, border: `1px solid ${C.wine}`, borderRadius: 6, padding: "0 4px" }}>
+                        non competente
+                      </span>
+                    )}
+                    {!w.equipped && (
+                      <span title="Non equipaggiata: gli Stili di Combattimento (Duellante, Due Armi, Armi Possenti) si applicano solo alle armi equipaggiate" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0 4px" }}>
+                        non equipaggiata
+                      </span>
+                    )}
+                  </span>
+                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
+                    Attacco {fmtMod(attackBonus)} · Danno {w.damageString}{fmtMod(damageBonus)} {w.damageType}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
       {showPlayTools && hp != null && (
         <>
+          {weaponAttacks.length > 0 && <Divider />}
           <DeathSaveTracker draft={draft} setDraft={setDraft} maxHp={hp} />
           <HpTracker maxHp={hp} draft={draft} setDraft={setDraft} conMod={mod(finalScores.con)} />
           <ConcentrationTracker draft={draft} setDraft={setDraft} />
           <RestControls draft={draft} setDraft={setDraft} maxHp={hp} conMod={mod(finalScores.con)} />
-          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep }}>Esperienza (PE)</span>
-            <input
-              type="number" min={0} value={draft.xp || 0}
-              onChange={(e) => setDraft((d) => ({ ...d, xp: Math.max(0, Number(e.target.value) || 0) }))}
-              style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
-            />
-            <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
-              Informativa: il livello si aumenta sempre a mano con "Sali di livello".
-            </span>
-          </div>
         </>
       )}
 
@@ -608,6 +626,26 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         </>
       )}
 
+      {/* Forma Selvaggia: si usa durante il combattimento per trasformarsi, non è un tratto di
+          sola lettura come quelli in Tratti — sta qui, vicino alle altre risorse di classe. */}
+      {cls && cls.id === "druido" && (
+        <WildShapeForms
+          clsId={cls.id}
+          circleId={chosenSubclassId}
+          level={draft.level}
+          title={mcCls ? `Forma Selvaggia — ${cls.name} (primaria)` : undefined}
+        />
+      )}
+
+      {mcCls && mcCls.id === "druido" && (
+        <WildShapeForms
+          clsId={mcCls.id}
+          circleId={mcChosenSubclassId}
+          level={mc.level}
+          title={`Forma Selvaggia — ${mcCls.name} (secondaria)`}
+        />
+      )}
+
       {showPlayTools && wildMagicLevel > 0 && (
         <div style={{ marginBottom: 18, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem" }}>
           <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
@@ -631,40 +669,6 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         </div>
       )}
 
-      {weaponAttacks.length > 0 && (
-        <>
-          <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Attacchi</h3>
-          <div style={{ marginBottom: 18 }}>
-            {weaponAttacks.map((w) => {
-              // I bonus degli Stili di Combattimento sono già inclusi in weaponAttacks.
-              const attackBonus = w.attackBonus;
-              const damageBonus = w.damageMod;
-
-              return (
-                <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0.7rem", border: `1px solid ${w.proficient ? C.parchmentLine : C.wine}`, borderRadius: 6, marginBottom: 6 }}>
-                  <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
-                    {w.name}
-                    {!w.proficient && (
-                      <span title="Nessuna competenza con questa arma: il bonus di competenza non è incluso nel tiro per colpire" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.wine, border: `1px solid ${C.wine}`, borderRadius: 6, padding: "0 4px" }}>
-                        non competente
-                      </span>
-                    )}
-                    {!w.equipped && (
-                      <span title="Non equipaggiata: gli Stili di Combattimento (Duellante, Due Armi, Armi Possenti) si applicano solo alle armi equipaggiate" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0 4px" }}>
-                        non equipaggiata
-                      </span>
-                    )}
-                  </span>
-                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
-                    Attacco {fmtMod(attackBonus)} · Danno {w.damageString}{fmtMod(damageBonus)} {w.damageType}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </>
-      )}
     </>
   );
 
@@ -728,24 +732,6 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           updateStore={mcUpdateStore}
           level={mc.level}
           title={`Manovre — ${mcCls.name} (secondaria)`}
-        />
-      )}
-
-      {cls && cls.id === "druido" && (
-        <WildShapeForms
-          clsId={cls.id}
-          circleId={chosenSubclassId}
-          level={draft.level}
-          title={mcCls ? `Forma Selvaggia — ${cls.name} (primaria)` : undefined}
-        />
-      )}
-
-      {mcCls && mcCls.id === "druido" && (
-        <WildShapeForms
-          clsId={mcCls.id}
-          circleId={mcChosenSubclassId}
-          level={mc.level}
-          title={`Forma Selvaggia — ${mcCls.name} (secondaria)`}
         />
       )}
 
@@ -817,6 +803,34 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
                 <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>{feat.desc}</p>
               </div>
             ))}
+          </div>
+        </>
+      )}
+
+      {/* Competenze: informazione statica (non cambia mai durante il gioco), quindi qui tra il
+          resto del "cosa so fare" invece che in Panoramica dove veniva riletta ogni volta. */}
+      {cls && (
+        <>
+          <Divider />
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Competenze</h3>
+          <div style={{ display: "grid", gap: 4, marginBottom: 18 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+              <b>Armature:</b> {[cls.armor, ...granted.armor].filter(Boolean).join("; ")}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+              <b>Armi:</b> {[cls.weapons, ...granted.weapons].filter(Boolean).join("; ")}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+              <b>Strumenti:</b> {granted.tools.length ? granted.tools.join(", ") : "—"}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+              <b>Lingue:</b> {granted.languages.length ? granted.languages.join(", ") : "—"}
+            </p>
+            {granted.other.length > 0 && (
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+                <b>Altro:</b> {granted.other.join(", ")}
+              </p>
+            )}
           </div>
         </>
       )}
