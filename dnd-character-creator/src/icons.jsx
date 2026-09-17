@@ -64,6 +64,9 @@ export const ChevronRight = (props) => (
 export const ChevronDown = (props) => (
   <Icon {...props}><path d="m6 9 6 6 6-6" /></Icon>
 );
+export const MoreVertical = (props) => (
+  <Icon {...props}><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></Icon>
+);
 export const ChevronUp = (props) => (
   <Icon {...props}><path d="m18 15-6-6-6 6" /></Icon>
 );

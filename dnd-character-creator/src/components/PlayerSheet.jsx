@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Loader2, Save, X } from "../icons";
+import { ChevronLeft, ChevronRight, Loader2, MoreVertical, Save, X } from "../icons";
 import { C } from "../theme";
-import { Frame, Divider, GhostButton, GoldButton, OptionCard } from "./primitives";
+import { Frame, Divider, GhostButton, GoldButton, HpBar, OptionCard, Tabs } from "./primitives";
 import { FightingStyleSelector } from "./pickers";
-import { CharacterSheetView } from "./CharacterSheetView";
+import { CharacterSheetView, PLAY_SECTIONS } from "./CharacterSheetView";
 import { LevelUpModal } from "./LevelUpModal";
 import { RACES } from "../data/races";
 import { CLASSES, SUBCLASS_CHOICE_LEVEL } from "../data/classes";
 import {
-  checkMulticlassPrereq, computeFinalScores, emptyMulticlass, getChosenSubclassId,
-  getFightingStyleCount, getLevelUpChanges, getSubclass, getSubclassOptions, getTotalCharacterLevel, hasFightingStyles,
+  checkMulticlassPrereq, computeFinalScores, computeMaxHp, emptyMulticlass, getArmorClass, getChosenSubclassId,
+  getFightingStyleCount, getInitiativeMod, getLevelUpChanges, getSubclass, getSubclassOptions, getTotalCharacterLevel, hasFightingStyles,
   validateCharacter,
 } from "../lib/character";
 import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
+import { mod, fmtMod } from "../lib/format";
 
 export function PlayerSheet({ character, onBack, onSaveChanges }) {
   const [draft, setDraft] = useState(character);
@@ -35,6 +36,12 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
   // ASI/Talento, stile di combattimento extra, e le manovre/discipline/invocazioni/metamagia in
   // eccesso rispetto al nuovo livello più basso).
   const [levelDownTarget, setLevelDownTarget] = useState(null); // null | "primary" | "secondary"
+  // Scheda attiva della vista in gioco (Panoramica/Combattimento/Incantesimi/Inventario/Tratti):
+  // sostituisce l'unico, lunghissimo scroll con un contenuto alla volta, più adatto al telefono.
+  const [playTab, setPlayTab] = useState(PLAY_SECTIONS[0].key);
+  // Azioni secondarie dell'intestazione (livello, multiclasse): su schermi stretti affollerebbero
+  // la barra fissa, quindi finiscono in questo menu a comparsa invece che inline.
+  const [actionsOpen, setActionsOpen] = useState(false);
 
   const race = RACES.find((r) => r.id === draft.raceId);
   const cls = CLASSES.find((c) => c.id === draft.classId);
@@ -52,6 +59,13 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
   // altra modifica) restano scelte da completare (sottoclasse, ASI/Talento, stile di
   // combattimento...) finché non le fai, e "Salva modifiche" da solo non lo segnala in alcun modo.
   const validationErrors = validateCharacter(draft);
+
+  // Dati vitali per la barra fissa in alto: sola lettura, calcolati con le stesse funzioni pure
+  // usate dalla Scheda Combattimento — l'editing vero (PF, CA da equipaggiamento) resta lì.
+  const vitalsHp = cls ? computeMaxHp(draft, cls, race, mod(finalScoresNow.con)) : null;
+  const vitalsCurrentHp = vitalsHp != null ? (draft.currentHp == null ? vitalsHp : Math.min(draft.currentHp, vitalsHp)) : null;
+  const { ac: vitalsAc } = getArmorClass(draft);
+  const vitalsInitiative = getInitiativeMod(draft);
 
   const updateDraft = (updater) => {
     setDirty(true);
@@ -189,40 +203,81 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.25rem", gap: 12, flexWrap: "wrap" }}>
-        <div>
-          <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 10 }}>
-            I miei personaggi
-          </GhostButton>
-          <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 24, color: C.cream, margin: 0 }}>{draft.name || "Personaggio senza nome"}</h1>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.creamMuted, margin: "4px 0 0" }}>
-            {race ? race.name : "—"} · {cls ? `${cls.name} ${draft.level}` : "—"}{subclass ? ` (${subclass.name})` : ""}{mcCls ? ` / ${mcCls.name} ${mc.level}` : ""}
-          </p>
+      <div
+        style={{
+          position: "sticky", top: 0, zIndex: 40, background: C.ink,
+          paddingTop: 4, paddingBottom: 8, marginBottom: 18, borderBottom: `1px solid ${C.parchmentLine}44`,
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <GhostButton icon={ChevronLeft} onClick={onBack} style={{ padding: "0.35rem 0.7rem", marginBottom: 6, fontSize: 12 }}>
+              Indietro
+            </GhostButton>
+            <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 19, color: C.cream, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {draft.name || "Personaggio senza nome"}
+            </h1>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.creamMuted, margin: "2px 0 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {race ? race.name : "—"} · {cls ? `${cls.name} ${draft.level}` : "—"}{subclass ? ` (${subclass.name})` : ""}{mcCls ? ` / ${mcCls.name} ${mc.level}` : ""}
+            </p>
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 6, flexShrink: 0 }}>
+            <GoldButton icon={saving ? Loader2 : Save} disabled={saving || !dirty} onClick={handleSave} style={{ padding: "0.5rem 0.8rem", fontSize: 12 }}>
+              {saving ? "…" : dirty ? "Salva" : "Salvato"}
+            </GoldButton>
+            <div style={{ position: "relative" }}>
+              <GhostButton icon={MoreVertical} onClick={() => setActionsOpen((v) => !v)} style={{ padding: "0.5rem 0.6rem", minWidth: 44, minHeight: 44, justifyContent: "center" }} />
+              {actionsOpen && (
+                <>
+                  <div onClick={() => setActionsOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 45 }} />
+                  <div
+                    style={{
+                      position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50,
+                      background: C.parchment, border: `1px solid ${C.gold}`, borderRadius: 3,
+                      boxShadow: "0 12px 24px rgba(19,15,13,0.4)", padding: 6, minWidth: 230, display: "grid", gap: 4,
+                    }}
+                  >
+                    {cls && draft.level > 1 && (
+                      <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("primary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 12, justifyContent: "flex-start" }}>
+                        Torna indietro di un livello{mcCls ? ` — ${cls.name}` : ""}
+                      </GhostButton>
+                    )}
+                    {mcCls && mc.level > 1 && (
+                      <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("secondary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 12, justifyContent: "flex-start" }}>
+                        Torna indietro di un livello — {mcCls.name}
+                      </GhostButton>
+                    )}
+                    {cls && draft.level < 20 && totalLevel < 20 && (
+                      <GhostButton icon={ChevronRight} onClick={() => { setActionsOpen(false); startLevelUp(); }} style={{ borderColor: C.gold, color: C.gold, flexDirection: "row-reverse", justifyContent: "flex-start" }}>
+                        Sali di livello{mcCls ? ` — ${cls.name}` : ""}
+                      </GhostButton>
+                    )}
+                    {mcCls && mc.level < 20 && totalLevel < 20 && (
+                      <GhostButton icon={ChevronRight} onClick={() => { setActionsOpen(false); handleMulticlassLevelUp(); }} style={{ borderColor: C.gold, color: C.gold, flexDirection: "row-reverse", justifyContent: "flex-start" }}>
+                        Sali di livello — {mcCls.name}
+                      </GhostButton>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {cls && draft.level > 1 && (
-            <GhostButton onClick={() => setLevelDownTarget("primary")} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 12 }}>
-              Torna indietro di un livello{mcCls ? ` — ${cls.name}` : ""}
-            </GhostButton>
-          )}
-          {mcCls && mc.level > 1 && (
-            <GhostButton onClick={() => setLevelDownTarget("secondary")} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 12 }}>
-              Torna indietro di un livello — {mcCls.name}
-            </GhostButton>
-          )}
-          {cls && draft.level < 20 && totalLevel < 20 && (
-            <GhostButton icon={ChevronRight} onClick={startLevelUp} style={{ borderColor: C.gold, color: C.gold, flexDirection: "row-reverse" }}>
-              Sali di livello{mcCls ? ` — ${cls.name}` : ""}
-            </GhostButton>
-          )}
-          {mcCls && mc.level < 20 && totalLevel < 20 && (
-            <GhostButton icon={ChevronRight} onClick={handleMulticlassLevelUp} style={{ borderColor: C.gold, color: C.gold, flexDirection: "row-reverse" }}>
-              Sali di livello — {mcCls.name}
-            </GhostButton>
-          )}
-          <GoldButton icon={saving ? Loader2 : Save} disabled={saving || !dirty} onClick={handleSave}>
-            {saving ? "Salvataggio…" : dirty ? "Salva modifiche" : "Nessuna modifica da salvare"}
-          </GoldButton>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
+          <div style={{ minWidth: 110 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontFamily: "'Spectral', serif", fontSize: 11, color: C.creamMuted }}>
+              <span>PF</span>
+              <span>{vitalsHp != null ? `${vitalsCurrentHp}/${vitalsHp}` : "—"}</span>
+            </div>
+            {vitalsHp != null && <HpBar current={vitalsCurrentHp} max={vitalsHp} temp={draft.tempHp || 0} />}
+          </div>
+          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.creamMuted }}>CA {vitalsAc}</span>
+          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.creamMuted }}>Iniziativa {fmtMod(vitalsInitiative)}</span>
+        </div>
+
+        <div style={{ marginTop: 10 }}>
+          <Tabs items={PLAY_SECTIONS} active={playTab} onChange={setPlayTab} />
         </div>
       </div>
 
@@ -464,7 +519,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
       {/* Scheda del Personaggio */}
       <Frame>
-        <CharacterSheetView draft={draft} setDraft={updateDraft} showPlayTools />
+        <CharacterSheetView draft={draft} setDraft={updateDraft} showPlayTools playTab={playTab} />
       </Frame>
     </div>
   );

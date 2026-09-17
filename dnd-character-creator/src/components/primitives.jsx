@@ -186,6 +186,43 @@ export function ProficiencyChoicePicker({ spec, selected, onToggle }) {
   );
 }
 
+// Schede orizzontali per la Scheda Personaggio in gioco: stesso linguaggio visivo della
+// pillola attiva in TopNav (gradiente wine), ma con bottoni alti almeno 44px (target touch)
+// e nessuna dipendenza da :hover per segnalare la scheda attiva.
+export function Tabs({ items, active, onChange }) {
+  return (
+    <div
+      role="tablist"
+      style={{
+        display: "flex", gap: 4, padding: 4, overflowX: "auto", WebkitOverflowScrolling: "touch",
+        background: C.inkPanel, border: `1px solid ${C.parchmentLine}44`,
+      }}
+    >
+      {items.map((item) => {
+        const isActive = item.key === active;
+        return (
+          <button
+            key={item.key}
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => onChange(item.key)}
+            style={{
+              flex: "1 0 auto", minHeight: 44, minWidth: 76,
+              fontFamily: "'Cinzel', serif", fontSize: 12, letterSpacing: 0.3, fontWeight: 600,
+              padding: "0.5rem 0.9rem", borderRadius: 3, border: "none", cursor: "pointer",
+              background: isActive ? `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})` : "transparent",
+              color: isActive ? C.cream : C.creamMuted,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {item.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function MetricBox({ label, value, hint }) {
   return (
     <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.85rem" }}>

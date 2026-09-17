@@ -2,6 +2,12 @@
 // racchiude in fase di creazione (StepReview). È il componente più corposo dell'app: aggrega
 // competenze, tiri salvezza, abilità, attacchi, incantesimi, PF e riposi in un'unica vista,
 // riusata sia in creazione sia in gioco (PlayerSheet) tramite la prop showPlayTools.
+//
+// In gioco (showPlayTools) il contenuto è raggruppato in 5 sezioni tematiche (Panoramica,
+// Combattimento, Incantesimi, Inventario, Tratti) e PlayerSheet ne mostra una sola alla volta
+// tramite la prop playTab, per evitare un unico scroll lunghissimo su mobile. In creazione
+// (StepReview, showPlayTools=false) le stesse 5 sezioni restano concatenate come un'unica
+// scheda continua, invariata rispetto a prima.
 import React, { useState, useMemo } from "react";
 import { Save, Loader2 } from "../icons";
 import { C } from "../theme";
@@ -27,7 +33,16 @@ import {
   getInitiativeMod, getSpeed, hasFeat,
 } from "../lib/character";
 
-export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
+// Sezioni disponibili in gioco, nell'ordine in cui compaiono anche nel Riepilogo di creazione.
+export const PLAY_SECTIONS = [
+  { key: "panoramica", label: "Panoramica" },
+  { key: "combattimento", label: "Combattimento" },
+  { key: "incantesimi", label: "Incantesimi" },
+  { key: "inventario", label: "Inventario" },
+  { key: "tratti", label: "Tratti" },
+];
+
+export function CharacterSheetView({ draft, setDraft, showPlayTools = false, playTab }) {
   const race = RACES.find((r) => r.id === draft.raceId);
   const cls = CLASSES.find((c) => c.id === draft.classId);
   const bg = getSelectedBackground(draft);
@@ -241,8 +256,9 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
       : `${cls.name} (liv. ${draft.level})${subclass ? ` — ${subclass.name}` : ""}`
     : "—";
 
-  return (
-    <div>
+  /* ------------------------------- PANORAMICA ------------------------------ */
+  const panoramicaContent = (
+    <>
       <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10, marginBottom: 18 }}>
         <MetricBox label="Razza" value={race ? race.name : "—"} />
         <MetricBox label="Classe" value={classLabel} hint={mcCls ? `Livello personaggio totale: ${totalLevel}` : undefined} />
@@ -312,26 +328,6 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
         </div>
       )}
 
-      {showPlayTools && hp != null && (
-        <>
-          <DeathSaveTracker draft={draft} setDraft={setDraft} maxHp={hp} />
-          <HpTracker maxHp={hp} draft={draft} setDraft={setDraft} conMod={mod(finalScores.con)} />
-          <ConcentrationTracker draft={draft} setDraft={setDraft} />
-          <RestControls draft={draft} setDraft={setDraft} maxHp={hp} conMod={mod(finalScores.con)} />
-          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep }}>Esperienza (PE)</span>
-            <input
-              type="number" min={0} value={draft.xp || 0}
-              onChange={(e) => setDraft((d) => ({ ...d, xp: Math.max(0, Number(e.target.value) || 0) }))}
-              style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
-            />
-            <span style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, fontStyle: "italic" }}>
-              Informativa: il livello si aumenta sempre a mano con "Sali di livello".
-            </span>
-          </div>
-        </>
-      )}
-
       <Divider />
 
       <div style={{ display: "grid", gridTemplateColumns: "var(--g6)", gap: 8, marginBottom: 18 }}>
@@ -369,6 +365,106 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
         />
       )}
 
+      <Divider />
+
+      <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1.5rem", marginBottom: 18 }}>
+        <div>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Tiri salvezza</h3>
+          {savingThrows.map((s) => (
+            <div key={s.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0", borderBottom: `1px solid ${C.parchmentLine}` }}>
+              <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.proficient ? C.wine : "transparent", border: `1px solid ${s.proficient ? C.wine : C.parchmentLine}`, display: "inline-block" }} />
+                {s.name}
+              </span>
+              <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.wine }}>{fmtMod(s.bonus)}</span>
+            </div>
+          ))}
+        </div>
+        <div>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>Abilità</h3>
+          {expertiseCount > 0 && (
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, margin: "0 0 6px", fontStyle: "italic" }}>
+              Competenza Esperta: {expertiseSkills.length}/{expertiseCount} — clicca la ★ su un'abilità in cui sei già competente
+            </p>
+          )}
+          <div style={{ maxHeight: 320, overflowY: "auto" }}>
+            {skillsList.map((s) => (
+              <div key={s.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0", borderBottom: `1px solid ${C.parchmentLine}` }}>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.proficient ? C.wine : "transparent", border: `1px solid ${s.proficient ? C.wine : C.parchmentLine}`, display: "inline-block", flexShrink: 0 }} />
+                  {s.name}
+                  {expertiseCount > 0 && s.proficient && (
+                    <span
+                      onClick={() => toggleExpertise(s.name)}
+                      title="Competenza Esperta"
+                      style={{ cursor: "pointer", color: s.expert ? C.gold : C.parchmentLine, fontSize: 13, lineHeight: 1 }}
+                    >
+                      ★
+                    </span>
+                  )}
+                </span>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wine }}>{fmtMod(s.bonus)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 18 }}>
+        <b>Competenze nelle abilità:</b> {allSkills.length ? allSkills.join(", ") : "—"}
+      </p>
+
+      {cls && (
+        <>
+          <Divider />
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Competenze</h3>
+          <div style={{ display: "grid", gap: 4, marginBottom: 18 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <b>Armature:</b> {[cls.armor, ...granted.armor].filter(Boolean).join("; ")}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <b>Armi:</b> {[cls.weapons, ...granted.weapons].filter(Boolean).join("; ")}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <b>Strumenti:</b> {granted.tools.length ? granted.tools.join(", ") : "—"}
+            </p>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <b>Lingue:</b> {granted.languages.length ? granted.languages.join(", ") : "—"}
+            </p>
+            {granted.other.length > 0 && (
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+                <b>Altro:</b> {granted.other.join(", ")}
+              </p>
+            )}
+          </div>
+        </>
+      )}
+    </>
+  );
+
+  /* ------------------------------ COMBATTIMENTO ----------------------------- */
+  const combattimentoContent = (
+    <>
+      {showPlayTools && hp != null && (
+        <>
+          <DeathSaveTracker draft={draft} setDraft={setDraft} maxHp={hp} />
+          <HpTracker maxHp={hp} draft={draft} setDraft={setDraft} conMod={mod(finalScores.con)} />
+          <ConcentrationTracker draft={draft} setDraft={setDraft} />
+          <RestControls draft={draft} setDraft={setDraft} maxHp={hp} conMod={mod(finalScores.con)} />
+          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep }}>Esperienza (PE)</span>
+            <input
+              type="number" min={0} value={draft.xp || 0}
+              onChange={(e) => setDraft((d) => ({ ...d, xp: Math.max(0, Number(e.target.value) || 0) }))}
+              style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            />
+            <span style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, fontStyle: "italic" }}>
+              Informativa: il livello si aumenta sempre a mano con "Sali di livello".
+            </span>
+          </div>
+        </>
+      )}
+
       {/* In gioco (showPlayTools) assegnare i PF del nuovo livello è compito del popup di
           level-up: qui, sulla scheda già salvata, la tabella storica di tutti i livelli è solo
           ingombro. Resta visibile durante la creazione/modifica, dove serve per impostare i PF
@@ -390,60 +486,6 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
           onSetMethod={(lvl, val) => mcUpdateStore((s) => ({ hpPerLevel: { ...s.hpPerLevel, [lvl]: val } }))}
           levels={Array.from({ length: mc.level }, (_, i) => i + 1)}
           title={`Gestione PF per livello — ${mcCls.name} (secondaria)`}
-        />
-      )}
-
-      {cls && cls.id === "monaco" && chosenSubclassId === "quattro-elementi" && (
-        <ElementalDisciplinePicker
-          store={draft}
-          updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
-          level={draft.level}
-          title={mcCls ? `Discipline Elementali — ${cls.name} (primaria)` : "Discipline Elementali"}
-        />
-      )}
-
-      {mcCls && mcCls.id === "monaco" && mcChosenSubclassId === "quattro-elementi" && (
-        <ElementalDisciplinePicker
-          store={mc}
-          updateStore={mcUpdateStore}
-          level={mc.level}
-          title={`Discipline Elementali — ${mcCls.name} (secondaria)`}
-        />
-      )}
-
-      {cls && cls.id === "guerriero" && chosenSubclassId === "maestro-di-battaglia" && (
-        <ManeuverPicker
-          store={draft}
-          updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
-          level={draft.level}
-          title={mcCls ? `Manovre — ${cls.name} (primaria)` : "Manovre — Maestro di Battaglia"}
-        />
-      )}
-
-      {mcCls && mcCls.id === "guerriero" && mcChosenSubclassId === "maestro-di-battaglia" && (
-        <ManeuverPicker
-          store={mc}
-          updateStore={mcUpdateStore}
-          level={mc.level}
-          title={`Manovre — ${mcCls.name} (secondaria)`}
-        />
-      )}
-
-      {cls && cls.id === "druido" && (
-        <WildShapeForms
-          clsId={cls.id}
-          circleId={chosenSubclassId}
-          level={draft.level}
-          title={mcCls ? `Forma Selvaggia — ${cls.name} (primaria)` : undefined}
-        />
-      )}
-
-      {mcCls && mcCls.id === "druido" && (
-        <WildShapeForms
-          clsId={mcCls.id}
-          circleId={mcChosenSubclassId}
-          level={mc.level}
-          title={`Forma Selvaggia — ${mcCls.name} (secondaria)`}
         />
       )}
 
@@ -540,7 +582,6 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
               )}
             </div>
           ))}
-          {/* ✅ INSERISCI QUI I NUOVI BLOCCHI */}
           {hasProtectionFlag && (
             <div style={{ marginBottom: 14, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem" }}>
               <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 6px" }}>
@@ -589,126 +630,6 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
         </div>
       )}
 
-      {(() => {
-        const baseGroups = [];
-        if (cls) {
-          const feats = getBaseClassFeatures(cls.id, draft.level);
-          if (feats.length) baseGroups.push({ className: cls.name, features: feats });
-        }
-        if (mcCls) {
-          const feats = getBaseClassFeatures(mcCls.id, mc.level);
-          if (feats.length) baseGroups.push({ className: mcCls.name, features: feats });
-        }
-        if (!baseGroups.length) return null;
-        return (
-          <>
-            <Divider />
-            {baseGroups.map((g) => (
-              <div key={g.className} style={{ marginBottom: 18 }}>
-                <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
-                  Caratteristiche di Classe — {g.className}
-                </h3>
-                {g.features.map((f) => (
-                  <div key={f.name} style={{ marginBottom: 10 }}>
-                    <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
-                      {f.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>(liv. {f.level})</span>
-                    </p>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{f.desc}</p>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </>
-        );
-      })()}
-      {subclassFeatureGroups.length > 0 && (
-        <>
-          <Divider />
-          {subclassFeatureGroups.map((g) => (
-            <div key={g.className} style={{ marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
-                Feature di sottoclasse — {g.className}: {g.subclassName}
-              </h3>
-              {g.features.map((f) => (
-                <div key={f.name} style={{ marginBottom: 10 }}>
-                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
-                    {f.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>(liv. {f.level})</span>
-                  </p>
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{f.desc}</p>
-                </div>
-              ))}
-            </div>
-          ))}
-        </>
-      )}
-
-      {chosenFeats.length > 0 && (
-        <>
-          <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
-            Talenti
-          </h3>
-          <div style={{ marginBottom: 18 }}>
-            {chosenFeats.map(({ level, feat, abilityPick, classId }) => (
-              <div key={`${classId}-${level}`} style={{ marginBottom: 10 }}>
-                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
-                  {feat.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>({classId === "razza" ? "dalla razza" : `liv. ${level}${mcCls ? ` — ${CLASSES.find((c) => c.id === classId)?.name}` : ""}`})</span>
-                  {abilityPick && (
-                    <span style={{ color: C.forestDeep, fontWeight: 400 }}> — +1 {ABILITIES.find((a) => a.key === abilityPick)?.name}</span>
-                  )}
-                </p>
-                <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{feat.desc}</p>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-
-      <Divider />
-
-      <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1.5rem", marginBottom: 18 }}>
-        <div>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Tiri salvezza</h3>
-          {savingThrows.map((s) => (
-            <div key={s.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0", borderBottom: `1px solid ${C.parchmentLine}` }}>
-              <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.proficient ? C.wine : "transparent", border: `1px solid ${s.proficient ? C.wine : C.parchmentLine}`, display: "inline-block" }} />
-                {s.name}
-              </span>
-              <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.wine }}>{fmtMod(s.bonus)}</span>
-            </div>
-          ))}
-        </div>
-        <div>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>Abilità</h3>
-          {expertiseCount > 0 && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, margin: "0 0 6px", fontStyle: "italic" }}>
-              Competenza Esperta: {expertiseSkills.length}/{expertiseCount} — clicca la ★ su un'abilità in cui sei già competente
-            </p>
-          )}
-          <div style={{ maxHeight: 320, overflowY: "auto" }}>
-            {skillsList.map((s) => (
-              <div key={s.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0", borderBottom: `1px solid ${C.parchmentLine}` }}>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.proficient ? C.wine : "transparent", border: `1px solid ${s.proficient ? C.wine : C.parchmentLine}`, display: "inline-block", flexShrink: 0 }} />
-                  {s.name}
-                  {expertiseCount > 0 && s.proficient && (
-                    <span
-                      onClick={() => toggleExpertise(s.name)}
-                      title="Competenza Esperta"
-                      style={{ cursor: "pointer", color: s.expert ? C.gold : C.parchmentLine, fontSize: 13, lineHeight: 1 }}
-                    >
-                      ★
-                    </span>
-                  )}
-                </span>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wine }}>{fmtMod(s.bonus)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {weaponAttacks.length > 0 && (
         <>
           <Divider />
@@ -743,54 +664,188 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false }) {
           </div>
         </>
       )}
+    </>
+  );
 
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 18 }}>
-        <b>Competenze nelle abilità:</b> {allSkills.length ? allSkills.join(", ") : "—"}
-      </p>
+  /* ------------------------------- INCANTESIMI ------------------------------ */
+  const incantesimiContent = cls && casterEntries.length > 0 && (allSpellIds.length > 0 || slots.length > 0) ? (
+    <>
+      <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", marginBottom: 12 }}>
+        {casterMetrics.map((cm) => (
+          <React.Fragment key={cm.classId}>
+            <MetricBox label={casterMetrics.length > 1 ? `CD incantesimi — ${cm.className}` : "CD tiro salvezza incantesimi"} value={cm.dc} />
+            <MetricBox label={casterMetrics.length > 1 ? `Attacco incantesimi — ${cm.className}` : "Bonus di attacco con incantesimi"} value={fmtMod(cm.attack)} />
+          </React.Fragment>
+        ))}
+      </div>
+      <SpellManager draft={draft} setDraft={setDraft} showPlayTools={showPlayTools} />
+    </>
+  ) : (
+    <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, fontStyle: "italic", margin: 0 }}>
+      Questo personaggio non lancia incantesimi.
+    </p>
+  );
 
-      {cls && (
+  /* -------------------------------- INVENTARIO ------------------------------ */
+  const inventarioContent = (
+    <InventoryManager draft={draft} setDraft={setDraft} allowAdd={showPlayTools} />
+  );
+
+  /* ---------------------------------- TRATTI --------------------------------- */
+  const trattiContent = (
+    <>
+      {cls && cls.id === "monaco" && chosenSubclassId === "quattro-elementi" && (
+        <ElementalDisciplinePicker
+          store={draft}
+          updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
+          level={draft.level}
+          title={mcCls ? `Discipline Elementali — ${cls.name} (primaria)` : "Discipline Elementali"}
+        />
+      )}
+
+      {mcCls && mcCls.id === "monaco" && mcChosenSubclassId === "quattro-elementi" && (
+        <ElementalDisciplinePicker
+          store={mc}
+          updateStore={mcUpdateStore}
+          level={mc.level}
+          title={`Discipline Elementali — ${mcCls.name} (secondaria)`}
+        />
+      )}
+
+      {cls && cls.id === "guerriero" && chosenSubclassId === "maestro-di-battaglia" && (
+        <ManeuverPicker
+          store={draft}
+          updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
+          level={draft.level}
+          title={mcCls ? `Manovre — ${cls.name} (primaria)` : "Manovre — Maestro di Battaglia"}
+        />
+      )}
+
+      {mcCls && mcCls.id === "guerriero" && mcChosenSubclassId === "maestro-di-battaglia" && (
+        <ManeuverPicker
+          store={mc}
+          updateStore={mcUpdateStore}
+          level={mc.level}
+          title={`Manovre — ${mcCls.name} (secondaria)`}
+        />
+      )}
+
+      {cls && cls.id === "druido" && (
+        <WildShapeForms
+          clsId={cls.id}
+          circleId={chosenSubclassId}
+          level={draft.level}
+          title={mcCls ? `Forma Selvaggia — ${cls.name} (primaria)` : undefined}
+        />
+      )}
+
+      {mcCls && mcCls.id === "druido" && (
+        <WildShapeForms
+          clsId={mcCls.id}
+          circleId={mcChosenSubclassId}
+          level={mc.level}
+          title={`Forma Selvaggia — ${mcCls.name} (secondaria)`}
+        />
+      )}
+
+      {(() => {
+        const baseGroups = [];
+        if (cls) {
+          const feats = getBaseClassFeatures(cls.id, draft.level);
+          if (feats.length) baseGroups.push({ className: cls.name, features: feats });
+        }
+        if (mcCls) {
+          const feats = getBaseClassFeatures(mcCls.id, mc.level);
+          if (feats.length) baseGroups.push({ className: mcCls.name, features: feats });
+        }
+        if (!baseGroups.length) return null;
+        return (
+          <>
+            {baseGroups.map((g) => (
+              <div key={g.className} style={{ marginBottom: 18 }}>
+                <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+                  Caratteristiche di Classe — {g.className}
+                </h3>
+                {g.features.map((f) => (
+                  <div key={f.name} style={{ marginBottom: 10 }}>
+                    <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
+                      {f.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>(liv. {f.level})</span>
+                    </p>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{f.desc}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </>
+        );
+      })()}
+      {subclassFeatureGroups.length > 0 && (
         <>
-          <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Competenze</h3>
-          <div style={{ display: "grid", gap: 4, marginBottom: 18 }}>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
-              <b>Armature:</b> {[cls.armor, ...granted.armor].filter(Boolean).join("; ")}
-            </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
-              <b>Armi:</b> {[cls.weapons, ...granted.weapons].filter(Boolean).join("; ")}
-            </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
-              <b>Strumenti:</b> {granted.tools.length ? granted.tools.join(", ") : "—"}
-            </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
-              <b>Lingue:</b> {granted.languages.length ? granted.languages.join(", ") : "—"}
-            </p>
-            {granted.other.length > 0 && (
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
-                <b>Altro:</b> {granted.other.join(", ")}
-              </p>
-            )}
-          </div>
+          {subclassFeatureGroups.map((g) => (
+            <div key={g.className} style={{ marginBottom: 18 }}>
+              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+                Feature di sottoclasse — {g.className}: {g.subclassName}
+              </h3>
+              {g.features.map((f) => (
+                <div key={f.name} style={{ marginBottom: 10 }}>
+                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
+                    {f.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>(liv. {f.level})</span>
+                  </p>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{f.desc}</p>
+                </div>
+              ))}
+            </div>
+          ))}
         </>
       )}
 
-      <Divider />
-      <InventoryManager draft={draft} setDraft={setDraft} allowAdd={showPlayTools} />
-
-      {cls && casterEntries.length > 0 && (allSpellIds.length > 0 || slots.length > 0) && (
+      {chosenFeats.length > 0 && (
         <>
-          <Divider />
-          <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", marginBottom: 12 }}>
-            {casterMetrics.map((cm) => (
-              <React.Fragment key={cm.classId}>
-                <MetricBox label={casterMetrics.length > 1 ? `CD incantesimi — ${cm.className}` : "CD tiro salvezza incantesimi"} value={cm.dc} />
-                <MetricBox label={casterMetrics.length > 1 ? `Attacco incantesimi — ${cm.className}` : "Bonus di attacco con incantesimi"} value={fmtMod(cm.attack)} />
-              </React.Fragment>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+            Talenti
+          </h3>
+          <div style={{ marginBottom: 18 }}>
+            {chosenFeats.map(({ level, feat, abilityPick, classId }) => (
+              <div key={`${classId}-${level}`} style={{ marginBottom: 10 }}>
+                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
+                  {feat.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>({classId === "razza" ? "dalla razza" : `liv. ${level}${mcCls ? ` — ${CLASSES.find((c) => c.id === classId)?.name}` : ""}`})</span>
+                  {abilityPick && (
+                    <span style={{ color: C.forestDeep, fontWeight: 400 }}> — +1 {ABILITIES.find((a) => a.key === abilityPick)?.name}</span>
+                  )}
+                </p>
+                <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{feat.desc}</p>
+              </div>
             ))}
           </div>
-          <SpellManager draft={draft} setDraft={setDraft} showPlayTools={showPlayTools} />
         </>
       )}
+    </>
+  );
+
+  if (showPlayTools && playTab) {
+    const panels = {
+      panoramica: panoramicaContent,
+      combattimento: combattimentoContent,
+      incantesimi: incantesimiContent,
+      inventario: inventarioContent,
+      tratti: trattiContent,
+    };
+    return <div>{panels[playTab] ?? panoramicaContent}</div>;
+  }
+
+  return (
+    <div>
+      {panoramicaContent}
+      {/* combattimentoContent porta già un Divider proprio davanti al suo primo blocco visibile
+          (Meccaniche di classe / Risorse di classe / Attacchi): niente Divider qui, altrimenti
+          si duplicherebbe quando gli strumenti di gioco (senza divider proprio) sono nascosti. */}
+      {combattimentoContent}
+      <Divider />
+      {incantesimiContent}
+      <Divider />
+      {inventarioContent}
+      <Divider />
+      {trattiContent}
     </div>
   );
 }
