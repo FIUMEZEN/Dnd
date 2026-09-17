@@ -5,6 +5,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Rete di sicurezza contro lo scroll orizzontale accidentale (es. una riga a scorrimento
+   orizzontale che sfora): su alcuni browser mobili "overflow-x: hidden" sul solo body non
+   basta a contenerlo, serve anche su html. */
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
 }

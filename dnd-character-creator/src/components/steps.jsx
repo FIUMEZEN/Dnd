@@ -387,7 +387,7 @@ export function StepAbilities({ draft, setDraft }) {
         Scegli un metodo, poi assegna i punteggi alle sei caratteristiche.
       </p>
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
         <Pill active={draft.abilityMethod === "array"} onClick={() => setMethod("array")}>Array standard</Pill>
         <Pill active={draft.abilityMethod === "roll"} onClick={() => setMethod("roll")}>Tiro dei dadi</Pill>
         <Pill active={draft.abilityMethod === "custom"} onClick={() => setMethod("custom")}>Point Buy</Pill>
