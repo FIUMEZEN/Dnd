@@ -412,21 +412,23 @@ export default function App() {
         }
       `}</style>
 
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, flexWrap: "wrap", marginBottom: "1.5rem" }}>
-        <TopNav screen={screen} onNavigate={setScreen} onOpenCompendium={() => openCompendium(screen === "compendium" ? compendiumFrom : screen)} />
-        <div style={{ marginLeft: "auto" }}>
-          <BackupControl
-            characters={characters}
-            creatures={creatures}
-            onImported={({ charactersImported, creaturesImported }) => {
-              loadCharacters();
-              loadCreatures();
-              showToast(`Backup importato: ${charactersImported} personaggi, ${creaturesImported} creature.`);
-            }}
-            onError={(msg) => showToast(msg)}
-          />
+      {HUB_SCREENS.has(screen) && (
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 12, flexWrap: "wrap", marginBottom: "1.5rem" }}>
+          <TopNav screen={screen} onNavigate={setScreen} onOpenCompendium={() => openCompendium(screen === "compendium" ? compendiumFrom : screen)} />
+          <div style={{ marginLeft: "auto" }}>
+            <BackupControl
+              characters={characters}
+              creatures={creatures}
+              onImported={({ charactersImported, creaturesImported }) => {
+                loadCharacters();
+                loadCreatures();
+                showToast(`Backup importato: ${charactersImported} personaggi, ${creaturesImported} creature.`);
+              }}
+              onError={(msg) => showToast(msg)}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <BottomNav screen={screen} onNavigate={setScreen} onOpenCompendium={() => openCompendium(screen === "compendium" ? compendiumFrom : screen)} />
 
