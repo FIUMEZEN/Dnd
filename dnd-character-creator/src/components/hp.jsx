@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { C } from "../theme";
 import { Divider, Pill, GhostButton, GoldButton, HpBar } from "./primitives";
+import { Sword, Heart, Shield, Plus, Minus } from "../icons";
 import { CLASSES } from "../data/classes";
 import { SPELLS } from "../data/spells";
 import { fmtMod } from "../lib/format";
@@ -144,11 +145,11 @@ export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "
 }
 
 // Ordine fisso, non ricavato da un oggetto (che in JS non garantisce l'ordine delle chiavi
-// numeriche) — così Danno/Cura/+PF Temporanei restano sempre nello stesso ordine sullo schermo.
+// numeriche) — così Danno/Cura/PF Temp. restano sempre nello stesso ordine sullo schermo.
 const HP_ACTIONS = [
-  { key: "danno", label: "Danno" },
-  { key: "cura", label: "Cura" },
-  { key: "temp", label: "+ PF Temporanei" },
+  { key: "danno", label: "Danno", icon: Sword },
+  { key: "cura", label: "Cura", icon: Heart },
+  { key: "temp", label: "PF Temp.", icon: Shield },
 ];
 
 export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
@@ -242,40 +243,64 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
         )}
         <HpBar current={current} max={maxHp} temp={temp} />
       </div>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
-        {HP_ACTIONS.map(({ key, label }) => {
-          const color = { danno: C.danger, cura: C.gold, temp: C.forestDeep }[key];
+      <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+        {HP_ACTIONS.map(({ key, label, icon: ActionIcon }) => {
           const isActive = action === key;
           return (
             <button
               key={key}
               onClick={() => setAction(key)}
               style={{
-                fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.4rem 0.8rem", borderRadius: 5,
-                border: `1px solid ${color}`, cursor: "pointer", transition: "all 120ms ease",
-                background: isActive ? color : "transparent",
-                color: isActive ? C.cream : color,
+                flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+                fontFamily: "'Cinzel', serif", fontSize: 11.5, letterSpacing: 0.2,
+                padding: "0.5rem 0.3rem", borderRadius: 6, cursor: "pointer", transition: "all 120ms ease",
+                border: `1px solid ${isActive ? C.wine : C.parchmentLine}`,
+                background: isActive ? `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})` : "transparent",
+                color: isActive ? C.cream : C.textOnParchment,
               }}
             >
+              <ActionIcon size={16} />
               {label}
             </button>
           );
         })}
       </div>
-      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-        <input
-          type="number" min={0} value={amount}
-          onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
-          style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.4rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
-        />
+      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, overflow: "hidden", flexShrink: 0 }}>
+          <button
+            onClick={() => setAmount((a) => Math.max(0, a - 1))}
+            aria-label="Diminuisci"
+            style={{ width: 34, height: 36, border: "none", background: "transparent", cursor: "pointer", color: C.textMuted, display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <Minus size={14} />
+          </button>
+          <input
+            type="number" min={0} value={amount}
+            onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
+            className="stepper-input"
+            style={{
+              width: 40, textAlign: "center", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.4rem 0",
+              border: "none", borderLeft: `1px solid ${C.parchmentLine}`, borderRight: `1px solid ${C.parchmentLine}`, background: "#fff",
+            }}
+          />
+          <button
+            onClick={() => setAmount((a) => a + 1)}
+            aria-label="Aumenta"
+            style={{ width: 34, height: 36, border: "none", background: "transparent", cursor: "pointer", color: C.textMuted, display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <Plus size={14} />
+          </button>
+        </div>
         <button
           onClick={applyAction}
           style={{
-            fontFamily: "'Cinzel', serif", fontSize: 14, padding: "0.45rem 1rem", borderRadius: 5,
+            flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+            fontFamily: "'Cinzel', serif", fontSize: 14, padding: "0.5rem 1rem", borderRadius: 6,
             border: "none", cursor: "pointer", background: actionColor, color: C.cream,
           }}
         >
-          Applica {HP_ACTIONS.find((a) => a.key === action).label}
+          {(() => { const CurrentIcon = HP_ACTIONS.find((a) => a.key === action).icon; return <CurrentIcon size={15} />; })()}
+          Applica
         </button>
       </div>
 

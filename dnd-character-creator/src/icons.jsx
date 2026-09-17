@@ -55,6 +55,12 @@ export const Trash2 = (props) => (
 export const Plus = (props) => (
   <Icon {...props}><path d="M12 5v14M5 12h14" /></Icon>
 );
+export const Minus = (props) => (
+  <Icon {...props}><path d="M5 12h14" /></Icon>
+);
+export const Heart = (props) => (
+  <Icon {...props}><path d="M12 20s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.6-9.5 9-9.5 9Z" /></Icon>
+);
 export const ChevronLeft = (props) => (
   <Icon {...props}><path d="m15 18-6-6 6-6" /></Icon>
 );
@@ -119,6 +125,8 @@ export default {
   Save,
   Trash2,
   Plus,
+  Minus,
+  Heart,
   ChevronLeft,
   ChevronRight,
   Dices,
