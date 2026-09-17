@@ -24,7 +24,7 @@ export function draftCanEverCast(draft) {
   return false;
 }
 
-export function Creator({ draft, setDraft, onBack, onSave, saving }) {
+export function Creator({ draft, setDraft, onBack, onSave, saving, campaignSyncStatus }) {
   const [step, setStep] = useState(0);
   const visibleSteps = useMemo(
     () => STEPS.filter((s) => s.key !== "incantesimi" || draftCanEverCast(draft)),
@@ -92,7 +92,7 @@ export function Creator({ draft, setDraft, onBack, onSave, saving }) {
           {currentKey === "background" && <StepBackground draft={draft} setDraft={setDraft} />}
           {currentKey === "equipaggiamento" && <StepEquipment draft={draft} setDraft={setDraft} />}
           {currentKey === "incantesimi" && <SpellManager draft={draft} setDraft={setDraft} />}
-          {currentKey === "riepilogo" && <StepReview draft={draft} setDraft={setDraft} onSave={onSave} saving={saving} />}
+          {currentKey === "riepilogo" && <StepReview draft={draft} setDraft={setDraft} onSave={onSave} saving={saving} campaignSyncStatus={campaignSyncStatus} />}
         </Frame>
 
         {clampedStep < lastStep && (

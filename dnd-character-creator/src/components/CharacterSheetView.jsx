@@ -42,7 +42,7 @@ export const PLAY_SECTIONS = [
   { key: "tratti", label: "Tratti" },
 ];
 
-export function CharacterSheetView({ draft, setDraft, showPlayTools = false, playTab }) {
+export function CharacterSheetView({ draft, setDraft, showPlayTools = false, playTab, campaignSyncStatus }) {
   const race = RACES.find((r) => r.id === draft.raceId);
   const cls = CLASSES.find((c) => c.id === draft.classId);
   const bg = getSelectedBackground(draft);
@@ -302,6 +302,12 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
           Se lo inserisci, il tuo Master vedrà questo personaggio (in sola lettura) nella sua Campagna.
         </span>
+        {draft.campaignCode && campaignSyncStatus != null && (
+          <span style={{ display: "flex", alignItems: "center", gap: 5, fontFamily: "'Spectral', serif", fontSize: 13, color: campaignSyncStatus ? C.forestDeep : C.danger }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: campaignSyncStatus ? C.forestDeep : C.danger, flexShrink: 0 }} />
+            {campaignSyncStatus ? "Sincronizzato con il Master" : "Sync non riuscito — verrà ritentato al prossimo salvataggio"}
+          </span>
+        )}
       </div>
 
       {bg && (bg.featureDesc || draft.personalityTrait1 || draft.personalityTrait2 || draft.ideal || draft.bond || draft.flaw) && (
@@ -865,7 +871,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
   );
 }
 
-export function StepReview({ draft, setDraft, onSave, saving }) {
+export function StepReview({ draft, setDraft, onSave, saving, campaignSyncStatus }) {
   const validationErrors = validateCharacter(draft);
   const missing = validationErrors.map((e) => e.replace(/\.$/, ""));
 
@@ -889,7 +895,7 @@ export function StepReview({ draft, setDraft, onSave, saving }) {
         }}
       />
 
-      <CharacterSheetView draft={draft} setDraft={setDraft} />
+      <CharacterSheetView draft={draft} setDraft={setDraft} campaignSyncStatus={campaignSyncStatus} />
 
       {validationErrors.length > 0 && (
         <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 14, borderRadius: 6 }}>

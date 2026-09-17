@@ -28,19 +28,25 @@ export async function clearMyCampaignCode() {
   await storageAdapter.set(CAMPAIGN_CODE_STORAGE_KEY, "");
 }
 
-// Scrive il Personaggio nella Campagna se ha un codice impostato. Fallisce sempre in silenzio:
-// il salvataggio locale (già avvenuto quando questa funzione viene chiamata) non deve mai
-// dipendere dalla riuscita del sync verso il Master.
+// Scrive il Personaggio nella Campagna se ha un codice impostato. Il salvataggio locale (già
+// avvenuto quando questa funzione viene chiamata) non deve mai dipendere dalla riuscita del
+// sync verso il Master — per questo il chiamante non fa mai await bloccante su questa funzione
+// prima di considerare il salvataggio riuscito. Ritorna comunque true/false (o null se non
+// applicabile, es. nessun codice impostato) così chi chiama può mostrare un indicatore di stato
+// senza far dipendere il salvataggio stesso dall'esito.
 export async function syncCharacterToCampaign(character) {
   const code = (character?.campaignCode || "").trim();
-  if (!code || !supabase || !character.id) return;
+  if (!code || !supabase || !character.id) return null;
   try {
-    await supabase.from("campaign_characters").upsert(
+    const { error } = await supabase.from("campaign_characters").upsert(
       { campaign_code: code, character_id: character.id, data: character, updated_at: new Date().toISOString() },
       { onConflict: "campaign_code,character_id" }
     );
+    if (error) throw error;
+    return true;
   } catch (error) {
     console.warn("Sync verso la Campagna non riuscito (il personaggio resta salvato in locale):", error);
+    return false;
   }
 }
 
@@ -48,13 +54,19 @@ export async function syncCharacterToCampaign(character) {
 // personaggio locale del giocatore.
 export async function removeCharacterFromCampaign(campaignCode, characterId) {
   if (!supabase) return;
-  await supabase.from("campaign_characters").delete().eq("campaign_code", campaignCode).eq("character_id", characterId);
+  try {
+    await supabase.from("campaign_characters").delete().eq("campaign_code", campaignCode).eq("character_id", characterId);
+  } catch (error) {
+    console.warn("Rimozione dalla Campagna non riuscita:", error);
+  }
 }
 
 // Iscrive il Master ai Personaggi di una Campagna: chiama onChange(list) subito con lo stato
-// attuale, poi ad ogni inserimento/aggiornamento/cancellazione in tempo reale. Ritorna una
-// funzione per annullare l'iscrizione.
-export function subscribeToCampaign(campaignCode, onChange) {
+// attuale, poi ad ogni inserimento/aggiornamento/cancellazione in tempo reale. onStatusChange
+// riceve "connecting" | "connected" | "error" — senza, un errore di rete o una disconnessione
+// del canale in tempo reale sono indistinguibili da "nessun giocatore ancora collegato" (lista
+// vuota in entrambi i casi). Ritorna una funzione per annullare l'iscrizione.
+export function subscribeToCampaign(campaignCode, onChange, onStatusChange = () => {}) {
   if (!supabase || !campaignCode) return () => {};
 
   const fetchAndEmit = async () => {
@@ -63,7 +75,8 @@ export function subscribeToCampaign(campaignCode, onChange) {
       .select("character_id, data, updated_at")
       .eq("campaign_code", campaignCode)
       .order("updated_at", { ascending: false });
-    if (!error) onChange(data || []);
+    if (error) { onStatusChange("error"); return; }
+    onChange(data || []);
   };
 
   fetchAndEmit();
@@ -75,7 +88,10 @@ export function subscribeToCampaign(campaignCode, onChange) {
       { event: "*", schema: "public", table: "campaign_characters", filter: `campaign_code=eq.${campaignCode}` },
       fetchAndEmit
     )
-    .subscribe();
+    .subscribe((status) => {
+      if (status === "SUBSCRIBED") onStatusChange("connected");
+      else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") onStatusChange("error");
+    });
 
   return () => { supabase.removeChannel(channel); };
 }

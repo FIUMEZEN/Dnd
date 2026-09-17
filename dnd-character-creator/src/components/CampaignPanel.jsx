@@ -17,7 +17,13 @@ import { removeCharacterFromCampaign } from "../lib/campaignSync";
 
 const noop = () => {};
 
-export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBack, onOpenEncounter, onOpenBestiary }) {
+const SYNC_STATUS = {
+  connecting: { color: C.textMuted, label: "Connessione…" },
+  connected: { color: C.forestDeep, label: "Sincronizzato in tempo reale" },
+  error: { color: C.danger, label: "Connessione persa — riconnessione automatica in corso" },
+};
+
+export function CampaignPanel({ code, codeLoaded, entries, syncStatus, onGenerateCode, onBack, onOpenEncounter, onOpenBestiary }) {
   const [confirmRegenerate, setConfirmRegenerate] = useState(false);
   const [copied, setCopied] = useState(false);
   const [expandedIds, setExpandedIds] = useState(() => new Set());
@@ -106,6 +112,15 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
               </>
             )}
           </Frame>
+
+          {code && syncStatus && (
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: SYNC_STATUS[syncStatus]?.color || C.textMuted, flexShrink: 0 }} />
+              <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: SYNC_STATUS[syncStatus]?.color || C.textMuted }}>
+                {SYNC_STATUS[syncStatus]?.label}
+              </span>
+            </div>
+          )}
 
           {code && (
             entries.length === 0 ? (

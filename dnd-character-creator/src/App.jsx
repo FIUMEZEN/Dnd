@@ -48,6 +48,13 @@ export default function App() {
   const [campaignCode, setCampaignCodeState] = useState(null);
   const [campaignCodeLoaded, setCampaignCodeLoaded] = useState(false);
   const [campaignEntries, setCampaignEntries] = useState([]);
+  // "connecting" | "connected" | "error" — senza, un errore di rete o una disconnessione in
+  // tempo reale sono indistinguibili da "nessun giocatore ancora collegato" (lista vuota in
+  // entrambi i casi): il Master non ha modo di accorgersene durante una sessione dal vivo.
+  const [campaignSyncStatus, setCampaignSyncStatus] = useState("connecting");
+  // true | false | null (nessun tentativo ancora, o nessun Codice Campagna impostato) — stato
+  // dell'ultimo tentativo di sync di QUESTO personaggio verso il suo Master, lato giocatore.
+  const [campaignPlayerSyncStatus, setCampaignPlayerSyncStatus] = useState(null);
 
   const loadCharacters = useCallback(async () => {
     setLoading(true);
@@ -98,7 +105,8 @@ export default function App() {
   }, []);
   useEffect(() => {
     if (!campaignCode) { setCampaignEntries([]); return; }
-    return subscribeToCampaign(campaignCode, setCampaignEntries);
+    setCampaignSyncStatus("connecting");
+    return subscribeToCampaign(campaignCode, setCampaignEntries, setCampaignSyncStatus);
   }, [campaignCode]);
 
   const regenerateCampaignCode = async () => {
@@ -126,16 +134,19 @@ export default function App() {
 
   const handleNew = () => {
     setDraft(emptyDraft());
+    setCampaignPlayerSyncStatus(null);
     setScreen("create");
   };
 
   const handleOpen = (c) => {
     setDraft({ ...emptyDraft(), ...c });
+    setCampaignPlayerSyncStatus(null);
     setScreen("create");
   };
 
   const handleOpenSheet = (c) => {
     setSheetCharacter({ ...emptyDraft(), ...c });
+    setCampaignPlayerSyncStatus(null);
     setScreen("sheet");
   };
 
@@ -147,7 +158,9 @@ export default function App() {
       setCharacters(next);
       setSheetCharacter(updatedCharacter);
       showToast("Modifiche salvate.");
-      syncCharacterToCampaign(updatedCharacter);
+      // Non-bloccante di proposito (vedi commento su syncCharacterToCampaign): il salvataggio
+      // locale è già concluso, il bottone "Salva" non deve aspettare la rete.
+      syncCharacterToCampaign(updatedCharacter).then(setCampaignPlayerSyncStatus);
     } catch (e) {
       showToast("Errore durante il salvataggio. Riprova.");
     }
@@ -181,7 +194,7 @@ export default function App() {
       setCharacters(next);
       setDraft(toSave);
       showToast("Personaggio salvato.");
-      syncCharacterToCampaign(toSave);
+      syncCharacterToCampaign(toSave).then(setCampaignPlayerSyncStatus);
       setScreen("list");
     } catch (e) {
       showToast("Errore durante il salvataggio. Riprova.");
@@ -469,6 +482,7 @@ export default function App() {
           code={campaignCode}
           codeLoaded={campaignCodeLoaded}
           entries={campaignEntries}
+          syncStatus={campaignSyncStatus}
           onGenerateCode={regenerateCampaignCode}
           onBack={() => setScreen("master")}
           onOpenEncounter={() => setScreen("encounter")}
@@ -501,6 +515,7 @@ export default function App() {
           onBack={() => setScreen("list")}
           onSave={handleSave}
           saving={saving}
+          campaignSyncStatus={campaignPlayerSyncStatus}
         />
       )}
 
@@ -509,6 +524,7 @@ export default function App() {
           character={sheetCharacter}
           onBack={() => setScreen("list")}
           onSaveChanges={handleSaveSheetChanges}
+          campaignSyncStatus={campaignPlayerSyncStatus}
         />
       )}
       </div>

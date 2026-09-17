@@ -15,7 +15,7 @@ import {
 import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
 import { mod, fmtMod } from "../lib/format";
 
-export function PlayerSheet({ character, onBack, onSaveChanges }) {
+export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStatus }) {
   const [draft, setDraft] = useState(character);
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -561,7 +561,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
       {/* Scheda del Personaggio */}
       <Frame>
-        <CharacterSheetView draft={draft} setDraft={updateDraft} showPlayTools playTab={playTab} />
+        <CharacterSheetView draft={draft} setDraft={updateDraft} showPlayTools playTab={playTab} campaignSyncStatus={campaignSyncStatus} />
       </Frame>
     </div>
   );
