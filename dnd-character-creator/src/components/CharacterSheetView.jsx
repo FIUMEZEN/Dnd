@@ -259,15 +259,20 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
   /* ------------------------------- PANORAMICA ------------------------------ */
   const panoramicaContent = (
     <>
+      {/* PF e Iniziativa restano solo nel Riepilogo di creazione: in gioco (showPlayTools) sono
+          già sempre visibili nella barra fissa in alto, ripeterli qui sarebbe puro doppione.
+          CA invece resta sempre: la barra fissa mostra solo il numero, qui c'è anche la fonte
+          (es. "Difesa senza Armatura (10 + Destrezza + Costituzione)"), informazione che altrimenti
+          andrebbe persa. */}
       <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10, marginBottom: 18 }}>
         <MetricBox label="Razza" value={race ? race.name : "—"} />
         <MetricBox label="Classe" value={classLabel} hint={mcCls ? `Livello personaggio totale: ${totalLevel}` : undefined} />
         <MetricBox label="Background" value={bg ? bg.name : "—"} />
-        <MetricBox label="Punti ferita" value={hp ?? "—"} />
+        {!showPlayTools && <MetricBox label="Punti ferita" value={hp ?? "—"} />}
         <MetricBox label="Classe Armatura (CA)" value={ac} hint={acSourceLabel} />
         <MetricBox label="Velocità" value={race ? `${ftToM(speed)} m` : "—"} hint={speedSourceLabel} />
         <MetricBox label="Bonus di competenza" value={fmtMod(prof)} />
-        <MetricBox label="Iniziativa" value={fmtMod(initiative)} />
+        {!showPlayTools && <MetricBox label="Iniziativa" value={fmtMod(initiative)} />}
         <MetricBox label="Percezione passiva" value={passivePerception} />
       </div>
 
@@ -409,10 +414,6 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           </div>
         </div>
       </div>
-
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 18 }}>
-        <b>Competenze nelle abilità:</b> {allSkills.length ? allSkills.join(", ") : "—"}
-      </p>
 
       {cls && (
         <>
