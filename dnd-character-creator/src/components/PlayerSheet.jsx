@@ -39,9 +39,11 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
   // Scheda attiva della vista in gioco (Panoramica/Combattimento/Incantesimi/Inventario/Tratti):
   // sostituisce l'unico, lunghissimo scroll con un contenuto alla volta, più adatto al telefono.
   const [playTab, setPlayTab] = useState(PLAY_SECTIONS[0].key);
-  // Azioni secondarie dell'intestazione (livello, multiclasse): su schermi stretti affollerebbero
-  // la barra fissa, quindi finiscono in questo menu a comparsa invece che inline.
+  // Azione secondaria dell'intestazione (correggere un livellamento sbagliato): rara, finisce in
+  // questo menu a comparsa invece che inline. "Sali di livello" invece è un bottone proprio, ben
+  // visibile — è un'azione comune durante una sessione, non va nascosta dietro un menu.
   const [actionsOpen, setActionsOpen] = useState(false);
+  const [levelUpMenuOpen, setLevelUpMenuOpen] = useState(false);
 
   const race = RACES.find((r) => r.id === draft.raceId);
   const cls = CLASSES.find((c) => c.id === draft.classId);
@@ -241,44 +243,71 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
             <GoldButton icon={saving ? Loader2 : Save} disabled={saving || !dirty} onClick={handleSave} style={{ padding: "0.5rem 0.8rem", fontSize: 13.5 }}>
               {saving ? "…" : dirty ? "Salva" : "Salvato"}
             </GoldButton>
-            <div style={{ position: "relative" }}>
-              <GhostButton icon={MoreVertical} onClick={() => setActionsOpen((v) => !v)} style={{ padding: "0.5rem 0.6rem", minWidth: 44, minHeight: 44, justifyContent: "center" }} />
-              {actionsOpen && (
-                <>
-                  <div onClick={() => setActionsOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 45 }} />
-                  <div
-                    style={{
-                      position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50,
-                      background: C.parchment, border: `1px solid ${C.gold}`, borderRadius: 5,
-                      boxShadow: "0 12px 24px rgba(19,15,13,0.4)", padding: 6, minWidth: 230, display: "grid", gap: 4,
-                    }}
-                  >
-                    {cls && draft.level > 1 && (
-                      <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("primary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 13.5, justifyContent: "flex-start" }}>
-                        Torna indietro di un livello{mcCls ? ` — ${cls.name}` : ""}
-                      </GhostButton>
-                    )}
-                    {mcCls && mc.level > 1 && (
-                      <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("secondary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 13.5, justifyContent: "flex-start" }}>
-                        Torna indietro di un livello — {mcCls.name}
-                      </GhostButton>
-                    )}
-                    {cls && draft.level < 20 && totalLevel < 20 && (
-                      <GhostButton icon={ChevronRight} onClick={() => { setActionsOpen(false); startLevelUp(); }} style={{ borderColor: C.gold, color: C.gold, flexDirection: "row-reverse", justifyContent: "flex-start" }}>
-                        Sali di livello{mcCls ? ` — ${cls.name}` : ""}
-                      </GhostButton>
-                    )}
-                    {mcCls && mc.level < 20 && totalLevel < 20 && (
-                      <GhostButton icon={ChevronRight} onClick={() => { setActionsOpen(false); handleMulticlassLevelUp(); }} style={{ borderColor: C.gold, color: C.gold, flexDirection: "row-reverse", justifyContent: "flex-start" }}>
-                        Sali di livello — {mcCls.name}
-                      </GhostButton>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+            {((cls && draft.level > 1) || (mcCls && mc.level > 1)) && (
+              <div style={{ position: "relative" }}>
+                <GhostButton icon={MoreVertical} onClick={() => setActionsOpen((v) => !v)} style={{ padding: "0.5rem 0.6rem", minWidth: 44, minHeight: 44, justifyContent: "center" }} />
+                {actionsOpen && (
+                  <>
+                    <div onClick={() => setActionsOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 45 }} />
+                    <div
+                      style={{
+                        position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50,
+                        background: C.parchment, border: `1px solid ${C.goldSoft}`, borderRadius: 5,
+                        boxShadow: "0 12px 24px rgba(19,15,13,0.4)", padding: 6, minWidth: 230, display: "grid", gap: 4,
+                      }}
+                    >
+                      {cls && draft.level > 1 && (
+                        <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("primary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 13.5, justifyContent: "flex-start" }}>
+                          Torna indietro di un livello{mcCls ? ` — ${cls.name}` : ""}
+                        </GhostButton>
+                      )}
+                      {mcCls && mc.level > 1 && (
+                        <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("secondary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 13.5, justifyContent: "flex-start" }}>
+                          Torna indietro di un livello — {mcCls.name}
+                        </GhostButton>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
+
+        {(cls && draft.level < 20 && totalLevel < 20 || mcCls && mc.level < 20 && totalLevel < 20) && (
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8, position: "relative" }}>
+            <GoldButton
+              icon={ChevronRight}
+              onClick={() => { if (mcCls) setLevelUpMenuOpen((v) => !v); else startLevelUp(); }}
+              style={{ padding: "0.5rem 0.8rem", fontSize: 13.5, flexDirection: "row-reverse" }}
+            >
+              Sali di livello
+            </GoldButton>
+            {levelUpMenuOpen && mcCls && (
+              <>
+                <div onClick={() => setLevelUpMenuOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 45 }} />
+                <div
+                  style={{
+                    position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50,
+                    background: C.parchment, border: `1px solid ${C.goldSoft}`, borderRadius: 5,
+                    boxShadow: "0 12px 24px rgba(19,15,13,0.4)", padding: 6, minWidth: 200, display: "grid", gap: 4,
+                  }}
+                >
+                  {cls && draft.level < 20 && totalLevel < 20 && (
+                    <GhostButton onClick={() => { setLevelUpMenuOpen(false); startLevelUp(); }} style={{ borderColor: C.wine, color: C.wineDeep, fontSize: 13.5, justifyContent: "flex-start" }}>
+                      {cls.name} (liv. {draft.level} → {draft.level + 1})
+                    </GhostButton>
+                  )}
+                  {mcCls && mc.level < 20 && totalLevel < 20 && (
+                    <GhostButton onClick={() => { setLevelUpMenuOpen(false); handleMulticlassLevelUp(); }} style={{ borderColor: C.wine, color: C.wineDeep, fontSize: 13.5, justifyContent: "flex-start" }}>
+                      {mcCls.name} (liv. {mc.level} → {mc.level + 1})
+                    </GhostButton>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
         <div style={{ display: "flex", alignItems: "stretch", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
           {vitalsHp != null && (
