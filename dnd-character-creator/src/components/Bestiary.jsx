@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, Plus, Skull } from "../icons";
 import { C } from "../theme";
-import { Frame, GhostButton, GoldButton, Pill } from "./primitives";
+import { Frame, GhostButton, GoldButton, Pill, StickySearch } from "./primitives";
 import { BESTIARY } from "../data/bestiary";
 import { CREATURE_SIZES, CR_OPTIONS } from "../data/creatures";
 import { fmtMod } from "../lib/format";
@@ -37,15 +37,9 @@ export function Bestiary({ onBack, onUse }) {
         {BESTIARY.length} creature classiche pronte all'uso. Scegline una come base: verrà clonata in una nuova creatura che potrai modificare liberamente, senza toccare questo catalogo.
       </p>
 
+      <StickySearch value={search} onChange={setSearch} placeholder="Cerca una creatura per nome…" />
+
       <Frame>
-        <input
-          type="text" placeholder="Cerca una creatura per nome…" value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
-            width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.5rem 0.7rem",
-            borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 14, boxSizing: "border-box",
-          }}
-        />
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
           <Pill active={typeFilter === "tutti"} onClick={() => setTypeFilter("tutti")}>Tutti i tipi</Pill>
           {types.map((t) => <Pill key={t} active={typeFilter === t} onClick={() => setTypeFilter(t)}>{t}</Pill>)}

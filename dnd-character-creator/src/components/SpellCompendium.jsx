@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft } from "../icons";
 import { C } from "../theme";
-import { Frame, GhostButton, Pill } from "./primitives";
+import { Frame, GhostButton, Pill, StickySearch } from "./primitives";
 import { SpellRow } from "./spells";
 import { CLASSES } from "../data/classes";
 import { SPELLS } from "../data/spells";
@@ -53,15 +53,9 @@ export function SpellCompendium({ onBack }) {
         {SPELLS.length} incantesimi del Manuale del Giocatore 2014, con danno, dadi e tiri salvezza. Sfoglia liberamente, senza bisogno di un personaggio.
       </p>
 
+      <StickySearch value={search} onChange={setSearch} placeholder="Cerca un incantesimo per nome…" />
+
       <Frame>
-        <input
-          type="text" placeholder="Cerca un incantesimo per nome…" value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
-            width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.5rem 0.7rem",
-            borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 14, boxSizing: "border-box",
-          }}
-        />
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
           <Pill active={classFilter === "tutti"} onClick={() => setClass("tutti")}>Tutte le classi</Pill>
           {classesWithSpells.map((c) => (

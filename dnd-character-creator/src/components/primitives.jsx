@@ -223,6 +223,29 @@ export function Tabs({ items, active, onChange }) {
   );
 }
 
+// Barra di ricerca fissa in cima usata da Compendio e Bestiario: sta fuori dal Frame pergamena
+// (sfondo scuro coerente con gli header fissi di PlayerSheet/EncounterRunner) così resta visibile
+// anche quando la lista filtrata sotto è lunga e si scorre per guardarla.
+export function StickySearch({ value, onChange, placeholder }) {
+  return (
+    <div
+      style={{
+        position: "sticky", top: 0, zIndex: 40, background: C.ink,
+        paddingTop: 4, paddingBottom: 10, marginBottom: 14, borderBottom: `1px solid ${C.parchmentLine}44`,
+      }}
+    >
+      <input
+        type="text" placeholder={placeholder} value={value}
+        onChange={(e) => onChange(e.target.value)}
+        style={{
+          width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.6rem 0.8rem",
+          borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", boxSizing: "border-box",
+        }}
+      />
+    </div>
+  );
+}
+
 export function MetricBox({ label, value, hint }) {
   return (
     <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.85rem" }}>
