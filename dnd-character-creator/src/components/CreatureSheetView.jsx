@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, Loader2, Save, Skull } from "../icons";
 import { C } from "../theme";
-import { Divider, Frame, GhostButton, GoldButton, MetricBox } from "./primitives";
+import { Divider, Frame, GhostButton, GoldButton, HpBar, MetricBox } from "./primitives";
 import { HpTracker } from "./hp";
 import { ABILITIES } from "../data/core";
 import { SPELLS } from "../data/spells";
@@ -64,20 +64,40 @@ export function CreatureSheetView({ creature, onBack, onSaveChanges }) {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.25rem", gap: 12, flexWrap: "wrap" }}>
-        <div>
-          <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 10 }}>Sezione Master</GhostButton>
-          <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 24, color: C.cream, margin: 0 }}>
-            {draft.name || "Creatura senza nome"}
-            {dead && <span style={{ color: C.danger, fontSize: 15, marginLeft: 10 }}>· MORTO</span>}
-          </h1>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.creamMuted, margin: "4px 0 0", fontStyle: "italic" }}>
-            {sizeLabel} {draft.type}{draft.typeTag ? ` (${draft.typeTag})` : ""}, {draft.alignment} · GS {draft.cr} ({fmtMod(getEffectiveProficiencyBonus(draft))}, {getEffectiveXp(draft)} PE)
-          </p>
+      <div
+        style={{
+          position: "sticky", top: 0, zIndex: 40, background: C.ink,
+          paddingTop: 4, paddingBottom: 8, marginBottom: 18, borderBottom: `1px solid ${C.parchmentLine}44`,
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <GhostButton icon={ChevronLeft} onClick={onBack} style={{ padding: "0.35rem 0.7rem", marginBottom: 6, fontSize: 12 }}>
+              Sezione Master
+            </GhostButton>
+            <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 19, color: C.cream, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {draft.name || "Creatura senza nome"}
+              {dead && <span style={{ color: C.danger, fontSize: 13.5, marginLeft: 10 }}>· MORTO</span>}
+            </h1>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.creamMuted, margin: "2px 0 0", fontStyle: "italic", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {sizeLabel} {draft.type}{draft.typeTag ? ` (${draft.typeTag})` : ""}, {draft.alignment} · GS {draft.cr} ({fmtMod(getEffectiveProficiencyBonus(draft))}, {getEffectiveXp(draft)} PE)
+            </p>
+          </div>
+          <GoldButton icon={saving ? Loader2 : Save} disabled={saving || !dirty} onClick={handleSave} style={{ padding: "0.5rem 0.8rem", fontSize: 12, flexShrink: 0 }}>
+            {saving ? "…" : dirty ? "Salva" : "Salvato"}
+          </GoldButton>
         </div>
-        <GoldButton icon={saving ? Loader2 : Save} disabled={saving || !dirty} onClick={handleSave}>
-          {saving ? "Salvataggio…" : "Salva modifiche"}
-        </GoldButton>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
+          <div style={{ minWidth: 110 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontFamily: "'Spectral', serif", fontSize: 11, color: C.creamMuted }}>
+              <span>PF</span>
+              <span>{current}/{maxHp}</span>
+            </div>
+            <HpBar current={current} max={maxHp} temp={draft.tempHp || 0} />
+          </div>
+          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.creamMuted }}>CA {draft.ac}</span>
+        </div>
       </div>
 
       <Frame style={{ marginBottom: 16, ...(dead ? { boxShadow: `inset 0 0 0 2px ${C.danger}` } : {}) }}>
