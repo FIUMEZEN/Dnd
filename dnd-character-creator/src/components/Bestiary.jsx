@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ChevronLeft, Plus, Skull } from "../icons";
+import { ChevronLeft, Heart, Plus, Shield, Skull } from "../icons";
 import { C } from "../theme";
-import { Frame, GhostButton, GoldButton, Pill, StickySearch } from "./primitives";
+import { Frame, GhostButton, GoldButton, Pill, StickySearch, VitalChip } from "./primitives";
 import { BESTIARY } from "../data/bestiary";
 import { CREATURE_SIZES, CR_OPTIONS } from "../data/creatures";
 import { fmtMod } from "../lib/format";
@@ -66,9 +66,17 @@ export function Bestiary({ onBack, onUse }) {
                   <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 4px", fontStyle: "italic" }}>
                     {sizeLabel} {m.type}{m.typeTag ? ` (${m.typeTag})` : ""}
                   </p>
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 10px" }}>
-                    GS {m.cr} ({fmtMod(getCrProficiencyBonus(m.cr))}, {getCrXp(m.cr)} PE) · CA {m.ac} · {m.hp} PF
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>
+                    GS {m.cr} ({fmtMod(getCrProficiencyBonus(m.cr))}, {getCrXp(m.cr)} PE)
                   </p>
+                  <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+                    <VitalChip icon={Shield} theme="light" style={{ padding: "0.15rem 0.5rem" }}>
+                      <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment }}>CA {m.ac}</span>
+                    </VitalChip>
+                    <VitalChip icon={Heart} theme="light" style={{ padding: "0.15rem 0.5rem" }}>
+                      <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment }}>{m.hp} PF</span>
+                    </VitalChip>
+                  </div>
                   <GoldButton icon={Plus} onClick={() => onUse(m)} style={{ padding: "0.45rem 0.8rem", fontSize: 14 }}>
                     Usa come base
                   </GoldButton>

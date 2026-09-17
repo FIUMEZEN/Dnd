@@ -3,9 +3,9 @@
 // statistiche complete di ognuna. Non salva nulla: è solo un riferimento rapido durante la
 // creazione o in gioco, pescato dallo stesso catalogo del Bestiario del Master.
 import { useState } from "react";
-import { ChevronDown, ChevronRight } from "../icons";
+import { ChevronDown, ChevronRight, Heart, Shield } from "../icons";
 import { C } from "../theme";
-import { Divider } from "./primitives";
+import { Divider, VitalChip } from "./primitives";
 import { ABILITIES } from "../data/core";
 import { BESTIARY } from "../data/bestiary";
 import { CREATURE_SIZES } from "../data/creatures";
@@ -34,10 +34,21 @@ function BeastCard({ beast, locked, lockReason }) {
         <span style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment }}>
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />} {beast.name}
         </span>
-        <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, textAlign: "right" }}>
-          GS {beast.cr} · CA {beast.ac} · {beast.hp} PF · {formatSpeed(beast.speed)}
-          {lockReason && <><br />{lockReason}</>}
-        </span>
+        <div style={{ textAlign: "right" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>GS {beast.cr}</span>
+            <VitalChip icon={Shield} theme="light" style={{ padding: "0.1rem 0.4rem" }}>
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>CA {beast.ac}</span>
+            </VitalChip>
+            <VitalChip icon={Heart} theme="light" style={{ padding: "0.1rem 0.4rem" }}>
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{beast.hp} PF</span>
+            </VitalChip>
+            <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>{formatSpeed(beast.speed)}</span>
+          </div>
+          {lockReason && (
+            <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>{lockReason}</span>
+          )}
+        </div>
       </button>
       {open && (
         <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${C.parchmentLine}` }}>

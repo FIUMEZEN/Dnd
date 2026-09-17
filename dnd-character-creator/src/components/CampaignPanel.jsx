@@ -5,9 +5,9 @@
 // (vedi ADR/CONTEXT sul modello di sicurezza). Il Codice/gli Entries arrivano da App.jsx (unica
 // sottoscrizione condivisa anche con l'Incontro, che può aggiungere questi PG come combattenti).
 import { useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronUp, Skull, Sword, Trash2, Users } from "../icons";
+import { ChevronDown, ChevronLeft, ChevronUp, Heart, Shield, Skull, Sword, Trash2, Users } from "../icons";
 import { C } from "../theme";
-import { Frame, GhostButton, GoldButton } from "./primitives";
+import { Frame, GhostButton, GoldButton, VitalChip } from "./primitives";
 import { RACES } from "../data/races";
 import { CLASSES } from "../data/classes";
 import { getCharacterCombatStats } from "../lib/character";
@@ -138,9 +138,14 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
                             {race?.name || "—"} · {cls ? `${cls.name} (liv. ${c.level || 1})` : "—"}
                           </p>
                           {stats?.maxHp != null && (
-                            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: stats.currentHp <= stats.maxHp / 3 ? C.danger : C.textMuted, margin: "2px 0 0" }}>
-                              CA {stats.ac} · {stats.currentHp} / {stats.maxHp} PF
-                            </p>
+                            <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
+                              <VitalChip icon={Shield} theme="light" style={{ padding: "0.15rem 0.5rem" }}>
+                                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment }}>CA {stats.ac}</span>
+                              </VitalChip>
+                              <VitalChip icon={Heart} theme="light" accent={stats.currentHp <= stats.maxHp / 3 ? C.danger : undefined} style={{ padding: "0.15rem 0.5rem" }}>
+                                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: stats.currentHp <= stats.maxHp / 3 ? C.danger : C.textOnParchment }}>{stats.currentHp}/{stats.maxHp} PF</span>
+                              </VitalChip>
+                            </div>
                           )}
                         </button>
                         <button onClick={() => handleRemove(entry.character_id)} aria-label="Rimuovi dalla campagna" title="Rimuovi dalla campagna (non tocca il personaggio del giocatore)" style={{ background: "transparent", border: "none", cursor: "pointer", color: C.danger, padding: 4 }}>
