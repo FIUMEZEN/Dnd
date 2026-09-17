@@ -34,7 +34,7 @@ function BeastCard({ beast, locked, lockReason }) {
         <span style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment }}>
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />} {beast.name}
         </span>
-        <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, whiteSpace: "nowrap", textAlign: "right" }}>
+        <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, textAlign: "right" }}>
           GS {beast.cr} · CA {beast.ac} · {beast.hp} PF · {formatSpeed(beast.speed)}
           {lockReason && <><br />{lockReason}</>}
         </span>
