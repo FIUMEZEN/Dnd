@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ChevronLeft, Loader2, Save, Skull } from "../icons";
+import { ChevronLeft, Heart, Loader2, Save, Shield, Skull } from "../icons";
 import { C } from "../theme";
-import { Divider, Frame, GhostButton, GoldButton, HpBar, MetricBox } from "./primitives";
+import { Divider, Frame, GhostButton, GoldButton, HpBar, MetricBox, VitalChip } from "./primitives";
 import { HpTracker } from "./hp";
 import { ABILITIES } from "../data/core";
 import { SPELLS } from "../data/spells";
@@ -88,15 +88,17 @@ export function CreatureSheetView({ creature, onBack, onSaveChanges }) {
           </GoldButton>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
-          <div style={{ minWidth: 110 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontFamily: "'Spectral', serif", fontSize: 11, color: C.creamMuted }}>
+        <div style={{ display: "flex", alignItems: "stretch", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
+          <VitalChip icon={Heart} accent={dead ? C.danger : undefined} style={{ minWidth: 108 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontFamily: "'Cinzel', serif", fontSize: 11, color: C.creamMuted }}>
               <span>PF</span>
-              <span>{current}/{maxHp}</span>
+              <span style={{ color: C.cream }}>{current}/{maxHp}</span>
             </div>
             <HpBar current={current} max={maxHp} temp={draft.tempHp || 0} />
-          </div>
-          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.creamMuted }}>CA {draft.ac}</span>
+          </VitalChip>
+          <VitalChip icon={Shield}>
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.creamMuted }}>CA {draft.ac}</span>
+          </VitalChip>
         </div>
       </div>
 
