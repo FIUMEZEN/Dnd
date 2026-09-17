@@ -49,10 +49,10 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
   return (
     <>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "1.25rem 0 8px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "1.25rem 0 8px" }}>
         Incrementi di Livello (ASI o Talento)
       </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 12px" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 12px" }}>
         Per ogni livello sbloccato scegli: due incrementi da +1 a caratteristiche (anche la stessa due volte, per un totale di +2, max 20), oppure un Talento. Alcuni talenti concedono a loro volta +1 a una caratteristica.
       </p>
       {asiLevels.map((lvl) => {
@@ -64,7 +64,7 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
         return (
           <div key={lvl} style={{ marginBottom: 14, padding: "0.7rem 0.8rem", border: `1px solid ${C.parchmentLine}`, borderRadius: 2 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
-              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment, minWidth: 90 }}>
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment, minWidth: 90 }}>
                 Livello {lvl}
               </span>
               <Pill active={type === "asi"} onClick={() => setChoiceType(lvl, "asi")}>Incremento caratteristiche</Pill>
@@ -79,7 +79,7 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
                     value={picks[idx] || ""}
                     onChange={(e) => setAsiPick(lvl, idx, e.target.value)}
                     style={{
-                      fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem 0.5rem",
+                      fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem",
                       borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                     }}
                   >
@@ -96,7 +96,7 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
                   value={featId}
                   onChange={(e) => setFeatPick(lvl, e.target.value)}
                   style={{
-                    width: "100%", maxWidth: 420, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.5rem",
+                    width: "100%", maxWidth: 420, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.5rem",
                     borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8,
                   }}
                 >
@@ -108,11 +108,11 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
                 {feat && (
                   <div style={{ marginBottom: 8 }}>
                     {feat.prerequisite && (
-                      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, fontStyle: "italic", color: C.wine, margin: "0 0 4px" }}>
+                      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, fontStyle: "italic", color: C.wine, margin: "0 0 4px" }}>
                         Prerequisito: {feat.prerequisite}
                       </p>
                     )}
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{feat.desc}</p>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>{feat.desc}</p>
                   </div>
                 )}
                 {feat && feat.abilityChoice && (
@@ -120,7 +120,7 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
                     value={abilityPick}
                     onChange={(e) => setFeatAbilityPick(lvl, e.target.value)}
                     style={{
-                      fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem 0.5rem",
+                      fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem",
                       borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                     }}
                   >
@@ -163,10 +163,10 @@ export function FightingStyleSelector({ store, updateStore, clsId, classLevel, l
 
   return (
     <div style={{ marginTop: 12, marginBottom: 12 }}>
-      <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>
+      <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 8px" }}>
         {label} ({selectedStyles.length}/{maxStyles} scelti)
       </p>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "0 0 8px" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>
         Scegli fino a {maxStyles} stile{maxStyles > 1 ? "i" : ""} di combattimento.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem" }}>
@@ -183,7 +183,7 @@ export function FightingStyleSelector({ store, updateStore, clsId, classLevel, l
               title={style.name}
               subtitle={isSelected ? "✓ Selezionato" : isFull ? "Limite raggiunto" : "Disponibile"}
             >
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: 0 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>
                 {style.desc}
               </p>
             </OptionCard>
@@ -207,10 +207,10 @@ export function MetamagicPicker({ store, updateStore, level }) {
   return (
     <>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
         Metamagia — scegline {known} ({chosen.length}/{known})
       </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Modifica un incantesimo lanciato spendendo Punti Stregoneria. Puoi usare una sola opzione di Metamagia per incantesimo, a meno che la descrizione non dica altrimenti.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 10 }}>
@@ -228,10 +228,10 @@ export function MetamagicPicker({ store, updateStore, level }) {
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
-                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{m.name}</span>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, whiteSpace: "nowrap" }}>{m.cost}</span>
+                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{m.name}</span>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wineDeep, whiteSpace: "nowrap" }}>{m.cost}</span>
               </div>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
             </div>
           );
         })}
@@ -245,7 +245,7 @@ export function PactBoonPicker({ store, updateStore, level }) {
   return (
     <>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Dono del Patto</h3>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Dono del Patto</h3>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
         {PACT_BOONS.map((p) => (
           <Pill key={p.id} active={store.pactBoonId === p.id} onClick={() => updateStore((s) => ({ pactBoonId: s.pactBoonId === p.id ? null : p.id }))}>
@@ -254,7 +254,7 @@ export function PactBoonPicker({ store, updateStore, level }) {
         ))}
       </div>
       {store.pactBoonId && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px", fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px", fontStyle: "italic" }}>
           {PACT_BOONS.find((p) => p.id === store.pactBoonId)?.desc}
         </p>
       )}
@@ -276,10 +276,10 @@ export function InvocationPicker({ store, updateStore, level }) {
   return (
     <>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
         Invocazioni Occulte — scegline {known} ({chosen.length}/{known})
       </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Alcune invocazioni richiedono un Dono del Patto specifico: verifica il prerequisito indicato prima di sceglierle.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
@@ -296,11 +296,11 @@ export function InvocationPicker({ store, updateStore, level }) {
                 opacity: !active && chosen.length >= known ? 0.5 : 1,
               }}
             >
-              <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{i.name}</div>
+              <div style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{i.name}</div>
               {i.prereq && (
-                <div style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, fontStyle: "italic" }}>Richiede: {i.prereq}</div>
+                <div style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wineDeep, fontStyle: "italic" }}>Richiede: {i.prereq}</div>
               )}
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{i.desc}</p>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{i.desc}</p>
             </div>
           );
         })}
@@ -324,10 +324,10 @@ export function ElementalDisciplinePicker({ store, updateStore, level, title = "
   return (
     <div style={{ marginBottom: 18 }}>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
         {title} — scegline {known} ({chosen.length}/{known})
       </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Conosci sempre {automatic.map((d) => d.name).join(", ")} (gratuita, non conta nel totale). Le altre discipline costano Punti Ki ogni volta che le usi.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
@@ -345,10 +345,10 @@ export function ElementalDisciplinePicker({ store, updateStore, level, title = "
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
-                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{d.name}</span>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.wineDeep, whiteSpace: "nowrap" }}>{d.kiCost} Ki</span>
+                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{d.name}</span>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wineDeep, whiteSpace: "nowrap" }}>{d.kiCost} Ki</span>
               </div>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{d.desc}</p>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{d.desc}</p>
             </div>
           );
         })}
@@ -370,10 +370,10 @@ export function ManeuverPicker({ store, updateStore, level, title = "Manovre —
   return (
     <div style={{ marginBottom: 18 }}>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
         {title} — scegline {known} ({chosen.length}/{known})
       </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Ogni manovra si attiva spendendo un Dado Superiorità. Quando impone un tiro salvezza, la CD è 8 + bonus di competenza + modificatore di Forza o Destrezza (a tua scelta, in base all'arma usata).
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
@@ -390,8 +390,8 @@ export function ManeuverPicker({ store, updateStore, level, title = "Manovre —
                 opacity: !active && chosen.length >= known ? 0.5 : 1,
               }}
             >
-              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{m.name}</span>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{m.name}</span>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
             </div>
           );
         })}

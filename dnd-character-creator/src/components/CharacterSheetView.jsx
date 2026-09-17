@@ -272,29 +272,29 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       </div>
 
       <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep }}>Codice Campagna</span>
+        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep }}>Codice Campagna</span>
         <input
           type="text" placeholder="Facoltativo — dal tuo Master" value={draft.campaignCode || ""}
           onChange={(e) => setDraft((d) => ({ ...d, campaignCode: e.target.value.toUpperCase() }))}
-          style={{ width: 140, fontFamily: "'Cinzel', serif", fontSize: 13.5, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", letterSpacing: 1 }}
+          style={{ width: 140, fontFamily: "'Cinzel', serif", fontSize: 15, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", letterSpacing: 1 }}
         />
-        <span style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, fontStyle: "italic" }}>
+        <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
           Se lo inserisci, il tuo Master vedrà questo personaggio (in sola lettura) nella sua Campagna.
         </span>
       </div>
 
       {bg && (bg.featureDesc || draft.personalityTrait1 || draft.personalityTrait2 || draft.ideal || draft.bond || draft.flaw) && (
         <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.wineDeep, margin: "0 0 4px" }}>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 4px" }}>
             Background — {bg.name}
           </p>
           {bg.featureDesc && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 8px" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 8px" }}>
               <b>{bg.feature}:</b> {bg.featureDesc}
             </p>
           )}
           {(draft.personalityTrait1 || draft.personalityTrait2 || draft.ideal || draft.bond || draft.flaw) && (
-            <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "4px 18px", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment }}>
+            <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "4px 18px", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment }}>
               {draft.personalityTrait1 && <p style={{ margin: 0 }}><b>Tratto:</b> {draft.personalityTrait1}</p>}
               {draft.personalityTrait2 && <p style={{ margin: 0 }}><b>Tratto:</b> {draft.personalityTrait2}</p>}
               {draft.ideal && <p style={{ margin: 0 }}><b>Ideale:</b> {draft.ideal}</p>}
@@ -307,10 +307,10 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
 
       {mcCls && (
         <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.wineDeep, margin: "0 0 4px" }}>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 4px" }}>
             Multiclasse — competenze parziali da {mcCls.name}
           </p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>
             {MULTICLASS_PROFICIENCIES[mcCls.id]}
           </p>
           {MULTICLASS_BONUS_SKILL_CLASS.includes(mcCls.id) && (
@@ -318,7 +318,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
               <select
                 value={mc.bonusSkillPick || ""}
                 onChange={(e) => mcUpdateStore(() => ({ bonusSkillPick: e.target.value || null }))}
-                style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
               >
                 <option value="">Scegli la competenza bonus da {mcCls.name}…</option>
                 {mcCls.skillOptions.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -333,11 +333,11 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       <div style={{ display: "grid", gridTemplateColumns: "var(--g6)", gap: 8, marginBottom: 18 }}>
         {ABILITIES.map((a) => (
           <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.6rem 0.3rem" }}>
-            <div style={{ fontFamily: "'Cinzel', serif", fontSize: 10.5, color: C.textMuted }}>{a.name.slice(0, 3).toUpperCase()}</div>
+            <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted }}>{a.name.slice(0, 3).toUpperCase()}</div>
             <div style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment }}>{finalScores[a.key]}</div>
-            <div style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.wine }}>{fmtMod(mod(finalScores[a.key]))}</div>
+            <div style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.wine }}>{fmtMod(mod(finalScores[a.key]))}</div>
             {(raceBonus[a.key] > 0 || asiBonus[a.key] > 0) && (
-              <div style={{ fontFamily: "'Spectral', serif", fontSize: 10, color: C.textMuted, marginTop: 2 }}>
+              <div style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, marginTop: 2 }}>
                 {raceBonus[a.key] > 0 ? `razza +${raceBonus[a.key]}` : ""}
                 {raceBonus[a.key] > 0 && asiBonus[a.key] > 0 ? " · " : ""}
                 {asiBonus[a.key] > 0 ? `ASI +${asiBonus[a.key]}` : ""}
@@ -369,70 +369,70 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
 
       <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1.5rem", marginBottom: 18 }}>
         <div>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Tiri salvezza</h3>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Tiri salvezza</h3>
           {savingThrows.map((s) => (
             <div key={s.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0", borderBottom: `1px solid ${C.parchmentLine}` }}>
-              <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
                 <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.proficient ? C.wine : "transparent", border: `1px solid ${s.proficient ? C.wine : C.parchmentLine}`, display: "inline-block" }} />
                 {s.name}
               </span>
-              <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.wine }}>{fmtMod(s.bonus)}</span>
+              <span style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.wine }}>{fmtMod(s.bonus)}</span>
             </div>
           ))}
         </div>
         <div>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>Abilità</h3>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>Abilità</h3>
           {expertiseCount > 0 && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, margin: "0 0 6px", fontStyle: "italic" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 6px", fontStyle: "italic" }}>
               Competenza Esperta: {expertiseSkills.length}/{expertiseCount} — clicca la ★ su un'abilità in cui sei già competente
             </p>
           )}
           <div style={{ maxHeight: 320, overflowY: "auto" }}>
             {skillsList.map((s) => (
               <div key={s.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0", borderBottom: `1px solid ${C.parchmentLine}` }}>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.proficient ? C.wine : "transparent", border: `1px solid ${s.proficient ? C.wine : C.parchmentLine}`, display: "inline-block", flexShrink: 0 }} />
                   {s.name}
                   {expertiseCount > 0 && s.proficient && (
                     <span
                       onClick={() => toggleExpertise(s.name)}
                       title="Competenza Esperta"
-                      style={{ cursor: "pointer", color: s.expert ? C.gold : C.parchmentLine, fontSize: 13, lineHeight: 1 }}
+                      style={{ cursor: "pointer", color: s.expert ? C.gold : C.parchmentLine, fontSize: 14.5, lineHeight: 1 }}
                     >
                       ★
                     </span>
                   )}
                 </span>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wine }}>{fmtMod(s.bonus)}</span>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.wine }}>{fmtMod(s.bonus)}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 18 }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 18 }}>
         <b>Competenze nelle abilità:</b> {allSkills.length ? allSkills.join(", ") : "—"}
       </p>
 
       {cls && (
         <>
           <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Competenze</h3>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Competenze</h3>
           <div style={{ display: "grid", gap: 4, marginBottom: 18 }}>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
               <b>Armature:</b> {[cls.armor, ...granted.armor].filter(Boolean).join("; ")}
             </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
               <b>Armi:</b> {[cls.weapons, ...granted.weapons].filter(Boolean).join("; ")}
             </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
               <b>Strumenti:</b> {granted.tools.length ? granted.tools.join(", ") : "—"}
             </p>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
               <b>Lingue:</b> {granted.languages.length ? granted.languages.join(", ") : "—"}
             </p>
             {granted.other.length > 0 && (
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: 0 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
                 <b>Altro:</b> {granted.other.join(", ")}
               </p>
             )}
@@ -452,13 +452,13 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           <ConcentrationTracker draft={draft} setDraft={setDraft} />
           <RestControls draft={draft} setDraft={setDraft} maxHp={hp} conMod={mod(finalScores.con)} />
           <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep }}>Esperienza (PE)</span>
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep }}>Esperienza (PE)</span>
             <input
               type="number" min={0} value={draft.xp || 0}
               onChange={(e) => setDraft((d) => ({ ...d, xp: Math.max(0, Number(e.target.value) || 0) }))}
-              style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+              style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
             />
-            <span style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, fontStyle: "italic" }}>
+            <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
               Informativa: il livello si aumenta sempre a mano con "Sali di livello".
             </span>
           </div>
@@ -495,12 +495,12 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         (mcCls && hasFightingStyles(mcCls.id) && getSelectedFightingStyles(mc).length > 0)) && (
           <>
             <Divider />
-            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Meccaniche di classe</h3>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Meccaniche di classe</h3>
 
             {/* Stili di Combattimento - Classe Primaria */}
             {cls && hasFightingStyles(cls.id) && getSelectedFightingStyles(draft).length > 0 && (
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 6px" }}>
+                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 6px" }}>
                   Stili di Combattimento — {cls.name}
                 </p>
                 <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10 }}>
@@ -522,7 +522,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
             {/* Stili di Combattimento - Classe Secondaria */}
             {mcCls && hasFightingStyles(mcCls.id) && getSelectedFightingStyles(mc).length > 0 && (
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 6px" }}>
+                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 6px" }}>
                   Stili di Combattimento — {mcCls.name}
                 </p>
                 <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10 }}>
@@ -545,7 +545,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
             {mechanicsGroups.map((g) => (
               <div key={g.className} style={{ marginBottom: 14 }}>
                 {mechanicsGroups.length > 1 && (
-                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 6px" }}>{g.className}</p>
+                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 6px" }}>{g.className}</p>
                 )}
                 <div style={{ display: "grid", gridTemplateColumns: "var(--g3)", gap: 10 }}>
                   {g.list.map((m) => <MetricBox key={m.key} label={m.label} value={m.value} />)}
@@ -558,11 +558,11 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       {classResourceGroups.length > 0 && (
         <>
           <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Risorse di classe</h3>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Risorse di classe</h3>
           {classResourceGroups.map((g) => (
             <div key={g.className} style={{ marginBottom: 14 }}>
               {classResourceGroups.length > 1 && (
-                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 6px" }}>{g.className}</p>
+                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 6px" }}>{g.className}</p>
               )}
               {showPlayTools ? (
                 <div style={{ marginBottom: 4 }}>
@@ -584,10 +584,10 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           ))}
           {hasProtectionFlag && (
             <div style={{ marginBottom: 14, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem" }}>
-              <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 6px" }}>
+              <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
                 🛡️ Protezione - Reazione Disponibile
               </h4>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>
                 Quando una creatura entro 1,5 m attacca un bersaglio diverso da te,
                 puoi usare la tua reazione per imporre svantaggio al tiro per colpire.
               </p>
@@ -596,10 +596,10 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
 
           {hasTwoWeaponFightingFlag && (
             <div style={{ marginBottom: 14, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem" }}>
-              <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 6px" }}>
+              <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
                 ⚔️ Combattimento con Due Armi - Attivo
               </h4>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>
                 Aggiungi il modificatore di caratteristica al danno dell'attacco secondario.
               </p>
             </div>
@@ -609,10 +609,10 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
 
       {showPlayTools && wildMagicLevel > 0 && (
         <div style={{ marginBottom: 18, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem" }}>
-          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 6px" }}>
+          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
             🎲 Sconvolgimento di Magia Selvaggia
           </h4>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 8px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 8px" }}>
             Il Master può far scatenare questo effetto quando lanci un incantesimo da Stregone di 1° livello o superiore.
             {wildMagicLevel >= 14 ? " Grazie a Caos Controllato tiri due volte e scegli l'effetto." : ""}
           </p>
@@ -621,8 +621,8 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
             <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
               {wildSurgeRolls.map((r, i) => (
                 <div key={i} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.5rem 0.7rem" }}>
-                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.wine, margin: "0 0 4px" }}>Risultato: {r.roll}</p>
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, margin: 0 }}>{r.text}</p>
+                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.wine, margin: "0 0 4px" }}>Risultato: {r.roll}</p>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, margin: 0 }}>{r.text}</p>
                 </div>
               ))}
             </div>
@@ -633,7 +633,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       {weaponAttacks.length > 0 && (
         <>
           <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Attacchi</h3>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Attacchi</h3>
           <div style={{ marginBottom: 18 }}>
             {weaponAttacks.map((w) => {
               // I bonus degli Stili di Combattimento sono già inclusi in weaponAttacks.
@@ -642,20 +642,20 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
 
               return (
                 <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0.7rem", border: `1px solid ${w.proficient ? C.parchmentLine : C.wine}`, borderRadius: 2, marginBottom: 6 }}>
-                  <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
                     {w.name}
                     {!w.proficient && (
-                      <span title="Nessuna competenza con questa arma: il bonus di competenza non è incluso nel tiro per colpire" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 11, color: C.wine, border: `1px solid ${C.wine}`, borderRadius: 2, padding: "0 4px" }}>
+                      <span title="Nessuna competenza con questa arma: il bonus di competenza non è incluso nel tiro per colpire" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.wine, border: `1px solid ${C.wine}`, borderRadius: 2, padding: "0 4px" }}>
                         non competente
                       </span>
                     )}
                     {!w.equipped && (
-                      <span title="Non equipaggiata: gli Stili di Combattimento (Duellante, Due Armi, Armi Possenti) si applicano solo alle armi equipaggiate" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 11, color: C.textMuted, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0 4px" }}>
+                      <span title="Non equipaggiata: gli Stili di Combattimento (Duellante, Due Armi, Armi Possenti) si applicano solo alle armi equipaggiate" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0 4px" }}>
                         non equipaggiata
                       </span>
                     )}
                   </span>
-                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
                     Attacco {fmtMod(attackBonus)} · Danno {w.damageString}{fmtMod(damageBonus)} {w.damageType}
                   </span>
                 </div>
@@ -681,7 +681,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       <SpellManager draft={draft} setDraft={setDraft} showPlayTools={showPlayTools} />
     </>
   ) : (
-    <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, fontStyle: "italic", margin: 0 }}>
+    <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textMuted, fontStyle: "italic", margin: 0 }}>
       Questo personaggio non lancia incantesimi.
     </p>
   );
@@ -763,15 +763,15 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           <>
             {baseGroups.map((g) => (
               <div key={g.className} style={{ marginBottom: 18 }}>
-                <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+                <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>
                   Caratteristiche di Classe — {g.className}
                 </h3>
                 {g.features.map((f) => (
                   <div key={f.name} style={{ marginBottom: 10 }}>
-                    <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
+                    <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, margin: "0 0 2px" }}>
                       {f.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>(liv. {f.level})</span>
                     </p>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{f.desc}</p>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>{f.desc}</p>
                   </div>
                 ))}
               </div>
@@ -783,15 +783,15 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         <>
           {subclassFeatureGroups.map((g) => (
             <div key={g.className} style={{ marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>
                 Feature di sottoclasse — {g.className}: {g.subclassName}
               </h3>
               {g.features.map((f) => (
                 <div key={f.name} style={{ marginBottom: 10 }}>
-                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
+                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, margin: "0 0 2px" }}>
                     {f.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>(liv. {f.level})</span>
                   </p>
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{f.desc}</p>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>{f.desc}</p>
                 </div>
               ))}
             </div>
@@ -801,19 +801,19 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
 
       {chosenFeats.length > 0 && (
         <>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>
             Talenti
           </h3>
           <div style={{ marginBottom: 18 }}>
             {chosenFeats.map(({ level, feat, abilityPick, classId }) => (
               <div key={`${classId}-${level}`} style={{ marginBottom: 10 }}>
-                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 2px" }}>
+                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, margin: "0 0 2px" }}>
                   {feat.name} <span style={{ color: C.textMuted, fontWeight: 400 }}>({classId === "razza" ? "dalla razza" : `liv. ${level}${mcCls ? ` — ${CLASSES.find((c) => c.id === classId)?.name}` : ""}`})</span>
                   {abilityPick && (
                     <span style={{ color: C.forestDeep, fontWeight: 400 }}> — +1 {ABILITIES.find((a) => a.key === abilityPick)?.name}</span>
                   )}
                 </p>
-                <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{feat.desc}</p>
+                <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>{feat.desc}</p>
               </div>
             ))}
           </div>
@@ -857,11 +857,11 @@ export function StepReview({ draft, setDraft, onSave, saving }) {
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Riepilogo del personaggio</h2>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1.25rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted, margin: "0 0 1.25rem" }}>
         Dai un nome al personaggio e salvalo per ritrovarlo in seguito.
       </p>
 
-      <label style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, display: "block", marginBottom: 6 }}>
+      <label style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, display: "block", marginBottom: 6 }}>
         Nome del personaggio
       </label>
       <input
@@ -878,8 +878,8 @@ export function StepReview({ draft, setDraft, onSave, saving }) {
 
       {validationErrors.length > 0 && (
         <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 14, borderRadius: 2 }}>
-          <b style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.danger }}>Controlli 5e 2014</b>
-          <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.danger }}>{validationErrors.map((e) => <li key={e}>{e}</li>)}</ul>
+          <b style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.danger }}>Controlli 5e 2014</b>
+          <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger }}>{validationErrors.map((e) => <li key={e}>{e}</li>)}</ul>
         </div>
       )}
 

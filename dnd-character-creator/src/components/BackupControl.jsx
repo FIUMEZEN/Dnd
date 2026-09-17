@@ -13,8 +13,8 @@ function PickerRow({ checked, onToggle, title, subtitle }) {
     <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, cursor: "pointer", background: checked ? "rgba(125, 31, 56, 0.05)" : "transparent" }}>
       <input type="checkbox" checked={checked} onChange={onToggle} style={{ width: 16, height: 16, flexShrink: 0 }} />
       <div>
-        <div style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment }}>{title}</div>
-        {subtitle && <div style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted }}>{subtitle}</div>}
+        <div style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment }}>{title}</div>
+        {subtitle && <div style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}>{subtitle}</div>}
       </div>
     </label>
   );
@@ -26,8 +26,8 @@ function PickerSection({ title, items, selected, onToggleOne, onToggleAll }) {
   return (
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-        <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: 0 }}>{title} ({selected.size}/{items.length})</h3>
-        <GhostButton onClick={() => onToggleAll(!allSelected)} style={{ padding: "0.25rem 0.6rem", fontSize: 11, borderColor: C.parchmentLine }}>
+        <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: 0 }}>{title} ({selected.size}/{items.length})</h3>
+        <GhostButton onClick={() => onToggleAll(!allSelected)} style={{ padding: "0.25rem 0.6rem", fontSize: 12.5, borderColor: C.parchmentLine }}>
           {allSelected ? "Deseleziona tutti" : "Seleziona tutti"}
         </GhostButton>
       </div>
@@ -70,7 +70,7 @@ function ExportPicker({ characters, creatures, onClose, onExport }) {
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
       <div style={{ background: C.parchment, padding: "1.75rem", borderRadius: 4, maxWidth: 480, width: "100%", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
         <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 18, color: C.wineDeep, margin: "0 0 6px" }}>Cosa vuoi esportare?</h3>
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 16px" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 16px" }}>
           Tutto è selezionato di default. Deseleziona quello che non vuoi includere — utile per condividere un singolo personaggio senza il resto del roster.
         </p>
 
@@ -78,7 +78,7 @@ function ExportPicker({ characters, creatures, onClose, onExport }) {
         <PickerSection title="Creature" items={creatureItems} selected={selectedCreatures} onToggleOne={toggleOne(setSelectedCreatures)} onToggleAll={toggleAll(creatureItems, setSelectedCreatures)} />
 
         {charItems.length === 0 && creatureItems.length === 0 && (
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}>Non c'è ancora nulla da esportare.</p>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted }}>Non c'è ancora nulla da esportare.</p>
         )}
 
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 8 }}>
@@ -145,7 +145,7 @@ export function BackupControl({ characters = [], creatures = [], onImported, onE
       <button
         onClick={() => setMenuOpen((v) => !v)}
         style={{
-          display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 12.5,
+          display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 14,
           letterSpacing: 0.3, padding: "0.5rem 1.1rem", borderRadius: 4, border: `1px solid ${C.parchmentLine}22`,
           background: C.inkPanel, color: menuOpen ? C.gold : C.creamMuted, cursor: "pointer",
           transition: "color 200ms ease",
@@ -167,7 +167,7 @@ export function BackupControl({ characters = [], creatures = [], onImported, onE
         >
           <button
             onClick={() => { setMenuOpen(false); setPickerOpen(true); }}
-            style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "0.7rem 1rem", background: "transparent", border: "none", cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 13, color: C.cream, textAlign: "left" }}
+            style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "0.7rem 1rem", background: "transparent", border: "none", cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.cream, textAlign: "left" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
           >
@@ -175,7 +175,7 @@ export function BackupControl({ characters = [], creatures = [], onImported, onE
           </button>
           <button
             onClick={handleImportClick}
-            style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "0.7rem 1rem", background: "transparent", border: "none", cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 13, color: C.cream, textAlign: "left" }}
+            style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "0.7rem 1rem", background: "transparent", border: "none", cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.cream, textAlign: "left" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
           >

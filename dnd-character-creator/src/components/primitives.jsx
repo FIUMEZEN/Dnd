@@ -53,7 +53,7 @@ export function GoldButton({ children, onClick, disabled, style, icon: Icon }) {
       disabled={disabled}
       style={{
         fontFamily: "'Cinzel', serif",
-        fontSize: 13,
+        fontSize: 14.5,
         letterSpacing: 0.5,
         fontWeight: 600,
         color: disabled ? C.creamMuted : C.cream,
@@ -84,7 +84,7 @@ export function GhostButton({ children, onClick, style, icon: Icon }) {
       onClick={onClick}
       style={{
         fontFamily: "'Spectral', serif",
-        fontSize: 13.5,
+        fontSize: 15,
         color: C.cream,
         background: "rgba(255,255,255,0.02)",
         border: `1px solid ${C.goldSoft}`,
@@ -112,7 +112,7 @@ export function Pill({ children, active, onClick, disabled, title }) {
       title={title}
       style={{
         fontFamily: "'Spectral', serif",
-        fontSize: 13,
+        fontSize: 14.5,
         padding: "0.5rem 0.85rem",
         borderRadius: 3,
         border: `1px solid ${active ? C.wine : C.parchmentLine}`,
@@ -155,7 +155,7 @@ export function OptionCard({ selected, onClick, title, subtitle, children }) {
         <span style={{ fontFamily: "'Cinzel', serif", fontSize: 15, fontWeight: 600, color: selected ? C.wineDeep : C.textOnParchment }}>
           {title}
         </span>
-        {subtitle && <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>{subtitle}</span>}
+        {subtitle && <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>{subtitle}</span>}
       </div>
       {children && <div style={{ marginTop: 6 }}>{children}</div>}
     </button>
@@ -168,7 +168,7 @@ export function OptionCard({ selected, onClick, title, subtitle, children }) {
 export function ProficiencyChoicePicker({ spec, selected, onToggle }) {
   return (
     <div style={{ marginTop: 10 }}>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 8 }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
         {spec.label} ({selected.length}/{spec.count}):
       </p>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -208,7 +208,7 @@ export function Tabs({ items, active, onChange }) {
             onClick={() => onChange(item.key)}
             style={{
               flex: "1 0 auto", minHeight: 44, minWidth: 76,
-              fontFamily: "'Cinzel', serif", fontSize: 12, letterSpacing: 0.3, fontWeight: 600,
+              fontFamily: "'Cinzel', serif", fontSize: 13.5, letterSpacing: 0.3, fontWeight: 600,
               padding: "0.5rem 0.9rem", borderRadius: 3, border: "none", cursor: "pointer",
               background: isActive ? `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})` : "transparent",
               color: isActive ? C.cream : C.creamMuted,
@@ -238,7 +238,7 @@ export function StickySearch({ value, onChange, placeholder }) {
         type="text" placeholder={placeholder} value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.6rem 0.8rem",
+          width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.6rem 0.8rem",
           borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", boxSizing: "border-box",
         }}
       />
@@ -249,9 +249,9 @@ export function StickySearch({ value, onChange, placeholder }) {
 export function MetricBox({ label, value, hint }) {
   return (
     <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.85rem" }}>
-      <div style={{ fontFamily: "'Cinzel', serif", fontSize: 10.5, color: C.textMuted, marginBottom: 4 }}>{label}</div>
+      <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, marginBottom: 4 }}>{label}</div>
       <div style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment }}>{value}</div>
-      {hint && <div style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.textMuted, marginTop: 2 }}>{hint}</div>}
+      {hint && <div style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, marginTop: 2 }}>{hint}</div>}
     </div>
   );
 }

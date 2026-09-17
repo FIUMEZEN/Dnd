@@ -47,7 +47,7 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: 12 }}>
         <div>
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>Campagna</h1>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.creamMuted, margin: "4px 0 0" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.creamMuted, margin: "4px 0 0" }}>
             Vedi in sola lettura i personaggi dei tuoi giocatori, sempre aggiornati.
           </p>
         </div>
@@ -67,7 +67,7 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 16, color: C.textOnParchment, margin: "0 0 6px" }}>
             Campagna non ancora configurata
           </p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textMuted, margin: 0 }}>
             Questa funzione richiede un piccolo servizio esterno gratuito (Supabase) per far comunicare i dispositivi tra loro. Segui la procedura guidata di configurazione, poi questa pagina si attiverà da sola.
           </p>
         </Frame>
@@ -78,14 +78,14 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
           <Frame style={{ marginBottom: 18 }}>
             {!code ? (
               <>
-                <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, margin: "0 0 12px" }}>
+                <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, margin: "0 0 12px" }}>
                   Genera un Codice Campagna e condividilo con i tuoi giocatori: lo inseriranno una volta sulla loro scheda e li vedrai comparire qui.
                 </p>
                 <GoldButton onClick={onGenerateCode}>Genera codice campagna</GoldButton>
               </>
             ) : (
               <>
-                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 11, color: C.textMuted, margin: "0 0 4px" }}>IL TUO CODICE CAMPAGNA</p>
+                <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 4px" }}>IL TUO CODICE CAMPAGNA</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 10 }}>
                   <span style={{ fontFamily: "'Cinzel', serif", fontSize: 28, letterSpacing: 4, color: C.wineDeep }}>{code}</span>
                   <GhostButton onClick={handleCopy} style={{ borderColor: C.wine, color: C.wineDeep }}>{copied ? "Copiato!" : "Copia"}</GhostButton>
@@ -100,7 +100,7 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
                     </GhostButton>
                   )}
                 </div>
-                <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, fontStyle: "italic", margin: 0 }}>
+                <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, fontStyle: "italic", margin: 0 }}>
                   Chiunque conosca questo codice può far comparire un personaggio nella tua campagna: condividilo solo con i tuoi giocatori. Rigenerarlo scollega i personaggi già collegati (restano salvi sui loro dispositivi).
                 </p>
               </>
@@ -110,7 +110,7 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
           {code && (
             entries.length === 0 ? (
               <Frame style={{ textAlign: "center", padding: "2.5rem 2rem" }}>
-                <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>
+                <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textMuted, margin: 0 }}>
                   Nessun personaggio ancora collegato. Appena un giocatore inserisce il codice sulla sua scheda, comparirà qui.
                 </p>
               </Frame>
@@ -134,11 +134,11 @@ export function CampaignPanel({ code, codeLoaded, entries, onGenerateCode, onBac
                             <span style={{ fontFamily: "'Cinzel', serif", fontSize: 16, color: C.textOnParchment }}>{c.name || "Senza nome"}</span>
                             {expanded ? <ChevronUp size={14} color={C.textMuted} /> : <ChevronDown size={14} color={C.textMuted} />}
                           </div>
-                          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "4px 0 0" }}>
+                          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "4px 0 0" }}>
                             {race?.name || "—"} · {cls ? `${cls.name} (liv. ${c.level || 1})` : "—"}
                           </p>
                           {stats?.maxHp != null && (
-                            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: stats.currentHp <= stats.maxHp / 3 ? C.danger : C.textMuted, margin: "2px 0 0" }}>
+                            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: stats.currentHp <= stats.maxHp / 3 ? C.danger : C.textMuted, margin: "2px 0 0" }}>
                               CA {stats.ac} · {stats.currentHp} / {stats.maxHp} PF
                             </p>
                           )}

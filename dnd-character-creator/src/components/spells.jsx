@@ -36,18 +36,18 @@ export function SpellRow({ spell, selected, disabled, onToggle }) {
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "baseline" }}>
-        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: selected ? C.wineDeep : C.textOnParchment }}>
-          {spell.name} <span style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 11.5, color: C.textMuted }}>— {SCHOOLS[spell.school]}</span>
+        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: selected ? C.wineDeep : C.textOnParchment }}>
+          {spell.name} <span style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 13, color: C.textMuted }}>— {SCHOOLS[spell.school]}</span>
         </span>
         {selected && <Check size={14} color={C.wine} style={{ flexShrink: 0 }} />}
       </div>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "3px 0 6px" }}>{spell.desc}</p>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "3px 0 6px" }}>{spell.desc}</p>
       {spell.crunch && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.wineDeep, margin: "0 0 6px", fontWeight: 600 }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 6px", fontWeight: 600 }}>
           <b style={{ fontFamily: "'Cinzel', serif", fontWeight: 700 }}>Meccanica:</b> {spell.crunch}
         </p>
       )}
-      <div style={{ display: "flex", gap: 14, flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 11, color: C.textMuted }}>
+      <div style={{ display: "flex", gap: 14, flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
         <span><b>Tempo:</b> {spell.time}</span>
         <span><b>Gittata:</b> {spell.range}</span>
         <span><b>Componenti:</b> {spell.comp}</span>
@@ -85,10 +85,10 @@ export function SlotTracker({ slots, slotsUsed, setDraft }) {
     return (
       <div style={{ marginBottom: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: 0 }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: 0 }}>
             {label}
           </h3>
-          <GhostButton onClick={() => restGroup(group)} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.4rem 0.8rem", fontSize: 12 }}>
+          <GhostButton onClick={() => restGroup(group)} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.4rem 0.8rem", fontSize: 13.5 }}>
             {restLabel} — recupera tutti
           </GhostButton>
         </div>
@@ -97,7 +97,7 @@ export function SlotTracker({ slots, slotsUsed, setDraft }) {
             const used = Math.min(slotsUsed[slotUsedKey(s)] || 0, s.total);
             return (
               <div key={slotUsedKey(s)} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment, minWidth: 90 }}>
+                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment, minWidth: 90 }}>
                   Livello {s.level}
                 </span>
                 <div style={{ display: "flex", gap: 6 }}>
@@ -117,7 +117,7 @@ export function SlotTracker({ slots, slotsUsed, setDraft }) {
                     );
                   })}
                 </div>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted }}>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>
                   {s.total - used}/{s.total} disponibili
                 </span>
               </div>
@@ -141,7 +141,7 @@ export function ResourceTracker({ resource, used, onSetUsed }) {
   if (resource.max == null) {
     return (
       <div style={{ marginBottom: 10 }}>
-        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{resource.name}: illimitati</span>
+        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{resource.name}: illimitati</span>
       </div>
     );
   }
@@ -153,10 +153,10 @@ export function ResourceTracker({ resource, used, onSetUsed }) {
     return (
       <div style={{ marginBottom: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, flexWrap: "wrap", gap: 6 }}>
-          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>
+          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>
             {resource.name}: <b>{remaining}</b> / {resource.max}
           </span>
-          <GhostButton onClick={() => setUsed(0)} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.3rem 0.7rem", fontSize: 11 }}>
+          <GhostButton onClick={() => setUsed(0)} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.3rem 0.7rem", fontSize: 12.5 }}>
             {resource.resetOn === "short" ? "Riposo breve" : "Riposo lungo"} — recupera
           </GhostButton>
         </div>
@@ -164,12 +164,12 @@ export function ResourceTracker({ resource, used, onSetUsed }) {
           <input
             type="number" min={0} max={remaining} value={amount}
             onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
-            style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
           <GhostButton
             onClick={() => setUsed(Math.min(resource.max, usedCount + Math.min(amount, remaining)))}
             disabled={remaining <= 0 || amount <= 0}
-            style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.35rem 0.8rem", fontSize: 12 }}
+            style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.35rem 0.8rem", fontSize: 13.5 }}
           >
             Spendi
           </GhostButton>
@@ -181,8 +181,8 @@ export function ResourceTracker({ resource, used, onSetUsed }) {
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, flexWrap: "wrap", gap: 6 }}>
-        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment }}>{resource.name}</span>
-        <GhostButton onClick={() => setUsed(0)} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.3rem 0.7rem", fontSize: 11 }}>
+        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{resource.name}</span>
+        <GhostButton onClick={() => setUsed(0)} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.3rem 0.7rem", fontSize: 12.5 }}>
           {resource.resetOn === "short" ? "Riposo breve" : "Riposo lungo"} — recupera
         </GhostButton>
       </div>
@@ -226,7 +226,7 @@ export function SpellManager({ draft, setDraft, showPlayTools = false }) {
     return (
       <div>
         <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Incantesimi</h2>
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted }}>
           {names} non lancia{entries.length > 1 ? "no" : ""} incantesimi
           {canBecomeThirdCaster ? ", a meno di scegliere la sottoclasse Cavaliere Mistico (Guerriero) o Furfante Arcano (Ladro)." : "."}
         </p>
@@ -241,7 +241,7 @@ export function SpellManager({ draft, setDraft, showPlayTools = false }) {
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Incantesimi</h2>
 
       {casterEntries.length > 1 && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 1rem", fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "0 0 1rem", fontStyle: "italic" }}>
           Personaggio multiclasse: gli slot incantesimo sono un'unica riserva condivisa, calcolata secondo la Tabella dell'Incantatore Multiclasse (5e 2014). Il Patto Magico del Warlock resta invece un pool separato, che si recupera con un riposo breve.
         </p>
       )}
@@ -250,7 +250,7 @@ export function SpellManager({ draft, setDraft, showPlayTools = false }) {
         <SlotTracker slots={slots} slotsUsed={draft.slotsUsed} setDraft={setDraft} />
       ) : (
         slots.length > 0 && (
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 18 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 18 }}>
             <b>Slot incantesimo:</b> {slots.map((s) => `liv. ${s.level} × ${s.total}${s.pact ? " (patto)" : ""}`).join(", ")}
           </p>
         )
@@ -262,7 +262,7 @@ export function SpellManager({ draft, setDraft, showPlayTools = false }) {
         type="text" placeholder="Cerca un incantesimo per nome…" value={spellSearch}
         onChange={(e) => setSpellSearch(e.target.value)}
         style={{
-          width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.5rem 0.7rem",
+          width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.5rem 0.7rem",
           borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 18, boxSizing: "border-box",
         }}
       />
@@ -306,7 +306,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
     return (
       <div style={{ marginBottom: 18 }}>
         {sectionHeader}
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted }}>
           Al livello {entry.level}, {cls.name} non ha ancora slot di incantesimo.
           {caster.halfCaster ? " Le classi semi-incantatrici come questa ottengono i primi incantesimi al 2° livello." : ""}
           {isThirdCaster(cls.id, chosenSubclassId) ? " I terzi-incantatori ottengono i primi incantesimi al 3° livello." : ""}
@@ -363,13 +363,13 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
   return (
     <div style={{ marginBottom: 22 }}>
       {sectionHeader}
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1.25rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted, margin: "0 0 1.25rem" }}>
         {cls.name} lancia gli incantesimi tramite {abilityName} ({fmtMod(abilityMod)}), livello {entry.level}.
       </p>
 
       {cls.id === "chierico" && (
         <div style={{ marginBottom: 18 }}>
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 8px" }}>Dominio Divino</p>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Dominio Divino</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {DIVINE_DOMAINS.map((d) => (
               <Pill key={d.id} active={store.domainId === d.id} onClick={() => updateStore((s) => ({ domainId: s.domainId === d.id ? null : d.id }))}>
@@ -378,7 +378,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
             ))}
           </div>
           {domain && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi di dominio sono sempre preparati gratuitamente e non contano nel numero di {caster.label.toLowerCase()}.
             </p>
           )}
@@ -395,7 +395,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
 
       {cls.id === "paladino" && (
         <div style={{ marginBottom: 18 }}>
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 8px" }}>Ordine Sacro</p>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Ordine Sacro</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {PALADIN_OATHS.map((o) => (
               <Pill key={o.id} active={store.oathId === o.id} onClick={() => updateStore((s) => ({ oathId: s.oathId === o.id ? null : o.id }))}>
@@ -404,7 +404,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
             ))}
           </div>
           {oath && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi dell'ordine sono sempre preparati gratuitamente e non contano nel numero di {caster.label.toLowerCase()}.
             </p>
           )}
@@ -413,7 +413,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
 
       {cls.id === "warlock" && (
         <div style={{ marginBottom: 18 }}>
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 8px" }}>Patto Ultramondano</p>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Patto Ultramondano</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {WARLOCK_PATRONS.map((p) => (
               <Pill key={p.id} active={store.patronId === p.id} onClick={() => updateStore((s) => ({ patronId: s.patronId === p.id ? null : p.id }))}>
@@ -422,7 +422,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
             ))}
           </div>
           {patron && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi del patto non sono gratuiti: si aggiungono semplicemente alla lista da cui puoi scegliere i tuoi {caster.label.toLowerCase()}.
             </p>
           )}
@@ -431,7 +431,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
 
       {cls.id === "druido" && (
         <div style={{ marginBottom: 18 }}>
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 8px" }}>Sottoclasse — Circolo della Terra o della Luna</p>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Sottoclasse — Circolo della Terra o della Luna</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {DRUID_CIRCLES.map((c) => (
               <Pill key={c.id} active={store.circleId === c.id} onClick={() => updateStore((s) => ({ circleId: s.circleId === c.id ? null : c.id }))}>
@@ -440,12 +440,12 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
             ))}
           </div>
           {circle && circle.id !== "circolo-luna" && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi del Circolo della Terra sono sempre preparati gratuitamente e non contano nel numero di {caster.label.toLowerCase()}.
             </p>
           )}
           {circle && circle.id === "circolo-luna" && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Il Circolo della Luna non concede incantesimi bonus: le sue feature riguardano la Forma Selvaggia in combattimento (vedi il Riepilogo/Scheda di gioco).
             </p>
           )}
@@ -460,19 +460,19 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       </div>
 
       {caster.type === "spellbook" && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, marginBottom: 14, fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, marginBottom: 14, fontStyle: "italic" }}>
           Il libro contiene {spellsLimit} incantesimi in tutto, ma ogni giorno se ne possono preparare solo {preparedPerDay} (Intelligenza {fmtMod(abilityMod)} + livello {entry.level}, minimo 1).
         </p>
       )}
       {caster.type === "prepared" && caster.halfCaster && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, marginBottom: 14, fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, marginBottom: 14, fontStyle: "italic" }}>
           Come semi-incantatore, prepara Carisma {fmtMod(abilityMod)} + metà livello (arrotondato per difetto), minimo 1.
         </p>
       )}
 
       {subclassLabel && subclassSpellObjects.length > 0 && (
         <>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.forestDeep, margin: "0 0 8px" }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.forestDeep, margin: "0 0 8px" }}>
             Incantesimi del {subclassLabel} — sempre preparati
           </h3>
           {subclassSpellObjects.map((s) => (
@@ -483,7 +483,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       )}
 
       {thirdCaster && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, marginBottom: 14, fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, marginBottom: 14, fontStyle: "italic" }}>
           Come terzo-incantatore, la lista è quella del Mago: {cls.id === "guerriero"
             ? "scegli soprattutto tra Ammaliamento ed Evocazione."
             : "scegli soprattutto tra Ammaliamento e Illusione."} Questa non è imposta come limite rigido dall'app.
@@ -493,27 +493,27 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       {cls.id === "warlock" && getUnlockedArcanumTiers(entry.level).length > 0 && (
         <>
           <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>Arcano Mistico</h3>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>Arcano Mistico</h3>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
             Un incantesimo fisso per livello, lanciabile una volta per riposo lungo senza consumare uno slot.
           </p>
           {getUnlockedArcanumTiers(entry.level).map((tier) => {
             const options = SPELLS.filter((s) => s.level === tier && s.classes.includes("warlock"));
             return (
               <div key={tier} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
-                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textOnParchment, minWidth: 90 }}>
+                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment, minWidth: 90 }}>
                   Incantesimo di {tier}° livello
                 </span>
                 <select
                   value={store.mysticArcanum?.[tier] || ""}
                   onChange={(e) => updateStore((s) => ({ mysticArcanum: { ...s.mysticArcanum, [tier]: e.target.value || null } }))}
-                  style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                  style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
                 >
                   <option value="">Scegli…</option>
                   {options.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
                 {options.length === 0 && (
-                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, fontStyle: "italic" }}>
+                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, fontStyle: "italic" }}>
                     Nessun incantesimo di {tier}° livello disponibile nel dataset per il Warlock.
                   </span>
                 )}
@@ -524,7 +524,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       )}
 
       {maxLevelReal > MAX_DATA_SPELL_LEVEL && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, marginBottom: 14, fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, marginBottom: 14, fontStyle: "italic" }}>
           A questo livello {cls.name} avrebbe accesso a incantesimi fino al {maxLevelReal}° livello: questa versione dell'app propone incantesimi selezionabili fino al {MAX_DATA_SPELL_LEVEL}°.
         </p>
       )}
@@ -541,8 +541,8 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       {cls.id === "paladino" && (
         <>
           <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>Colpo Divino</h3>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>Colpo Divino</h3>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
             Quando colpisci una creatura con un attacco in mischia con arma, puoi spendere uno slot incantesimo per infliggere danno radioso extra al bersaglio. Il danno aumenta di 1d8 se il bersaglio è un non morto o un immondo (massimo 6d8 in quel caso).
           </p>
           <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
@@ -557,7 +557,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
 
       {cantripsCount > 0 && filteredCantripOptions.length > 0 && (
         <>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>
             Trucchetti — scegline {cantripsCount}
           </h3>
           {filteredCantripOptions.map((s) => (
@@ -571,17 +571,17 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
         </>
       )}
 
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>
         {caster.label} — scegline {spellsLimit} tra i livelli 1–{dataMax}
       </h3>
       {Object.keys(byLevel).length === 0 && searchTerm && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, fontStyle: "italic" }}>
           Nessun incantesimo trovato per "{spellSearch}".
         </p>
       )}
       {Object.keys(byLevel).sort((a, b) => a - b).map((lvl) => (
         <div key={lvl} style={{ marginBottom: 14 }}>
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: "0 0 6px" }}>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 6px" }}>
             {lvl}° livello
           </p>
           {byLevel[lvl].map((s) => (

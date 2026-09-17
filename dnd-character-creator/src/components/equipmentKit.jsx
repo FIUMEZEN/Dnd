@@ -75,14 +75,14 @@ export function ClassEquipmentKit({ cls, setDraft }) {
                 ))}
               </div>
             ) : (
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{activeOption.label}</p>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>{activeOption.label}</p>
             )}
             {activeOption.category && (
               <select
                 value={categoryPicks[i] || choices[0]?.id || ""}
                 onChange={(e) => setCategoryPick(i, e.target.value)}
                 style={{
-                  marginTop: 6, width: "100%", maxWidth: 280, fontFamily: "'Spectral', serif", fontSize: 12.5,
+                  marginTop: 6, width: "100%", maxWidth: 280, fontFamily: "'Spectral', serif", fontSize: 14,
                   padding: "0.3rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                 }}
               >
@@ -92,7 +92,7 @@ export function ClassEquipmentKit({ cls, setDraft }) {
           </div>
         );
       })}
-      <GoldButton icon={Plus} onClick={addKit} style={{ padding: "0.5rem 1rem", fontSize: 12.5, marginTop: 4 }}>
+      <GoldButton icon={Plus} onClick={addKit} style={{ padding: "0.5rem 1rem", fontSize: 14, marginTop: 4 }}>
         Aggiungi il corredo di {cls.name}
       </GoldButton>
     </div>
@@ -110,7 +110,7 @@ export function BackgroundEquipmentKit({ bg, setDraft }) {
     }));
   };
   return (
-    <GoldButton icon={Plus} onClick={addKit} style={{ padding: "0.5rem 1rem", fontSize: 12.5, marginTop: 10 }}>
+    <GoldButton icon={Plus} onClick={addKit} style={{ padding: "0.5rem 1rem", fontSize: 14, marginTop: 10 }}>
       Aggiungi il corredo di {bg.name}
     </GoldButton>
   );

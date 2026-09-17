@@ -53,7 +53,7 @@ export function StepRace({ draft, setDraft }) {
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Scegli la stirpe</h2>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1.25rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted, margin: "0 0 1.25rem" }}>
         La razza determina bonus alle caratteristiche, velocità e tratti innati.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1.5rem" }}>
@@ -69,7 +69,7 @@ export function StepRace({ draft, setDraft }) {
               title={fam.name}
               subtitle={single ? Object.entries(repr.bonuses).map(([k, v]) => `${k.toUpperCase()} +${v}`).join(", ") : `${fam.members.length} sottorazze`}
             >
-              <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>
                 {single ? repr.blurb : fam.members.map((m) => m.subraceName || m.name).join(" · ")}
               </p>
             </OptionCard>
@@ -80,7 +80,7 @@ export function StepRace({ draft, setDraft }) {
       {activeFamily && activeFamily.members.length > 1 && (
         <div style={{ marginTop: "1.25rem" }}>
           <Divider />
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 8px" }}>
             Sottorazza — {activeFamily.name}
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1.5rem" }}>
@@ -92,7 +92,7 @@ export function StepRace({ draft, setDraft }) {
                 title={r.subraceName || r.name}
                 subtitle={Object.entries(r.bonuses).map(([k, v]) => `${k.toUpperCase()} +${v}`).join(", ") || "Nessun bonus di caratteristica fisso"}
               >
-                <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{r.blurb}</p>
+                <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{r.blurb}</p>
               </OptionCard>
             ))}
           </div>
@@ -102,18 +102,18 @@ export function StepRace({ draft, setDraft }) {
       {race && (
         <div style={{ marginTop: "1.25rem" }}>
           <Divider />
-          <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment }}>
+          <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment }}>
             <span><b>Taglia:</b> {race.size}</span>
             <span><b>Velocità:</b> {ftToM(race.speed)} m</span>
             <span><b>Scurovisione:</b> {race.dark ? "Sì (18 m)" : "No"}</span>
           </div>
-          <ul style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginTop: 10, paddingLeft: 18 }}>
+          <ul style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginTop: 10, paddingLeft: 18 }}>
             {race.traits.map((t, i) => <li key={i} style={{ marginBottom: 4 }}>{t}</li>)}
           </ul>
 
           {race.extraAbilityChoice && (
             <div style={{ marginTop: 10 }}>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 8 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
                 Scegli {race.extraAbilityChoice.count} caratteristiche a cui assegnare +1.
               </p>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -128,7 +128,7 @@ export function StepRace({ draft, setDraft }) {
           )}
           {race.extraSkillChoice && (
             <div style={{ marginTop: 10 }}>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 8 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
                 Scegli {race.extraSkillChoice.count} abilità aggiuntive.
               </p>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -149,14 +149,14 @@ export function StepRace({ draft, setDraft }) {
           ))}
           {race.extraFeatChoice && (
             <div style={{ marginTop: 10 }}>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 8 }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
                 Scegli un talento (bonus di razza).
               </p>
               <select
                 value={draft.raceFeatId || ""}
                 onChange={(e) => setDraft((d) => ({ ...d, raceFeatId: e.target.value || null, raceFeatAbilityChoice: null }))}
                 style={{
-                  width: "100%", maxWidth: 420, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.5rem",
+                  width: "100%", maxWidth: 420, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.5rem",
                   borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8,
                 }}
               >
@@ -168,11 +168,11 @@ export function StepRace({ draft, setDraft }) {
               {raceFeat && (
                 <div style={{ marginBottom: 8 }}>
                   {raceFeat.prerequisite && (
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, fontStyle: "italic", color: C.wine, margin: "0 0 4px" }}>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, fontStyle: "italic", color: C.wine, margin: "0 0 4px" }}>
                       Prerequisito: {raceFeat.prerequisite}
                     </p>
                   )}
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{raceFeat.desc}</p>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>{raceFeat.desc}</p>
                 </div>
               )}
               {raceFeat && raceFeat.abilityChoice && (
@@ -180,7 +180,7 @@ export function StepRace({ draft, setDraft }) {
                   value={draft.raceFeatAbilityChoice || ""}
                   onChange={(e) => setDraft((d) => ({ ...d, raceFeatAbilityChoice: e.target.value || null }))}
                   style={{
-                    fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem 0.5rem",
+                    fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem",
                     borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                   }}
                 >
@@ -218,12 +218,12 @@ export function StepClass({ draft, setDraft }) {
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Scegli la classe</h2>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted, margin: "0 0 1rem" }}>
         La classe definisce dado vita, competenze e stile di combattimento.
       </p>
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: "1.25rem" }}>
-        <label style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted }}>Livello del personaggio</label>
+        <label style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted }}>Livello del personaggio</label>
         <input
           type="range" min={1} max={20} value={draft.level}
           onChange={(e) => setDraft((d) => ({ ...d, level: Number(e.target.value) }))}
@@ -240,7 +240,7 @@ export function StepClass({ draft, setDraft }) {
             title={c.name}
             subtitle={`Dado Vita: d${c.hitDie} · ${c.primary}`}
           >
-            <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{c.blurb}</p>
+            <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{c.blurb}</p>
           </OptionCard>
         ))}
       </div>
@@ -248,18 +248,18 @@ export function StepClass({ draft, setDraft }) {
       {cls && (
         <div style={{ marginTop: "1.25rem" }}>
           <Divider />
-          <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 12 }}>
+          <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 12 }}>
             <span><b>Dado vita:</b> d{cls.hitDie}</span>
             <span><b>Tiri salvezza:</b> {cls.saves.join(", ")}</span>
           </div>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, margin: "0 0 4px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, margin: "0 0 4px" }}>
             <b>Armature:</b> {cls.armor}
           </p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, margin: "0 0 14px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, margin: "0 0 14px" }}>
             <b>Armi:</b> {cls.weapons}
           </p>
 
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 8 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
             Scegli {cls.skillChoices} competenze ({draft.classSkills.length}/{cls.skillChoices}):
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -298,16 +298,16 @@ export function StepClass({ draft, setDraft }) {
       {cls && !["chierico", "paladino", "warlock", "druido"].includes(cls.id) && getSubclassOptions(cls.id).length > 0 && (
         <div style={{ marginTop: "1.5rem" }}>
           <Divider />
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
             Sottoclasse — {cls.name}
           </h3>
           {draft.level < (SUBCLASS_CHOICE_LEVEL[cls.id] || 3) ? (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: 0 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: 0 }}>
               Disponibile dal livello {SUBCLASS_CHOICE_LEVEL[cls.id] || 3}.
             </p>
           ) : (
             <>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
                 Scegli la sottoclasse del tuo personaggio.
               </p>
               <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
@@ -322,7 +322,7 @@ export function StepClass({ draft, setDraft }) {
                     })}
                     title={s.name}
                   >
-                    <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
+                    <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
                   </OptionCard>
                 ))}
               </div>
@@ -383,7 +383,7 @@ export function StepAbilities({ draft, setDraft }) {
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Genera le caratteristiche</h2>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1.25rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted, margin: "0 0 1.25rem" }}>
         Scegli un metodo, poi assegna i punteggi alle sei caratteristiche.
       </p>
 
@@ -394,12 +394,12 @@ export function StepAbilities({ draft, setDraft }) {
         <Pill active={draft.abilityMethod === "manual"} onClick={() => setMethod("manual")}>Inserimento libero</Pill>
       </div>
       {draft.abilityMethod === "custom" && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: getPointBuySpent(draft.baseScores) === POINT_BUY_TOTAL ? C.forestDeep : C.danger, margin: "0 0 16px" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: getPointBuySpent(draft.baseScores) === POINT_BUY_TOTAL ? C.forestDeep : C.danger, margin: "0 0 16px" }}>
           Point Buy: {getPointBuySpent(draft.baseScores)}/{POINT_BUY_TOTAL} punti spesi. Punteggi consentiti: 8–15 prima dei bonus razziali.
         </p>
       )}
       {draft.abilityMethod === "manual" && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 16px" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 16px" }}>
           Scrivi direttamente i punteggi base che vuoi (utile per personaggi già esistenti): nessun vincolo di regole o di punti.
         </p>
       )}
@@ -410,7 +410,7 @@ export function StepAbilities({ draft, setDraft }) {
             {draft.rolledPool ? "Tira di nuovo (4d6, scarta il minore)" : "Tira i dadi (4d6, scarta il minore)"}
           </GhostButton>
           {draft.rolledPool && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, marginTop: 8 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, marginTop: 8 }}>
               Punteggi ottenuti: {[...draft.rolledPool].sort((a, b) => b - a).join(", ")}
             </p>
           )}
@@ -424,7 +424,7 @@ export function StepAbilities({ draft, setDraft }) {
           const showFinal = base !== "" && base !== undefined;
           return (
             <div key={a.key} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.85rem" }}>
-              <div style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 6 }}>
+              <div style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 6 }}>
                 {a.name}
                 {bonus[a.key] ? <span style={{ color: C.wine }}> +{bonus[a.key]} razza</span> : null}
                 {asiBonus[a.key] ? <span style={{ color: C.forestDeep }}> +{asiBonus[a.key]} ASI</span> : null}
@@ -435,7 +435,7 @@ export function StepAbilities({ draft, setDraft }) {
                   onChange={(e) => setBase(a.key, e.target.value)}
                   disabled={!pool}
                   style={{
-                    width: "100%", fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.4rem",
+                    width: "100%", fontFamily: "'Spectral', serif", fontSize: 15.5, padding: "0.4rem",
                     borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                   }}
                 >
@@ -455,20 +455,20 @@ export function StepAbilities({ draft, setDraft }) {
                   type="number" min={1} max={30} value={base === "" || base === undefined ? "" : base}
                   onChange={(e) => setBase(a.key, e.target.value)}
                   placeholder="—"
-                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15.5, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
                 />
               ) : (
                 <select
                   value={base === "" || base === undefined ? "" : base}
                   onChange={(e) => setBase(a.key, e.target.value === "" ? "" : Number(e.target.value))}
-                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15.5, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
                 >
                   <option value="">—</option>
                   {Object.keys(POINT_BUY_COST).map((v) => <option key={v} value={v}>{v} ({POINT_BUY_COST[v]} pt)</option>)}
                 </select>
               )}
               {showFinal && (
-                <div style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, marginTop: 6 }}>
+                <div style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, marginTop: 6 }}>
                   Totale {final} ({fmtMod(mod(final))})
                 </div>
               )}
@@ -497,14 +497,14 @@ export function StepAbilities({ draft, setDraft }) {
 export function FlavorField({ label, value, onChange, suggestions }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.wineDeep, margin: "0 0 6px" }}>{label}</p>
+      <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 6px" }}>{label}</p>
       <textarea
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         rows={2}
         placeholder="Scrivi liberamente, oppure scegli un suggerimento qui sotto…"
         style={{
-          width: "100%", fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.5rem 0.6rem",
+          width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem",
           borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box",
         }}
       />
@@ -516,7 +516,7 @@ export function FlavorField({ label, value, onChange, suggestions }) {
               onClick={() => onChange(s)}
               title="Usa questo suggerimento"
               style={{
-                cursor: "pointer", textAlign: "left", fontFamily: "'Spectral', serif", fontSize: 11.5,
+                cursor: "pointer", textAlign: "left", fontFamily: "'Spectral', serif", fontSize: 13,
                 padding: "0.3rem 0.55rem", borderRadius: 3, border: `1px solid ${C.parchmentLine}`,
                 background: "rgba(255,255,255,0.5)", color: C.textMuted, maxWidth: 260,
               }}
@@ -554,7 +554,7 @@ export function StepBackground({ draft, setDraft }) {
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Scegli il background</h2>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1.25rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted, margin: "0 0 1.25rem" }}>
         Racconta da dove viene il personaggio prima dell'avventura.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1.5rem" }}>
@@ -573,7 +573,7 @@ export function StepBackground({ draft, setDraft }) {
           title="Personalizzato"
           subtitle="Costruito da zero"
         >
-          <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>
             Definisci competenze, corredo e tratto seguendo la regola "Personalizzare un Background" del PHB 2014.
           </p>
         </OptionCard>
@@ -582,16 +582,16 @@ export function StepBackground({ draft, setDraft }) {
       {isCustom && (
         <div style={{ marginTop: "1.25rem" }}>
           <Divider />
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>Background personalizzato</p>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 8px" }}>Background personalizzato</p>
 
           <input
             type="text" placeholder="Nome del background (es. Cacciatore di Taglie)"
             value={draft.customBackgroundName || ""}
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundName: e.target.value }))}
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
           />
 
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 8 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 8 }}>
             Scegli 2 competenze ({(draft.customBackgroundSkills || []).length}/2).
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
@@ -611,7 +611,7 @@ export function StepBackground({ draft, setDraft }) {
             })}
           </div>
 
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 4 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 4 }}>
             Corredo di partenza (una voce per riga)
           </p>
           <textarea
@@ -619,34 +619,34 @@ export function StepBackground({ draft, setDraft }) {
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundEquipment: e.target.value }))}
             rows={3}
             placeholder={"Es.\nUn set di attrezzi da scasso\nUna borsa con 10 mo"}
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, resize: "vertical", boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, resize: "vertical", boxSizing: "border-box" }}
           />
 
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 4 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 4 }}>
             Strumenti o lingua aggiuntivi (opzionale)
           </p>
           <input
             type="text" placeholder="Es. Strumenti da falegname, oppure una lingua a scelta"
             value={draft.customBackgroundToolsLanguages || ""}
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundToolsLanguages: e.target.value }))}
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
           />
 
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, marginBottom: 4 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 4 }}>
             Tratto di background — nome
           </p>
           <input
             type="text" placeholder="Es. Rete di Informatori"
             value={draft.customBackgroundFeatureName || ""}
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundFeatureName: e.target.value }))}
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8, boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8, boxSizing: "border-box" }}
           />
           <textarea
             value={draft.customBackgroundFeatureDesc || ""}
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundFeatureDesc: e.target.value }))}
             rows={2}
             placeholder="Cosa concede meccanicamente o narrativamente questo tratto? Concordalo con il Master."
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box" }}
           />
         </div>
       )}
@@ -654,7 +654,7 @@ export function StepBackground({ draft, setDraft }) {
       {!isCustom && bg && (
         <div style={{ marginTop: "1.25rem" }}>
           <Divider />
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, margin: "0 0 4px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, margin: "0 0 4px" }}>
             <b>Tratto — {bg.feature}:</b> {bg.featureDesc}
           </p>
           {(bg.proficiencyChoices || []).map((spec) => (
@@ -671,10 +671,10 @@ export function StepBackground({ draft, setDraft }) {
       {bg && (
         <div style={{ marginTop: "1.25rem" }}>
           <Divider />
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 4px" }}>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 4px" }}>
             Personalità
           </p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "0 0 12px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 12px" }}>
             Facoltativo, ma dà spessore al personaggio: due tratti della personalità, un ideale, un legame e un difetto.
           </p>
           <FlavorField label="Tratto della personalità 1" value={draft.personalityTrait1} onChange={(v) => setDraft((d) => ({ ...d, personalityTrait1: v }))} suggestions={bg.personalityTraits} />
@@ -697,26 +697,26 @@ export function StepEquipment({ draft, setDraft }) {
   return (
     <div>
       <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment, margin: "0 0 4px" }}>Equipaggiamento</h2>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 1.25rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted, margin: "0 0 1.25rem" }}>
         Il corredo suggerito alla creazione, e l'inventario che puoi aggiornare in ogni momento — anche durante la partita.
       </p>
 
       {cls && bg ? (
         <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1.5rem", marginBottom: 20 }}>
           <div>
-            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>Corredo suggerito da {cls.name}</h3>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 8px" }}>Corredo suggerito da {cls.name}</h3>
             <ClassEquipmentKit cls={cls} setDraft={setDraft} />
           </div>
           <div>
-            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.forestDeep, margin: "0 0 8px" }}>Corredo suggerito da {bg.name}</h3>
-            <ul style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, paddingLeft: 18, margin: "0 0 4px" }}>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.forestDeep, margin: "0 0 8px" }}>Corredo suggerito da {bg.name}</h3>
+            <ul style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, paddingLeft: 18, margin: "0 0 4px" }}>
               {bg.equipment.map((e, i) => <li key={i} style={{ marginBottom: 4 }}>{e}</li>)}
             </ul>
             <BackgroundEquipmentKit bg={bg} setDraft={setDraft} />
           </div>
         </div>
       ) : (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, marginBottom: 20 }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, marginBottom: 20 }}>
           Completa Classe e Background per vedere anche il corredo suggerito.
         </p>
       )}

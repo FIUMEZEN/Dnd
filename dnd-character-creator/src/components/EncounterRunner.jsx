@@ -54,16 +54,16 @@ function CreatureCombatHp({ creature, maxHp, onUpdate }) {
     <div>
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <span style={{ fontFamily: "'Cinzel', serif", fontSize: 17, color: current <= maxHp / 3 ? C.danger : C.textOnParchment }}>
-          {current} / {maxHp} PF{temp > 0 ? <span style={{ color: C.forestDeep, fontSize: 13 }}> (+{temp} temp)</span> : null}
+          {current} / {maxHp} PF{temp > 0 ? <span style={{ color: C.forestDeep, fontSize: 14.5 }}> (+{temp} temp)</span> : null}
         </span>
         <input
           type="number" min={0} value={amount}
           onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
-          style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+          style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
         />
-        <GhostButton onClick={applyDamage} style={{ borderColor: C.danger, color: C.danger, padding: "0.3rem 0.7rem", fontSize: 12 }}>Danno</GhostButton>
-        <GoldButton onClick={applyHeal} style={{ padding: "0.3rem 0.7rem", fontSize: 12 }}>Cura</GoldButton>
-        <GhostButton onClick={addTemp} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.3rem 0.7rem", fontSize: 12 }}>+ Temp</GhostButton>
+        <GhostButton onClick={applyDamage} style={{ borderColor: C.danger, color: C.danger, padding: "0.3rem 0.7rem", fontSize: 13.5 }}>Danno</GhostButton>
+        <GoldButton onClick={applyHeal} style={{ padding: "0.3rem 0.7rem", fontSize: 13.5 }}>Cura</GoldButton>
+        <GhostButton onClick={addTemp} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.3rem 0.7rem", fontSize: 13.5 }}>+ Temp</GhostButton>
       </div>
       <HpBar current={current} max={maxHp} temp={temp} />
     </div>
@@ -78,26 +78,26 @@ function CustomCombatHp({ combatant, onChange }) {
   return (
     <div>
       <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
           CA
           <input
             type="number" value={combatant.customAc}
             onChange={(e) => onChange({ ...combatant, customAc: Number(e.target.value) || 0 })}
-            style={{ width: 48, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ width: 48, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
         </label>
-        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
           PF
           <input
             type="number" value={current}
             onChange={(e) => onChange({ ...combatant, customCurrentHp: Math.max(0, Number(e.target.value) || 0) })}
-            style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
           /
           <input
             type="number" value={max}
             onChange={(e) => onChange({ ...combatant, customMaxHp: Math.max(0, Number(e.target.value) || 0) })}
-            style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
         </label>
       </div>
@@ -124,7 +124,7 @@ function ConditionTags({ conditions, onChange }) {
           onClick={() => remove(cond)}
           title="Clic per rimuovere"
           style={{
-            fontFamily: "'Spectral', serif", fontSize: 11.5, padding: "0.2rem 0.55rem", borderRadius: 10,
+            fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.2rem 0.55rem", borderRadius: 10,
             background: "rgba(125, 31, 56, 0.12)", color: C.wineDeep, border: `1px solid ${C.wine}`, cursor: "pointer",
           }}
         >
@@ -136,7 +136,7 @@ function ConditionTags({ conditions, onChange }) {
           <select
             defaultValue=""
             onChange={(e) => { add(e.target.value); setPicking(false); }}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 12, padding: "0.25rem 0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.25rem 0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           >
             <option value="" disabled>Scegli condizione…</option>
             {CONDITIONS.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -145,12 +145,12 @@ function ConditionTags({ conditions, onChange }) {
             type="text" placeholder="…o libera" value={custom}
             onChange={(e) => setCustom(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && custom.trim()) { add(custom); setCustom(""); setPicking(false); } }}
-            style={{ width: 100, fontFamily: "'Spectral', serif", fontSize: 12, padding: "0.25rem 0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ width: 100, fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.25rem 0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
-          <GhostButton onClick={() => setPicking(false)} style={{ padding: "0.2rem 0.5rem", fontSize: 11 }}>Fatto</GhostButton>
+          <GhostButton onClick={() => setPicking(false)} style={{ padding: "0.2rem 0.5rem", fontSize: 12.5 }}>Fatto</GhostButton>
         </div>
       ) : (
-        <GhostButton onClick={() => setPicking(true)} icon={Plus} style={{ padding: "0.2rem 0.55rem", fontSize: 11, borderColor: C.parchmentLine, color: C.textMuted }}>
+        <GhostButton onClick={() => setPicking(true)} icon={Plus} style={{ padding: "0.2rem 0.55rem", fontSize: 12.5, borderColor: C.parchmentLine, color: C.textMuted }}>
           Condizione
         </GhostButton>
       )}
@@ -306,16 +306,16 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
           <div style={{ minWidth: 0, flex: 1 }}>
-            <GhostButton icon={ChevronLeft} onClick={onBack} style={{ padding: "0.35rem 0.7rem", marginBottom: 6, fontSize: 12 }}>
+            <GhostButton icon={ChevronLeft} onClick={onBack} style={{ padding: "0.35rem 0.7rem", marginBottom: 6, fontSize: 13.5 }}>
               Campagna
             </GhostButton>
             <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 19, color: C.cream, margin: 0 }}>Incontro</h1>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.creamMuted, margin: "2px 0 0" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.creamMuted, margin: "2px 0 0" }}>
               Round {encounter.round || 1} · {combatants.length} combattenti
             </p>
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 6, flexShrink: 0 }}>
-            <GoldButton icon={ChevronRight} onClick={advanceTurn} disabled={combatants.length === 0} style={{ padding: "0.5rem 0.8rem", fontSize: 12, flexDirection: "row-reverse" }}>
+            <GoldButton icon={ChevronRight} onClick={advanceTurn} disabled={combatants.length === 0} style={{ padding: "0.5rem 0.8rem", fontSize: 13.5, flexDirection: "row-reverse" }}>
               Turno succ.
             </GoldButton>
             <div style={{ position: "relative" }}>
@@ -333,7 +333,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                     <input
                       type="text" placeholder="Nome dell'incontro (opzionale)" value={encounter.name || ""}
                       onChange={(e) => setEncounter((en) => ({ ...en, name: e.target.value }))}
-                      style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                      style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
                     />
                     <GhostButton
                       icon={Dices} style={{ justifyContent: "flex-start", borderColor: C.parchmentLine, color: C.textMuted }}
@@ -363,7 +363,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
 
       {(assessment.partySize > 0 || assessment.monsterCount > 0) && (
         <Frame style={{ marginBottom: 18 }}>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 10px" }}>Bilanciamento dell'Incontro</h3>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 10px" }}>Bilanciamento dell'Incontro</h3>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: assessment.difficulty ? 10 : 0 }}>
             <MetricBox label="PE mostri" value={assessment.rawXp} hint={`× ${assessment.multiplier} (${assessment.monsterCount} mostri) = ${assessment.adjustedXp}`} />
             <MetricBox label="Soglia Facile" value={assessment.thresholds.easy} />
@@ -372,7 +372,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
             <MetricBox label="Soglia Mortale" value={assessment.thresholds.deadly} />
           </div>
           {assessment.difficulty && (
-            <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: assessment.difficulty === "Mortale" ? C.danger : C.wineDeep, margin: 0 }}>
+            <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: assessment.difficulty === "Mortale" ? C.danger : C.wineDeep, margin: 0 }}>
               Incontro: {assessment.difficulty} (per {assessment.partySize} PG)
             </p>
           )}
@@ -382,20 +382,20 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
       {characterCombatants.length > 0 && (
         <Frame style={{ marginBottom: 18 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 10 }}>
-            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: 0 }}>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: 0 }}>
               Assegna PE — {assessment.rawXp} totali dai mostri presenti
             </h3>
             <GoldButton onClick={assignXp} disabled={assessment.rawXp === 0}>Assegna</GoldButton>
           </div>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             {characterCombatants.map(({ source }, i) => (
-              <label key={source.id} style={{ display: "flex", gap: 8, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment }}>
+              <label key={source.id} style={{ display: "flex", gap: 8, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment }}>
                 {source.name || "PG"} ({source.xp || 0} PE attuali)
                 <input
                   type="number"
                   value={xpOverrides[source.id] ?? autoShares[i] ?? 0}
                   onChange={(e) => setXpOverrides((prev) => ({ ...prev, [source.id]: Number(e.target.value) || 0 }))}
-                  style={{ width: 70, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                  style={{ width: 70, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
                 />
               </label>
             ))}
@@ -412,7 +412,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
             marginBottom: addOpen ? 10 : 0, minHeight: 32,
           }}
         >
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: 0 }}>Aggiungi combattenti</h3>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: 0 }}>Aggiungi combattenti</h3>
           {addOpen ? <ChevronUp size={16} color={C.wineDeep} /> : <ChevronDown size={16} color={C.wineDeep} />}
         </button>
         {addOpen && (
@@ -420,7 +420,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
           <select
             value={addCreatureId} onChange={(e) => setAddCreatureId(e.target.value)}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           >
             <option value="">Scegli una Creatura…</option>
             {availableCreatures.map((c) => <option key={c.id} value={c.id}>{c.name || "Senza nome"}</option>)}
@@ -431,7 +431,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
             <>
               <select
                 value={addCampaignId} onChange={(e) => setAddCampaignId(e.target.value)}
-                style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
               >
                 <option value="">Scegli un PG dalla Campagna…</option>
                 {availableCampaignEntries.map((e) => <option key={e.character_id} value={e.character_id}>{e.data?.name || "Senza nome"}</option>)}
@@ -442,7 +442,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
 
           <select
             value={addBestiaryKey} onChange={(e) => setAddBestiaryKey(e.target.value)}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", maxWidth: 220 }}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", maxWidth: 220 }}
           >
             <option value="">Scegli dal Bestiario…</option>
             {BESTIARY_SORTED.map((m) => <option key={m.key} value={m.key}>{m.name} (GS {m.cr})</option>)}
@@ -452,28 +452,28 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
           </GhostButton>
         </div>
 
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, fontStyle: "italic", margin: "2px 0 10px" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, fontStyle: "italic", margin: "2px 0 10px" }}>
           "Dal Bestiario" e "Mostro veloce" creano una vera Creatura (finisce anche nella tua libreria in Sezione Master e conta nel Bilanciamento PE); il "Combattente ad-hoc" qui sotto resta solo in questo Incontro e non ha un GS.
         </p>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: 14 }}>
           <input
             type="text" placeholder="Mostro veloce (nome)" value={quickName}
             onChange={(e) => setQuickName(e.target.value)}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
-          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
             GS
-            <select value={quickCr} onChange={(e) => setQuickCr(e.target.value)} style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}>
+            <select value={quickCr} onChange={(e) => setQuickCr(e.target.value)} style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}>
               {CR_OPTIONS.map((cr) => <option key={cr} value={cr}>{cr}</option>)}
             </select>
           </label>
-          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
             CA
-            <input type="number" value={quickAc} onChange={(e) => setQuickAc(e.target.value)} style={{ width: 50, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
+            <input type="number" value={quickAc} onChange={(e) => setQuickAc(e.target.value)} style={{ width: 50, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
           </label>
-          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
             PF
-            <input type="number" value={quickHp} onChange={(e) => setQuickHp(e.target.value)} style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
+            <input type="number" value={quickHp} onChange={(e) => setQuickHp(e.target.value)} style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
           </label>
           <GhostButton icon={Plus} onClick={addQuickMonster} disabled={!quickName.trim()} style={{ borderColor: C.wine, color: C.wineDeep }}>Aggiungi mostro</GhostButton>
         </div>
@@ -481,15 +481,15 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
           <input
             type="text" placeholder="Combattente ad-hoc (nome)" value={customName}
             onChange={(e) => setCustomName(e.target.value)}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
-          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
             CA
-            <input type="number" value={customAc} onChange={(e) => setCustomAc(e.target.value)} style={{ width: 50, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
+            <input type="number" value={customAc} onChange={(e) => setCustomAc(e.target.value)} style={{ width: 50, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
           </label>
-          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+          <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
             PF
-            <input type="number" value={customHp} onChange={(e) => setCustomHp(e.target.value)} style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
+            <input type="number" value={customHp} onChange={(e) => setCustomHp(e.target.value)} style={{ width: 56, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }} />
           </label>
           <GhostButton icon={Plus} onClick={addCustom} disabled={!customName.trim()} style={{ borderColor: C.wine, color: C.wineDeep }}>Aggiungi</GhostButton>
         </div>
@@ -501,7 +501,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
         <Frame style={{ textAlign: "center", padding: "3rem 2rem" }}>
           <Sword size={28} color={C.gold} style={{ marginBottom: 10 }} />
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 16, color: C.textOnParchment, margin: 0 }}>Nessun combattente nell'Incontro</p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "6px 0 0" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textMuted, margin: "6px 0 0" }}>
             Aggiungi PG dalla Campagna, Creature o combattenti ad-hoc qui sopra per iniziare.
           </p>
         </Frame>
@@ -555,7 +555,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                   <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                     <CombatantIcon refType={combatant.refType} color={C.wine} />
                     {isActive && (
-                      <span style={{ fontFamily: "'Cinzel', serif", fontSize: 11, color: C.inkDeep, background: C.gold, borderRadius: 10, padding: "0.15rem 0.5rem", letterSpacing: 0.5 }}>
+                      <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.inkDeep, background: C.gold, borderRadius: 10, padding: "0.15rem 0.5rem", letterSpacing: 0.5 }}>
                         ▶ TURNO
                       </span>
                     )}
@@ -563,26 +563,26 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                       {view.name}{view.isDead ? " · MORTO" : ""}{view.missing ? " (mancante)" : ""}
                     </span>
                     {view.ac != null && !collapsed && (
-                      <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>CA {view.ac}</span>
+                      <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>CA {view.ac}</span>
                     )}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     {collapsible && (
-                      <GhostButton onClick={toggleDeadExpanded} style={{ padding: "0.3rem 0.5rem", fontSize: 12, borderColor: C.parchmentLine, color: C.textMuted }}>
+                      <GhostButton onClick={toggleDeadExpanded} style={{ padding: "0.3rem 0.5rem", fontSize: 13.5, borderColor: C.parchmentLine, color: C.textMuted }}>
                         {collapsed ? <ChevronDown size={13} /> : <ChevronUp size={13} />}
                       </GhostButton>
                     )}
                     {!collapsed && (
                       <>
-                        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+                        <label style={{ display: "flex", gap: 6, alignItems: "center", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
                           Iniziativa
                           <input
                             type="number" value={combatant.initiative ?? ""}
                             onChange={(e) => updateCombatant(combatant.id, { initiative: e.target.value === "" ? null : Number(e.target.value) })}
-                            style={{ width: 52, fontFamily: "'Cinzel', serif", fontSize: 14, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", textAlign: "center" }}
+                            style={{ width: 52, fontFamily: "'Cinzel', serif", fontSize: 15.5, padding: "0.3rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", textAlign: "center" }}
                           />
                         </label>
-                        <GhostButton onClick={() => rollInitiativeFor(combatant)} style={{ padding: "0.3rem 0.5rem", fontSize: 12, borderColor: C.parchmentLine }}>
+                        <GhostButton onClick={() => rollInitiativeFor(combatant)} style={{ padding: "0.3rem 0.5rem", fontSize: 13.5, borderColor: C.parchmentLine }}>
                           🎲{view.initiativeMod ? ` ${fmtMod(view.initiativeMod)}` : ""}
                         </GhostButton>
                       </>
@@ -594,7 +594,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                 </div>
 
                 {collapsed && (
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "4px 0 0" }}>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>
                     0 / {view.maxHp} PF
                   </p>
                 )}
@@ -614,7 +614,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                 )}
                 {!collapsed && isCampaignPg && (
                   <>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 11, color: C.textMuted, fontStyle: "italic", margin: "0 0 6px" }}>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, fontStyle: "italic", margin: "0 0 6px" }}>
                       PG di Campagna: i PF qui sotto sono solo per te, non toccano la scheda del giocatore.
                     </p>
                     <HpTracker maxHp={view.maxHp} draft={campaignDraft} setDraft={setCampaignDraft} conMod={conMod} />
@@ -629,7 +629,7 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                   <CustomCombatHp combatant={combatant} onChange={(next) => updateCombatant(combatant.id, next)} />
                 )}
                 {!collapsed && view.missing && (
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.danger, margin: 0 }}>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger, margin: 0 }}>
                     La scheda originale non è più disponibile (probabilmente eliminata). Rimuovi questo combattente dall'Incontro.
                   </p>
                 )}

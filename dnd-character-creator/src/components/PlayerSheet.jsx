@@ -211,18 +211,18 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
           <div style={{ minWidth: 0, flex: 1 }}>
-            <GhostButton icon={ChevronLeft} onClick={onBack} style={{ padding: "0.35rem 0.7rem", marginBottom: 6, fontSize: 12 }}>
+            <GhostButton icon={ChevronLeft} onClick={onBack} style={{ padding: "0.35rem 0.7rem", marginBottom: 6, fontSize: 13.5 }}>
               Indietro
             </GhostButton>
             <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 19, color: C.cream, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
               {draft.name || "Personaggio senza nome"}
             </h1>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.creamMuted, margin: "2px 0 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.creamMuted, margin: "2px 0 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
               {race ? race.name : "—"} · {cls ? `${cls.name} ${draft.level}` : "—"}{subclass ? ` (${subclass.name})` : ""}{mcCls ? ` / ${mcCls.name} ${mc.level}` : ""}
             </p>
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 6, flexShrink: 0 }}>
-            <GoldButton icon={saving ? Loader2 : Save} disabled={saving || !dirty} onClick={handleSave} style={{ padding: "0.5rem 0.8rem", fontSize: 12 }}>
+            <GoldButton icon={saving ? Loader2 : Save} disabled={saving || !dirty} onClick={handleSave} style={{ padding: "0.5rem 0.8rem", fontSize: 13.5 }}>
               {saving ? "…" : dirty ? "Salva" : "Salvato"}
             </GoldButton>
             <div style={{ position: "relative" }}>
@@ -238,12 +238,12 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
                     }}
                   >
                     {cls && draft.level > 1 && (
-                      <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("primary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 12, justifyContent: "flex-start" }}>
+                      <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("primary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 13.5, justifyContent: "flex-start" }}>
                         Torna indietro di un livello{mcCls ? ` — ${cls.name}` : ""}
                       </GhostButton>
                     )}
                     {mcCls && mc.level > 1 && (
-                      <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("secondary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 12, justifyContent: "flex-start" }}>
+                      <GhostButton onClick={() => { setActionsOpen(false); setLevelDownTarget("secondary"); }} style={{ borderColor: C.parchmentLine, color: C.textMuted, fontSize: 13.5, justifyContent: "flex-start" }}>
                         Torna indietro di un livello — {mcCls.name}
                       </GhostButton>
                     )}
@@ -266,14 +266,14 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
           <div style={{ minWidth: 110 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontFamily: "'Spectral', serif", fontSize: 11, color: C.creamMuted }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.creamMuted }}>
               <span>PF</span>
               <span>{vitalsHp != null ? `${vitalsCurrentHp}/${vitalsHp}` : "—"}</span>
             </div>
             {vitalsHp != null && <HpBar current={vitalsCurrentHp} max={vitalsHp} temp={draft.tempHp || 0} />}
           </div>
-          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.creamMuted }}>CA {vitalsAc}</span>
-          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.creamMuted }}>Iniziativa {fmtMod(vitalsInitiative)}</span>
+          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.creamMuted }}>CA {vitalsAc}</span>
+          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.creamMuted }}>Iniziativa {fmtMod(vitalsInitiative)}</span>
         </div>
 
         <div style={{ marginTop: 10 }}>
@@ -283,8 +283,8 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
       {validationErrors.length > 0 && (
         <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 18, borderRadius: 2 }}>
-          <b style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.danger }}>Scelte ancora da completare</b>
-          <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.danger }}>
+          <b style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.danger }}>Scelte ancora da completare</b>
+          <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger }}>
             {validationErrors.map((e) => <li key={e}>{e}</li>)}
           </ul>
         </div>
@@ -301,19 +301,19 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
                 <X size={20} />
               </button>
             </div>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 12px" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "0 0 12px" }}>
               Puoi proseguire con la classe attuale, oppure iniziare a multiclassare aggiungendo una nuova classe a questo livello.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem", marginBottom: 14 }}>
               <OptionCard selected={false} onClick={chooseLevelUpCurrentClass} title={`${cls.name} ${draft.level + 1}`}>
-                <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>Continua a salire con la classe attuale.</p>
+                <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>Continua a salire con la classe attuale.</p>
               </OptionCard>
             </div>
             <Divider />
-            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "12px 0 6px" }}>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "12px 0 6px" }}>
               Oppure inizia a multiclassare
             </h3>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
               I requisiti minimi (5e 2014) sono indicati per riferimento: l'app non blocca la scelta, la decisione finale spetta al tavolo di gioco.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
@@ -321,7 +321,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
                 const prereq = checkMulticlassPrereq(finalScoresNow, c.id);
                 return (
                   <OptionCard key={c.id} selected={false} onClick={() => chooseLevelUpNewClass(c.id)} title={c.name}>
-                    <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12, color: prereq.met ? C.forestDeep : C.wine, margin: 0 }}>
+                    <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 13.5, color: prereq.met ? C.forestDeep : C.wine, margin: 0 }}>
                       Requisito: {prereq.text} {prereq.met ? "✓ soddisfatto" : "✗ non soddisfatto"}
                     </p>
                   </OptionCard>
@@ -338,7 +338,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
             <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 18, color: C.wineDeep, margin: "0 0 8px" }}>
               Tornare al livello {(levelDownTarget === "primary" ? draft.level : mc?.level) - 1}?
             </h2>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 16px" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "0 0 16px" }}>
               Non è una regola ufficiale: è pensato per correggere un errore nel livellamento. Perderai le scelte fatte all'ultimo livello (Punti Ferita, ASI/Talento, stile di combattimento) e le eventuali manovre, discipline, invocazioni o opzioni di metamagia in eccesso rispetto al nuovo livello.
             </p>
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
@@ -347,7 +347,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
               </GhostButton>
               <button
                 onClick={confirmLevelDown}
-                style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "0.55rem 1rem", fontFamily: "'Spectral', serif", fontSize: 13 }}
+                style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "0.55rem 1rem", fontFamily: "'Spectral', serif", fontSize: 14.5 }}
               >
                 Sì, torna indietro
               </button>
@@ -392,16 +392,16 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
       {/* Sottoclasse - Classe Primaria */}
       {cls && !["chierico", "paladino", "warlock", "druido"].includes(cls.id) && subclassOptions.length > 0 && (
         <Frame style={{ padding: "0.9rem 1rem", marginBottom: 18 }}>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 6px" }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 6px" }}>
             Sottoclasse — {cls.name}
           </h3>
           {!subclassUnlocked ? (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: 0 }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: 0 }}>
               Disponibile dal livello {SUBCLASS_CHOICE_LEVEL[cls.id] || 3}.
             </p>
           ) : (
             <>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
                 Scegli la sottoclasse del tuo personaggio per questo livello.
               </p>
               <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
@@ -412,7 +412,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
                     onClick={() => setDraft((d) => ({ ...d, subclassId: d.subclassId === s.id ? null : s.id }))}
                     title={s.name}
                   >
-                    <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
+                    <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
                   </OptionCard>
                 ))}
               </div>
@@ -436,33 +436,33 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
       {/* Sezione Multiclasse */}
       <Frame style={{ padding: "0.9rem 1rem", marginBottom: 18 }}>
-        <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 6px" }}>
+        <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 6px" }}>
           Multiclasse
         </h3>
 
         {!mcCls ? (
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: 0 }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: 0 }}>
             Il personaggio ha una sola classe. Per aggiungerne una seconda, usa "Sali di livello" qui sopra: potrai scegliere se il prossimo livello va alla classe attuale o segna l'inizio di una seconda classe.
           </p>
         ) : (
           <>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, margin: "0 0 10px" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: "0 0 10px" }}>
               Classe secondaria: <b>{mcCls.name}</b>, livello {mc.level}. Il livello totale del personaggio è {totalLevel}.
             </p>
             {confirmRemoveMc ? (
               <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 10 }}>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.danger }}>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger }}>
                   Rimuovere la classe secondaria e tutti i progressi ad essa legati (ASI, talenti, risorse, PF)?
                 </span>
                 <button
                   onClick={handleRemoveMulticlass}
-                  style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 11.5 }}
+                  style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
                 >
                   Sì, rimuovi
                 </button>
                 <button
                   onClick={() => setConfirmRemoveMc(false)}
-                  style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted }}
+                  style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
                 >
                   Annulla
                 </button>
@@ -476,11 +476,11 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
             {/* Sottoclasse - Classe Secondaria */}
             {!["chierico", "paladino", "warlock", "druido"].includes(mcCls.id) && mcSubclassOptions.length > 0 && (
               <div style={{ marginTop: 8 }}>
-                <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 6px" }}>
+                <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
                   Sottoclasse — {mcCls.name}
                 </h4>
                 {!mcSubclassUnlocked ? (
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>
                     Disponibile dal livello {SUBCLASS_CHOICE_LEVEL[mcCls.id] || 3}.
                   </p>
                 ) : (
@@ -492,7 +492,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
                         onClick={() => mcUpdateStore((st) => ({ subclassId: st.subclassId === s.id ? null : s.id }))}
                         title={s.name}
                       >
-                        <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
+                        <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
                       </OptionCard>
                     ))}
                   </div>

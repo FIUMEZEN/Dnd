@@ -47,7 +47,7 @@ export function TopNav({ screen, onNavigate, onOpenCompendium }) {
             key={item.key}
             onClick={() => handleItemClick(item, onNavigate, onOpenCompendium)}
             style={{
-              position: "relative", fontFamily: "'Cinzel', serif", fontSize: 12.5, letterSpacing: 0.3,
+              position: "relative", fontFamily: "'Cinzel', serif", fontSize: 14, letterSpacing: 0.3,
               padding: "0.5rem 1.1rem", borderRadius: 3, border: "none", cursor: "pointer",
               background: active ? `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})` : "transparent",
               color: active ? C.cream : C.creamMuted,
@@ -96,7 +96,7 @@ export function BottomNav({ screen, onNavigate, onOpenCompendium }) {
             }}
           >
             <Icon size={19} />
-            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 10, letterSpacing: 0.2 }}>{item.label}</span>
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 11.5, letterSpacing: 0.2 }}>{item.label}</span>
           </button>
         );
       })}

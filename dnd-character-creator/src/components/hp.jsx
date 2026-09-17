@@ -45,10 +45,10 @@ export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "
   return (
     <div style={{ marginBottom: 18 }}>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
         {title}
       </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 10px" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Dado vita d{cls.hitDie} (media {avg} + mod. Costituzione per livello). Scegli "Media", "🎲 Tiro" o "Manuale".
       </p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -68,7 +68,7 @@ export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "
               flexWrap: "wrap",
               background: state !== "avg" ? "rgba(125, 31, 56, 0.04)" : "transparent",
             }}>
-              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 11.5, color: C.textOnParchment, minWidth: 42 }}>
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, minWidth: 42 }}>
                 Liv. {lvl}
               </span>
 
@@ -115,7 +115,7 @@ export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "
                   style={{
                     width: 44,
                     fontFamily: "'Spectral', serif",
-                    fontSize: 12.5,
+                    fontSize: 14,
                     padding: "0.25rem",
                     borderRadius: 2,
                     border: `1px solid ${state === "rolled" ? C.gold : C.parchmentLine}`,
@@ -128,7 +128,7 @@ export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "
               {state === "rolled" && (
                 <span style={{
                   fontFamily: "'Spectral', serif",
-                  fontSize: 11,
+                  fontSize: 12.5,
                   color: C.gold,
                   marginLeft: 2
                 }}>
@@ -233,10 +233,10 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
     <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.85rem 1rem", marginBottom: 18 }}>
       <div style={{ marginBottom: 10 }}>
         <span style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: current <= maxHp / 3 ? C.danger : C.textOnParchment }}>
-          {current} / {maxHp} PF{temp > 0 ? <span style={{ color: C.forestDeep, fontSize: 14 }}> (+{temp} temp)</span> : null}
+          {current} / {maxHp} PF{temp > 0 ? <span style={{ color: C.forestDeep, fontSize: 15.5 }}> (+{temp} temp)</span> : null}
         </span>
         {concentrating && (
-          <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wineDeep, marginLeft: 12, fontStyle: "italic" }}>
+          <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.wineDeep, marginLeft: 12, fontStyle: "italic" }}>
             Concentrato su {draft.concentration.spellName}
           </span>
         )}
@@ -251,7 +251,7 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
               key={key}
               onClick={() => setAction(key)}
               style={{
-                fontFamily: "'Spectral', serif", fontSize: 12.5, padding: "0.4rem 0.8rem", borderRadius: 3,
+                fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.4rem 0.8rem", borderRadius: 3,
                 border: `1px solid ${color}`, cursor: "pointer", transition: "all 120ms ease",
                 background: isActive ? color : "transparent",
                 color: isActive ? C.cream : color,
@@ -266,12 +266,12 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
         <input
           type="number" min={0} value={amount}
           onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
-          style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+          style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
         />
         <button
           onClick={applyAction}
           style={{
-            fontFamily: "'Cinzel', serif", fontSize: 12.5, padding: "0.45rem 1rem", borderRadius: 3,
+            fontFamily: "'Cinzel', serif", fontSize: 14, padding: "0.45rem 1rem", borderRadius: 3,
             border: "none", cursor: "pointer", background: actionColor, color: C.cream,
           }}
         >
@@ -281,22 +281,22 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
 
       {pendingCheck && (
         <div style={{ marginTop: 12, padding: "0.7rem 0.9rem", borderRadius: 2, border: `1px solid ${C.wine}`, background: "rgba(125, 31, 56, 0.05)" }}>
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.wineDeep, margin: "0 0 8px" }}>
+          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
             TS su Costituzione (CD {pendingCheck.dc}) per mantenere la Concentrazione
           </p>
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-            <GhostButton onClick={autoRollCheck} style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.35rem 0.7rem", fontSize: 12 }}>
+            <GhostButton onClick={autoRollCheck} style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.35rem 0.7rem", fontSize: 13.5 }}>
               🎲 Tira (1d20{fmtMod(conMod)})
             </GhostButton>
             {pendingCheck.rolled && (
-              <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment }}>
+              <span style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment }}>
                 {pendingCheck.rolled.roll} {fmtMod(conMod)} = <b>{pendingCheck.rolled.total}</b> {pendingCheck.rolled.total >= pendingCheck.dc ? "— successo" : "— fallito"}
               </span>
             )}
-            <GoldButton onClick={() => resolveCheck(true)} style={{ padding: "0.35rem 0.7rem", fontSize: 12 }}>
+            <GoldButton onClick={() => resolveCheck(true)} style={{ padding: "0.35rem 0.7rem", fontSize: 13.5 }}>
               Mantiene
             </GoldButton>
-            <GhostButton onClick={() => resolveCheck(false)} style={{ borderColor: C.danger, color: C.danger, padding: "0.35rem 0.7rem", fontSize: 12 }}>
+            <GhostButton onClick={() => resolveCheck(false)} style={{ borderColor: C.danger, color: C.danger, padding: "0.35rem 0.7rem", fontSize: 13.5 }}>
               Perde la Concentrazione
             </GhostButton>
           </div>
@@ -323,13 +323,13 @@ export function ConcentrationTracker({ draft, setDraft }) {
 
   return (
     <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, margin: "0 0 8px" }}>Concentrazione</h3>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 8px" }}>Concentrazione</h3>
       {active ? (
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-          <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment }}>
+          <span style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment }}>
             Concentrato su <b>{active.spellName}</b>
           </span>
-          <GhostButton onClick={stop} style={{ borderColor: C.danger, color: C.danger, padding: "0.3rem 0.7rem", fontSize: 11.5 }}>
+          <GhostButton onClick={stop} style={{ borderColor: C.danger, color: C.danger, padding: "0.3rem 0.7rem", fontSize: 13 }}>
             Interrompi
           </GhostButton>
         </div>
@@ -342,7 +342,7 @@ export function ConcentrationTracker({ draft, setDraft }) {
                 const spell = options.find((s) => s.id === e.target.value);
                 if (spell) start(spell.id, spell.name);
               }}
-              style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+              style={{ fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
             >
               <option value="" disabled>Scegli un incantesimo conosciuto…</option>
               {options.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -351,12 +351,12 @@ export function ConcentrationTracker({ draft, setDraft }) {
           <input
             type="text" placeholder="…oppure nome libero"
             value={customName} onChange={(e) => setCustomName(e.target.value)}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
           <GhostButton
             onClick={() => customName.trim() && start(null, customName.trim())}
             disabled={!customName.trim()}
-            style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.35rem 0.7rem", fontSize: 12 }}
+            style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.35rem 0.7rem", fontSize: 13.5 }}
           >
             Inizia Concentrazione
           </GhostButton>
@@ -431,26 +431,26 @@ export function DeathSaveTracker({ draft, setDraft, maxHp }) {
 
   return (
     <div style={{ border: `1px solid ${C.danger}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, background: "rgba(150, 30, 30, 0.04)" }}>
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.danger, margin: "0 0 8px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.danger, margin: "0 0 8px" }}>
         {ds.dead ? "Morto" : ds.stable ? "Stabile (incosciente)" : "Tiri Salvezza contro la Morte"}
       </h3>
       <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap", marginBottom: 8 }}>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <span style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted }}>Successi</span>
+          <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>Successi</span>
           {renderPips("success", ds.successes, C.forestDeep)}
         </div>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <span style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted }}>Fallimenti</span>
+          <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>Fallimenti</span>
           {renderPips("failure", ds.failures, C.danger)}
         </div>
         {!ds.dead && !ds.stable && (
-          <GhostButton onClick={roll} style={{ borderColor: C.danger, color: C.danger, padding: "0.35rem 0.8rem", fontSize: 12 }}>
+          <GhostButton onClick={roll} style={{ borderColor: C.danger, color: C.danger, padding: "0.35rem 0.8rem", fontSize: 13.5 }}>
             🎲 Tira (1d20)
           </GhostButton>
         )}
       </div>
       {lastRoll && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: 0 }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>
           Tiro: {lastRoll.r} {lastRoll.outcome === "nat20" ? "— naturale 20, riprende conoscenza con 1 PF!"
             : lastRoll.outcome === "nat1" ? "— naturale 1, conta come due fallimenti."
             : lastRoll.outcome === "success" ? "— successo." : "— fallito."}
@@ -650,34 +650,34 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
   return (
     <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.85rem 1rem", marginBottom: 18 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 8 }}>
-        <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: 0 }}>Riposi</h3>
+        <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: 0 }}>Riposi</h3>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <GhostButton
             onClick={performShortRest}
-            style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.4rem 0.9rem", fontSize: 12.5 }}
+            style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.4rem 0.9rem", fontSize: 14 }}
           >
             Riposo Breve (1 ora)
           </GhostButton>
-          <GoldButton onClick={performLongRest} style={{ padding: "0.4rem 0.9rem", fontSize: 12.5 }}>
+          <GoldButton onClick={performLongRest} style={{ padding: "0.4rem 0.9rem", fontSize: 14 }}>
             Riposo Lungo (8 ore)
           </GoldButton>
         </div>
       </div>
 
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, margin: "0 0 10px", fontStyle: "italic" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 10px", fontStyle: "italic" }}>
         Breve: recupera risorse "riposo breve" e slot del Patto Magico. Lungo: PF pieni, tutte le risorse, metà Dadi Vita spesi (min. 1).
       </p>
 
       {totalHD > 0 && (
         <div style={{ marginTop: 6 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-            <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, margin: 0 }}>
+            <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>
               Dadi Vita (mod. Costituzione {fmtMod(conMod)})
             </p>
             {availableTotal > 0 && current < maxHp && (
               <GhostButton
                 onClick={spendAllHitDice}
-                style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.25rem 0.6rem", fontSize: 11 }}
+                style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.25rem 0.6rem", fontSize: 12.5 }}
               >
                 Spendi tutti ({availableTotal})
               </GhostButton>
@@ -689,13 +689,13 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
               const available = p.max - spent;
               return (
                 <div key={p.die} style={{ display: "flex", alignItems: "center", gap: 8, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.35rem 0.6rem" }}>
-                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment }}>
+                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment }}>
                     d{p.die}: {available}/{p.max}
                   </span>
                   <GhostButton
                     onClick={() => spendHitDie(p.die)}
                     disabled={available <= 0 || current >= maxHp}
-                    style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.25rem 0.6rem", fontSize: 11.5 }}
+                    style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.25rem 0.6rem", fontSize: 13 }}
                   >
                     Spendi 1
                   </GhostButton>
@@ -704,7 +704,7 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
             })}
           </div>
           {lastRoll && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.forestDeep, margin: "8px 0 0" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.forestDeep, margin: "8px 0 0" }}>
               {lastRoll.all
                 ? `Spesi ${lastRoll.healed > 0 ? 'tutti i Dadi Vita disponibili' : 'nessun Dado Vita'} → recuperati ${lastRoll.healed} PF.`
                 : `Tiro: 1d${lastRoll.die} = ${lastRoll.roll} ${fmtMod(lastRoll.conMod)} → recuperati ${lastRoll.healed} PF.`
@@ -740,12 +740,12 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
             <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 18, color: C.wineDeep, margin: "0 0 10px" }}>
               Riposo Breve
             </h3>
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, margin: "0 0 16px" }}>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textOnParchment, margin: "0 0 16px" }}>
               Hai completato un riposo breve. Vuoi spendere dei Dadi Vita per recuperare PF?
             </p>
 
             <div style={{ marginBottom: 16 }}>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 8px" }}>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "0 0 8px" }}>
                 Dadi Vita disponibili: <b>{availableTotal}</b>
               </p>
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -765,7 +765,7 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
                     background: "#fff",
                   }}
                 />
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.textMuted }}>
                   Dadi Vita da spendere
                 </span>
               </div>

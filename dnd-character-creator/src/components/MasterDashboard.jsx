@@ -14,7 +14,7 @@ export function MasterDashboard({ creatures, loading, onNew, onOpen, onOpenSheet
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: 12 }}>
         <div>
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>Sezione Master</h1>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.creamMuted, margin: "4px 0 0" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.creamMuted, margin: "4px 0 0" }}>
             Crea e conserva creature custom per le tue sessioni.
           </p>
         </div>
@@ -37,7 +37,7 @@ export function MasterDashboard({ creatures, loading, onNew, onOpen, onOpenSheet
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 16, color: C.textOnParchment, margin: "0 0 6px" }}>
             Nessuna creatura ancora forgiata
           </p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 18px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textMuted, margin: "0 0 18px" }}>
             Crea la tua prima creatura custom, oppure parti da una del Bestiario e modificala.
           </p>
           <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
@@ -58,10 +58,10 @@ export function MasterDashboard({ creatures, loading, onNew, onOpen, onOpenSheet
                       <Skull size={16} color={C.wine} />
                       <span style={{ fontFamily: "'Cinzel', serif", fontSize: 17, color: C.textOnParchment }}>{cr.name || "Creatura senza nome"}</span>
                     </div>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "4px 0 0" }}>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "4px 0 0" }}>
                       {sizeLabel} {cr.type}{cr.typeTag ? ` (${cr.typeTag})` : ""} · GS {cr.cr} ({fmtMod(getEffectiveProficiencyBonus(cr))})
                     </p>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: isCreatureDead(cr) ? C.danger : C.textMuted, margin: "2px 0 0" }}>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: isCreatureDead(cr) ? C.danger : C.textMuted, margin: "2px 0 0" }}>
                       CA {cr.ac} · {getCurrentHp(cr)} / {getMaxHp(cr)} PF{isCreatureDead(cr) ? " · MORTO" : ""}
                     </p>
                   </div>
@@ -69,13 +69,13 @@ export function MasterDashboard({ creatures, loading, onNew, onOpen, onOpenSheet
                     <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
                       <button
                         onClick={() => { onDelete(cr.id); setPendingDeleteId(null); }}
-                        style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 11.5 }}
+                        style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
                       >
                         Sì, elimina
                       </button>
                       <button
                         onClick={() => setPendingDeleteId(null)}
-                        style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted }}
+                        style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
                       >
                         Annulla
                       </button>
@@ -87,7 +87,7 @@ export function MasterDashboard({ creatures, loading, onNew, onOpen, onOpenSheet
                   )}
                 </div>
                 <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  <GoldButton icon={Skull} onClick={() => onOpenSheet(cr)} style={{ padding: "0.5rem 0.9rem", fontSize: 13 }}>
+                  <GoldButton icon={Skull} onClick={() => onOpenSheet(cr)} style={{ padding: "0.5rem 0.9rem", fontSize: 14.5 }}>
                     Scheda da Combattimento
                   </GoldButton>
                   <GhostButton icon={Pencil} onClick={() => onOpen(cr)} style={{ borderColor: C.wine, color: C.wineDeep, background: "transparent" }}>

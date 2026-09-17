@@ -15,12 +15,12 @@ import {
 } from "../lib/creature";
 
 const inputStyle = {
-  fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.5rem 0.7rem",
+  fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.5rem 0.7rem",
   borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", boxSizing: "border-box", width: "100%",
 };
 const numberInputStyle = { ...inputStyle, width: 90 };
 const labelStyle = {
-  fontFamily: "'Cinzel', serif", fontSize: 11, color: C.textMuted, display: "block", marginBottom: 4, letterSpacing: 0.3,
+  fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textMuted, display: "block", marginBottom: 4, letterSpacing: 0.3,
 };
 const sectionTitleStyle = { fontFamily: "'Cinzel', serif", fontSize: 15, color: C.wineDeep, margin: "0 0 10px" };
 
@@ -152,11 +152,11 @@ function SpellPickerInline({ group, onChange }) {
           onChange={(e) => setSearch(e.target.value)}
           style={inputStyle}
         />
-        <GhostButton onClick={addCustom} style={{ flexShrink: 0, fontSize: 12, padding: "0.5rem 0.7rem" }}>+ libero</GhostButton>
+        <GhostButton onClick={addCustom} style={{ flexShrink: 0, fontSize: 13.5, padding: "0.5rem 0.7rem" }}>+ libero</GhostButton>
       </div>
       {term && (
         matches.length === 0 ? (
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: 0 }}>Nessun incantesimo trovato.</p>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>Nessun incantesimo trovato.</p>
         ) : (
           <div style={{ maxHeight: 180, overflowY: "auto", border: `1px solid ${C.parchmentLine}`, borderRadius: 2 }}>
             {matches.map((s) => {
@@ -167,7 +167,7 @@ function SpellPickerInline({ group, onChange }) {
                   style={{
                     display: "block", width: "100%", textAlign: "left", padding: "0.45rem 0.7rem",
                     background: picked ? "#f5efdf" : "transparent", border: "none", borderBottom: `1px solid ${C.parchmentLine}`,
-                    cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment,
+                    cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment,
                   }}
                 >
                   {picked ? "✓ " : ""}{s.name} <span style={{ color: C.textMuted, fontStyle: "italic" }}>— liv. {s.level} · {SCHOOLS[s.school]}</span>
@@ -191,7 +191,7 @@ function SpellcastingEditor({ creature, onChange }) {
 
   return (
     <div>
-      <label style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textOnParchment, marginBottom: 12, cursor: "pointer" }}>
+      <label style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 12, cursor: "pointer" }}>
         <input type="checkbox" checked={sc.enabled} onChange={(e) => patch({ enabled: e.target.checked })} />
         Questa creatura lancia incantesimi
       </label>
@@ -302,7 +302,7 @@ export function CreatureEditor({ creature, setCreature, onBack, onSave, saving }
             </select>
           </Field>
         </div>
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "6px 0 0" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "6px 0 0" }}>
           Bonus di competenza {fmtMod(getEffectiveProficiencyBonus(creature))} · {getEffectiveXp(creature)} PE
           {" · "}
           <label style={{ cursor: "pointer" }}>
@@ -340,7 +340,7 @@ export function CreatureEditor({ creature, setCreature, onBack, onSave, saving }
           <Field label="Volare" style={{ width: 100 }}>
             <input type="number" value={creature.speed.volare} onChange={(e) => updateSpeed("volare", e.target.value)} style={numberInputStyle} />
           </Field>
-          <label style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, marginBottom: 8, cursor: "pointer" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, marginBottom: 8, cursor: "pointer" }}>
             <input type="checkbox" checked={creature.speed.volareStazionario} onChange={(e) => updateSpeed("volareStazionario", e.target.checked)} />
             in stazionario
           </label>
@@ -354,7 +354,7 @@ export function CreatureEditor({ creature, setCreature, onBack, onSave, saving }
             <input type="number" value={creature.speed.scalare} onChange={(e) => updateSpeed("scalare", e.target.value)} style={numberInputStyle} />
           </Field>
         </div>
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "8px 0 0" }}>Anteprima: {formatSpeed(creature.speed)}</p>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "8px 0 0" }}>Anteprima: {formatSpeed(creature.speed)}</p>
       </Frame>
 
       <Frame style={{ marginTop: 16 }}>
@@ -368,7 +368,7 @@ export function CreatureEditor({ creature, setCreature, onBack, onSave, saving }
                 onChange={(e) => updateAbility(a.key, e.target.value)}
                 style={{ ...inputStyle, textAlign: "center", marginBottom: 4 }}
               />
-              <div style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+              <div style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
                 {fmtMod(mod(Number(creature.abilities[a.key]) || 0))}
               </div>
             </div>
@@ -439,7 +439,7 @@ export function CreatureEditor({ creature, setCreature, onBack, onSave, saving }
             />
           </Field>
         </div>
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "0 0 14px" }}>Anteprima: {formatSenses(creature)}</p>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 14px" }}>Anteprima: {formatSenses(creature)}</p>
         <Field label="Linguaggi">
           <input type="text" value={creature.languages} placeholder="es. Comune, Draconico (non può parlare)" onChange={(e) => update({ languages: e.target.value })} style={inputStyle} />
         </Field>
@@ -507,7 +507,7 @@ export function CreatureEditor({ creature, setCreature, onBack, onSave, saving }
       </Frame>
 
       {errors.length > 0 && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.danger, marginTop: 14 }}>{errors[0]}</p>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.danger, marginTop: 14 }}>{errors[0]}</p>
       )}
       <div style={{ marginTop: 18, display: "flex", justifyContent: "flex-end", gap: 10 }}>
         <GoldButton icon={saving ? Loader2 : Save} disabled={saving} onClick={onSave}>

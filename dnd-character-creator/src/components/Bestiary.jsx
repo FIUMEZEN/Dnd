@@ -33,7 +33,7 @@ export function Bestiary({ onBack, onUse }) {
     <div>
       <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18 }}>Sezione Master</GhostButton>
       <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>Bestiario</h1>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.creamMuted, margin: "4px 0 1.25rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.creamMuted, margin: "4px 0 1.25rem" }}>
         {BESTIARY.length} creature classiche pronte all'uso. Scegline una come base: verrà clonata in una nuova creatura che potrai modificare liberamente, senza toccare questo catalogo.
       </p>
 
@@ -52,7 +52,7 @@ export function Bestiary({ onBack, onUse }) {
         </div>
 
         {filtered.length === 0 ? (
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>Nessuna creatura trovata.</p>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textMuted }}>Nessuna creatura trovata.</p>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.75rem" }}>
             {filtered.map((m) => {
@@ -63,13 +63,13 @@ export function Bestiary({ onBack, onUse }) {
                     <Skull size={15} color={C.wine} />
                     <span style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment }}>{m.name}</span>
                   </div>
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, margin: "0 0 4px", fontStyle: "italic" }}>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 4px", fontStyle: "italic" }}>
                     {sizeLabel} {m.type}{m.typeTag ? ` (${m.typeTag})` : ""}
                   </p>
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "0 0 10px" }}>
+                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 10px" }}>
                     GS {m.cr} ({fmtMod(getCrProficiencyBonus(m.cr))}, {getCrXp(m.cr)} PE) · CA {m.ac} · {m.hp} PF
                   </p>
-                  <GoldButton icon={Plus} onClick={() => onUse(m)} style={{ padding: "0.45rem 0.8rem", fontSize: 12.5 }}>
+                  <GoldButton icon={Plus} onClick={() => onUse(m)} style={{ padding: "0.45rem 0.8rem", fontSize: 14 }}>
                     Usa come base
                   </GoldButton>
                 </div>

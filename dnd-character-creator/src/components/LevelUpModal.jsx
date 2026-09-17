@@ -42,18 +42,18 @@ export function LevelUpModal({
             <X size={20} />
           </button>
         </div>
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 6px" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "0 0 6px" }}>
           Completa qui le scelte sbloccate da questo livello. La ✕ in alto annulla il livellamento (torni al livello {fromLevel} senza modifiche); "Fatto" conferma — potrai comunque rivedere le scelte più in basso nella scheda.
         </p>
 
         {subclassJustUnlocked && (
           <div style={{ marginTop: 14 }}>
             <Divider />
-            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Sottoclasse — {cls?.name}</h3>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Sottoclasse — {cls?.name}</h3>
             <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
               {subclassOptions.map((s) => (
                 <OptionCard key={s.id} selected={chosenSubclassId === s.id} onClick={() => onChooseSubclass(s.id)} title={s.name}>
-                  <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
+                  <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
                 </OptionCard>
               ))}
             </div>
@@ -86,8 +86,8 @@ export function LevelUpModal({
         {(changes.newFeatures.length > 0 || (changes.slotsChanged && changes.newSlots.length > 0) || changes.resourceChanges.length > 0 || changes.critChanged) && (
           <div style={{ marginTop: 14 }}>
             <Divider />
-            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>Altre novità di questo livello</h3>
-            <ul style={{ margin: 0, paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment }}>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Altre novità di questo livello</h3>
+            <ul style={{ margin: 0, paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment }}>
               {changes.newFeatures.map((f) => (
                 <li key={f.name} style={{ marginBottom: 4 }}><b>{f.name}</b> — {f.desc}</li>
               ))}

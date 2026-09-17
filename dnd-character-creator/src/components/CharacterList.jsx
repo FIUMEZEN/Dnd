@@ -15,7 +15,7 @@ export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet,
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: 12 }}>
         <div>
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>I tuoi personaggi</h1>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.creamMuted, margin: "4px 0 0" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.creamMuted, margin: "4px 0 0" }}>
             Dungeons &amp; Dragons · 5e 2014
           </p>
         </div>
@@ -32,7 +32,7 @@ export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet,
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 16, color: C.textOnParchment, margin: "0 0 6px" }}>
             Nessun eroe ancora forgiato
           </p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 18px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textMuted, margin: "0 0 18px" }}>
             Crea il tuo primo personaggio per iniziare l'avventura.
           </p>
           <GoldButton icon={Plus} onClick={onNew}>Crea personaggio</GoldButton>
@@ -62,11 +62,11 @@ export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet,
                       <Icon size={16} color={C.wine} />
                       <span style={{ fontFamily: "'Cinzel', serif", fontSize: 17, color: C.textOnParchment }}>{c.name}</span>
                     </div>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "4px 0 0" }}>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "4px 0 0" }}>
                       {race?.name || "—"} · {cls ? `${cls.name} (liv. ${c.level || 1})` : "—"}{subclass ? ` — ${subclass.name}` : ""}
                     </p>
                     {maxHp != null && (
-                      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: currentHp <= maxHp / 3 ? C.danger : C.textMuted, margin: "2px 0 0" }}>
+                      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: currentHp <= maxHp / 3 ? C.danger : C.textMuted, margin: "2px 0 0" }}>
                         {currentHp} / {maxHp} PF
                       </p>
                     )}
@@ -75,13 +75,13 @@ export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet,
                     <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
                       <button
                         onClick={() => { onDelete(c.id); setPendingDeleteId(null); }}
-                        style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 11.5 }}
+                        style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
                       >
                         Sì, elimina
                       </button>
                       <button
                         onClick={() => setPendingDeleteId(null)}
-                        style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted }}
+                        style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
                       >
                         Annulla
                       </button>
@@ -93,7 +93,7 @@ export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet,
                   )}
                 </div>
                 <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  <GoldButton icon={BookOpen} onClick={() => onOpenSheet(c)} style={{ padding: "0.5rem 0.9rem", fontSize: 13 }}>
+                  <GoldButton icon={BookOpen} onClick={() => onOpenSheet(c)} style={{ padding: "0.5rem 0.9rem", fontSize: 14.5 }}>
                     Apri scheda
                   </GoldButton>
                   <GhostButton icon={Pencil} onClick={() => onOpen(c)} style={{ borderColor: C.wine, color: C.wineDeep, background: "transparent" }}>

@@ -49,7 +49,7 @@ export function SpellCompendium({ onBack }) {
         I miei personaggi
       </GhostButton>
       <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>Compendio degli Incantesimi</h1>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.creamMuted, margin: "4px 0 1.25rem" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.creamMuted, margin: "4px 0 1.25rem" }}>
         {SPELLS.length} incantesimi del Manuale del Giocatore 2014, con danno, dadi e tiri salvezza. Sfoglia liberamente, senza bisogno di un personaggio.
       </p>
 
@@ -76,11 +76,11 @@ export function SpellCompendium({ onBack }) {
         </div>
 
         {filtered.length === 0 ? (
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>Nessun incantesimo trovato.</p>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textMuted }}>Nessun incantesimo trovato.</p>
         ) : (
           levels.map((lvl) => (
             <div key={lvl} style={{ marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
+              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>
                 {spellLevelLabel(lvl)} ({byLevel[lvl].length})
               </h3>
               {[...byLevel[lvl]].sort(sortByName).map((s) => (

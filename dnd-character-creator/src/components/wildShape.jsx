@@ -31,48 +31,48 @@ function BeastCard({ beast, locked, lockReason }) {
           alignItems: "center", width: "100%", boxSizing: "border-box", gap: 10,
         }}
       >
-        <span style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textOnParchment }}>
+        <span style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment }}>
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />} {beast.name}
         </span>
-        <span style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, whiteSpace: "nowrap", textAlign: "right" }}>
+        <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, whiteSpace: "nowrap", textAlign: "right" }}>
           GS {beast.cr} · CA {beast.ac} · {beast.hp} PF · {formatSpeed(beast.speed)}
           {lockReason && <><br />{lockReason}</>}
         </span>
       </button>
       {open && (
         <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${C.parchmentLine}` }}>
-          <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12, color: C.textMuted, margin: "0 0 8px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>
             {sizeLabel} {beast.type}, {beast.alignment}
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6, marginBottom: 8 }}>
             {ABILITIES.map((a) => (
               <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.3rem 0.2rem" }}>
-                <div style={{ fontFamily: "'Cinzel', serif", fontSize: 10, color: C.textMuted }}>{a.name}</div>
-                <div style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment }}>
+                <div style={{ fontFamily: "'Cinzel', serif", fontSize: 11.5, color: C.textMuted }}>{a.name}</div>
+                <div style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment }}>
                   {beast.abilities[a.key]} ({fmtMod(mod(beast.abilities[a.key]))})
                 </div>
               </div>
             ))}
           </div>
           {(beast.skills || []).length > 0 && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, margin: "0 0 4px" }}>
-              <b style={{ fontFamily: "'Cinzel', serif", fontSize: 11 }}>Abilità. </b>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, margin: "0 0 4px" }}>
+              <b style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5 }}>Abilità. </b>
               {beast.skills.map((s) => `${s.name} ${fmtMod(Number(s.bonus) || 0)}`).join(", ")}
             </p>
           )}
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, margin: "0 0 4px" }}>
-            <b style={{ fontFamily: "'Cinzel', serif", fontSize: 11 }}>Sensi. </b>{formatSenses(beast)}
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, margin: "0 0 4px" }}>
+            <b style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5 }}>Sensi. </b>{formatSenses(beast)}
           </p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, margin: "0 0 8px" }}>
-            <b style={{ fontFamily: "'Cinzel', serif", fontSize: 11 }}>Linguaggi. </b>{beast.languages || "—"}
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, margin: "0 0 8px" }}>
+            <b style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5 }}>Linguaggi. </b>{beast.languages || "—"}
           </p>
           {(beast.traits || []).map((t, i) => (
-            <p key={`t${i}`} style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, margin: "0 0 6px" }}>
+            <p key={`t${i}`} style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, margin: "0 0 6px" }}>
               <b style={{ fontFamily: "'Cinzel', serif" }}>{t.name}.</b> {t.desc}
             </p>
           ))}
           {(beast.actions || []).map((a, i) => (
-            <p key={`a${i}`} style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, margin: "0 0 6px" }}>
+            <p key={`a${i}`} style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, margin: "0 0 6px" }}>
               <b style={{ fontFamily: "'Cinzel', serif" }}>{a.name}.</b> {a.desc}
             </p>
           ))}
@@ -117,14 +117,14 @@ export function WildShapeForms({ clsId, circleId, level, title }) {
   return (
     <div style={{ marginBottom: 18 }}>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 4px" }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
         {title || "Forma Selvaggia — forme disponibili"}
       </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.textMuted, margin: "0 0 10px" }}>
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 10px" }}>
         Bestie con Grado di Sfida (GS) fino a {info.maxCr} già viste dal personaggio{!info.canSwim ? ", senza velocità di nuoto" : ""}{!info.canFly ? ", senza velocità di volo" : ""}. Clicca su una forma per vederne le statistiche complete.
       </p>
       {available.length === 0 ? (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, fontStyle: "italic" }}>
           Nessuna bestia nel catalogo dell'app soddisfa questi limiti: il Master può comunque concederne altre, purché coerenti con le regole.
         </p>
       ) : (
@@ -133,10 +133,10 @@ export function WildShapeForms({ clsId, circleId, level, title }) {
 
       {future.length > 0 && (
         <>
-          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.wineDeep, margin: "14px 0 4px" }}>
+          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "14px 0 4px" }}>
             Sbloccabili più avanti
           </h4>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, margin: "0 0 8px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 8px" }}>
             Bestie che questo Druido potrà assumere salendo di livello (o cambiando Circolo), ma non ancora.
           </p>
           {future.map((b) => (
@@ -147,10 +147,10 @@ export function WildShapeForms({ clsId, circleId, level, title }) {
 
       {neverReachable.length > 0 && (
         <>
-          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.wineDeep, margin: "14px 0 4px" }}>
+          <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "14px 0 4px" }}>
             Mai raggiungibili con Forma Selvaggia
           </h4>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 11.5, color: C.textMuted, margin: "0 0 8px" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, margin: "0 0 8px" }}>
             Esistono nel catalogo (utili al Master, es. per Evoca Animali o creature evocate), ma superano il GS massimo che la Forma Selvaggia può mai raggiungere (GS {everInfo.maxCr}), a qualsiasi livello.
           </p>
           {neverReachable.map((b) => (

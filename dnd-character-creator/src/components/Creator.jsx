@@ -65,11 +65,11 @@ export function Creator({ draft, setDraft, onBack, onSave, saving }) {
                 <span style={{
                   width: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
                   border: `1px solid ${active ? C.gold : done ? C.forest : "#5a4f43"}`,
-                  background: done ? C.forest : "transparent", fontSize: 11, fontFamily: "'Cinzel', serif", flexShrink: 0,
+                  background: done ? C.forest : "transparent", fontSize: 12.5, fontFamily: "'Cinzel', serif", flexShrink: 0,
                 }}>
                   {done ? <Check size={12} /> : i + 1}
                 </span>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, fontWeight: active ? 600 : 500 }}>{s.label}</span>
+                <span style={{ fontFamily: "'Spectral', serif", fontSize: 15, fontWeight: active ? 600 : 500 }}>{s.label}</span>
               </button>
             );
           })}
@@ -78,10 +78,10 @@ export function Creator({ draft, setDraft, onBack, onSave, saving }) {
 
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ marginBottom: 14, padding: "0.7rem 0.9rem", border: `1px solid ${C.goldSoft}`, borderRadius: 2, background: "linear-gradient(180deg, rgba(43, 33, 23, 0.96), rgba(31, 24, 19, 0.98))", boxShadow: `inset 0 0 0 1px rgba(224, 193, 101, 0.22)` }}>
-          <div style={{ fontFamily: "'Cinzel', serif", fontSize: 11, color: C.goldSoft, letterSpacing: 1.2, textTransform: "uppercase", opacity: 0.96 }}>
+          <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.goldSoft, letterSpacing: 1.2, textTransform: "uppercase", opacity: 0.96 }}>
             Stato del personaggio
           </div>
-          <div style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.cream, marginTop: 4, fontWeight: 700, lineHeight: 1.35 }}>
+          <div style={{ fontFamily: "'Spectral', serif", fontSize: 15.5, color: C.cream, marginTop: 4, fontWeight: 700, lineHeight: 1.35 }}>
             {draft.name || "Nuovo eroe"} · {visibleSteps[clampedStep]?.label}
           </div>
         </div>
