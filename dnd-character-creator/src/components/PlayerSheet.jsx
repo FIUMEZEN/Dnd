@@ -389,6 +389,11 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
         />
       )}
 
+      {/* Sottoclasse, Stili di Combattimento e Multiclasse: scelte di costruzione del
+          personaggio, non qualcosa da consultare durante il combattimento o l'inventario —
+          restano quindi solo nella scheda Panoramica invece che fisse sopra tutte le schede. */}
+      {playTab === "panoramica" && (
+      <>
       {/* Sottoclasse - Classe Primaria */}
       {cls && !["chierico", "paladino", "warlock", "druido"].includes(cls.id) && subclassOptions.length > 0 && (
         <Frame style={{ padding: "0.9rem 1rem", marginBottom: 18 }}>
@@ -516,6 +521,8 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
           </>
         )}
       </Frame>
+      </>
+      )}
 
       {/* Scheda del Personaggio */}
       <Frame>
