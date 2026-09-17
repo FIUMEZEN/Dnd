@@ -162,7 +162,11 @@ export function DangerButton({ children, onClick, style }) {
   );
 }
 
-export function OptionCard({ selected, onClick, title, subtitle, children }) {
+// `dimmed` è per un'opzione ancora cliccabile (il toggle sottostante ignora il click in modo
+// sicuro quando il limite di scelte è raggiunto) ma visivamente "piena" — non è un vero
+// `disabled`, quindi resta un bottone raggiungibile da tastiera. `style` per override puntuali,
+// stesso principio degli altri componenti condivisi.
+export function OptionCard({ selected, onClick, title, subtitle, children, dimmed, style }) {
   return (
     <button
       onClick={onClick}
@@ -177,9 +181,11 @@ export function OptionCard({ selected, onClick, title, subtitle, children }) {
         cursor: "pointer",
         display: "block",
         marginBottom: 10,
+        opacity: dimmed ? 0.55 : 1,
         transition: "all 120ms ease",
         boxShadow: selected ? `0 0 0 1px ${C.goldSoft} inset` : "none",
         transform: selected ? "translateY(-1px)" : "translateY(0)",
+        ...style,
       }}
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = selected ? `0 0 0 1px ${C.goldSoft} inset` : `0 0 0 1px ${C.parchmentLine} inset`; }}
       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = selected ? `0 0 0 1px ${C.goldSoft} inset` : "none"; }}

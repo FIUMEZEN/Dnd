@@ -213,26 +213,21 @@ export function MetamagicPicker({ store, updateStore, level }) {
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Modifica un incantesimo lanciato spendendo Punti Stregoneria. Puoi usare una sola opzione di Metamagia per incantesimo, a meno che la descrizione non dica altrimenti.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "0.5rem 1rem" }}>
         {METAMAGIC_OPTIONS.map((m) => {
           const active = chosen.includes(m.id);
           return (
-            <div
+            <OptionCard
               key={m.id}
+              selected={active}
+              dimmed={!active && chosen.length >= known}
               onClick={() => toggle(m.id)}
-              style={{
-                cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
-                background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                borderRadius: 6, padding: "0.5rem 0.7rem",
-                opacity: !active && chosen.length >= known ? 0.5 : 1,
-              }}
+              title={m.name}
+              subtitle={m.cost}
+              style={{ marginBottom: 0 }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
-                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{m.name}</span>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wineDeep, whiteSpace: "nowrap" }}>{m.cost}</span>
-              </div>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
-            </div>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>{m.desc}</p>
+            </OptionCard>
           );
         })}
       </div>
@@ -282,26 +277,23 @@ export function InvocationPicker({ store, updateStore, level }) {
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Alcune invocazioni richiedono un Dono del Patto specifico: verifica il prerequisito indicato prima di sceglierle.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "0.5rem 1rem" }}>
         {available.map((i) => {
           const active = chosen.includes(i.id);
           return (
-            <div
+            <OptionCard
               key={i.id}
+              selected={active}
+              dimmed={!active && chosen.length >= known}
               onClick={() => toggle(i.id)}
-              style={{
-                cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
-                background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                borderRadius: 6, padding: "0.5rem 0.7rem",
-                opacity: !active && chosen.length >= known ? 0.5 : 1,
-              }}
+              title={i.name}
+              style={{ marginBottom: 0 }}
             >
-              <div style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{i.name}</div>
               {i.prereq && (
-                <div style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wineDeep, fontStyle: "italic" }}>Richiede: {i.prereq}</div>
+                <p style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wineDeep, fontStyle: "italic", margin: "0 0 4px" }}>Richiede: {i.prereq}</p>
               )}
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{i.desc}</p>
-            </div>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>{i.desc}</p>
+            </OptionCard>
           );
         })}
       </div>
@@ -330,26 +322,21 @@ export function ElementalDisciplinePicker({ store, updateStore, level, title = "
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Conosci sempre {automatic.map((d) => d.name).join(", ")} (gratuita, non conta nel totale). Le altre discipline costano Punti Ki ogni volta che le usi.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "0.5rem 1rem" }}>
         {available.map((d) => {
           const active = chosen.includes(d.id);
           return (
-            <div
+            <OptionCard
               key={d.id}
+              selected={active}
+              dimmed={!active && chosen.length >= known}
               onClick={() => toggle(d.id)}
-              style={{
-                cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
-                background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                borderRadius: 6, padding: "0.5rem 0.7rem",
-                opacity: !active && chosen.length >= known ? 0.5 : 1,
-              }}
+              title={d.name}
+              subtitle={`${d.kiCost} Ki`}
+              style={{ marginBottom: 0 }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
-                <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{d.name}</span>
-                <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.wineDeep, whiteSpace: "nowrap" }}>{d.kiCost} Ki</span>
-              </div>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{d.desc}</p>
-            </div>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>{d.desc}</p>
+            </OptionCard>
           );
         })}
       </div>
@@ -376,23 +363,20 @@ export function ManeuverPicker({ store, updateStore, level, title = "Manovre —
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
         Ogni manovra si attiva spendendo un Dado Superiorità. Quando impone un tiro salvezza, la CD è 8 + bonus di competenza + modificatore di Forza o Destrezza (a tua scelta, in base all'arma usata).
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "0.5rem 1rem" }}>
         {MANEUVERS.map((m) => {
           const active = chosen.includes(m.id);
           return (
-            <div
+            <OptionCard
               key={m.id}
+              selected={active}
+              dimmed={!active && chosen.length >= known}
               onClick={() => toggle(m.id)}
-              style={{
-                cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
-                background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                borderRadius: 6, padding: "0.5rem 0.7rem",
-                opacity: !active && chosen.length >= known ? 0.5 : 1,
-              }}
+              title={m.name}
+              style={{ marginBottom: 0 }}
             >
-              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment }}>{m.name}</span>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{m.desc}</p>
-            </div>
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: 0 }}>{m.desc}</p>
+            </OptionCard>
           );
         })}
       </div>
