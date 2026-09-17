@@ -9,7 +9,7 @@ import { RACES } from "../data/races";
 import { CLASSES, SUBCLASS_CHOICE_LEVEL } from "../data/classes";
 import {
   checkMulticlassPrereq, computeFinalScores, computeMaxHp, emptyMulticlass, getArmorClass, getChosenSubclassId,
-  getFightingStyleCount, getInitiativeMod, getLevelUpChanges, getSubclass, getSubclassOptions, getTotalCharacterLevel, hasFightingStyles,
+  getEffectiveSpellSlots, getFightingStyleCount, getInitiativeMod, getLevelUpChanges, getSubclass, getSubclassOptions, getTotalCharacterLevel, hasFightingStyles,
   validateCharacter,
 } from "../lib/character";
 import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
@@ -66,6 +66,22 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
   const vitalsCurrentHp = vitalsHp != null ? (draft.currentHp == null ? vitalsHp : Math.min(draft.currentHp, vitalsHp)) : null;
   const { ac: vitalsAc } = getArmorClass(draft);
   const vitalsInitiative = getInitiativeMod(draft);
+
+  // Stato "morente": tiri salvezza contro la morte in corso (0 PF, non ancora stabile/morto).
+  // Serve un'indicazione anche in cima, altrimenti sfugge finché non si apre Combattimento.
+  const deathSaves = draft.deathSaves;
+  const dyingStatus = vitalsCurrentHp === 0
+    ? (deathSaves?.dead ? "Morto" : deathSaves?.stable ? "Stabile" : "Morente")
+    : null;
+
+  // Slot incantesimo rimasti: stesse funzioni pure della Scheda Incantesimi, sommate su tutti
+  // i livelli (Patto Magico incluso) per un unico numero di sintesi in cima.
+  const vitalsSlots = getEffectiveSpellSlots(draft);
+  const vitalsSlotsTotal = vitalsSlots.reduce((sum, s) => sum + s.total, 0);
+  const vitalsSlotsUsed = vitalsSlots.reduce((sum, s) => {
+    const key = s.pact ? `pact-${s.level}` : `${s.level}`;
+    return sum + Math.min(draft.slotsUsed?.[key] || 0, s.total);
+  }, 0);
 
   const updateDraft = (updater) => {
     setDirty(true);
@@ -274,6 +290,24 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
           </div>
           <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.creamMuted }}>CA {vitalsAc}</span>
           <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.creamMuted }}>Iniziativa {fmtMod(vitalsInitiative)}</span>
+          {dyingStatus && (
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, fontWeight: 600, color: C.danger, border: `1px solid ${C.danger}`, borderRadius: 6, padding: "1px 6px" }}>
+              {dyingStatus}
+            </span>
+          )}
+          {draft.concentration && (
+            <span
+              title={draft.concentration.spellName}
+              style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.gold, maxWidth: 150, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+            >
+              Concentrato: {draft.concentration.spellName}
+            </span>
+          )}
+          {vitalsSlotsTotal > 0 && (
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.creamMuted }}>
+              Slot {vitalsSlotsTotal - vitalsSlotsUsed}/{vitalsSlotsTotal}
+            </span>
+          )}
         </div>
 
         <div style={{ marginTop: 10 }}>
