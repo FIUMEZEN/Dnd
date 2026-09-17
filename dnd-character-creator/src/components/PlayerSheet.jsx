@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Loader2, MoreVertical, Save, X } from "../icons";
+import { ChevronLeft, ChevronRight, Heart, Loader2, MoreVertical, Save, Shield, Skull, Sparkles, Wand2, X, Zap } from "../icons";
 import { C } from "../theme";
-import { Frame, Divider, GhostButton, GoldButton, HpBar, OptionCard, Tabs } from "./primitives";
+import { Frame, Divider, GhostButton, GoldButton, HpBar, OptionCard, Tabs, VitalChip } from "./primitives";
 import { FightingStyleSelector } from "./pickers";
 import { CharacterSheetView, PLAY_SECTIONS } from "./CharacterSheetView";
 import { LevelUpModal } from "./LevelUpModal";
@@ -280,33 +280,43 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
-          <div style={{ minWidth: 110 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.creamMuted }}>
-              <span>PF</span>
-              <span>{vitalsHp != null ? `${vitalsCurrentHp}/${vitalsHp}` : "—"}</span>
-            </div>
-            {vitalsHp != null && <HpBar current={vitalsCurrentHp} max={vitalsHp} temp={draft.tempHp || 0} />}
-          </div>
-          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.creamMuted }}>CA {vitalsAc}</span>
-          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.creamMuted }}>Iniziativa {fmtMod(vitalsInitiative)}</span>
+        <div style={{ display: "flex", alignItems: "stretch", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
+          {vitalsHp != null && (
+            <VitalChip icon={Heart} accent={vitalsCurrentHp === 0 ? C.danger : undefined} style={{ minWidth: 108 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontFamily: "'Cinzel', serif", fontSize: 11, color: C.creamMuted }}>
+                <span>PF</span>
+                <span style={{ color: C.cream }}>{vitalsCurrentHp}/{vitalsHp}</span>
+              </div>
+              <HpBar current={vitalsCurrentHp} max={vitalsHp} temp={draft.tempHp || 0} />
+            </VitalChip>
+          )}
+          <VitalChip icon={Shield}>
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.creamMuted }}>CA {vitalsAc}</span>
+          </VitalChip>
+          <VitalChip icon={Zap}>
+            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.creamMuted }}>Iniz. {fmtMod(vitalsInitiative)}</span>
+          </VitalChip>
           {dyingStatus && (
-            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, fontWeight: 600, color: C.danger, border: `1px solid ${C.danger}`, borderRadius: 6, padding: "1px 6px" }}>
-              {dyingStatus}
-            </span>
+            <VitalChip icon={Skull} accent={C.danger}>
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, fontWeight: 600, color: C.danger }}>{dyingStatus}</span>
+            </VitalChip>
           )}
           {draft.concentration && (
-            <span
-              title={draft.concentration.spellName}
-              style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.gold, maxWidth: 150, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-            >
-              Concentrato: {draft.concentration.spellName}
-            </span>
+            <VitalChip icon={Wand2} accent={C.gold} style={{ maxWidth: 170 }}>
+              <span
+                title={draft.concentration.spellName}
+                style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.gold, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+              >
+                {draft.concentration.spellName}
+              </span>
+            </VitalChip>
           )}
           {vitalsSlotsTotal > 0 && (
-            <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.creamMuted }}>
-              Slot {vitalsSlotsTotal - vitalsSlotsUsed}/{vitalsSlotsTotal}
-            </span>
+            <VitalChip icon={Sparkles}>
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.creamMuted }}>
+                Slot {vitalsSlotsTotal - vitalsSlotsUsed}/{vitalsSlotsTotal}
+              </span>
+            </VitalChip>
           )}
         </div>
 

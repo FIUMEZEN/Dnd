@@ -61,6 +61,9 @@ export const Minus = (props) => (
 export const Heart = (props) => (
   <Icon {...props}><path d="M12 20s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.6-9.5 9-9.5 9Z" /></Icon>
 );
+export const Zap = (props) => (
+  <Icon {...props}><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z" /></Icon>
+);
 export const ChevronLeft = (props) => (
   <Icon {...props}><path d="m15 18-6-6 6-6" /></Icon>
 );
@@ -127,6 +130,7 @@ export default {
   Plus,
   Minus,
   Heart,
+  Zap,
   ChevronLeft,
   ChevronRight,
   Dices,
