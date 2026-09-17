@@ -79,6 +79,11 @@ export function BottomNav({ screen, onNavigate, onOpenCompendium }) {
         position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 60,
         background: C.inkPanel, borderTop: `1px solid ${C.parchmentLine}33`,
         paddingBottom: "env(safe-area-inset-bottom)",
+        // Forza un livello di composizione GPU dedicato: su Safari/Chrome mobile un elemento
+        // fixed può restare "indietro" rispetto alla toolbar del browser che si espande/contrae
+        // (appare tagliato finché non si scorre) — questo lo tiene ancorato senza aspettare un reflow.
+        transform: "translateZ(0)",
+        WebkitTransform: "translateZ(0)",
       }}
     >
       {ITEMS.map((item) => {
