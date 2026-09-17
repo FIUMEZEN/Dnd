@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { BookOpen, Crown, Pencil, Plus, Shield, Sword, Trash2, Wand2 } from "../icons";
+import { BookOpen, Crown, Heart, Pencil, Plus, Shield, Sword, Trash2, Wand2 } from "../icons";
 import { C } from "../theme";
-import { Frame, GhostButton, GoldButton } from "./primitives";
+import { DangerButton, Frame, GhostButton, GoldButton, VitalChip } from "./primitives";
 import { RACES } from "../data/races";
 import { CLASSES } from "../data/classes";
 import { mod } from "../lib/format";
@@ -66,25 +66,21 @@ export function CharacterList({ characters, loading, onNew, onOpen, onOpenSheet,
                       {race?.name || "—"} · {cls ? `${cls.name} (liv. ${c.level || 1})` : "—"}{subclass ? ` — ${subclass.name}` : ""}
                     </p>
                     {maxHp != null && (
-                      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: currentHp <= maxHp / 3 ? C.danger : C.textMuted, margin: "2px 0 0" }}>
-                        {currentHp} / {maxHp} PF
-                      </p>
+                      <div style={{ marginTop: 6 }}>
+                        <VitalChip icon={Heart} theme="light" accent={currentHp <= maxHp / 3 ? C.danger : undefined} style={{ display: "inline-flex", padding: "0.15rem 0.5rem" }}>
+                          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: currentHp <= maxHp / 3 ? C.danger : C.textOnParchment }}>{currentHp}/{maxHp} PF</span>
+                        </VitalChip>
+                      </div>
                     )}
                   </div>
                   {isPendingDelete ? (
                     <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-                      <button
-                        onClick={() => { onDelete(c.id); setPendingDeleteId(null); }}
-                        style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
-                      >
+                      <DangerButton onClick={() => { onDelete(c.id); setPendingDeleteId(null); }} style={{ padding: "4px 8px", fontSize: 13 }}>
                         Sì, elimina
-                      </button>
-                      <button
-                        onClick={() => setPendingDeleteId(null)}
-                        style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
-                      >
+                      </DangerButton>
+                      <GhostButton onClick={() => setPendingDeleteId(null)} style={{ borderColor: C.parchmentLine, color: C.textMuted, padding: "4px 8px", fontSize: 13 }}>
                         Annulla
-                      </button>
+                      </GhostButton>
                     </div>
                   ) : (
                     <button onClick={() => setPendingDeleteId(c.id)} style={{ background: "transparent", border: "none", cursor: "pointer", color: C.danger, padding: 4 }} aria-label="Elimina personaggio">

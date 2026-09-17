@@ -106,23 +106,55 @@ export function GhostButton({ children, onClick, style, icon: Icon }) {
   );
 }
 
-export function Pill({ children, active, onClick, disabled, title }) {
+// `accent` sovrascrive il colore attivo (default vino) per pillole che portano un'informazione
+// propria oltre alla semplice selezione (es. "Equipaggiato" in verde) — stesso principio di
+// `VitalChip`. `size="sm"` è per righe dense (es. InventoryRow) dove la pillola piena sarebbe
+// troppo ingombrante.
+export function Pill({ children, active, onClick, disabled, title, accent, size }) {
+  const sm = size === "sm";
+  const activeBg = accent ? accent : "linear-gradient(180deg, #7d1f38 0%, #5e1729 100%)";
   return (
     <button
       onClick={onClick}
       title={title}
       style={{
         fontFamily: "'Spectral', serif",
-        fontSize: 14.5,
-        padding: "0.5rem 0.85rem",
+        fontSize: sm ? 12.5 : 14.5,
+        padding: sm ? "0.25rem 0.6rem" : "0.5rem 0.85rem",
         borderRadius: 5,
-        border: `1px solid ${active ? C.wine : C.parchmentLine}`,
-        background: active ? "linear-gradient(180deg, #7d1f38 0%, #5e1729 100%)" : "rgba(255,255,255,0.2)",
+        border: `1px solid ${active ? (accent || C.wine) : C.parchmentLine}`,
+        background: active ? activeBg : "rgba(255,255,255,0.2)",
         color: active ? C.cream : C.textOnParchment,
         cursor: disabled ? "not-allowed" : "pointer",
         transition: "all 120ms ease",
         boxShadow: active ? `0 0 0 1px rgba(224,193,101,0.3) inset` : "none",
         opacity: disabled ? 0.45 : 1,
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+// Bottone pieno per l'azione distruttiva di conferma in un pattern "Sì, elimina/rimuovi" /
+// "Annulla" (il lato "Annulla" riusa GhostButton con `borderColor: C.parchmentLine, color:
+// C.textMuted`, già lo stile stabilito altrove nell'app) — stesso linguaggio di GoldButton,
+// in rosso pericolo invece che oro.
+export function DangerButton({ children, onClick, style }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        fontFamily: "'Spectral', serif",
+        fontSize: 14,
+        color: "#fff",
+        background: C.danger,
+        border: "none",
+        borderRadius: 5,
+        padding: "0.55rem 1rem",
+        cursor: "pointer",
+        transition: "filter 120ms ease",
+        ...style,
       }}
     >
       {children}

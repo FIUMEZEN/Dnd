@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Pencil, Plus, Skull, Trash2, Users } from "../icons";
+import { Heart, Pencil, Plus, Shield, Skull, Trash2, Users } from "../icons";
 import { C } from "../theme";
-import { Frame, GhostButton, GoldButton } from "./primitives";
+import { DangerButton, Frame, GhostButton, GoldButton, VitalChip } from "./primitives";
 import { CREATURE_SIZES } from "../data/creatures";
 import { fmtMod } from "../lib/format";
 import { getCurrentHp, getEffectiveProficiencyBonus, getMaxHp, isCreatureDead } from "../lib/creature";
@@ -58,27 +58,27 @@ export function MasterDashboard({ creatures, loading, onNew, onOpen, onOpenSheet
                       <Skull size={16} color={C.wine} />
                       <span style={{ fontFamily: "'Cinzel', serif", fontSize: 17, color: C.textOnParchment }}>{cr.name || "Creatura senza nome"}</span>
                     </div>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "4px 0 0" }}>
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "4px 0 8px" }}>
                       {sizeLabel} {cr.type}{cr.typeTag ? ` (${cr.typeTag})` : ""} · GS {cr.cr} ({fmtMod(getEffectiveProficiencyBonus(cr))})
+                      {isCreatureDead(cr) ? <span style={{ color: C.danger }}> · MORTO</span> : ""}
                     </p>
-                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: isCreatureDead(cr) ? C.danger : C.textMuted, margin: "2px 0 0" }}>
-                      CA {cr.ac} · {getCurrentHp(cr)} / {getMaxHp(cr)} PF{isCreatureDead(cr) ? " · MORTO" : ""}
-                    </p>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <VitalChip icon={Shield} theme="light" style={{ padding: "0.15rem 0.5rem" }}>
+                        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment }}>CA {cr.ac}</span>
+                      </VitalChip>
+                      <VitalChip icon={Heart} theme="light" accent={isCreatureDead(cr) ? C.danger : undefined} style={{ padding: "0.15rem 0.5rem" }}>
+                        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: isCreatureDead(cr) ? C.danger : C.textOnParchment }}>{getCurrentHp(cr)}/{getMaxHp(cr)} PF</span>
+                      </VitalChip>
+                    </div>
                   </div>
                   {isPendingDelete ? (
                     <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-                      <button
-                        onClick={() => { onDelete(cr.id); setPendingDeleteId(null); }}
-                        style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
-                      >
+                      <DangerButton onClick={() => { onDelete(cr.id); setPendingDeleteId(null); }} style={{ padding: "4px 8px", fontSize: 13 }}>
                         Sì, elimina
-                      </button>
-                      <button
-                        onClick={() => setPendingDeleteId(null)}
-                        style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
-                      >
+                      </DangerButton>
+                      <GhostButton onClick={() => setPendingDeleteId(null)} style={{ borderColor: C.parchmentLine, color: C.textMuted, padding: "4px 8px", fontSize: 13 }}>
                         Annulla
-                      </button>
+                      </GhostButton>
                     </div>
                   ) : (
                     <button onClick={() => setPendingDeleteId(cr.id)} style={{ background: "transparent", border: "none", cursor: "pointer", color: C.danger, padding: 4 }} aria-label="Elimina creatura">

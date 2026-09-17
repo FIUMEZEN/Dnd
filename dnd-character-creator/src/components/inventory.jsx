@@ -1,7 +1,7 @@
 // Gestione dell'inventario: riga singola, catalogo per aggiungere armi/armature/oggetti,
 // oggetti personalizzati. Usato sia in creazione (StepEquipment) sia in gioco (CharacterSheetView).
 import { useState } from "react";
-import { Trash2, Plus } from "../icons";
+import { Trash2, Plus, Minus } from "../icons";
 import { C } from "../theme";
 import { Pill, GoldButton } from "./primitives";
 import { EQUIPMENT_CATALOG } from "../data/equipment";
@@ -15,9 +15,8 @@ const CATALOG_GROUPS = [
 ];
 
 const qtyBtnStyle = {
-  width: 22, height: 22, borderRadius: 5, border: `1px solid ${C.parchmentLine}`, background: "#fff",
-  cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 15.5, lineHeight: 1, display: "flex",
-  alignItems: "center", justifyContent: "center", color: C.textOnParchment,
+  width: 22, height: 22, border: "none", background: "transparent",
+  cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textMuted,
 };
 
 export function InventoryRow({ item, onQtyChange, onRemove, onToggleGrip }) {
@@ -34,45 +33,22 @@ export function InventoryRow({ item, onQtyChange, onRemove, onToggleGrip }) {
         <div style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>{formatItemStats(item)}</div>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-        <button onClick={() => onQtyChange(Math.max(1, item.qty - 1))} style={qtyBtnStyle}>−</button>
-        <span style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, minWidth: 18, textAlign: "center" }}>{item.qty}</span>
-        <button onClick={() => onQtyChange(item.qty + 1)} style={qtyBtnStyle}>+</button>
+        <div style={{ display: "flex", alignItems: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, overflow: "hidden" }}>
+          <button onClick={() => onQtyChange(Math.max(1, item.qty - 1))} style={qtyBtnStyle} aria-label="Diminuisci quantità"><Minus size={12} /></button>
+          <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, minWidth: 18, textAlign: "center", borderLeft: `1px solid ${C.parchmentLine}`, borderRight: `1px solid ${C.parchmentLine}`, padding: "2px 0" }}>{item.qty}</span>
+          <button onClick={() => onQtyChange(item.qty + 1)} style={qtyBtnStyle} aria-label="Aumenta quantità"><Plus size={12} /></button>
+        </div>
 
         {isVersatile && onToggleGrip && (
-          <button
-            onClick={onToggleGrip}
-            style={{
-              background: twoHanded ? C.wine : "transparent",
-              color: twoHanded ? C.cream : C.textOnParchment,
-              border: `1px solid ${twoHanded ? C.wine : C.parchmentLine}`,
-              cursor: "pointer",
-              borderRadius: 5,
-              padding: "3px 8px",
-              fontFamily: "'Spectral', serif",
-              fontSize: 12.5,
-              transition: "all 120ms ease",
-            }}
-          >
-            {twoHanded ? "🔴 2 mani" : "🟢 1 mano"}
-          </button>
+          <Pill size="sm" active={twoHanded} onClick={onToggleGrip}>
+            {twoHanded ? "2 mani" : "1 mano"}
+          </Pill>
         )}
 
         {item.category !== "oggetto" && (
-          <button
-            onClick={item.onToggleEquip}
-            style={{
-              background: item.equipped ? C.forest : "transparent",
-              color: item.equipped ? C.cream : C.forestDeep,
-              border: `1px solid ${C.forest}`,
-              cursor: "pointer",
-              borderRadius: 5,
-              padding: "3px 6px",
-              fontFamily: "'Spectral', serif",
-              fontSize: 12.5
-            }}
-          >
+          <Pill size="sm" active={item.equipped} accent={C.forest} onClick={item.onToggleEquip}>
             {item.equipped ? "Equipaggiato" : "Equipaggia"}
-          </button>
+          </Pill>
         )}
 
         <button onClick={onRemove} style={{ background: "transparent", border: "none", cursor: "pointer", color: C.danger, padding: 4, marginLeft: 4 }} aria-label="Rimuovi oggetto">

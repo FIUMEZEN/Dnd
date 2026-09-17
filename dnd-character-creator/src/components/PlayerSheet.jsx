@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Heart, Loader2, MoreVertical, Save, Shield, Skull, Sparkles, Wand2, X, Zap } from "../icons";
 import { C } from "../theme";
-import { Frame, Divider, GhostButton, GoldButton, HpBar, OptionCard, Tabs, VitalChip } from "./primitives";
+import { Frame, Divider, DangerButton, GhostButton, GoldButton, HpBar, OptionCard, Tabs, VitalChip } from "./primitives";
 import { FightingStyleSelector } from "./pickers";
 import { CharacterSheetView, PLAY_SECTIONS } from "./CharacterSheetView";
 import { LevelUpModal } from "./LevelUpModal";
@@ -389,12 +389,9 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
               <GhostButton onClick={() => setLevelDownTarget(null)} style={{ borderColor: C.parchmentLine, color: C.textMuted }}>
                 Annulla
               </GhostButton>
-              <button
-                onClick={confirmLevelDown}
-                style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 5, padding: "0.55rem 1rem", fontFamily: "'Spectral', serif", fontSize: 14.5 }}
-              >
+              <DangerButton onClick={confirmLevelDown}>
                 Sì, torna indietro
-              </button>
+              </DangerButton>
             </div>
           </div>
         </div>
@@ -503,18 +500,12 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
                 <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger }}>
                   Rimuovere la classe secondaria e tutti i progressi ad essa legati (ASI, talenti, risorse, PF)?
                 </span>
-                <button
-                  onClick={handleRemoveMulticlass}
-                  style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
-                >
+                <DangerButton onClick={handleRemoveMulticlass} style={{ padding: "4px 8px", fontSize: 13 }}>
                   Sì, rimuovi
-                </button>
-                <button
-                  onClick={() => setConfirmRemoveMc(false)}
-                  style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
-                >
+                </DangerButton>
+                <GhostButton onClick={() => setConfirmRemoveMc(false)} style={{ borderColor: C.parchmentLine, color: C.textMuted, padding: "4px 8px", fontSize: 13 }}>
                   Annulla
-                </button>
+                </GhostButton>
               </div>
             ) : (
               <GhostButton onClick={() => setConfirmRemoveMc(true)} style={{ borderColor: C.danger, color: C.danger, marginBottom: 10 }}>
