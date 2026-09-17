@@ -19,7 +19,7 @@ import { CreatureSheetView } from "./components/CreatureSheetView";
 import { Bestiary } from "./components/Bestiary";
 import { EncounterRunner } from "./components/EncounterRunner";
 import { CampaignPanel } from "./components/CampaignPanel";
-import { TopNav } from "./components/TopNav";
+import { BottomNav, HUB_SCREENS, TopNav } from "./components/TopNav";
 
 /* ---------------------------------- APP ---------------------------------- */
 
@@ -339,6 +339,18 @@ export default function App() {
             --frame-padding: 1.1rem;
           }
         }
+
+        /* TopNav (pillola in cima) su tablet/desktop, BottomNav (barra fissa in fondo, per il
+           pollice) sotto i 640px: stessa lista di voci, la visibilità reciproca è solo CSS. */
+        .nav-top { display: flex; }
+        .nav-bottom { display: none; }
+        @media (max-width: 640px) {
+          .nav-top { display: none; }
+          .nav-bottom { display: flex; }
+          /* Spazio per non far finire il contenuto sotto la BottomNav fissa, solo nelle
+             schermate hub dove la barra è effettivamente presente. */
+          .has-bottom-nav { padding-bottom: calc(56px + env(safe-area-inset-bottom) + 1rem); }
+        }
         input,
         select {
           color: ${C.textOnParchment};
@@ -403,7 +415,9 @@ export default function App() {
         </div>
       </div>
 
-      <div key={screen} className="screen-fade">
+      <BottomNav screen={screen} onNavigate={setScreen} onOpenCompendium={() => openCompendium(screen === "compendium" ? compendiumFrom : screen)} />
+
+      <div key={screen} className={`screen-fade${HUB_SCREENS.has(screen) ? " has-bottom-nav" : ""}`}>
       {screen === "list" && (
         <CharacterList
           characters={characters}
