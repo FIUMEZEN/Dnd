@@ -41,7 +41,7 @@ export function Creator({ draft, setDraft, onBack, onSave, saving }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "var(--creator-flex-dir)", gap: "1.75rem" }}>
-      <div style={{ width: "var(--creator-sidebar-width)", flexShrink: 0, padding: "0.8rem 0.7rem", borderRadius: 2, background: "rgba(31, 24, 19, 0.7)", border: `1px solid rgba(224, 193, 101, 0.25)`, boxShadow: "inset 0 0 0 1px rgba(224, 193, 101, 0.08)" }}>
+      <div style={{ width: "var(--creator-sidebar-width)", flexShrink: 0, alignSelf: "flex-start", position: "sticky", top: 0, zIndex: 40, padding: "0.8rem 0.7rem", borderRadius: 2, background: C.inkPanel, border: `1px solid rgba(224, 193, 101, 0.25)`, boxShadow: "inset 0 0 0 1px rgba(224, 193, 101, 0.08)" }}>
         <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18, width: "100%", justifyContent: "flex-start" }}>
           I miei personaggi
         </GhostButton>
@@ -96,7 +96,12 @@ export function Creator({ draft, setDraft, onBack, onSave, saving }) {
         </Frame>
 
         {clampedStep < lastStep && (
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
+          <div
+            style={{
+              position: "sticky", bottom: 0, zIndex: 40, display: "flex", justifyContent: "space-between",
+              marginTop: 16, padding: "0.75rem 0", background: C.ink, borderTop: `1px solid ${C.parchmentLine}44`,
+            }}
+          >
             <GhostButton icon={ChevronLeft} onClick={() => setStep((s) => Math.max(0, Math.min(s, lastStep) - 1))} style={{ visibility: clampedStep === 0 ? "hidden" : "visible" }}>
               Indietro
             </GhostButton>
