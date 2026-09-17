@@ -247,20 +247,23 @@ export function StickySearch({ value, onChange, placeholder }) {
   );
 }
 
-// Chip compatto per un valore vitale nella fascia sticky scura (PF/CA/Iniziativa e i badge di
-// stato come Morente/Concentrazione/Slot): dà a ogni valore un riquadro e un'icona propri,
-// invece di testo piatto in fila sullo sfondo pieno — stesso linguaggio a icone del tracker PF.
-export function VitalChip({ icon: Icon, accent, style, children }) {
+// Chip compatto per un valore vitale (PF/CA/Iniziativa e badge di stato come
+// Morente/Concentrazione/Slot): dà a ogni valore un riquadro e un'icona propri, invece di
+// testo piatto in fila — stesso linguaggio a icone del tracker PF. `theme="dark"` (default) è
+// per la fascia sticky su sfondo pieno C.ink; `theme="light"` per un uso dentro un Frame
+// pergamena (es. le card combattenti dell'Incontro).
+export function VitalChip({ icon: Icon, accent, theme = "dark", style, children }) {
+  const light = theme === "light";
   return (
     <div
       style={{
         display: "flex", alignItems: "center", gap: 6,
-        border: `1px solid ${accent ? `${accent}66` : `${C.parchmentLine}44`}`, borderRadius: 6,
-        background: "rgba(255,255,255,0.05)", padding: "0.3rem 0.55rem", minWidth: 0,
+        border: `1px solid ${accent ? `${accent}66` : light ? C.goldSoft : `${C.parchmentLine}44`}`, borderRadius: 6,
+        background: light ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.05)", padding: "0.3rem 0.55rem", minWidth: 0,
         ...style,
       }}
     >
-      {Icon && <Icon size={14} style={{ color: accent || C.gold, flexShrink: 0 }} />}
+      {Icon && <Icon size={14} style={{ color: accent || (light ? C.wine : C.gold), flexShrink: 0 }} />}
       <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
         {children}
       </div>

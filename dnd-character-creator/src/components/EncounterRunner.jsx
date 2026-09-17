@@ -3,9 +3,9 @@
 // Personaggio e della Scheda Creatura, mai duplicati) e condizioni come semplici etichette
 // visive (nessuna automazione meccanica — vedi ADR 0004).
 import { useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Dices, MoreVertical, Plus, Skull, Sword, Trash2, Users, X } from "../icons";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Dices, Heart, MoreVertical, Plus, Shield, Skull, Sword, Trash2, Users, X } from "../icons";
 import { C } from "../theme";
-import { Frame, GhostButton, GoldButton, HpBar, MetricBox } from "./primitives";
+import { Frame, GhostButton, GoldButton, HpBar, MetricBox, VitalChip } from "./primitives";
 import { HpTracker, DeathSaveTracker, ConcentrationTracker } from "./hp";
 import { CONDITIONS, CR_OPTIONS } from "../data/creatures";
 import { BESTIARY } from "../data/bestiary";
@@ -563,7 +563,9 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                       {view.name}{view.isDead ? " · MORTO" : ""}{view.missing ? " (mancante)" : ""}
                     </span>
                     {view.ac != null && !collapsed && (
-                      <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>CA {view.ac}</span>
+                      <VitalChip icon={Shield} theme="light" style={{ padding: "0.15rem 0.5rem" }}>
+                        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment }}>CA {view.ac}</span>
+                      </VitalChip>
                     )}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -594,9 +596,11 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
                 </div>
 
                 {collapsed && (
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>
-                    0 / {view.maxHp} PF
-                  </p>
+                  <div style={{ marginTop: 6 }}>
+                    <VitalChip icon={Heart} theme="light" accent={C.danger} style={{ display: "inline-flex" }}>
+                      <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.danger }}>0 / {view.maxHp} PF</span>
+                    </VitalChip>
+                  </div>
                 )}
 
                 {!collapsed && (
