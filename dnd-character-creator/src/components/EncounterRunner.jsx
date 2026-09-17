@@ -3,7 +3,7 @@
 // Personaggio e della Scheda Creatura, mai duplicati) e condizioni come semplici etichette
 // visive (nessuna automazione meccanica — vedi ADR 0004).
 import { useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Dices, Plus, Skull, Sword, Trash2, Users, X } from "../icons";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Dices, MoreVertical, Plus, Skull, Sword, Trash2, Users, X } from "../icons";
 import { C } from "../theme";
 import { Frame, GhostButton, GoldButton, HpBar, MetricBox } from "./primitives";
 import { HpTracker, DeathSaveTracker, ConcentrationTracker } from "./hp";
@@ -172,6 +172,14 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
   const [customHp, setCustomHp] = useState(10);
   const [xpOverrides, setXpOverrides] = useState({});
   const [expandedDeadIds, setExpandedDeadIds] = useState(() => new Set());
+  // "Aggiungi combattenti" è utile in preparazione, solo ingombro a incontro già iniziato: aperto
+  // di default quando l'Incontro è vuoto, chiuso appena c'è almeno un combattente (il Master può
+  // comunque riaprirlo per un rinforzo). Stato solo iniziale, non si richiude da solo dopo.
+  const [addOpen, setAddOpen] = useState(() => (encounter.combatants || []).length === 0);
+  // Azioni meno frequenti dell'intestazione (nome incontro, tira iniziative, reset): raccolte in
+  // un menu a comparsa per lasciare in primo piano solo "Turno successivo" — stesso pattern del
+  // menu azioni in PlayerSheet.jsx.
+  const [actionsOpen, setActionsOpen] = useState(false);
 
   const combatants = encounter.combatants || [];
   const usedCreatureIds = new Set(combatants.filter((c) => c.refType === "creature").map((c) => c.refId));
@@ -290,31 +298,66 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
 
   return (
     <div>
-      <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18 }}>Campagna</GhostButton>
-
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: 12 }}>
-        <div>
-          <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 26, color: C.cream, margin: 0 }}>Incontro</h1>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.creamMuted, margin: "4px 0 0" }}>
-            Round {encounter.round || 1} · {combatants.length} combattenti
-          </p>
-        </div>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-          <input
-            type="text" placeholder="Nome dell'incontro (opzionale)" value={encounter.name || ""}
-            onChange={(e) => setEncounter((en) => ({ ...en, name: e.target.value }))}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, padding: "0.5rem 0.7rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", minWidth: 200 }}
-          />
-          <GoldButton icon={Dices} onClick={rollAllInitiative} disabled={combatants.length === 0}>Tira tutte le iniziative</GoldButton>
-          <GoldButton icon={ChevronRight} onClick={advanceTurn} disabled={combatants.length === 0}>Turno successivo</GoldButton>
-          {confirmReset ? (
-            <>
-              <GhostButton onClick={resetEncounter} style={{ borderColor: C.wineBright, color: C.wineBright }}>Conferma reset</GhostButton>
-              <GhostButton onClick={() => setConfirmReset(false)}>Annulla</GhostButton>
-            </>
-          ) : (
-            <GhostButton icon={Trash2} onClick={() => setConfirmReset(true)} style={{ borderColor: C.wineBright, color: C.wineBright }}>Nuovo Incontro</GhostButton>
-          )}
+      <div
+        style={{
+          position: "sticky", top: 0, zIndex: 40, background: C.ink,
+          paddingTop: 4, paddingBottom: 8, marginBottom: 18, borderBottom: `1px solid ${C.parchmentLine}44`,
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <GhostButton icon={ChevronLeft} onClick={onBack} style={{ padding: "0.35rem 0.7rem", marginBottom: 6, fontSize: 12 }}>
+              Campagna
+            </GhostButton>
+            <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 19, color: C.cream, margin: 0 }}>Incontro</h1>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 12, color: C.creamMuted, margin: "2px 0 0" }}>
+              Round {encounter.round || 1} · {combatants.length} combattenti
+            </p>
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 6, flexShrink: 0 }}>
+            <GoldButton icon={ChevronRight} onClick={advanceTurn} disabled={combatants.length === 0} style={{ padding: "0.5rem 0.8rem", fontSize: 12, flexDirection: "row-reverse" }}>
+              Turno succ.
+            </GoldButton>
+            <div style={{ position: "relative" }}>
+              <GhostButton icon={MoreVertical} onClick={() => setActionsOpen((v) => !v)} style={{ padding: "0.5rem 0.6rem", minWidth: 44, minHeight: 44, justifyContent: "center" }} />
+              {actionsOpen && (
+                <>
+                  <div onClick={() => setActionsOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 45 }} />
+                  <div
+                    style={{
+                      position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50,
+                      background: C.parchment, border: `1px solid ${C.gold}`, borderRadius: 3,
+                      boxShadow: "0 12px 24px rgba(19,15,13,0.4)", padding: 10, minWidth: 240, display: "grid", gap: 8,
+                    }}
+                  >
+                    <input
+                      type="text" placeholder="Nome dell'incontro (opzionale)" value={encounter.name || ""}
+                      onChange={(e) => setEncounter((en) => ({ ...en, name: e.target.value }))}
+                      style={{ fontFamily: "'Spectral', serif", fontSize: 13, padding: "0.4rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                    />
+                    <GhostButton
+                      icon={Dices} style={{ justifyContent: "flex-start", borderColor: C.parchmentLine, color: C.textMuted }}
+                      onClick={() => { if (combatants.length) rollAllInitiative(); setActionsOpen(false); }}
+                    >
+                      Tira tutte le iniziative
+                    </GhostButton>
+                    {confirmReset ? (
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <GhostButton onClick={() => { resetEncounter(); setActionsOpen(false); }} style={{ borderColor: C.danger, color: C.danger }}>
+                          Conferma reset
+                        </GhostButton>
+                        <GhostButton onClick={() => setConfirmReset(false)} style={{ borderColor: C.parchmentLine, color: C.textMuted }}>Annulla</GhostButton>
+                      </div>
+                    ) : (
+                      <GhostButton icon={Trash2} onClick={() => setConfirmReset(true)} style={{ borderColor: C.danger, color: C.danger, justifyContent: "flex-start" }}>
+                        Nuovo Incontro
+                      </GhostButton>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -361,7 +404,19 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
       )}
 
       <Frame style={{ marginBottom: 18 }}>
-        <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 10px" }}>Aggiungi combattenti</h3>
+        <button
+          onClick={() => setAddOpen((v) => !v)}
+          style={{
+            display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%",
+            background: "transparent", border: "none", cursor: "pointer", padding: 0,
+            marginBottom: addOpen ? 10 : 0, minHeight: 32,
+          }}
+        >
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: 0 }}>Aggiungi combattenti</h3>
+          {addOpen ? <ChevronUp size={16} color={C.wineDeep} /> : <ChevronDown size={16} color={C.wineDeep} />}
+        </button>
+        {addOpen && (
+        <>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
           <select
             value={addCreatureId} onChange={(e) => setAddCreatureId(e.target.value)}
@@ -438,6 +493,8 @@ export function EncounterRunner({ encounter, setEncounter, characters, creatures
           </label>
           <GhostButton icon={Plus} onClick={addCustom} disabled={!customName.trim()} style={{ borderColor: C.wine, color: C.wineDeep }}>Aggiungi</GhostButton>
         </div>
+        </>
+        )}
       </Frame>
 
       {sorted.length === 0 ? (
