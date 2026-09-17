@@ -9,8 +9,8 @@ export function Frame({ children, style, className = "" }) {
       style={{
         background: "linear-gradient(180deg, #f5ebd2 0%, #efe4c6 100%)",
         border: `1px solid ${C.parchmentLine}`,
-        boxShadow: `inset 0 0 0 4px rgba(255,255,255,0.32), inset 0 0 0 5px ${C.parchmentLine}, 0 18px 28px rgba(19,15,13,0.16)`,
-        borderRadius: 2,
+        boxShadow: `inset 0 0 0 4px rgba(255,255,255,0.32), inset 0 0 0 5px ${C.parchmentLine}, 0 16px 30px rgba(19,15,13,0.24)`,
+        borderRadius: 6,
         padding: "var(--frame-padding)",
         position: "relative",
         ...style,
@@ -29,7 +29,7 @@ export function HpBar({ current, max, temp = 0 }) {
   const color = pct <= 0.25 ? C.danger : pct <= 0.5 ? C.goldSoft : C.forest;
   const tempPct = temp > 0 ? Math.min(1, temp / max) : 0;
   return (
-    <div style={{ height: 6, borderRadius: 3, background: "rgba(0,0,0,0.12)", overflow: "hidden", display: "flex", marginTop: 6 }}>
+    <div style={{ height: 6, borderRadius: 5, background: "rgba(0,0,0,0.12)", overflow: "hidden", display: "flex", marginTop: 6 }}>
       <div style={{ width: `${pct * 100}%`, background: color, transition: "width 150ms ease" }} />
       {tempPct > 0 && <div style={{ width: `${tempPct * 100}%`, background: C.forestDeep, opacity: 0.6 }} />}
     </div>
@@ -59,12 +59,13 @@ export function GoldButton({ children, onClick, disabled, style, icon: Icon }) {
         color: disabled ? C.creamMuted : C.cream,
         background: disabled ? "#4a4038" : `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})`,
         border: `1px solid ${disabled ? "#5a5148" : C.gold}`,
-        borderRadius: 3,
+        borderRadius: 5,
         padding: "0.65rem 1.4rem",
         cursor: disabled ? "not-allowed" : "pointer",
         display: "inline-flex",
         alignItems: "center",
         gap: 8,
+        boxShadow: disabled ? "none" : `0 3px 10px rgba(94,23,41,0.35)`,
         transition: "transform 120ms ease, filter 120ms ease",
         ...style,
       }}
@@ -88,7 +89,7 @@ export function GhostButton({ children, onClick, style, icon: Icon }) {
         color: C.cream,
         background: "rgba(255,255,255,0.02)",
         border: `1px solid ${C.goldSoft}`,
-        borderRadius: 3,
+        borderRadius: 5,
         padding: "0.6rem 1.1rem",
         cursor: "pointer",
         display: "inline-flex",
@@ -114,7 +115,7 @@ export function Pill({ children, active, onClick, disabled, title }) {
         fontFamily: "'Spectral', serif",
         fontSize: 14.5,
         padding: "0.5rem 0.85rem",
-        borderRadius: 3,
+        borderRadius: 5,
         border: `1px solid ${active ? C.wine : C.parchmentLine}`,
         background: active ? "linear-gradient(180deg, #7d1f38 0%, #5e1729 100%)" : "rgba(255,255,255,0.2)",
         color: active ? C.cream : C.textOnParchment,
@@ -139,7 +140,7 @@ export function OptionCard({ selected, onClick, title, subtitle, children }) {
         background: selected ? "#f8f1e0" : "transparent",
         border: `1px solid ${selected ? C.wine : C.parchmentLine}`,
         borderLeft: selected ? `4px solid ${C.wine}` : `4px solid transparent`,
-        borderRadius: 2,
+        borderRadius: 6,
         padding: "0.9rem 1.1rem",
         cursor: "pointer",
         display: "block",
@@ -209,7 +210,7 @@ export function Tabs({ items, active, onChange }) {
             style={{
               flex: "1 0 auto", minHeight: 44, minWidth: 76,
               fontFamily: "'Cinzel', serif", fontSize: 13.5, letterSpacing: 0.3, fontWeight: 600,
-              padding: "0.5rem 0.9rem", borderRadius: 3, border: "none", cursor: "pointer",
+              padding: "0.5rem 0.9rem", borderRadius: 5, border: "none", cursor: "pointer",
               background: isActive ? `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})` : "transparent",
               color: isActive ? C.cream : C.creamMuted,
               whiteSpace: "nowrap",
@@ -239,7 +240,7 @@ export function StickySearch({ value, onChange, placeholder }) {
         onChange={(e) => onChange(e.target.value)}
         style={{
           width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.6rem 0.8rem",
-          borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", boxSizing: "border-box",
+          borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", boxSizing: "border-box",
         }}
       />
     </div>
@@ -248,7 +249,7 @@ export function StickySearch({ value, onChange, placeholder }) {
 
 export function MetricBox({ label, value, hint }) {
   return (
-    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.85rem" }}>
+    <div style={{ border: `1px solid ${C.goldSoft}`, background: "rgba(255,255,255,0.25)", borderRadius: 6, padding: "0.7rem 0.85rem" }}>
       <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted, marginBottom: 4 }}>{label}</div>
       <div style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment }}>{value}</div>
       {hint && <div style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted, marginTop: 2 }}>{hint}</div>}

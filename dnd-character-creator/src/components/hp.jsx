@@ -63,7 +63,7 @@ export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "
               alignItems: "center",
               gap: 6,
               border: `1px solid ${C.parchmentLine}`,
-              borderRadius: 2,
+              borderRadius: 6,
               padding: "0.3rem 0.5rem",
               flexWrap: "wrap",
               background: state !== "avg" ? "rgba(125, 31, 56, 0.04)" : "transparent",
@@ -117,7 +117,7 @@ export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "
                     fontFamily: "'Spectral', serif",
                     fontSize: 14,
                     padding: "0.25rem",
-                    borderRadius: 2,
+                    borderRadius: 6,
                     border: `1px solid ${state === "rolled" ? C.gold : C.parchmentLine}`,
                     background: state === "rolled" ? "rgba(201, 162, 39, 0.08)" : "#fff",
                     color: state === "rolled" ? C.gold : C.textOnParchment,
@@ -230,7 +230,7 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
   };
 
   return (
-    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.85rem 1rem", marginBottom: 18 }}>
+    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.85rem 1rem", marginBottom: 18 }}>
       <div style={{ marginBottom: 10 }}>
         <span style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: current <= maxHp / 3 ? C.danger : C.textOnParchment }}>
           {current} / {maxHp} PF{temp > 0 ? <span style={{ color: C.forestDeep, fontSize: 15.5 }}> (+{temp} temp)</span> : null}
@@ -251,7 +251,7 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
               key={key}
               onClick={() => setAction(key)}
               style={{
-                fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.4rem 0.8rem", borderRadius: 3,
+                fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.4rem 0.8rem", borderRadius: 5,
                 border: `1px solid ${color}`, cursor: "pointer", transition: "all 120ms ease",
                 background: isActive ? color : "transparent",
                 color: isActive ? C.cream : color,
@@ -266,12 +266,12 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
         <input
           type="number" min={0} value={amount}
           onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
-          style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+          style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.4rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
         />
         <button
           onClick={applyAction}
           style={{
-            fontFamily: "'Cinzel', serif", fontSize: 14, padding: "0.45rem 1rem", borderRadius: 3,
+            fontFamily: "'Cinzel', serif", fontSize: 14, padding: "0.45rem 1rem", borderRadius: 5,
             border: "none", cursor: "pointer", background: actionColor, color: C.cream,
           }}
         >
@@ -280,7 +280,7 @@ export function HpTracker({ maxHp, draft, setDraft, conMod = 0 }) {
       </div>
 
       {pendingCheck && (
-        <div style={{ marginTop: 12, padding: "0.7rem 0.9rem", borderRadius: 2, border: `1px solid ${C.wine}`, background: "rgba(125, 31, 56, 0.05)" }}>
+        <div style={{ marginTop: 12, padding: "0.7rem 0.9rem", borderRadius: 6, border: `1px solid ${C.wine}`, background: "rgba(125, 31, 56, 0.05)" }}>
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 8px" }}>
             TS su Costituzione (CD {pendingCheck.dc}) per mantenere la Concentrazione
           </p>
@@ -322,7 +322,7 @@ export function ConcentrationTracker({ draft, setDraft }) {
   const stop = () => setDraft((d) => ({ ...d, concentration: null }));
 
   return (
-    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
+    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
       <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 8px" }}>Concentrazione</h3>
       {active ? (
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
@@ -342,7 +342,7 @@ export function ConcentrationTracker({ draft, setDraft }) {
                 const spell = options.find((s) => s.id === e.target.value);
                 if (spell) start(spell.id, spell.name);
               }}
-              style={{ fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+              style={{ fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.35rem 0.5rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
             >
               <option value="" disabled>Scegli un incantesimo conosciuto…</option>
               {options.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -351,7 +351,7 @@ export function ConcentrationTracker({ draft, setDraft }) {
           <input
             type="text" placeholder="…oppure nome libero"
             value={customName} onChange={(e) => setCustomName(e.target.value)}
-            style={{ fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ fontFamily: "'Spectral', serif", fontSize: 14, padding: "0.35rem 0.5rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
           <GhostButton
             onClick={() => customName.trim() && start(null, customName.trim())}
@@ -430,7 +430,7 @@ export function DeathSaveTracker({ draft, setDraft, maxHp }) {
   );
 
   return (
-    <div style={{ border: `1px solid ${C.danger}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, background: "rgba(150, 30, 30, 0.04)" }}>
+    <div style={{ border: `1px solid ${C.danger}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18, background: "rgba(150, 30, 30, 0.04)" }}>
       <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.danger, margin: "0 0 8px" }}>
         {ds.dead ? "Morto" : ds.stable ? "Stabile (incosciente)" : "Tiri Salvezza contro la Morte"}
       </h3>
@@ -648,7 +648,7 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
   };
 
   return (
-    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.85rem 1rem", marginBottom: 18 }}>
+    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.85rem 1rem", marginBottom: 18 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 8 }}>
         <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: 0 }}>Riposi</h3>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -688,7 +688,7 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
               const spent = (draft.hitDiceSpent && draft.hitDiceSpent[p.die]) || 0;
               const available = p.max - spent;
               return (
-                <div key={p.die} style={{ display: "flex", alignItems: "center", gap: 8, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.35rem 0.6rem" }}>
+                <div key={p.die} style={{ display: "flex", alignItems: "center", gap: 8, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.35rem 0.6rem" }}>
                   <span style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment }}>
                     d{p.die}: {available}/{p.max}
                   </span>
@@ -731,7 +731,7 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
           <div style={{
             background: C.parchment,
             padding: "2rem",
-            borderRadius: 4,
+            borderRadius: 6,
             maxWidth: 420,
             width: "90%",
             border: `1px solid ${C.gold}`,
@@ -760,7 +760,7 @@ export function RestControls({ draft, setDraft, maxHp, conMod }) {
                     fontFamily: "'Spectral', serif",
                     fontSize: 16,
                     padding: "0.5rem",
-                    borderRadius: 2,
+                    borderRadius: 6,
                     border: `1px solid ${C.parchmentLine}`,
                     background: "#fff",
                   }}

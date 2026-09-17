@@ -123,7 +123,7 @@ export function CreatureSheetView({ creature, onBack, onSaveChanges }) {
       <Frame>
         <div style={{ display: "grid", gridTemplateColumns: "var(--g6)", gap: 10, marginBottom: 14 }}>
           {ABILITIES.map((a) => (
-            <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.6rem 0.4rem" }}>
+            <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.6rem 0.4rem" }}>
               <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.textMuted, marginBottom: 4 }}>{a.name}</div>
               <div style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment }}>
                 {draft.abilities[a.key]} ({fmtMod(mod(draft.abilities[a.key]))})

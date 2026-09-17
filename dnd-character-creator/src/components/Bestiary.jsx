@@ -58,7 +58,7 @@ export function Bestiary({ onBack, onUse }) {
             {filtered.map((m) => {
               const sizeLabel = CREATURE_SIZES.find((s) => s.key === m.size)?.name || m.size;
               return (
-                <div key={m.key} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.85rem 1rem" }}>
+                <div key={m.key} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.85rem 1rem" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                     <Skull size={15} color={C.wine} />
                     <span style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment }}>{m.name}</span>

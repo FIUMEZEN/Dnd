@@ -62,7 +62,7 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
         const feat = featId ? getFeat(featId) : null;
         const abilityPick = (store.featAbilityChoices && store.featAbilityChoices[lvl]) || "";
         return (
-          <div key={lvl} style={{ marginBottom: 14, padding: "0.7rem 0.8rem", border: `1px solid ${C.parchmentLine}`, borderRadius: 2 }}>
+          <div key={lvl} style={{ marginBottom: 14, padding: "0.7rem 0.8rem", border: `1px solid ${C.parchmentLine}`, borderRadius: 6 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
               <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.textOnParchment, minWidth: 90 }}>
                 Livello {lvl}
@@ -80,7 +80,7 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
                     onChange={(e) => setAsiPick(lvl, idx, e.target.value)}
                     style={{
                       fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem",
-                      borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
+                      borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                     }}
                   >
                     <option value="">Incremento {idx + 1} — scegli</option>
@@ -97,7 +97,7 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
                   onChange={(e) => setFeatPick(lvl, e.target.value)}
                   style={{
                     width: "100%", maxWidth: 420, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.5rem",
-                    borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8,
+                    borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8,
                   }}
                 >
                   <option value="">— Scegli un talento —</option>
@@ -121,7 +121,7 @@ export function AsiPicker({ store, updateStore, clsId, classLevel, onlyLevels })
                     onChange={(e) => setFeatAbilityPick(lvl, e.target.value)}
                     style={{
                       fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem",
-                      borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
+                      borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                     }}
                   >
                     <option value="">{feat.abilityChoice.optional ? "Bonus caratteristica (opzionale) — scegli" : "Bonus caratteristica del talento — scegli"}</option>
@@ -223,7 +223,7 @@ export function MetamagicPicker({ store, updateStore, level }) {
               style={{
                 cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
                 background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                borderRadius: 2, padding: "0.5rem 0.7rem",
+                borderRadius: 6, padding: "0.5rem 0.7rem",
                 opacity: !active && chosen.length >= known ? 0.5 : 1,
               }}
             >
@@ -292,7 +292,7 @@ export function InvocationPicker({ store, updateStore, level }) {
               style={{
                 cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
                 background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                borderRadius: 2, padding: "0.5rem 0.7rem",
+                borderRadius: 6, padding: "0.5rem 0.7rem",
                 opacity: !active && chosen.length >= known ? 0.5 : 1,
               }}
             >
@@ -340,7 +340,7 @@ export function ElementalDisciplinePicker({ store, updateStore, level, title = "
               style={{
                 cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
                 background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                borderRadius: 2, padding: "0.5rem 0.7rem",
+                borderRadius: 6, padding: "0.5rem 0.7rem",
                 opacity: !active && chosen.length >= known ? 0.5 : 1,
               }}
             >
@@ -386,7 +386,7 @@ export function ManeuverPicker({ store, updateStore, level, title = "Manovre —
               style={{
                 cursor: "pointer", border: `1px solid ${active ? C.wine : C.parchmentLine}`,
                 background: active ? "rgba(122,32,40,0.06)" : "transparent",
-                borderRadius: 2, padding: "0.5rem 0.7rem",
+                borderRadius: 6, padding: "0.5rem 0.7rem",
                 opacity: !active && chosen.length >= known ? 0.5 : 1,
               }}
             >

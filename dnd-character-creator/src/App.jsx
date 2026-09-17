@@ -516,7 +516,7 @@ export default function App() {
       {toast && (
         <div style={{
           position: "fixed", bottom: 24, left: "50%",
-          background: C.forestDeep, color: C.cream, padding: "0.7rem 1.4rem", borderRadius: 3,
+          background: C.forestDeep, color: C.cream, padding: "0.7rem 1.4rem", borderRadius: 5,
           border: `1px solid ${C.gold}`, fontFamily: "'Spectral', serif", fontSize: 15, zIndex: 50,
           animation: "toastLife 2.2s ease forwards", boxShadow: "0 10px 24px rgba(19,15,13,0.35)",
         }}>

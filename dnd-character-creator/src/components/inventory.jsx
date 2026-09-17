@@ -15,7 +15,7 @@ const CATALOG_GROUPS = [
 ];
 
 const qtyBtnStyle = {
-  width: 22, height: 22, borderRadius: 3, border: `1px solid ${C.parchmentLine}`, background: "#fff",
+  width: 22, height: 22, borderRadius: 5, border: `1px solid ${C.parchmentLine}`, background: "#fff",
   cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 15.5, lineHeight: 1, display: "flex",
   alignItems: "center", justifyContent: "center", color: C.textOnParchment,
 };
@@ -27,7 +27,7 @@ export function InventoryRow({ item, onQtyChange, onRemove, onToggleGrip }) {
   return (
     <div style={{
       display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12,
-      padding: "0.6rem 0.85rem", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, marginBottom: 6,
+      padding: "0.6rem 0.85rem", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, marginBottom: 6,
     }}>
       <div style={{ minWidth: 0 }}>
         <div style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment }}>{item.name}</div>
@@ -46,7 +46,7 @@ export function InventoryRow({ item, onQtyChange, onRemove, onToggleGrip }) {
               color: twoHanded ? C.cream : C.textOnParchment,
               border: `1px solid ${twoHanded ? C.wine : C.parchmentLine}`,
               cursor: "pointer",
-              borderRadius: 3,
+              borderRadius: 5,
               padding: "3px 8px",
               fontFamily: "'Spectral', serif",
               fontSize: 12.5,
@@ -65,7 +65,7 @@ export function InventoryRow({ item, onQtyChange, onRemove, onToggleGrip }) {
               color: item.equipped ? C.cream : C.forestDeep,
               border: `1px solid ${C.forest}`,
               cursor: "pointer",
-              borderRadius: 3,
+              borderRadius: 5,
               padding: "3px 6px",
               fontFamily: "'Spectral', serif",
               fontSize: 12.5
@@ -187,7 +187,7 @@ export function InventoryManager({ draft, setDraft, allowAdd = true }) {
 
       {allowAdd && (
         <>
-          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.9rem 1rem", marginBottom: 14 }}>
+          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.9rem 1rem", marginBottom: 14 }}>
             <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Aggiungi dal catalogo</p>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
               {CATALOG_GROUPS.map((g) => (
@@ -199,7 +199,7 @@ export function InventoryManager({ draft, setDraft, allowAdd = true }) {
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
               <select
                 value={pickId} onChange={(e) => setPickId(e.target.value)}
-                style={{ flex: 1, minWidth: 200, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                style={{ flex: 1, minWidth: 200, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
               >
                 <option value="">Scegli un oggetto…</option>
                 {catalogOptions.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
@@ -207,7 +207,7 @@ export function InventoryManager({ draft, setDraft, allowAdd = true }) {
               <input
                 type="number" min={1} value={pickQty}
                 onChange={(e) => setPickQty(Math.max(1, Number(e.target.value) || 1))}
-                style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
               />
               <GoldButton icon={Plus} disabled={!previewItem} onClick={addFromCatalog} style={{ padding: "0.5rem 1rem" }}>
                 Aggiungi
@@ -220,23 +220,23 @@ export function InventoryManager({ draft, setDraft, allowAdd = true }) {
             )}
           </div>
 
-          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.9rem 1rem" }}>
+          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.9rem 1rem" }}>
             <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Aggiungi oggetto personalizzato</p>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               <input
                 type="text" placeholder="Nome dell'oggetto" value={customName}
                 onChange={(e) => setCustomName(e.target.value)}
-                style={{ flex: 1, minWidth: 160, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                style={{ flex: 1, minWidth: 160, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
               />
               <input
                 type="text" placeholder="Descrizione (opzionale)" value={customDesc}
                 onChange={(e) => setCustomDesc(e.target.value)}
-                style={{ flex: 2, minWidth: 200, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                style={{ flex: 2, minWidth: 200, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
               />
               <input
                 type="number" min={1} value={customQty}
                 onChange={(e) => setCustomQty(Math.max(1, Number(e.target.value) || 1))}
-                style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
               />
               <GoldButton icon={Plus} disabled={!customName.trim()} onClick={addCustom} style={{ padding: "0.5rem 1rem" }}>
                 Aggiungi

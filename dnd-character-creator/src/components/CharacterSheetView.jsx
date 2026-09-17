@@ -271,12 +271,12 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         <MetricBox label="Percezione passiva" value={passivePerception} />
       </div>
 
-      <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+      <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep }}>Codice Campagna</span>
         <input
           type="text" placeholder="Facoltativo — dal tuo Master" value={draft.campaignCode || ""}
           onChange={(e) => setDraft((d) => ({ ...d, campaignCode: e.target.value.toUpperCase() }))}
-          style={{ width: 140, fontFamily: "'Cinzel', serif", fontSize: 15, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", letterSpacing: 1 }}
+          style={{ width: 140, fontFamily: "'Cinzel', serif", fontSize: 15, padding: "0.35rem 0.5rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", letterSpacing: 1 }}
         />
         <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
           Se lo inserisci, il tuo Master vedrà questo personaggio (in sola lettura) nella sua Campagna.
@@ -284,7 +284,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       </div>
 
       {bg && (bg.featureDesc || draft.personalityTrait1 || draft.personalityTrait2 || draft.ideal || draft.bond || draft.flaw) && (
-        <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
+        <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 4px" }}>
             Background — {bg.name}
           </p>
@@ -306,7 +306,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       )}
 
       {mcCls && (
-        <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
+        <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18 }}>
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 4px" }}>
             Multiclasse — competenze parziali da {mcCls.name}
           </p>
@@ -318,7 +318,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
               <select
                 value={mc.bonusSkillPick || ""}
                 onChange={(e) => mcUpdateStore(() => ({ bonusSkillPick: e.target.value || null }))}
-                style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
               >
                 <option value="">Scegli la competenza bonus da {mcCls.name}…</option>
                 {mcCls.skillOptions.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -332,7 +332,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
 
       <div style={{ display: "grid", gridTemplateColumns: "var(--g6)", gap: 8, marginBottom: 18 }}>
         {ABILITIES.map((a) => (
-          <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.6rem 0.3rem" }}>
+          <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.6rem 0.3rem" }}>
             <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted }}>{a.name.slice(0, 3).toUpperCase()}</div>
             <div style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.textOnParchment }}>{finalScores[a.key]}</div>
             <div style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.wine }}>{fmtMod(mod(finalScores[a.key]))}</div>
@@ -451,12 +451,12 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           <HpTracker maxHp={hp} draft={draft} setDraft={setDraft} conMod={mod(finalScores.con)} />
           <ConcentrationTracker draft={draft} setDraft={setDraft} />
           <RestControls draft={draft} setDraft={setDraft} maxHp={hp} conMod={mod(finalScores.con)} />
-          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep }}>Esperienza (PE)</span>
             <input
               type="number" min={0} value={draft.xp || 0}
               onChange={(e) => setDraft((d) => ({ ...d, xp: Math.max(0, Number(e.target.value) || 0) }))}
-              style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+              style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
             />
             <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
               Informativa: il livello si aumenta sempre a mano con "Sali di livello".
@@ -583,7 +583,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
             </div>
           ))}
           {hasProtectionFlag && (
-            <div style={{ marginBottom: 14, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem" }}>
+            <div style={{ marginBottom: 14, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem" }}>
               <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
                 🛡️ Protezione - Reazione Disponibile
               </h4>
@@ -595,7 +595,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           )}
 
           {hasTwoWeaponFightingFlag && (
-            <div style={{ marginBottom: 14, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem" }}>
+            <div style={{ marginBottom: 14, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem" }}>
               <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
                 ⚔️ Combattimento con Due Armi - Attivo
               </h4>
@@ -608,7 +608,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       )}
 
       {showPlayTools && wildMagicLevel > 0 && (
-        <div style={{ marginBottom: 18, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.7rem 0.9rem" }}>
+        <div style={{ marginBottom: 18, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem" }}>
           <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
             🎲 Sconvolgimento di Magia Selvaggia
           </h4>
@@ -620,7 +620,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           {wildSurgeRolls && (
             <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
               {wildSurgeRolls.map((r, i) => (
-                <div key={i} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.5rem 0.7rem" }}>
+                <div key={i} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.5rem 0.7rem" }}>
                   <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.wine, margin: "0 0 4px" }}>Risultato: {r.roll}</p>
                   <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, margin: 0 }}>{r.text}</p>
                 </div>
@@ -641,16 +641,16 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
               const damageBonus = w.damageMod;
 
               return (
-                <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0.7rem", border: `1px solid ${w.proficient ? C.parchmentLine : C.wine}`, borderRadius: 2, marginBottom: 6 }}>
+                <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0.7rem", border: `1px solid ${w.proficient ? C.parchmentLine : C.wine}`, borderRadius: 6, marginBottom: 6 }}>
                   <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
                     {w.name}
                     {!w.proficient && (
-                      <span title="Nessuna competenza con questa arma: il bonus di competenza non è incluso nel tiro per colpire" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.wine, border: `1px solid ${C.wine}`, borderRadius: 2, padding: "0 4px" }}>
+                      <span title="Nessuna competenza con questa arma: il bonus di competenza non è incluso nel tiro per colpire" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.wine, border: `1px solid ${C.wine}`, borderRadius: 6, padding: "0 4px" }}>
                         non competente
                       </span>
                     )}
                     {!w.equipped && (
-                      <span title="Non equipaggiata: gli Stili di Combattimento (Duellante, Due Armi, Armi Possenti) si applicano solo alle armi equipaggiate" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0 4px" }}>
+                      <span title="Non equipaggiata: gli Stili di Combattimento (Duellante, Due Armi, Armi Possenti) si applicano solo alle armi equipaggiate" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.textMuted, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0 4px" }}>
                         non equipaggiata
                       </span>
                     )}
@@ -869,7 +869,7 @@ export function StepReview({ draft, setDraft, onSave, saving }) {
         onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
         style={{
           width: "100%", fontFamily: "'Cinzel', serif", fontSize: 17, padding: "0.7rem 0.9rem",
-          borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fffdf9", marginBottom: 18,
+          borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fffdf9", marginBottom: 18,
           boxShadow: "inset 0 0 0 1px rgba(125,31,56,0.06)",
         }}
       />
@@ -877,7 +877,7 @@ export function StepReview({ draft, setDraft, onSave, saving }) {
       <CharacterSheetView draft={draft} setDraft={setDraft} />
 
       {validationErrors.length > 0 && (
-        <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 14, borderRadius: 2 }}>
+        <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 14, borderRadius: 6 }}>
           <b style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.danger }}>Controlli 5e 2014</b>
           <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger }}>{validationErrors.map((e) => <li key={e}>{e}</li>)}</ul>
         </div>

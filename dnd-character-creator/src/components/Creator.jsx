@@ -41,7 +41,7 @@ export function Creator({ draft, setDraft, onBack, onSave, saving }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "var(--creator-flex-dir)", gap: "1.75rem" }}>
-      <div style={{ width: "var(--creator-sidebar-width)", flexShrink: 0, alignSelf: "flex-start", position: "sticky", top: 0, zIndex: 40, padding: "0.8rem 0.7rem", borderRadius: 2, background: C.inkPanel, border: `1px solid rgba(224, 193, 101, 0.25)`, boxShadow: "inset 0 0 0 1px rgba(224, 193, 101, 0.08)" }}>
+      <div style={{ width: "var(--creator-sidebar-width)", flexShrink: 0, alignSelf: "flex-start", position: "sticky", top: 0, zIndex: 40, padding: "0.8rem 0.7rem", borderRadius: 6, background: C.inkPanel, border: `1px solid rgba(224, 193, 101, 0.25)`, boxShadow: "inset 0 0 0 1px rgba(224, 193, 101, 0.08)" }}>
         <GhostButton icon={ChevronLeft} onClick={onBack} style={{ marginBottom: 18, width: "100%", justifyContent: "flex-start" }}>
           I miei personaggi
         </GhostButton>
@@ -56,7 +56,7 @@ export function Creator({ draft, setDraft, onBack, onSave, saving }) {
                 onClick={() => setStep(i)}
                 style={{
                   display: "flex", alignItems: "center", gap: 10, textAlign: "left", flexShrink: 0, whiteSpace: "nowrap",
-                  padding: "0.7rem 0.75rem", borderRadius: 3, border: `1px solid ${active ? "rgba(224,193,101,0.65)" : "transparent"}`, cursor: "pointer",
+                  padding: "0.7rem 0.75rem", borderRadius: 5, border: `1px solid ${active ? "rgba(224,193,101,0.65)" : "transparent"}`, cursor: "pointer",
                   background: active ? "rgba(201,162,39,0.14)" : done ? "rgba(47,92,72,0.18)" : "transparent",
                   color: active ? C.gold : done ? C.cream : C.creamMuted,
                   boxShadow: active ? `inset 0 0 0 1px rgba(224,193,101,0.2)` : "none",
@@ -77,7 +77,7 @@ export function Creator({ draft, setDraft, onBack, onSave, saving }) {
       </div>
 
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ marginBottom: 14, padding: "0.7rem 0.9rem", border: `1px solid ${C.goldSoft}`, borderRadius: 2, background: "linear-gradient(180deg, rgba(43, 33, 23, 0.96), rgba(31, 24, 19, 0.98))", boxShadow: `inset 0 0 0 1px rgba(224, 193, 101, 0.22)` }}>
+        <div style={{ marginBottom: 14, padding: "0.7rem 0.9rem", border: `1px solid ${C.goldSoft}`, borderRadius: 6, background: "linear-gradient(180deg, rgba(43, 33, 23, 0.96), rgba(31, 24, 19, 0.98))", boxShadow: `inset 0 0 0 1px rgba(224, 193, 101, 0.22)` }}>
           <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.goldSoft, letterSpacing: 1.2, textTransform: "uppercase", opacity: 0.96 }}>
             Stato del personaggio
           </div>

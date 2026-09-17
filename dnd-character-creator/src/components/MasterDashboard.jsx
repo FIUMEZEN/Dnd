@@ -69,13 +69,13 @@ export function MasterDashboard({ creatures, loading, onNew, onOpen, onOpenSheet
                     <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
                       <button
                         onClick={() => { onDelete(cr.id); setPendingDeleteId(null); }}
-                        style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
+                        style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
                       >
                         Sì, elimina
                       </button>
                       <button
                         onClick={() => setPendingDeleteId(null)}
-                        style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
+                        style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
                       >
                         Annulla
                       </button>

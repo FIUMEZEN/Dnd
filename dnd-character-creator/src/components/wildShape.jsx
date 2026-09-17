@@ -23,7 +23,7 @@ function BeastCard({ beast, locked, lockReason }) {
   const [open, setOpen] = useState(false);
   const sizeLabel = CREATURE_SIZES.find((s) => s.key === beast.size)?.name || beast.size;
   return (
-    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.6rem 0.8rem", marginBottom: 8, opacity: locked ? 0.65 : 1 }}>
+    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.6rem 0.8rem", marginBottom: 8, opacity: locked ? 0.65 : 1 }}>
       <button
         onClick={() => setOpen((o) => !o)}
         style={{
@@ -46,7 +46,7 @@ function BeastCard({ beast, locked, lockReason }) {
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6, marginBottom: 8 }}>
             {ABILITIES.map((a) => (
-              <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.3rem 0.2rem" }}>
+              <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.3rem 0.2rem" }}>
                 <div style={{ fontFamily: "'Cinzel', serif", fontSize: 11.5, color: C.textMuted }}>{a.name}</div>
                 <div style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment }}>
                   {beast.abilities[a.key]} ({fmtMod(mod(beast.abilities[a.key]))})

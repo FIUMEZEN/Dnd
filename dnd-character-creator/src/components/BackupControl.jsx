@@ -10,7 +10,7 @@ import { exportBackup, importBackup } from "../lib/backup";
 // Riga selezionabile del picker: nome + sottotitolo (razza/classe o taglia/tipo), con checkbox.
 function PickerRow({ checked, onToggle, title, subtitle }) {
   return (
-    <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, cursor: "pointer", background: checked ? "rgba(125, 31, 56, 0.05)" : "transparent" }}>
+    <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "0.5rem 0.6rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, cursor: "pointer", background: checked ? "rgba(125, 31, 56, 0.05)" : "transparent" }}>
       <input type="checkbox" checked={checked} onChange={onToggle} style={{ width: 16, height: 16, flexShrink: 0 }} />
       <div>
         <div style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment }}>{title}</div>
@@ -68,7 +68,7 @@ function ExportPicker({ characters, creatures, onClose, onExport }) {
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
-      <div style={{ background: C.parchment, padding: "1.75rem", borderRadius: 4, maxWidth: 480, width: "100%", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+      <div style={{ background: C.parchment, padding: "1.75rem", borderRadius: 6, maxWidth: 480, width: "100%", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
         <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 18, color: C.wineDeep, margin: "0 0 6px" }}>Cosa vuoi esportare?</h3>
         <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 16px" }}>
           Tutto è selezionato di default. Deseleziona quello che non vuoi includere — utile per condividere un singolo personaggio senza il resto del roster.
@@ -146,7 +146,7 @@ export function BackupControl({ characters = [], creatures = [], onImported, onE
         onClick={() => setMenuOpen((v) => !v)}
         style={{
           display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 14,
-          letterSpacing: 0.3, padding: "0.5rem 1.1rem", borderRadius: 4, border: `1px solid ${C.parchmentLine}22`,
+          letterSpacing: 0.3, padding: "0.5rem 1.1rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}22`,
           background: C.inkPanel, color: menuOpen ? C.gold : C.creamMuted, cursor: "pointer",
           transition: "color 200ms ease",
         }}
@@ -161,7 +161,7 @@ export function BackupControl({ characters = [], creatures = [], onImported, onE
           className="screen-fade"
           style={{
             position: "absolute", top: "calc(100% + 6px)", right: 0, zIndex: 40, minWidth: 200,
-            background: C.inkPanel, border: `1px solid ${C.parchmentLine}33`, borderRadius: 4,
+            background: C.inkPanel, border: `1px solid ${C.parchmentLine}33`, borderRadius: 6,
             boxShadow: "0 14px 28px rgba(19,15,13,0.4)", overflow: "hidden",
           }}
         >

@@ -36,7 +36,7 @@ export function TopNav({ screen, onNavigate, onOpenCompendium }) {
       className="nav-top"
       style={{
         gap: 4, padding: 4,
-        background: C.inkPanel, borderRadius: 4, border: `1px solid ${C.parchmentLine}22`,
+        background: C.inkPanel, borderRadius: 6, border: `1px solid ${C.parchmentLine}22`,
         width: "fit-content",
       }}
     >
@@ -48,7 +48,7 @@ export function TopNav({ screen, onNavigate, onOpenCompendium }) {
             onClick={() => handleItemClick(item, onNavigate, onOpenCompendium)}
             style={{
               position: "relative", fontFamily: "'Cinzel', serif", fontSize: 14, letterSpacing: 0.3,
-              padding: "0.5rem 1.1rem", borderRadius: 3, border: "none", cursor: "pointer",
+              padding: "0.5rem 1.1rem", borderRadius: 5, border: "none", cursor: "pointer",
               background: active ? `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})` : "transparent",
               color: active ? C.cream : C.creamMuted,
               transition: "background 200ms ease, color 200ms ease",

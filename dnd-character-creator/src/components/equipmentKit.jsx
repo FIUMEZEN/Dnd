@@ -83,7 +83,7 @@ export function ClassEquipmentKit({ cls, setDraft }) {
                 onChange={(e) => setCategoryPick(i, e.target.value)}
                 style={{
                   marginTop: 6, width: "100%", maxWidth: 280, fontFamily: "'Spectral', serif", fontSize: 14,
-                  padding: "0.3rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
+                  padding: "0.3rem 0.5rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                 }}
               >
                 {choices.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}

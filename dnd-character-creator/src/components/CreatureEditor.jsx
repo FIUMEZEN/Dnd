@@ -16,7 +16,7 @@ import {
 
 const inputStyle = {
   fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.5rem 0.7rem",
-  borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", boxSizing: "border-box", width: "100%",
+  borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", boxSizing: "border-box", width: "100%",
 };
 const numberInputStyle = { ...inputStyle, width: 90 };
 const labelStyle = {
@@ -42,7 +42,7 @@ function TraitListEditor({ items, onChange, addLabel, namePlaceholder }) {
   return (
     <div>
       {items.map((it) => (
-        <div key={it.id} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.75rem 0.9rem", marginBottom: 10 }}>
+        <div key={it.id} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.75rem 0.9rem", marginBottom: 10 }}>
           <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
             <input
               type="text" value={it.name} placeholder={namePlaceholder}
@@ -158,7 +158,7 @@ function SpellPickerInline({ group, onChange }) {
         matches.length === 0 ? (
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>Nessun incantesimo trovato.</p>
         ) : (
-          <div style={{ maxHeight: 180, overflowY: "auto", border: `1px solid ${C.parchmentLine}`, borderRadius: 2 }}>
+          <div style={{ maxHeight: 180, overflowY: "auto", border: `1px solid ${C.parchmentLine}`, borderRadius: 6 }}>
             {matches.map((s) => {
               const picked = (group.spellIds || []).includes(s.id);
               return (
@@ -230,7 +230,7 @@ function SpellcastingEditor({ creature, onChange }) {
           </Field>
 
           {groups.map((g) => (
-            <div key={g.id} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.75rem 0.9rem", marginBottom: 12 }}>
+            <div key={g.id} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.75rem 0.9rem", marginBottom: 12 }}>
               <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
                 <input
                   type="text" value={g.label} placeholder='Es. "A volontà", "3/giorno ciascuno"'
@@ -361,7 +361,7 @@ export function CreatureEditor({ creature, setCreature, onBack, onSave, saving }
         <h3 style={sectionTitleStyle}>Caratteristiche e Tiri Salvezza</h3>
         <div style={{ display: "grid", gridTemplateColumns: "var(--g6)", gap: 10, marginBottom: 14 }}>
           {ABILITIES.map((a) => (
-            <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.6rem 0.4rem" }}>
+            <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.6rem 0.4rem" }}>
               <div style={labelStyle}>{a.name}</div>
               <input
                 type="number" value={creature.abilities[a.key]}

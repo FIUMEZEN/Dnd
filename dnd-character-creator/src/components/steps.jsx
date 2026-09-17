@@ -157,7 +157,7 @@ export function StepRace({ draft, setDraft }) {
                 onChange={(e) => setDraft((d) => ({ ...d, raceFeatId: e.target.value || null, raceFeatAbilityChoice: null }))}
                 style={{
                   width: "100%", maxWidth: 420, fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.4rem 0.5rem",
-                  borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8,
+                  borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8,
                 }}
               >
                 <option value="">— Scegli un talento —</option>
@@ -181,7 +181,7 @@ export function StepRace({ draft, setDraft }) {
                   onChange={(e) => setDraft((d) => ({ ...d, raceFeatAbilityChoice: e.target.value || null }))}
                   style={{
                     fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem",
-                    borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
+                    borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                   }}
                 >
                   <option value="">{raceFeat.abilityChoice.optional ? "Bonus caratteristica (opzionale) — scegli" : "Bonus caratteristica del talento — scegli"}</option>
@@ -423,7 +423,7 @@ export function StepAbilities({ draft, setDraft }) {
           const final = (base === "" || base === undefined ? 10 : base) + (bonus[a.key] || 0) + (asiBonus[a.key] || 0);
           const showFinal = base !== "" && base !== undefined;
           return (
-            <div key={a.key} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 2, padding: "0.85rem" }}>
+            <div key={a.key} style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.85rem" }}>
               <div style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 6 }}>
                 {a.name}
                 {bonus[a.key] ? <span style={{ color: C.wine }}> +{bonus[a.key]} razza</span> : null}
@@ -436,7 +436,7 @@ export function StepAbilities({ draft, setDraft }) {
                   disabled={!pool}
                   style={{
                     width: "100%", fontFamily: "'Spectral', serif", fontSize: 15.5, padding: "0.4rem",
-                    borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff",
+                    borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff",
                   }}
                 >
                   <option value="">—</option>
@@ -455,13 +455,13 @@ export function StepAbilities({ draft, setDraft }) {
                   type="number" min={1} max={30} value={base === "" || base === undefined ? "" : base}
                   onChange={(e) => setBase(a.key, e.target.value)}
                   placeholder="—"
-                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15.5, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15.5, padding: "0.4rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
                 />
               ) : (
                 <select
                   value={base === "" || base === undefined ? "" : base}
                   onChange={(e) => setBase(a.key, e.target.value === "" ? "" : Number(e.target.value))}
-                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15.5, padding: "0.4rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                  style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15.5, padding: "0.4rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
                 >
                   <option value="">—</option>
                   {Object.keys(POINT_BUY_COST).map((v) => <option key={v} value={v}>{v} ({POINT_BUY_COST[v]} pt)</option>)}
@@ -505,7 +505,7 @@ export function FlavorField({ label, value, onChange, suggestions }) {
         placeholder="Scrivi liberamente, oppure scegli un suggerimento qui sotto…"
         style={{
           width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem",
-          borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box",
+          borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box",
         }}
       />
       {suggestions && suggestions.length > 0 && (
@@ -517,7 +517,7 @@ export function FlavorField({ label, value, onChange, suggestions }) {
               title="Usa questo suggerimento"
               style={{
                 cursor: "pointer", textAlign: "left", fontFamily: "'Spectral', serif", fontSize: 13,
-                padding: "0.3rem 0.55rem", borderRadius: 3, border: `1px solid ${C.parchmentLine}`,
+                padding: "0.3rem 0.55rem", borderRadius: 5, border: `1px solid ${C.parchmentLine}`,
                 background: "rgba(255,255,255,0.5)", color: C.textMuted, maxWidth: 260,
               }}
             >
@@ -588,7 +588,7 @@ export function StepBackground({ draft, setDraft }) {
             type="text" placeholder="Nome del background (es. Cacciatore di Taglie)"
             value={draft.customBackgroundName || ""}
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundName: e.target.value }))}
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem 0.6rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
           />
 
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 8 }}>
@@ -619,7 +619,7 @@ export function StepBackground({ draft, setDraft }) {
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundEquipment: e.target.value }))}
             rows={3}
             placeholder={"Es.\nUn set di attrezzi da scasso\nUna borsa con 10 mo"}
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, resize: "vertical", boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, resize: "vertical", boxSizing: "border-box" }}
           />
 
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 4 }}>
@@ -629,7 +629,7 @@ export function StepBackground({ draft, setDraft }) {
             type="text" placeholder="Es. Strumenti da falegname, oppure una lingua a scelta"
             value={draft.customBackgroundToolsLanguages || ""}
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundToolsLanguages: e.target.value }))}
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.45rem 0.6rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
           />
 
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 4 }}>
@@ -639,14 +639,14 @@ export function StepBackground({ draft, setDraft }) {
             type="text" placeholder="Es. Rete di Informatori"
             value={draft.customBackgroundFeatureName || ""}
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundFeatureName: e.target.value }))}
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8, boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem 0.6rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 8, boxSizing: "border-box" }}
           />
           <textarea
             value={draft.customBackgroundFeatureDesc || ""}
             onChange={(e) => setDraft((d) => ({ ...d, customBackgroundFeatureDesc: e.target.value }))}
             rows={2}
             placeholder="Cosa concede meccanicamente o narrativamente questo tratto? Concordalo con il Master."
-            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box" }}
+            style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box" }}
           />
         </div>
       )}

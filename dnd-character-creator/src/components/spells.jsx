@@ -27,7 +27,7 @@ export function SpellRow({ spell, selected, disabled, onToggle }) {
       onClick={onToggle}
       disabled={disabled && !selected}
       style={{
-        textAlign: "left", width: "100%", padding: "0.7rem 0.9rem", marginBottom: 6, borderRadius: 2,
+        textAlign: "left", width: "100%", padding: "0.7rem 0.9rem", marginBottom: 6, borderRadius: 6,
         border: `1px solid ${selected ? C.wine : C.parchmentLine}`,
         borderLeft: selected ? `4px solid ${C.wine}` : "4px solid transparent",
         background: selected ? "#f5efdf" : "transparent",
@@ -164,7 +164,7 @@ export function ResourceTracker({ resource, used, onSetUsed }) {
           <input
             type="number" min={0} max={remaining} value={amount}
             onChange={(e) => setAmount(Math.max(0, Number(e.target.value) || 0))}
-            style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+            style={{ width: 60, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
           <GhostButton
             onClick={() => setUsed(Math.min(resource.max, usedCount + Math.min(amount, remaining)))}
@@ -263,7 +263,7 @@ export function SpellManager({ draft, setDraft, showPlayTools = false }) {
         onChange={(e) => setSpellSearch(e.target.value)}
         style={{
           width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.5rem 0.7rem",
-          borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 18, boxSizing: "border-box",
+          borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 18, boxSizing: "border-box",
         }}
       />
 
@@ -507,7 +507,7 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
                 <select
                   value={store.mysticArcanum?.[tier] || ""}
                   onChange={(e) => updateStore((s) => ({ mysticArcanum: { ...s.mysticArcanum, [tier]: e.target.value || null } }))}
-                  style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem", borderRadius: 2, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
+                  style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.35rem 0.5rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
                 >
                   <option value="">Scegli…</option>
                   {options.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}

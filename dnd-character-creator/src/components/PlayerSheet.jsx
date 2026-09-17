@@ -233,7 +233,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
                   <div
                     style={{
                       position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50,
-                      background: C.parchment, border: `1px solid ${C.gold}`, borderRadius: 3,
+                      background: C.parchment, border: `1px solid ${C.gold}`, borderRadius: 5,
                       boxShadow: "0 12px 24px rgba(19,15,13,0.4)", padding: 6, minWidth: 230, display: "grid", gap: 4,
                     }}
                   >
@@ -282,7 +282,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
       </div>
 
       {validationErrors.length > 0 && (
-        <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 18, borderRadius: 2 }}>
+        <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 18, borderRadius: 6 }}>
           <b style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.danger }}>Scelte ancora da completare</b>
           <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger }}>
             {validationErrors.map((e) => <li key={e}>{e}</li>)}
@@ -292,7 +292,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
       {levelUpClassChoice && cls && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
-          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 4, maxWidth: "var(--modal-max-width)", width: "100%", maxHeight: "88vh", overflowY: "auto", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 6, maxWidth: "var(--modal-max-width)", width: "100%", maxHeight: "88vh", overflowY: "auto", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
               <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 22, color: C.wineDeep, margin: 0 }}>
                 Livello {totalLevel + 1}! <span style={{ color: C.textMuted, fontWeight: 400, fontSize: 15 }}>— a quale classe lo assegni?</span>
@@ -334,7 +334,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
 
       {levelDownTarget && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
-          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 4, maxWidth: 480, width: "100%", border: `1px solid ${C.danger}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 6, maxWidth: 480, width: "100%", border: `1px solid ${C.danger}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
             <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 18, color: C.wineDeep, margin: "0 0 8px" }}>
               Tornare al livello {(levelDownTarget === "primary" ? draft.level : mc?.level) - 1}?
             </h2>
@@ -347,7 +347,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
               </GhostButton>
               <button
                 onClick={confirmLevelDown}
-                style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "0.55rem 1rem", fontFamily: "'Spectral', serif", fontSize: 14.5 }}
+                style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 5, padding: "0.55rem 1rem", fontFamily: "'Spectral', serif", fontSize: 14.5 }}
               >
                 Sì, torna indietro
               </button>
@@ -456,13 +456,13 @@ export function PlayerSheet({ character, onBack, onSaveChanges }) {
                 </span>
                 <button
                   onClick={handleRemoveMulticlass}
-                  style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
+                  style={{ background: C.danger, color: "#fff", border: "none", cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13 }}
                 >
                   Sì, rimuovi
                 </button>
                 <button
                   onClick={() => setConfirmRemoveMc(false)}
-                  style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 3, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
+                  style={{ background: "transparent", border: `1px solid ${C.parchmentLine}`, cursor: "pointer", borderRadius: 5, padding: "4px 8px", fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}
                 >
                   Annulla
                 </button>
