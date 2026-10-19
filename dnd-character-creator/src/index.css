@@ -20,8 +20,10 @@ body {
    tutte le schede stanno in una riga, a colonne uguali, con icona sopra e etichetta breve —
    prima scorrevano di lato e metà delle schede (e del testo) restava tagliata fuori. */
 .app-tabs .tab-label-short { display: none; }
+.label-show-xs { display: none; }
 @media (max-width: 419px) {
   .label-hide-xs { display: none; }
+  .label-show-xs { display: inline; }
 }
 @media (max-width: 639px) {
   .app-tabs { overflow-x: visible !important; }

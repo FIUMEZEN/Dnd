@@ -3,7 +3,7 @@
 // incantesimi conosciuti/preparati, Arcano Mistico, Colpo Divino) usata sia in creazione sia
 // dal modal di level up.
 import { useState } from "react";
-import { Check } from "../icons";
+import { Check, ChevronDown, ChevronRight } from "../icons";
 import { C } from "../theme";
 import { Divider, Pill, GhostButton, MetricBox, ProficiencyChoicePicker } from "./primitives";
 import { MetamagicPicker, PactBoonPicker, InvocationPicker } from "./pickers";
@@ -62,6 +62,36 @@ export function SpellRow({ spell, selected, disabled, onToggle }) {
 // multiclasse Paladino/Warlock con entrambi slot di 2° livello, ma pool distinti).
 function slotUsedKey(s) {
   return s.pact ? `pact-${s.level}` : `${s.level}`;
+}
+
+// Pallini di UN livello di slot (pieno = disponibile): condivisi tra il tracker completo e le
+// intestazioni per livello della vista "I miei incantesimi".
+function SlotPips({ slot, slotsUsed, setDraft }) {
+  const used = Math.min((slotsUsed || {})[slotUsedKey(slot)] || 0, slot.total);
+  const setUsed = (count) => setDraft((d) => ({ ...d, slotsUsed: { ...d.slotsUsed, [slotUsedKey(slot)]: count } }));
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+      {Array.from({ length: slot.total }).map((_, i) => {
+        const isUsed = i < used;
+        return (
+          <button
+            key={i}
+            onClick={() => setUsed(isUsed ? i : i + 1)}
+            title={isUsed ? "Segna come disponibile" : "Segna come usato"}
+            aria-label={`Slot ${slot.pact ? "del patto " : ""}di livello ${slot.level}: ${isUsed ? "usato" : "disponibile"}`}
+            style={{
+              width: 22, height: 22, borderRadius: "50%", cursor: "pointer", padding: 0,
+              border: `1px solid ${C.wine}`,
+              background: isUsed ? "transparent" : C.wine,
+            }}
+          />
+        );
+      })}
+      <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}>
+        {slot.total - used}/{slot.total}{slot.pact ? " patto" : ""}
+      </span>
+    </span>
+  );
 }
 
 export function SlotTracker({ slots, slotsUsed, setDraft }) {
@@ -209,8 +239,135 @@ export function ResourceTracker({ resource, used, onSetUsed }) {
   );
 }
 
+// Scheda compatta di un incantesimo per la consultazione in gioco: una riga con nome e dati
+// essenziali (tempo, gittata, concentrazione); il testo completo si apre con un tocco.
+function SpellCard({ spell, note }) {
+  const [open, setOpen] = useState(false);
+  const concentration = /concentrazione/i.test(spell.duration || "");
+  const chip = { fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0 6px", whiteSpace: "nowrap" };
+  return (
+    <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, marginBottom: 6, background: open ? "#f8f1e0" : "transparent" }}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        style={{ all: "unset", boxSizing: "border-box", width: "100%", cursor: "pointer", padding: "0.55rem 0.7rem", display: "flex", alignItems: "center", flexWrap: "wrap", gap: "4px 8px", minHeight: 44 }}
+      >
+        <span style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, flex: "1 1 150px", minWidth: 0 }}>
+          {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          <span style={{ minWidth: 0 }}>{spell.name}</span>
+        </span>
+        <span style={{ display: "flex", gap: 5, flexWrap: "wrap", marginLeft: "auto" }}>
+          {concentration && <span title="Richiede concentrazione" style={{ ...chip, color: C.wineDeep, borderColor: C.goldSoft }}>Conc.</span>}
+          {note && <span style={{ ...chip, color: C.forestDeep, borderColor: C.forest }}>{note}</span>}
+          <span style={chip}>{spell.time}</span>
+          <span style={chip}>{spell.range}</span>
+        </span>
+      </button>
+      {open && (
+        <div style={{ padding: "0 0.8rem 0.7rem" }}>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 6px" }}>{spell.desc}</p>
+          {spell.crunch && (
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 6px", fontWeight: 600 }}>{spell.crunch}</p>
+          )}
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+            <span><b>Scuola:</b> {SCHOOLS[spell.school]}</span>
+            <span><b>Componenti:</b> {spell.comp}</span>
+            <span><b>Durata:</b> {spell.duration}</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Vista in gioco "I miei incantesimi": solo ciò che il personaggio conosce/prepara (più quelli
+// sempre preparati della sottoclasse e l'Arcano Mistico), raggruppati per livello, con gli slot
+// di quel livello direttamente sull'intestazione — come le schede di D&D Beyond / Fight Club 5e.
+function MySpellsView({ draft, setDraft, casterEntries, slots, spellSearch }) {
+  const free = new Map(); // id -> etichetta ("Sempre preparato", "Arcano Mistico")
+  casterEntries.forEach((e) => {
+    const store = e.store;
+    const maxLvl = getMaxSpellLevel(e.classId, e.level, e.subclassId);
+    const ids = e.classId === "chierico" ? getDomainSpellIds(store.domainId, maxLvl)
+      : e.classId === "paladino" ? getOathSpellIds(store.oathId, maxLvl)
+        : e.classId === "druido" ? getCircleSpellIds(store.circleId, maxLvl)
+          : [];
+    ids.forEach((id) => free.set(id, "Sempre preparato"));
+    if (e.classId === "warlock") Object.values(store.mysticArcanum || {}).filter(Boolean).forEach((id) => free.set(id, "Arcano Mistico"));
+  });
+  const ids = [...new Set([...(draft.spellsKnown || []), ...free.keys()])];
+  const term = spellSearch.trim().toLowerCase();
+  const spells = ids.map((id) => SPELLS.find((sp) => sp.id === id)).filter(Boolean)
+    .filter((sp) => !term || sp.name.toLowerCase().includes(term))
+    .sort((a, b) => a.name.localeCompare(b.name, "it"));
+
+  const levels = new Set(spells.map((sp) => sp.level));
+  slots.forEach((sl) => levels.add(sl.level));
+  const sortedLevels = [...levels].sort((a, b) => a - b);
+
+  const restGroup = (pact) => setDraft((d) => {
+    const next = { ...d.slotsUsed };
+    slots.filter((sl) => !!sl.pact === pact).forEach((sl) => { delete next[slotUsedKey(sl)]; });
+    return { ...d, slotsUsed: next };
+  });
+
+  if (!spells.length && !slots.length) {
+    return (
+      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, fontStyle: "italic" }}>
+        {term ? `Nessun tuo incantesimo corrisponde a "${spellSearch}".` : "Non hai ancora scelto incantesimi: usa \"Scegli incantesimi\" qui sopra."}
+      </p>
+    );
+  }
+
+  return (
+    <div>
+      {slots.length > 0 && (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+          {slots.some((sl) => !sl.pact) && (
+            <GhostButton onClick={() => restGroup(false)} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.4rem 0.8rem", fontSize: 13.5 }}>
+              Riposo lungo — recupera gli slot
+            </GhostButton>
+          )}
+          {slots.some((sl) => sl.pact) && (
+            <GhostButton onClick={() => restGroup(true)} style={{ borderColor: C.forest, color: C.forestDeep, padding: "0.4rem 0.8rem", fontSize: 13.5 }}>
+              Riposo breve — recupera il Patto
+            </GhostButton>
+          )}
+        </div>
+      )}
+      {sortedLevels.map((lvl) => {
+        const list = spells.filter((sp) => sp.level === lvl);
+        const levelSlots = slots.filter((sl) => sl.level === lvl);
+        if (term && !list.length) return null;
+        return (
+          <div key={lvl} style={{ marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "6px 12px", padding: "0 0 6px", marginBottom: 6, borderBottom: `1px solid ${C.parchmentLine}` }}>
+              <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: C.wineDeep, margin: 0 }}>
+                {lvl === 0 ? "Trucchetti" : `${lvl}° livello`}
+              </h3>
+              {levelSlots.length > 0 && (
+                <span style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                  {levelSlots.map((sl) => <SlotPips key={slotUsedKey(sl)} slot={sl} slotsUsed={draft.slotsUsed} setDraft={setDraft} />)}
+                </span>
+              )}
+            </div>
+            {list.length === 0 ? (
+              <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, fontStyle: "italic", margin: 0 }}>
+                Nessun incantesimo di questo livello: gli slot servono a lanciare a livello superiore quelli più bassi.
+              </p>
+            ) : list.map((sp) => <SpellCard key={sp.id} spell={sp} note={free.get(sp.id)} />)}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export function SpellManager({ draft, setDraft, showPlayTools = false }) {
   const [spellSearch, setSpellSearch] = useState("");
+  // In gioco si parte dalla consultazione ("I miei"); la scelta/modifica degli incantesimi
+  // (la lista completa della classe) resta a un tocco, in "Scegli incantesimi".
+  const [view, setView] = useState("mine");
   const cls = CLASSES.find((c) => c.id === draft.classId);
 
   if (!cls) {
@@ -246,8 +403,15 @@ export function SpellManager({ draft, setDraft, showPlayTools = false }) {
         </p>
       )}
 
+      {showPlayTools && (
+        <div role="tablist" style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "8px 0 14px" }}>
+          <Pill active={view === "mine"} onClick={() => setView("mine")}>I miei incantesimi</Pill>
+          <Pill active={view === "choose"} onClick={() => setView("choose")}>Scegli incantesimi</Pill>
+        </div>
+      )}
+
       {showPlayTools ? (
-        <SlotTracker slots={slots} slotsUsed={draft.slotsUsed} setDraft={setDraft} />
+        view === "choose" && <SlotTracker slots={slots} slotsUsed={draft.slotsUsed} setDraft={setDraft} />
       ) : (
         slots.length > 0 && (
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 18 }}>
@@ -267,7 +431,9 @@ export function SpellManager({ draft, setDraft, showPlayTools = false }) {
         }}
       />
 
-      {casterEntries.map((entry) => (
+      {showPlayTools && view === "mine" ? (
+        <MySpellsView draft={draft} setDraft={setDraft} casterEntries={casterEntries} slots={slots} spellSearch={spellSearch} />
+      ) : casterEntries.map((entry) => (
         <ClassSpellSection
           key={entry.classId}
           draft={draft}

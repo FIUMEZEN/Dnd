@@ -9,7 +9,7 @@
 // (StepReview, showPlayTools=false) le stesse 5 sezioni restano concatenate come un'unica
 // scheda continua, invariata rispetto a prima.
 import React, { useState, useMemo } from "react";
-import { Backpack, BookOpen, Loader2, Save, ScrollText, Sword, Wand2 } from "../icons";
+import { Backpack, BookOpen, Dices, Loader2, Save, ScrollText, Sword, Wand2 } from "../icons";
 import { C } from "../theme";
 import { Divider, GhostButton, GoldButton, MetricBox } from "./primitives";
 import { AsiPicker, ElementalDisciplinePicker, ManeuverPicker } from "./pickers";
@@ -19,6 +19,7 @@ import { HpLevelManager, HpTracker, RestControls, ConcentrationTracker, DeathSav
 import { SpellManager, ResourceTracker } from "./spells";
 import { ABILITIES, SKILL_ABILITY } from "../data/core";
 import { RACES } from "../data/races";
+import { SPELLS } from "../data/spells";
 import { CLASSES, MULTICLASS_PROFICIENCIES, MULTICLASS_BONUS_SKILL_CLASS } from "../data/classes";
 import { mod, fmtMod, ftToM, getProficiencyBonus, abilityKeyByName } from "../lib/format";
 import { getCircleSpellIds, getDomainSpellIds, getOathSpellIds, getMaxSpellLevel, getEffectiveCasterInfo, rollWildMagicSurge } from "../lib/casting";
@@ -37,7 +38,8 @@ import {
 // "short" è l'etichetta usata su telefono, dove le 5 schede devono stare tutte in una riga
 // (icona sopra + parola breve, come le app di riferimento) invece di scorrere di lato.
 export const PLAY_SECTIONS = [
-  { key: "panoramica", label: "Panoramica", short: "Generale", icon: BookOpen },
+  { key: "panoramica", label: "Panoramica", short: "Info", icon: BookOpen },
+  { key: "abilita", label: "Abilità", short: "Abilità", icon: Dices },
   { key: "combattimento", label: "Combattimento", short: "Azioni", icon: Sword },
   { key: "incantesimi", label: "Incantesimi", short: "Magie", icon: Wand2 },
   { key: "inventario", label: "Inventario", short: "Zaino", icon: Backpack },
@@ -252,6 +254,15 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
     ...(mcCls && mcCls.id === "druido" ? getCircleSpellIds(mc.circleId, getMaxSpellLevel(mcCls.id, mc.level, mcChosenSubclassId)) : []),
   ])];
 
+  // Azioni rapide da incantesimo per la scheda Azioni (stile Fight Club 5e / D&D Beyond): i
+  // trucchetti (usabili sempre) e gli incantesimi conosciuti/preparati che si lanciano come
+  // azione bonus o reazione — quelli che servono "al volo" durante il proprio turno o quello altrui.
+  const knownSpellObjects = allSpellIds.map((id) => SPELLS.find((sp) => sp.id === id)).filter(Boolean);
+  const quickCantrips = knownSpellObjects.filter((sp) => sp.level === 0).sort((a, b) => a.name.localeCompare(b.name, "it"));
+  const quickBonusReactions = knownSpellObjects
+    .filter((sp) => sp.level > 0 && (sp.time === "1 azione bonus" || sp.time === "1 reazione"))
+    .sort((a, b) => a.level - b.level || a.name.localeCompare(b.name, "it"));
+
   const classLabel = cls
     ? mcCls
       ? `${cls.name} ${draft.level}${subclass ? ` (${subclass.name})` : ""} / ${mcCls.name} ${mc.level}${mcSubclass ? ` (${mcSubclass.name})` : ""}`
@@ -357,9 +368,17 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
         </div>
       )}
 
-      <Divider />
+    </>
+  );
 
-      <div style={{ display: "grid", gridTemplateColumns: "var(--g6)", gap: 8, marginBottom: 18 }}>
+  /* -------------------------------- ABILITÀ --------------------------------- */
+  // Caratteristiche, tiri salvezza e abilità: la parte della scheda che si consulta di continuo
+  // al tavolo ("tira Percezione", "TS su Destrezza"). In gioco ha una scheda tutta sua invece di
+  // stare in fondo alla Panoramica, sotto background, campagna e multiclasse.
+  const abilitaContent = (
+    <>
+      {/* 3 colonne già su telefono (prima 2, sei riquadri alti su tre righe), 6 sul desktop. */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(88px, 1fr))", gap: 8, marginBottom: 18 }}>
         {ABILITIES.map((a) => (
           <div key={a.key} style={{ textAlign: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.6rem 0.3rem" }}>
             <div style={{ fontFamily: "'Cinzel', serif", fontSize: 12, color: C.textMuted }}>{a.name.slice(0, 3).toUpperCase()}</div>
@@ -375,26 +394,6 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           </div>
         ))}
       </div>
-
-      {cls && (
-        <AsiPicker
-          store={draft}
-          updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
-          clsId={cls.id}
-          classLevel={draft.level}
-        />
-      )}
-
-      {mcCls && (
-        <AsiPicker
-          store={mc}
-          updateStore={mcUpdateStore}
-          clsId={mcCls.id}
-          classLevel={mc.level}
-        />
-      )}
-
-      <Divider />
 
       <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "1.5rem", marginBottom: 18 }}>
         <div>
@@ -416,7 +415,8 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
               Competenza Esperta: {expertiseSkills.length}/{expertiseCount} — clicca la ★ su un'abilità in cui sei già competente
             </p>
           )}
-          <div style={{ maxHeight: 320, overflowY: "auto" }}>
+          {/* Nella scheda Abilità dedicata niente scroll interno (scroll annidato scomodo su telefono). */}
+          <div style={showPlayTools ? undefined : { maxHeight: 320, overflowY: "auto" }}>
             {skillsList.map((s) => (
               <div key={s.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0", borderBottom: `1px solid ${C.parchmentLine}` }}>
                 <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
@@ -438,6 +438,27 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           </div>
         </div>
       </div>
+
+      {/* ASI/Talento: scelta di costruzione, non da consultare al tavolo — in fondo, dopo
+          tiri salvezza e abilità. */}
+      <Divider />
+      {cls && (
+        <AsiPicker
+          store={draft}
+          updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
+          clsId={cls.id}
+          classLevel={draft.level}
+        />
+      )}
+
+      {mcCls && (
+        <AsiPicker
+          store={mc}
+          updateStore={mcUpdateStore}
+          clsId={mcCls.id}
+          classLevel={mc.level}
+        />
+      )}
 
     </>
   );
@@ -486,10 +507,51 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           </div>
         </>
       )}
+      {/* Azioni da incantesimo subito sotto gli Attacchi: in combattimento si sceglie tra
+          "attacco con l'arma" e "trucchetto" nello stesso momento, non in due schede diverse. */}
+      {showPlayTools && (quickCantrips.length > 0 || quickBonusReactions.length > 0) && (
+        <>
+          <Divider />
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "4px 10px", flexWrap: "wrap", marginBottom: 8 }}>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: 0 }}>Incantesimi rapidi</h3>
+            <span style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {casterMetrics.map((m) => (
+                <span key={m.classId} style={{ fontFamily: "'Cinzel', serif", fontSize: 12.5, color: C.wineDeep, border: `1px solid ${C.goldSoft}`, background: "#f8f1e0", borderRadius: 6, padding: "2px 8px", whiteSpace: "nowrap" }}>
+                  {casterMetrics.length > 1 ? `${m.className}: ` : ""}Colpire {fmtMod(m.attack)} · CD {m.dc}
+                </span>
+              ))}
+            </span>
+          </div>
+          {[
+            { title: "Trucchetti", list: quickCantrips },
+            { title: "Azioni bonus e reazioni", list: quickBonusReactions },
+          ].filter((g) => g.list.length > 0).map((g) => (
+            <div key={g.title} style={{ marginBottom: 12 }}>
+              <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textMuted, margin: "0 0 6px" }}>{g.title}</p>
+              {g.list.map((sp) => (
+                <div key={sp.id} style={{ padding: "0.5rem 0.7rem", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, marginBottom: 6 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "4px 10px" }}>
+                    <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, flex: "1 1 140px", minWidth: 0 }}>
+                      {sp.name}{sp.level > 0 ? <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted }}> · {sp.level}° livello</span> : null}
+                    </span>
+                    <span style={{ display: "flex", gap: 6, flexWrap: "wrap", marginLeft: "auto" }}>
+                      <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "1px 7px", whiteSpace: "nowrap" }}>{sp.time}</span>
+                      <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textOnParchment, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "1px 7px", whiteSpace: "nowrap" }}>{sp.range}</span>
+                    </span>
+                  </div>
+                  {sp.crunch && (
+                    <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "4px 0 0" }}>{sp.crunch}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </>
+      )}
 
       {showPlayTools && hp != null && (
         <>
-          {weaponAttacks.length > 0 && <Divider />}
+          {(weaponAttacks.length > 0 || quickCantrips.length > 0 || quickBonusReactions.length > 0) && <Divider />}
           <DeathSaveTracker draft={draft} setDraft={setDraft} maxHp={hp} />
           <HpTracker maxHp={hp} draft={draft} setDraft={setDraft} conMod={mod(finalScores.con)} />
           <ConcentrationTracker draft={draft} setDraft={setDraft} />
@@ -688,14 +750,26 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
   /* ------------------------------- INCANTESIMI ------------------------------ */
   const incantesimiContent = cls && casterEntries.length > 0 && (allSpellIds.length > 0 || slots.length > 0) ? (
     <>
-      <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", marginBottom: 12 }}>
-        {casterMetrics.map((cm) => (
-          <React.Fragment key={cm.classId}>
-            <MetricBox label={casterMetrics.length > 1 ? `CD incantesimi — ${cm.className}` : "CD tiro salvezza incantesimi"} value={cm.dc} />
-            <MetricBox label={casterMetrics.length > 1 ? `Attacco incantesimi — ${cm.className}` : "Bonus di attacco con incantesimi"} value={fmtMod(cm.attack)} />
-          </React.Fragment>
-        ))}
-      </div>
+      {showPlayTools ? (
+        // In gioco: CD e attacco in una riga compatta di chip (prima erano due riquadri alti
+        // che spingevano gli incantesimi fuori dal primo schermo del telefono).
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 12 }}>
+          {casterMetrics.map((cm) => (
+            <span key={cm.classId} style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.wineDeep, border: `1px solid ${C.goldSoft}`, background: "#f8f1e0", borderRadius: 6, padding: "4px 10px" }}>
+              {casterMetrics.length > 1 ? `${cm.className}: ` : ""}CD {cm.dc} · Colpire {fmtMod(cm.attack)}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", marginBottom: 12 }}>
+          {casterMetrics.map((cm) => (
+            <React.Fragment key={cm.classId}>
+              <MetricBox label={casterMetrics.length > 1 ? `CD incantesimi — ${cm.className}` : "CD tiro salvezza incantesimi"} value={cm.dc} />
+              <MetricBox label={casterMetrics.length > 1 ? `Attacco incantesimi — ${cm.className}` : "Bonus di attacco con incantesimi"} value={fmtMod(cm.attack)} />
+            </React.Fragment>
+          ))}
+        </div>
+      )}
       <SpellManager draft={draft} setDraft={setDraft} showPlayTools={showPlayTools} />
     </>
   ) : (
@@ -853,6 +927,7 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
   if (showPlayTools && playTab) {
     const panels = {
       panoramica: panoramicaContent,
+      abilita: abilitaContent,
       combattimento: combattimentoContent,
       incantesimi: incantesimiContent,
       inventario: inventarioContent,
@@ -864,6 +939,8 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
   return (
     <div>
       {panoramicaContent}
+      <Divider />
+      {abilitaContent}
       {/* combattimentoContent porta già un Divider proprio davanti al suo primo blocco visibile
           (Meccaniche di classe / Risorse di classe / Attacchi): niente Divider qui, altrimenti
           si duplicherebbe quando gli strumenti di gioco (senza divider proprio) sono nascosti. */}

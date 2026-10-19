@@ -116,7 +116,7 @@ export default function App() {
   };
 
   // L'Incontro cambia ad ogni clic in combattimento (danno, iniziativa, turno): si salva da
-  // solo appena cambia, invece di richiedere un "Salva" esplicito come la Scheda Personaggio —
+  // solo appena cambia, come la Scheda Personaggio (salvataggio automatico) —
   // qui la priorità è non perdere mai lo stato di un combattimento in corso.
   useEffect(() => {
     if (encounterLoading) return;
@@ -150,45 +150,23 @@ export default function App() {
     setScreen("sheet");
   };
 
-  const handleSaveSheetChanges = async (updatedCharacter) => {
+  // Chiamato dal salvataggio automatico della Scheda (silent: niente toast a ogni modifica) e
+  // dal tocco esplicito sul bottone di stato. Restituisce true/false: la Scheda lo usa per
+  // sapere se può uscire senza perdere nulla.
+  const handleSaveSheetChanges = async (updatedCharacter, { silent = false } = {}) => {
     try {
       const next = characters.map((c) => (c.id === updatedCharacter.id ? updatedCharacter : c));
       const result = await storageAdapter.set(STORAGE_KEY, JSON.stringify(next), false);
       if (!result) throw new Error("save failed");
       setCharacters(next);
       setSheetCharacter(updatedCharacter);
-      showToast("Modifiche salvate.");
+      if (!silent) showToast("Modifiche salvate.");
       // Non-bloccante di proposito (vedi commento su syncCharacterToCampaign): il salvataggio
-      // locale è già concluso, il bottone "Salva" non deve aspettare la rete.
+      // locale è già concluso, il bottone di stato non deve aspettare la rete.
       syncCharacterToCampaign(updatedCharacter).then(setCampaignPlayerSyncStatus);
-    } catch (e) {
-      showToast("Errore durante il salvataggio. Riprova.");
-    }
-  };
-
-  // Scelte "identitarie" del personaggio (sottoclasse/circolo/dominio/giuramento/patrono): si
-  // salvano subito, appena fatte, senza aspettare "Salva" — altrimenti uscendo dalla scheda si
-  // perdevano e alla riapertura andavano riscelte. Applica solo la patch indicata al personaggio
-  // GIÀ SALVATO (letto di nuovo dallo storage), così eventuali altre modifiche non ancora
-  // salvate nella scheda restano tali e non vengono scritte di nascosto.
-  const handlePersistSheetChoices = async (id, patchFn) => {
-    try {
-      const res = await storageAdapter.get(STORAGE_KEY, false);
-      const list = res && res.value ? JSON.parse(res.value) : [];
-      if (!Array.isArray(list)) return false;
-      let patched = null;
-      const next = list.map((c) => {
-        if (c.id !== id) return c;
-        patched = patchFn(c);
-        return patched;
-      });
-      if (!patched) return false;
-      const result = await storageAdapter.set(STORAGE_KEY, JSON.stringify(next), false);
-      if (!result) return false;
-      setCharacters(next);
-      syncCharacterToCampaign(patched).then(setCampaignPlayerSyncStatus);
       return true;
-    } catch (e) {
+    } catch {
+      showToast("Errore durante il salvataggio. Riprova.");
       return false;
     }
   };
@@ -301,8 +279,7 @@ export default function App() {
 
   // Aggiornamenti "silenziosi" (nessun toast) usati dall'Incontro: durante un combattimento,
   // PF/Concentrazione/TS contro la Morte cambiano ad ogni clic, e un toast per ognuno sarebbe
-  // solo rumore. Scrivono comunque subito su storage, a differenza della Scheda Personaggio
-  // (dove le modifiche restano in un draft locale finché non si preme "Salva modifiche").
+  // solo rumore. Scrivono subito su storage, come il salvataggio automatico della Scheda.
   const handleUpdateCharacterSilent = async (updatedCharacter) => {
     const next = characters.map((c) => (c.id === updatedCharacter.id ? updatedCharacter : c));
     setCharacters(next);
@@ -553,7 +530,6 @@ export default function App() {
           character={sheetCharacter}
           onBack={() => setScreen("list")}
           onSaveChanges={handleSaveSheetChanges}
-          onPersistChoices={handlePersistSheetChoices}
           campaignSyncStatus={campaignPlayerSyncStatus}
         />
       )}

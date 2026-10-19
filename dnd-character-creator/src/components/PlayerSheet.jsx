@@ -15,15 +15,6 @@ import {
 import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
 import { mod, fmtMod } from "../lib/format";
 
-// Sottoclasse scelta per la classe primaria e per l'eventuale secondaria, con il campo in cui
-// ognuna va salvata: è ciò che viene reso persistente subito (vedi effetto in PlayerSheet).
-function extractSubclassChoices(d) {
-  const pick = (store) => (store && store.classId
-    ? { classId: store.classId, field: getSubclassField(store.classId), value: getChosenSubclassId(store, store.classId) || null }
-    : null);
-  return { primary: pick(d), secondary: pick(d && d.multiclass) };
-}
-
 // Selettore di sottoclasse in stile "scelta fatta": una volta scelta, la sottoclasse appare come
 // riepilogo fisso e si cambia solo con "Cambia" — niente più deselezione accidentale con un tap.
 function SubclassChooser({ title, options, chosenId, unlocked, unlockLevel, onChoose, compact }) {
@@ -70,7 +61,7 @@ function SubclassChooser({ title, options, chosenId, unlocked, unlockLevel, onCh
   );
 }
 
-export function PlayerSheet({ character, onBack, onSaveChanges, onPersistChoices, campaignSyncStatus }) {
+export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStatus }) {
   const [draft, setDraft] = useState(character);
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -148,60 +139,65 @@ export function PlayerSheet({ character, onBack, onSaveChanges, onPersistChoices
   const choosePrimarySubclass = (id) => updateDraft((d) => ({ ...d, [getSubclassField(d.classId)]: id }));
   const chooseSecondarySubclass = (id) => mcUpdateStore((st) => ({ [getSubclassField(st.classId)]: id }));
 
-  // La sottoclasse (incluso Circolo/Dominio/Giuramento/Patrono) si salva appena scelta, da
-  // qualunque punto della scheda venga scelta (Panoramica, popup di livello, scheda
-  // Incantesimi): prima restava solo nel draft e andava persa uscendo senza "Salva".
-  // Si scrivono solo valori non vuoti: un azzeramento (es. "torna indietro di un livello")
-  // passa dal normale "Salva", per non lasciare il personaggio salvato senza sottoclasse a un
-  // livello che la richiede. Durante il popup di livello si aspetta conferma o annullamento.
-  const persistedChoicesRef = useRef(extractSubclassChoices(character));
+  // Salvataggio automatico, come le app di riferimento (D&D Beyond): ogni modifica della scheda
+  // (PF, slot, inventario, sottoclasse...) si salva da sola poco dopo l'ultima modifica, e
+  // subito quando si esce o l'app va in background. Prima serviva "Salva" e uscendo senza
+  // premerlo si perdeva tutto — compresa la sottoclasse appena scelta. Durante il popup di
+  // livello si aspetta: conferma o annullamento decidono cosa va salvato.
+  const draftRef = useRef(draft);
+  const dirtyRef = useRef(dirty);
+  const levelUpOpenRef = useRef(false);
+  const saveNowRef = useRef(null);
   useEffect(() => {
-    if (levelUpInfo || !onPersistChoices || !draft.id) return;
-    const now = extractSubclassChoices(draft);
-    const prev = persistedChoicesRef.current;
-    const changed = (a, b) => !!(a && a.value && (!b || a.classId !== b.classId || a.value !== b.value));
-    const primaryChanged = changed(now.primary, prev.primary);
-    const secondaryChanged = changed(now.secondary, prev.secondary);
-    if (!primaryChanged && !secondaryChanged) return;
-    persistedChoicesRef.current = now;
-    onPersistChoices(draft.id, (c) => {
-      let next = c;
-      if (primaryChanged && c.classId === now.primary.classId) next = { ...next, [now.primary.field]: now.primary.value };
-      if (secondaryChanged && c.multiclass && c.multiclass.classId === now.secondary.classId) {
-        next = { ...next, multiclass: { ...next.multiclass, [now.secondary.field]: now.secondary.value } };
-      }
-      return next;
-    });
-  }, [draft, levelUpInfo, onPersistChoices]);
+    saveNowRef.current = saveNow;
+    draftRef.current = draft;
+    dirtyRef.current = dirty;
+    levelUpOpenRef.current = !!levelUpInfo;
+  });
+  const [saveError, setSaveError] = useState(false);
+  const saveNow = async ({ silent = true } = {}) => {
+    const snapshot = draftRef.current;
+    setSaving(true);
+    const ok = await onSaveChanges(snapshot, { silent });
+    setSaving(false);
+    setSaveError(!ok);
+    // Se nel frattempo è arrivata un'altra modifica, resta "da salvare" per il giro successivo.
+    if (ok && draftRef.current === snapshot) setDirty(false);
+    return ok;
+  };
+  useEffect(() => {
+    if (!dirty || levelUpInfo) return undefined;
+    const t = setTimeout(() => { saveNow(); }, 800);
+    return () => clearTimeout(t);
+    // saveNow legge sempre l'ultimo draft dai ref: basta ripartire quando cambia il draft.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draft, dirty, levelUpInfo]);
+  useEffect(() => {
+    const flush = () => {
+      if (document.visibilityState === "hidden" && dirtyRef.current && !levelUpOpenRef.current) saveNowRef.current?.();
+    };
+    document.addEventListener("visibilitychange", flush);
+    return () => document.removeEventListener("visibilitychange", flush);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // "Indietro" con modifiche non salvate: prima si usciva in silenzio perdendo tutto.
+  // "Indietro": salva prima di uscire; se il salvataggio fallisce chiede cosa fare.
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
-  const requestBack = () => {
-    if (dirty) setConfirmLeave(true);
-    else onBack();
-  };
-  const saveAndLeave = async () => {
-    setSaving(true);
-    try {
-      await onSaveChanges(draft);
-      setDirty(false);
-      setConfirmLeave(false);
-      onBack();
-    } finally {
-      setSaving(false);
+  const requestBack = async () => {
+    if (levelUpInfo) return;
+    if (dirty) {
+      const ok = await saveNow();
+      if (!ok) { setConfirmLeave(true); return; }
     }
+    onBack();
+  };
+  const retryAndLeave = async () => {
+    const ok = await saveNow({ silent: false });
+    if (ok) { setConfirmLeave(false); onBack(); }
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    try {
-      await onSaveChanges(draft);
-      setDirty(false);
-    } finally {
-      setSaving(false);
-    }
-  };
+  const handleSave = () => saveNow({ silent: false });
 
   const handleLevelUp = () => {
     if (!cls || totalLevel >= 20) return;
@@ -348,16 +344,17 @@ export function PlayerSheet({ character, onBack, onSaveChanges, onPersistChoices
             </p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+            {/* Stato del salvataggio automatico; toccandolo si forza un salvataggio immediato.
+                Su telefono stretto resta solo l'icona: il nome del personaggio ha più spazio. */}
             <GoldButton
-              icon={saving ? Loader2 : dirty ? Save : Check}
-              disabled={saving || !dirty}
+              icon={saving ? Loader2 : saveError ? X : dirty ? Save : Check}
+              disabled={saving || (!dirty && !saveError)}
               onClick={handleSave}
-              aria-label={dirty ? "Salva" : "Salvato"}
-              title={dirty ? "Salva" : "Salvato"}
-              style={{ padding: "0.5rem 0.8rem", fontSize: 13.5, minHeight: 44 }}
+              aria-label={saving ? "Salvataggio in corso" : saveError ? "Salvataggio non riuscito, riprova" : dirty ? "Salva ora" : "Salvato"}
+              title={saving ? "Salvataggio in corso" : saveError ? "Salvataggio non riuscito, riprova" : dirty ? "Salva ora" : "Salvato automaticamente"}
+              style={{ padding: "0.5rem 0.8rem", fontSize: 13.5, minHeight: 44, ...(saveError ? { background: C.danger } : {}) }}
             >
-              {/* Su telefono stretto resta solo l'icona: il nome del personaggio ha più spazio. */}
-              <span className="label-hide-xs">{saving ? "…" : dirty ? "Salva" : "Salvato"}</span>
+              <span className="label-hide-xs">{saving ? "Salvo…" : saveError ? "Riprova" : dirty ? "Salva" : "Salvato"}</span>
             </GoldButton>
             {((cls && draft.level > 1) || (mcCls && mc.level > 1)) && (
               <div style={{ position: "relative" }}>
@@ -390,41 +387,6 @@ export function PlayerSheet({ character, onBack, onSaveChanges, onPersistChoices
           </div>
         </div>
 
-        {(cls && draft.level < 20 && totalLevel < 20 || mcCls && mc.level < 20 && totalLevel < 20) && (
-          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8, position: "relative" }}>
-            <GoldButton
-              icon={ChevronRight}
-              onClick={() => { if (mcCls) setLevelUpMenuOpen((v) => !v); else startLevelUp(); }}
-              style={{ padding: "0.5rem 0.8rem", fontSize: 13.5, flexDirection: "row-reverse" }}
-            >
-              Sali di livello
-            </GoldButton>
-            {levelUpMenuOpen && mcCls && (
-              <>
-                <div onClick={() => setLevelUpMenuOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 45 }} />
-                <div
-                  style={{
-                    position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50,
-                    background: C.parchment, border: `1px solid ${C.goldSoft}`, borderRadius: 5,
-                    boxShadow: "0 12px 24px rgba(19,15,13,0.4)", padding: 6, minWidth: 200, display: "grid", gap: 4,
-                  }}
-                >
-                  {cls && draft.level < 20 && totalLevel < 20 && (
-                    <GhostButton onClick={() => { setLevelUpMenuOpen(false); startLevelUp(); }} style={{ borderColor: C.wine, color: C.wineDeep, fontSize: 13.5, justifyContent: "flex-start" }}>
-                      {cls.name} (liv. {draft.level} → {draft.level + 1})
-                    </GhostButton>
-                  )}
-                  {mcCls && mc.level < 20 && totalLevel < 20 && (
-                    <GhostButton onClick={() => { setLevelUpMenuOpen(false); handleMulticlassLevelUp(); }} style={{ borderColor: C.wine, color: C.wineDeep, fontSize: 13.5, justifyContent: "flex-start" }}>
-                      {mcCls.name} (liv. {mc.level} → {mc.level + 1})
-                    </GhostButton>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-
         <div style={{ display: "flex", alignItems: "stretch", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
           {vitalsHp != null && (
             <VitalChip icon={Heart} accent={vitalsCurrentHp === 0 ? C.danger : undefined} style={{ minWidth: 108 }}>
@@ -447,7 +409,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges, onPersistChoices
             </VitalChip>
           )}
           {draft.concentration && (
-            <VitalChip icon={Wand2} accent={C.gold} style={{ maxWidth: 170 }}>
+            <VitalChip icon={Wand2} accent={C.gold} style={{ maxWidth: 150 }}>
               <span
                 title={draft.concentration.spellName}
                 style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.gold, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
@@ -462,6 +424,44 @@ export function PlayerSheet({ character, onBack, onSaveChanges, onPersistChoices
                 Slot {vitalsSlotsTotal - vitalsSlotsUsed}/{vitalsSlotsTotal}
               </span>
             </VitalChip>
+          )}
+          {/* "Sali di livello" in fondo alla riga dei dati vitali invece che su una riga tutta sua:
+              resta un bottone dorato ben visibile, ma l'intestazione fissa è più bassa. */}
+          {(cls && draft.level < 20 && totalLevel < 20 || mcCls && mc.level < 20 && totalLevel < 20) && (
+            <div style={{ display: "flex", marginLeft: "auto", position: "relative" }}>
+              <GoldButton
+                icon={ChevronRight}
+                onClick={() => { if (mcCls) setLevelUpMenuOpen((v) => !v); else startLevelUp(); }}
+                style={{ padding: "0.45rem 0.75rem", fontSize: 13, flexDirection: "row-reverse", minHeight: 44 }}
+                aria-label="Sali di livello"
+              >
+                <span className="label-hide-xs">Sali di livello</span>
+                <span className="label-show-xs">Livello +1</span>
+              </GoldButton>
+              {levelUpMenuOpen && mcCls && (
+                <>
+                  <div onClick={() => setLevelUpMenuOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 45 }} />
+                  <div
+                    style={{
+                      position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50,
+                      background: C.parchment, border: `1px solid ${C.goldSoft}`, borderRadius: 5,
+                      boxShadow: "0 12px 24px rgba(19,15,13,0.4)", padding: 6, minWidth: 200, display: "grid", gap: 4,
+                    }}
+                  >
+                    {cls && draft.level < 20 && totalLevel < 20 && (
+                      <GhostButton onClick={() => { setLevelUpMenuOpen(false); startLevelUp(); }} style={{ borderColor: C.wine, color: C.wineDeep, fontSize: 13.5, justifyContent: "flex-start" }}>
+                        {cls.name} (liv. {draft.level} → {draft.level + 1})
+                      </GhostButton>
+                    )}
+                    {mcCls && mc.level < 20 && totalLevel < 20 && (
+                      <GhostButton onClick={() => { setLevelUpMenuOpen(false); handleMulticlassLevelUp(); }} style={{ borderColor: C.wine, color: C.wineDeep, fontSize: 13.5, justifyContent: "flex-start" }}>
+                        {mcCls.name} (liv. {mc.level} → {mc.level + 1})
+                      </GhostButton>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
           )}
         </div>
 
@@ -536,22 +536,22 @@ export function PlayerSheet({ character, onBack, onSaveChanges, onPersistChoices
 
       {confirmLeave && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
-          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 6, maxWidth: 480, width: "100%", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 6, maxWidth: 480, width: "100%", border: `1px solid ${C.danger}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
             <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.wineDeep, margin: "0 0 8px" }}>
-              Modifiche non salvate
+              Salvataggio non riuscito
             </h2>
             <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "0 0 16px" }}>
-              Hai modificato la scheda dopo l'ultimo salvataggio. Se esci senza salvare, queste modifiche andranno perse.
+              Le ultime modifiche alla scheda non sono state salvate. Se esci adesso andranno perse.
             </p>
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", flexWrap: "wrap" }}>
               <GhostButton onClick={() => setConfirmLeave(false)} style={{ borderColor: C.parchmentLine, color: C.textMuted }}>
-                Annulla
+                Resta nella scheda
               </GhostButton>
               <DangerButton onClick={() => { setConfirmLeave(false); onBack(); }}>
                 Esci senza salvare
               </DangerButton>
-              <GoldButton icon={saving ? Loader2 : Save} disabled={saving} onClick={saveAndLeave}>
-                Salva ed esci
+              <GoldButton icon={saving ? Loader2 : Save} disabled={saving} onClick={retryAndLeave}>
+                Riprova ed esci
               </GoldButton>
             </div>
           </div>
