@@ -91,6 +91,21 @@ export function getSubclassOptions(clsId) {
   return SUBCLASSES[clsId] || [];
 }
 
+// Campo del personaggio in cui ogni classe salva la propria sottoclasse: Chierico/Paladino/
+// Warlock/Druido usano un campo dedicato (condiviso con le scelte di incantesimi), le altre il
+// generico "subclassId". Unica fonte di verità per chi deve SCRIVERE la sottoclasse.
+export const SUBCLASS_FIELD_BY_CLASS = { chierico: "domainId", paladino: "oathId", warlock: "patronId", druido: "circleId" };
+export function getSubclassField(clsId) {
+  return SUBCLASS_FIELD_BY_CLASS[clsId] || "subclassId";
+}
+
+// Livello in cui la sottoclasse diventa disponibile (PHB 2014). SUBCLASS_CHOICE_LEVEL copre
+// solo le classi che usano "subclassId"; qui si aggiungono le quattro con campo dedicato.
+const DEDICATED_SUBCLASS_LEVEL = { chierico: 1, warlock: 1, druido: 2, paladino: 3 };
+export function getSubclassUnlockLevel(clsId) {
+  return DEDICATED_SUBCLASS_LEVEL[clsId] || SUBCLASS_CHOICE_LEVEL[clsId] || 3;
+}
+
 export function getChosenSubclassId(draft, clsId) {
   if (clsId === "chierico") return draft.domainId;
   if (clsId === "paladino") return draft.oathId;

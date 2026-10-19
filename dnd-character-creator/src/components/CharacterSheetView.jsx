@@ -9,7 +9,7 @@
 // (StepReview, showPlayTools=false) le stesse 5 sezioni restano concatenate come un'unica
 // scheda continua, invariata rispetto a prima.
 import React, { useState, useMemo } from "react";
-import { Save, Loader2 } from "../icons";
+import { Backpack, BookOpen, Loader2, Save, ScrollText, Sword, Wand2 } from "../icons";
 import { C } from "../theme";
 import { Divider, GhostButton, GoldButton, MetricBox } from "./primitives";
 import { AsiPicker, ElementalDisciplinePicker, ManeuverPicker } from "./pickers";
@@ -34,12 +34,14 @@ import {
 } from "../lib/character";
 
 // Sezioni disponibili in gioco, nell'ordine in cui compaiono anche nel Riepilogo di creazione.
+// "short" è l'etichetta usata su telefono, dove le 5 schede devono stare tutte in una riga
+// (icona sopra + parola breve, come le app di riferimento) invece di scorrere di lato.
 export const PLAY_SECTIONS = [
-  { key: "panoramica", label: "Panoramica" },
-  { key: "combattimento", label: "Combattimento" },
-  { key: "incantesimi", label: "Incantesimi" },
-  { key: "inventario", label: "Inventario" },
-  { key: "tratti", label: "Tratti" },
+  { key: "panoramica", label: "Panoramica", short: "Generale", icon: BookOpen },
+  { key: "combattimento", label: "Combattimento", short: "Azioni", icon: Sword },
+  { key: "incantesimi", label: "Incantesimi", short: "Magie", icon: Wand2 },
+  { key: "inventario", label: "Inventario", short: "Zaino", icon: Backpack },
+  { key: "tratti", label: "Tratti", short: "Tratti", icon: ScrollText },
 ];
 
 export function CharacterSheetView({ draft, setDraft, showPlayTools = false, playTab, campaignSyncStatus }) {
@@ -279,14 +281,14 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
       {/* PE si assegna e si segue durante il gioco (il Master la dà a fine Incontro): non ha
           senso nel Riepilogo di creazione, dove un personaggio nuovo parte comunque da 0. */}
       {showPlayTools && (
-        <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0.7rem 0.9rem", marginBottom: 18, display: "flex", alignItems: "center", gap: "6px 10px", flexWrap: "wrap" }}>
           <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep }}>Esperienza (PE)</span>
           <input
             type="number" min={0} value={draft.xp || 0}
             onChange={(e) => setDraft((d) => ({ ...d, xp: Math.max(0, Number(e.target.value) || 0) }))}
             style={{ width: 90, fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.35rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff" }}
           />
-          <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>
+          <span style={{ fontFamily: "'Spectral', serif", fontSize: 13, color: C.textMuted, fontStyle: "italic", flex: "1 1 200px" }}>
             Informativa: il livello si aumenta sempre a mano con "Sali di livello".
           </span>
         </div>
@@ -456,8 +458,8 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
               const damageBonus = w.damageMod;
 
               return (
-                <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0.7rem", border: `1px solid ${w.proficient ? C.parchmentLine : C.wine}`, borderRadius: 6, marginBottom: 6 }}>
-                  <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, display: "flex", alignItems: "center", gap: 6 }}>
+                <div key={w.uid} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "4px 12px", padding: "0.5rem 0.7rem", border: `1px solid ${w.proficient ? C.parchmentLine : C.wine}`, borderRadius: 6, marginBottom: 6 }}>
+                  <span style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.textOnParchment, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 6, flex: "1 1 160px", minWidth: 0 }}>
                     {w.name}
                     {!w.proficient && (
                       <span title="Nessuna competenza con questa arma: il bonus di competenza non è incluso nel tiro per colpire" style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 12.5, color: C.wine, border: `1px solid ${C.wine}`, borderRadius: 6, padding: "0 4px" }}>
@@ -470,8 +472,13 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
                       </span>
                     )}
                   </span>
-                  <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted }}>
-                    Attacco {fmtMod(attackBonus)} · Danno {w.damageString}{fmtMod(damageBonus)} {w.damageType}
+                  <span style={{ display: "flex", gap: 6, flexWrap: "wrap", marginLeft: "auto" }}>
+                    <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, fontWeight: 600, color: C.wineDeep, border: `1px solid ${C.goldSoft}`, background: "#f8f1e0", borderRadius: 6, padding: "2px 8px", whiteSpace: "nowrap" }}>
+                      Colpire {fmtMod(attackBonus)}
+                    </span>
+                    <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textOnParchment, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "2px 8px" }}>
+                      {w.damageString}{fmtMod(damageBonus)} {w.damageType}
+                    </span>
                   </span>
                 </div>
               );

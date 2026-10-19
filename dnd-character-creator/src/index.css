@@ -16,6 +16,28 @@ body {
   margin: 0;
 }
 
+/* Barra a schede (Tabs in primitives.jsx): sul desktop icona + etichetta intera; su telefono
+   tutte le schede stanno in una riga, a colonne uguali, con icona sopra e etichetta breve —
+   prima scorrevano di lato e metà delle schede (e del testo) restava tagliata fuori. */
+.app-tabs .tab-label-short { display: none; }
+@media (max-width: 419px) {
+  .label-hide-xs { display: none; }
+}
+@media (max-width: 639px) {
+  .app-tabs { overflow-x: visible !important; }
+  .app-tabs > button {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    flex-direction: column;
+    gap: 2px !important;
+    padding: 0.35rem 0.1rem !important;
+    font-size: 11px !important;
+    letter-spacing: 0 !important;
+  }
+  .app-tabs .tab-label-full { display: none; }
+  .app-tabs .tab-label-short { display: inline; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+}
+
 /* Input numerico con bottoni −/+ propri (es. tracker PF in Combattimento): le frecce native
    del browser sono ridondanti e rompono l'aspetto a "pillola" unica del controllo. */
 .stepper-input::-webkit-inner-spin-button,

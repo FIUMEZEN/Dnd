@@ -28,13 +28,13 @@ function BeastCard({ beast, locked, lockReason }) {
         onClick={() => setOpen((o) => !o)}
         style={{
           all: "unset", cursor: "pointer", display: "flex", justifyContent: "space-between",
-          alignItems: "center", width: "100%", boxSizing: "border-box", gap: 10,
+          alignItems: "center", width: "100%", boxSizing: "border-box", gap: "4px 10px", flexWrap: "wrap",
         }}
       >
-        <span style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment }}>
+        <span style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment, flex: "1 1 150px", minWidth: 0 }}>
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />} {beast.name}
         </span>
-        <div style={{ textAlign: "right" }}>
+        <div style={{ textAlign: "right", marginLeft: "auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", justifyContent: "flex-end" }}>
             <span style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>GS {beast.cr}</span>
             <VitalChip icon={Shield} theme="light" style={{ padding: "0.1rem 0.4rem" }}>

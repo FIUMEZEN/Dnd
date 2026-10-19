@@ -3,8 +3,8 @@ import { C } from "../theme";
 import { Divider, GoldButton, OptionCard } from "./primitives";
 import { AsiPicker, ElementalDisciplinePicker, FightingStyleSelector, InvocationPicker, ManeuverPicker, MetamagicPicker, PactBoonPicker } from "./pickers";
 import { HpLevelManager } from "./hp";
-import { CLASSES, SUBCLASS_CHOICE_LEVEL } from "../data/classes";
-import { getFightingStyleCount } from "../lib/character";
+import { CLASSES } from "../data/classes";
+import { getFightingStyleCount, getSubclassUnlockLevel } from "../lib/character";
 import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
 
 /* ---------------------------------- LEVEL UP MODAL ---------------------------------- */
@@ -18,10 +18,10 @@ export function LevelUpModal({
   subclassOptions, chosenSubclassId, onChooseSubclass, changes, onCancel, onConfirm,
 }) {
   const cls = CLASSES.find((c) => c.id === clsId);
-  // Chierico/Paladino/Warlock/Druido scelgono dominio/giuramento/patrono/circolo altrove
-  // (non usano il campo "subclassId" generico): qui li escludiamo per non offrire un
-  // selettore che scriverebbe nel campo sbagliato.
-  const subclassJustUnlocked = clsId in SUBCLASS_CHOICE_LEVEL && subclassOptions.length > 0 && toLevel === SUBCLASS_CHOICE_LEVEL[clsId] && !chosenSubclassId;
+  // Vale per tutte le classi: onChooseSubclass scrive già nel campo giusto (subclassId, oppure
+  // circleId/oathId/domainId/patronId), quindi anche il Druido al 2° livello e il Paladino al
+  // 3° vedono qui la scelta del Circolo/Giuramento invece di doverla cercare altrove.
+  const subclassJustUnlocked = subclassOptions.length > 0 && toLevel === getSubclassUnlockLevel(clsId) && !chosenSubclassId;
   const styleCountBefore = getFightingStyleCount(clsId, fromLevel, store.subclassId);
   const styleCountAfter = getFightingStyleCount(clsId, toLevel, store.subclassId);
   const showFightingStyle = styleCountAfter > styleCountBefore;

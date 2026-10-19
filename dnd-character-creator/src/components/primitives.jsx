@@ -46,9 +46,10 @@ export function Divider() {
   );
 }
 
-export function GoldButton({ children, onClick, disabled, style, icon: Icon }) {
+export function GoldButton({ children, onClick, disabled, style, icon: Icon, ...rest }) {
   return (
     <button
+      {...rest}
       onClick={onClick}
       disabled={disabled}
       style={{
@@ -79,9 +80,10 @@ export function GoldButton({ children, onClick, disabled, style, icon: Icon }) {
   );
 }
 
-export function GhostButton({ children, onClick, style, icon: Icon }) {
+export function GhostButton({ children, onClick, style, icon: Icon, ...rest }) {
   return (
     <button
+      {...rest}
       onClick={onClick}
       style={{
         fontFamily: "'Spectral', serif",
@@ -232,6 +234,7 @@ export function Tabs({ items, active, onChange }) {
   return (
     <div
       role="tablist"
+      className="app-tabs"
       style={{
         display: "flex", gap: 4, padding: 4, overflowX: "auto", WebkitOverflowScrolling: "touch",
         background: C.inkPanel, border: `1px solid ${C.parchmentLine}44`,
@@ -252,9 +255,12 @@ export function Tabs({ items, active, onChange }) {
               background: isActive ? `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})` : "transparent",
               color: isActive ? C.cream : C.creamMuted,
               whiteSpace: "nowrap",
+              display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
             }}
           >
-            {item.label}
+            {item.icon && <item.icon size={15} />}
+            <span className="tab-label-full">{item.label}</span>
+            <span className="tab-label-short">{item.short || item.label}</span>
           </button>
         );
       })}

@@ -166,6 +166,33 @@ export default function App() {
     }
   };
 
+  // Scelte "identitarie" del personaggio (sottoclasse/circolo/dominio/giuramento/patrono): si
+  // salvano subito, appena fatte, senza aspettare "Salva" — altrimenti uscendo dalla scheda si
+  // perdevano e alla riapertura andavano riscelte. Applica solo la patch indicata al personaggio
+  // GIÀ SALVATO (letto di nuovo dallo storage), così eventuali altre modifiche non ancora
+  // salvate nella scheda restano tali e non vengono scritte di nascosto.
+  const handlePersistSheetChoices = async (id, patchFn) => {
+    try {
+      const res = await storageAdapter.get(STORAGE_KEY, false);
+      const list = res && res.value ? JSON.parse(res.value) : [];
+      if (!Array.isArray(list)) return false;
+      let patched = null;
+      const next = list.map((c) => {
+        if (c.id !== id) return c;
+        patched = patchFn(c);
+        return patched;
+      });
+      if (!patched) return false;
+      const result = await storageAdapter.set(STORAGE_KEY, JSON.stringify(next), false);
+      if (!result) return false;
+      setCharacters(next);
+      syncCharacterToCampaign(patched).then(setCampaignPlayerSyncStatus);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   const handleDelete = async (id) => {
     const next = characters.filter((c) => c.id !== id);
     setCharacters(next);
@@ -526,6 +553,7 @@ export default function App() {
           character={sheetCharacter}
           onBack={() => setScreen("list")}
           onSaveChanges={handleSaveSheetChanges}
+          onPersistChoices={handlePersistSheetChoices}
           campaignSyncStatus={campaignPlayerSyncStatus}
         />
       )}

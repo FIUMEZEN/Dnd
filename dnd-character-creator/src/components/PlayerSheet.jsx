@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, Heart, Loader2, MoreVertical, Save, Shield, Skull, Sparkles, Wand2, X, Zap } from "../icons";
+import { useEffect, useRef, useState } from "react";
+import { Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Heart, Loader2, MoreVertical, Save, Shield, Skull, Sparkles, Wand2, X, Zap } from "../icons";
 import { C } from "../theme";
 import { Frame, Divider, DangerButton, GhostButton, GoldButton, HpBar, OptionCard, Tabs, VitalChip } from "./primitives";
 import { FightingStyleSelector } from "./pickers";
@@ -9,13 +9,68 @@ import { RACES } from "../data/races";
 import { CLASSES, SUBCLASS_CHOICE_LEVEL } from "../data/classes";
 import {
   checkMulticlassPrereq, computeFinalScores, computeMaxHp, emptyMulticlass, getArmorClass, getChosenSubclassId,
-  getEffectiveSpellSlots, getFightingStyleCount, getInitiativeMod, getLevelUpChanges, getSubclass, getSubclassOptions, getTotalCharacterLevel, hasFightingStyles,
+  getEffectiveSpellSlots, getFightingStyleCount, getInitiativeMod, getLevelUpChanges, getSubclass, getSubclassField, getSubclassOptions, getSubclassUnlockLevel, getTotalCharacterLevel, hasFightingStyles,
   validateCharacter,
 } from "../lib/character";
 import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
 import { mod, fmtMod } from "../lib/format";
 
-export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStatus }) {
+// Sottoclasse scelta per la classe primaria e per l'eventuale secondaria, con il campo in cui
+// ognuna va salvata: è ciò che viene reso persistente subito (vedi effetto in PlayerSheet).
+function extractSubclassChoices(d) {
+  const pick = (store) => (store && store.classId
+    ? { classId: store.classId, field: getSubclassField(store.classId), value: getChosenSubclassId(store, store.classId) || null }
+    : null);
+  return { primary: pick(d), secondary: pick(d && d.multiclass) };
+}
+
+// Selettore di sottoclasse in stile "scelta fatta": una volta scelta, la sottoclasse appare come
+// riepilogo fisso e si cambia solo con "Cambia" — niente più deselezione accidentale con un tap.
+function SubclassChooser({ title, options, chosenId, unlocked, unlockLevel, onChoose, compact }) {
+  const [changing, setChanging] = useState(false);
+  const chosen = options.find((o) => o.id === chosenId) || null;
+  const Heading = compact ? "h4" : "h3";
+  return (
+    <div>
+      <Heading style={{ fontFamily: "'Cinzel', serif", fontSize: compact ? 14.5 : 15.5, color: C.wineDeep, margin: "0 0 6px" }}>{title}</Heading>
+      {!unlocked && !chosen ? (
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: 0 }}>
+          Disponibile dal livello {unlockLevel}.
+        </p>
+      ) : chosen && !changing ? (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+          <div style={{ minWidth: 0, flex: "1 1 200px" }}>
+            <div style={{ fontFamily: "'Cinzel', serif", fontSize: 15, fontWeight: 600, color: C.textOnParchment }}>{chosen.name}</div>
+            {chosen.blurb && <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: "2px 0 0" }}>{chosen.blurb}</p>}
+          </div>
+          <GhostButton onClick={() => setChanging(true)} style={{ borderColor: C.parchmentLine, color: C.textMuted, padding: "0.35rem 0.7rem", fontSize: 13 }}>
+            Cambia
+          </GhostButton>
+        </div>
+      ) : (
+        <>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
+            {chosen ? "Scegli la nuova sottoclasse: la scelta viene salvata subito." : "Scegli la sottoclasse: viene salvata subito nel personaggio."}
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
+            {options.map((s) => (
+              <OptionCard key={s.id} selected={chosenId === s.id} onClick={() => { onChoose(s.id); setChanging(false); }} title={s.name}>
+                <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
+              </OptionCard>
+            ))}
+          </div>
+          {chosen && (
+            <GhostButton onClick={() => setChanging(false)} style={{ borderColor: C.parchmentLine, color: C.textMuted, padding: "0.35rem 0.7rem", fontSize: 13 }}>
+              Annulla
+            </GhostButton>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+export function PlayerSheet({ character, onBack, onSaveChanges, onPersistChoices, campaignSyncStatus }) {
   const [draft, setDraft] = useState(character);
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -49,12 +104,12 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
   const cls = CLASSES.find((c) => c.id === draft.classId);
   const subclass = cls ? getSubclass(cls.id, getChosenSubclassId(draft, cls.id)) : null;
   const subclassOptions = cls ? getSubclassOptions(cls.id) : [];
-  const subclassUnlocked = cls && subclassOptions.length > 0 && draft.level >= (SUBCLASS_CHOICE_LEVEL[cls.id] || 3);
+  const subclassUnlocked = cls && subclassOptions.length > 0 && draft.level >= getSubclassUnlockLevel(cls.id);
 
   const mc = draft.multiclass && draft.multiclass.classId ? draft.multiclass : null;
   const mcCls = mc ? CLASSES.find((c) => c.id === mc.classId) : null;
   const mcSubclassOptions = mcCls ? getSubclassOptions(mcCls.id) : [];
-  const mcSubclassUnlocked = mcCls && mcSubclassOptions.length > 0 && mc.level >= (SUBCLASS_CHOICE_LEVEL[mcCls.id] || 3);
+  const mcSubclassUnlocked = mcCls && mcSubclassOptions.length > 0 && mc.level >= getSubclassUnlockLevel(mcCls.id);
   const totalLevel = getTotalCharacterLevel(draft);
   const finalScoresNow = computeFinalScores(draft);
   // Le stesse regole del riepilogo di creazione, riusate qui: dopo un livellamento (o qualunque
@@ -90,6 +145,53 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
     setDraft(updater);
   };
   const mcUpdateStore = (fn) => updateDraft((d) => ({ ...d, multiclass: { ...d.multiclass, ...fn(d.multiclass) } }));
+  const choosePrimarySubclass = (id) => updateDraft((d) => ({ ...d, [getSubclassField(d.classId)]: id }));
+  const chooseSecondarySubclass = (id) => mcUpdateStore((st) => ({ [getSubclassField(st.classId)]: id }));
+
+  // La sottoclasse (incluso Circolo/Dominio/Giuramento/Patrono) si salva appena scelta, da
+  // qualunque punto della scheda venga scelta (Panoramica, popup di livello, scheda
+  // Incantesimi): prima restava solo nel draft e andava persa uscendo senza "Salva".
+  // Si scrivono solo valori non vuoti: un azzeramento (es. "torna indietro di un livello")
+  // passa dal normale "Salva", per non lasciare il personaggio salvato senza sottoclasse a un
+  // livello che la richiede. Durante il popup di livello si aspetta conferma o annullamento.
+  const persistedChoicesRef = useRef(extractSubclassChoices(character));
+  useEffect(() => {
+    if (levelUpInfo || !onPersistChoices || !draft.id) return;
+    const now = extractSubclassChoices(draft);
+    const prev = persistedChoicesRef.current;
+    const changed = (a, b) => !!(a && a.value && (!b || a.classId !== b.classId || a.value !== b.value));
+    const primaryChanged = changed(now.primary, prev.primary);
+    const secondaryChanged = changed(now.secondary, prev.secondary);
+    if (!primaryChanged && !secondaryChanged) return;
+    persistedChoicesRef.current = now;
+    onPersistChoices(draft.id, (c) => {
+      let next = c;
+      if (primaryChanged && c.classId === now.primary.classId) next = { ...next, [now.primary.field]: now.primary.value };
+      if (secondaryChanged && c.multiclass && c.multiclass.classId === now.secondary.classId) {
+        next = { ...next, multiclass: { ...next.multiclass, [now.secondary.field]: now.secondary.value } };
+      }
+      return next;
+    });
+  }, [draft, levelUpInfo, onPersistChoices]);
+
+  // "Indietro" con modifiche non salvate: prima si usciva in silenzio perdendo tutto.
+  const [confirmLeave, setConfirmLeave] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
+  const requestBack = () => {
+    if (dirty) setConfirmLeave(true);
+    else onBack();
+  };
+  const saveAndLeave = async () => {
+    setSaving(true);
+    try {
+      await onSaveChanges(draft);
+      setDirty(false);
+      setConfirmLeave(false);
+      onBack();
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -227,11 +329,17 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
           paddingTop: 4, paddingBottom: 8, marginBottom: 18, borderBottom: `1px solid ${C.parchmentLine}44`,
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+          {/* Indietro come bottone-icona accanto al nome (fuori dal blocco che si restringe):
+              una riga in meno nella barra fissa, che su telefono occupava un terzo dello schermo. */}
+          <GhostButton
+            icon={ChevronLeft}
+            onClick={requestBack}
+            aria-label="Indietro"
+            title="Indietro"
+            style={{ padding: "0.5rem", minWidth: 44, minHeight: 44, justifyContent: "center", flexShrink: 0 }}
+          />
           <div style={{ minWidth: 0, flex: 1 }}>
-            <GhostButton icon={ChevronLeft} onClick={onBack} style={{ padding: "0.35rem 0.7rem", marginBottom: 6, fontSize: 13.5 }}>
-              Indietro
-            </GhostButton>
             <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 19, color: C.cream, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
               {draft.name || "Personaggio senza nome"}
             </h1>
@@ -239,9 +347,17 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
               {race ? race.name : "—"} · {cls ? `${cls.name} ${draft.level}` : "—"}{subclass ? ` (${subclass.name})` : ""}{mcCls ? ` / ${mcCls.name} ${mc.level}` : ""}
             </p>
           </div>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 6, flexShrink: 0 }}>
-            <GoldButton icon={saving ? Loader2 : Save} disabled={saving || !dirty} onClick={handleSave} style={{ padding: "0.5rem 0.8rem", fontSize: 13.5 }}>
-              {saving ? "…" : dirty ? "Salva" : "Salvato"}
+          <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+            <GoldButton
+              icon={saving ? Loader2 : dirty ? Save : Check}
+              disabled={saving || !dirty}
+              onClick={handleSave}
+              aria-label={dirty ? "Salva" : "Salvato"}
+              title={dirty ? "Salva" : "Salvato"}
+              style={{ padding: "0.5rem 0.8rem", fontSize: 13.5, minHeight: 44 }}
+            >
+              {/* Su telefono stretto resta solo l'icona: il nome del personaggio ha più spazio. */}
+              <span className="label-hide-xs">{saving ? "…" : dirty ? "Salva" : "Salvato"}</span>
             </GoldButton>
             {((cls && draft.level > 1) || (mcCls && mc.level > 1)) && (
               <div style={{ position: "relative" }}>
@@ -354,12 +470,25 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
         </div>
       </div>
 
+      {/* Promemoria compatto (una riga, espandibile): prima era un riquadro sempre aperto in
+          cima a OGNI scheda, che in sessione spingeva in basso proprio il contenuto da consultare. */}
       {validationErrors.length > 0 && (
-        <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", padding: "0.75rem 0.9rem", marginBottom: 18, borderRadius: 6 }}>
-          <b style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.danger }}>Scelte ancora da completare</b>
-          <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger }}>
-            {validationErrors.map((e) => <li key={e}>{e}</li>)}
-          </ul>
+        <div style={{ border: `1px solid ${C.danger}`, background: "#f8e9e5", marginBottom: 14, borderRadius: 6 }}>
+          <button
+            onClick={() => setShowValidation((v) => !v)}
+            aria-expanded={showValidation}
+            style={{ all: "unset", boxSizing: "border-box", width: "100%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "0.55rem 0.9rem", minHeight: 44 }}
+          >
+            <b style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.danger }}>
+              {validationErrors.length === 1 ? "1 scelta da completare" : `${validationErrors.length} scelte da completare`}
+            </b>
+            {showValidation ? <ChevronUp size={16} color={C.danger} /> : <ChevronDown size={16} color={C.danger} />}
+          </button>
+          {showValidation && (
+            <ul style={{ margin: 0, padding: "0 0.9rem 0.75rem 2rem", fontFamily: "'Spectral', serif", fontSize: 14, color: C.danger }}>
+              {validationErrors.map((e) => <li key={e}>{e}</li>)}
+            </ul>
+          )}
         </div>
       )}
 
@@ -405,6 +534,30 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
         </div>
       )}
 
+      {confirmLeave && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
+          <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 6, maxWidth: 480, width: "100%", border: `1px solid ${C.gold}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
+            <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, color: C.wineDeep, margin: "0 0 8px" }}>
+              Modifiche non salvate
+            </h2>
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "0 0 16px" }}>
+              Hai modificato la scheda dopo l'ultimo salvataggio. Se esci senza salvare, queste modifiche andranno perse.
+            </p>
+            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", flexWrap: "wrap" }}>
+              <GhostButton onClick={() => setConfirmLeave(false)} style={{ borderColor: C.parchmentLine, color: C.textMuted }}>
+                Annulla
+              </GhostButton>
+              <DangerButton onClick={() => { setConfirmLeave(false); onBack(); }}>
+                Esci senza salvare
+              </DangerButton>
+              <GoldButton icon={saving ? Loader2 : Save} disabled={saving} onClick={saveAndLeave}>
+                Salva ed esci
+              </GoldButton>
+            </div>
+          </div>
+        </div>
+      )}
+
       {levelDownTarget && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "var(--modal-outer-padding)" }}>
           <div style={{ background: C.parchment, padding: "var(--frame-padding)", borderRadius: 6, maxWidth: 480, width: "100%", border: `1px solid ${C.danger}`, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}>
@@ -436,7 +589,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
           updateStore={(fn) => updateDraft((d) => ({ ...d, ...fn(d) }))}
           subclassOptions={subclassOptions}
           chosenSubclassId={getChosenSubclassId(draft, cls.id)}
-          onChooseSubclass={(id) => updateDraft((d) => ({ ...d, subclassId: id }))}
+          onChooseSubclass={choosePrimarySubclass}
           changes={levelUpInfo.changes}
           onCancel={cancelLevelUp}
           onConfirm={confirmLevelUp}
@@ -452,7 +605,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
           updateStore={mcUpdateStore}
           subclassOptions={mcSubclassOptions}
           chosenSubclassId={getChosenSubclassId(mc, mcCls.id)}
-          onChooseSubclass={(id) => mcUpdateStore(() => ({ subclassId: id }))}
+          onChooseSubclass={chooseSecondarySubclass}
           changes={levelUpInfo.changes}
           onCancel={cancelLevelUp}
           onConfirm={confirmLevelUp}
@@ -464,35 +617,17 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
           restano quindi solo nella scheda Panoramica invece che fisse sopra tutte le schede. */}
       {playTab === "panoramica" && (
       <>
-      {/* Sottoclasse - Classe Primaria */}
-      {cls && !["chierico", "paladino", "warlock", "druido"].includes(cls.id) && subclassOptions.length > 0 && (
+      {/* Sottoclasse - Classe Primaria (tutte le classi, Circolo/Dominio/Giuramento/Patrono inclusi) */}
+      {cls && subclassOptions.length > 0 && (
         <Frame style={{ padding: "0.9rem 1rem", marginBottom: 18 }}>
-          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 6px" }}>
-            Sottoclasse — {cls.name}
-          </h3>
-          {!subclassUnlocked ? (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: 0 }}>
-              Disponibile dal livello {SUBCLASS_CHOICE_LEVEL[cls.id] || 3}.
-            </p>
-          ) : (
-            <>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
-                Scegli la sottoclasse del tuo personaggio per questo livello.
-              </p>
-              <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
-                {subclassOptions.map((s) => (
-                  <OptionCard
-                    key={s.id}
-                    selected={getChosenSubclassId(draft, cls.id) === s.id}
-                    onClick={() => setDraft((d) => ({ ...d, subclassId: d.subclassId === s.id ? null : s.id }))}
-                    title={s.name}
-                  >
-                    <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
-                  </OptionCard>
-                ))}
-              </div>
-            </>
-          )}
+          <SubclassChooser
+            title={`Sottoclasse — ${cls.name}`}
+            options={subclassOptions}
+            chosenId={getChosenSubclassId(draft, cls.id)}
+            unlocked={subclassUnlocked}
+            unlockLevel={getSubclassUnlockLevel(cls.id)}
+            onChoose={choosePrimarySubclass}
+          />
         </Frame>
       )}
 
@@ -501,7 +636,7 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
         <Frame style={{ padding: "0.9rem 1rem", marginBottom: 18 }}>
           <FightingStyleSelector
             store={draft}
-            updateStore={(fn) => setDraft((d) => ({ ...d, ...fn(d) }))}
+            updateStore={(fn) => updateDraft((d) => ({ ...d, ...fn(d) }))}
             clsId={cls.id}
             classLevel={draft.level}
             label={`Stile di Combattimento — ${cls.name}`}
@@ -543,29 +678,17 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
             )}
 
             {/* Sottoclasse - Classe Secondaria */}
-            {!["chierico", "paladino", "warlock", "druido"].includes(mcCls.id) && mcSubclassOptions.length > 0 && (
+            {mcSubclassOptions.length > 0 && (
               <div style={{ marginTop: 8 }}>
-                <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 6px" }}>
-                  Sottoclasse — {mcCls.name}
-                </h4>
-                {!mcSubclassUnlocked ? (
-                  <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: 0 }}>
-                    Disponibile dal livello {SUBCLASS_CHOICE_LEVEL[mcCls.id] || 3}.
-                  </p>
-                ) : (
-                  <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem 1rem" }}>
-                    {mcSubclassOptions.map((s) => (
-                      <OptionCard
-                        key={s.id}
-                        selected={getChosenSubclassId(mc, mcCls.id) === s.id}
-                        onClick={() => mcUpdateStore((st) => ({ subclassId: st.subclassId === s.id ? null : s.id }))}
-                        title={s.name}
-                      >
-                        <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 14, color: C.textMuted, margin: 0 }}>{s.blurb}</p>
-                      </OptionCard>
-                    ))}
-                  </div>
-                )}
+                <SubclassChooser
+                  compact
+                  title={`Sottoclasse — ${mcCls.name}`}
+                  options={mcSubclassOptions}
+                  chosenId={getChosenSubclassId(mc, mcCls.id)}
+                  unlocked={mcSubclassUnlocked}
+                  unlockLevel={getSubclassUnlockLevel(mcCls.id)}
+                  onChoose={chooseSecondarySubclass}
+                />
               </div>
             )}
 

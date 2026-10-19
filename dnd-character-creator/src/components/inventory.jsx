@@ -25,14 +25,16 @@ export function InventoryRow({ item, onQtyChange, onRemove, onToggleGrip }) {
 
   return (
     <div style={{
-      display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12,
+      display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px 12px", flexWrap: "wrap",
       padding: "0.6rem 0.85rem", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, marginBottom: 6,
     }}>
-      <div style={{ minWidth: 0 }}>
+      {/* Su telefono i controlli vanno a capo sotto il nome invece di schiacciarlo in una
+          colonna larga una parola (flex-basis 180px: sotto questa larghezza si va a capo). */}
+      <div style={{ minWidth: 0, flex: "1 1 180px", overflowWrap: "anywhere" }}>
         <div style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: C.textOnParchment }}>{item.name}</div>
         <div style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted }}>{formatItemStats(item)}</div>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0, marginLeft: "auto" }}>
         <div style={{ display: "flex", alignItems: "center", border: `1px solid ${C.parchmentLine}`, borderRadius: 6, overflow: "hidden" }}>
           <button onClick={() => onQtyChange(Math.max(1, item.qty - 1))} style={qtyBtnStyle} aria-label="Diminuisci quantità"><Minus size={12} /></button>
           <span style={{ fontFamily: "'Spectral', serif", fontSize: 14, minWidth: 18, textAlign: "center", borderLeft: `1px solid ${C.parchmentLine}`, borderRight: `1px solid ${C.parchmentLine}`, padding: "2px 0" }}>{item.qty}</span>

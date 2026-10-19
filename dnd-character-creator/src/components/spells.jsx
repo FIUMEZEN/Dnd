@@ -291,6 +291,9 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
   const caster = getEffectiveCasterInfo(cls.id, chosenSubclassId);
   if (!caster) return null;
   const store = entry.store;
+  // Nella scheda di gioco la sottoclasse si sceglie (e si cambia) da Panoramica: qui, una volta
+  // scelta, resta in sola lettura, così un tap accidentale non la azzera più.
+  const lockSubclass = showPlayTools;
   const updateStore = entry.isPrimary
     ? (fn) => setDraft((d) => ({ ...d, ...fn(d) }))
     : (fn) => setDraft((d) => ({ ...d, multiclass: { ...d.multiclass, ...fn(d.multiclass) } }));
@@ -370,13 +373,20 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       {cls.id === "chierico" && (
         <div style={{ marginBottom: 18 }}>
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Dominio Divino</p>
+          {lockSubclass && store.domainId ? (
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+              <b>{DIVINE_DOMAINS.find((x) => x.id === store.domainId)?.name}</b>
+              <span style={{ color: C.textMuted, fontStyle: "italic" }}> — si cambia dalla scheda Panoramica.</span>
+            </p>
+          ) : (
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {DIVINE_DOMAINS.map((d) => (
-              <Pill key={d.id} active={store.domainId === d.id} onClick={() => updateStore((s) => ({ domainId: s.domainId === d.id ? null : d.id }))}>
+              <Pill key={d.id} active={store.domainId === d.id} onClick={() => updateStore(() => ({ domainId: d.id }))}>
                 {d.name}
               </Pill>
             ))}
           </div>
+          )}
           {domain && (
             <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi di dominio sono sempre preparati gratuitamente e non contano nel numero di {caster.label.toLowerCase()}.
@@ -396,13 +406,20 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       {cls.id === "paladino" && (
         <div style={{ marginBottom: 18 }}>
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Ordine Sacro</p>
+          {lockSubclass && store.oathId ? (
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+              <b>{PALADIN_OATHS.find((x) => x.id === store.oathId)?.name}</b>
+              <span style={{ color: C.textMuted, fontStyle: "italic" }}> — si cambia dalla scheda Panoramica.</span>
+            </p>
+          ) : (
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {PALADIN_OATHS.map((o) => (
-              <Pill key={o.id} active={store.oathId === o.id} onClick={() => updateStore((s) => ({ oathId: s.oathId === o.id ? null : o.id }))}>
+              <Pill key={o.id} active={store.oathId === o.id} onClick={() => updateStore(() => ({ oathId: o.id }))}>
                 {o.name}
               </Pill>
             ))}
           </div>
+          )}
           {oath && (
             <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi dell'ordine sono sempre preparati gratuitamente e non contano nel numero di {caster.label.toLowerCase()}.
@@ -414,13 +431,20 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       {cls.id === "warlock" && (
         <div style={{ marginBottom: 18 }}>
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Patto Ultramondano</p>
+          {lockSubclass && store.patronId ? (
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+              <b>{WARLOCK_PATRONS.find((x) => x.id === store.patronId)?.name}</b>
+              <span style={{ color: C.textMuted, fontStyle: "italic" }}> — si cambia dalla scheda Panoramica.</span>
+            </p>
+          ) : (
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {WARLOCK_PATRONS.map((p) => (
-              <Pill key={p.id} active={store.patronId === p.id} onClick={() => updateStore((s) => ({ patronId: s.patronId === p.id ? null : p.id }))}>
+              <Pill key={p.id} active={store.patronId === p.id} onClick={() => updateStore(() => ({ patronId: p.id }))}>
                 {p.name}
               </Pill>
             ))}
           </div>
+          )}
           {patron && (
             <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi del patto non sono gratuiti: si aggiungono semplicemente alla lista da cui puoi scegliere i tuoi {caster.label.toLowerCase()}.
@@ -432,13 +456,20 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       {cls.id === "druido" && (
         <div style={{ marginBottom: 18 }}>
           <p style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>Sottoclasse — Circolo della Terra o della Luna</p>
+          {lockSubclass && store.circleId ? (
+            <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, margin: 0 }}>
+              <b>{DRUID_CIRCLES.find((x) => x.id === store.circleId)?.name}</b>
+              <span style={{ color: C.textMuted, fontStyle: "italic" }}> — si cambia dalla scheda Panoramica.</span>
+            </p>
+          ) : (
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {DRUID_CIRCLES.map((c) => (
-              <Pill key={c.id} active={store.circleId === c.id} onClick={() => updateStore((s) => ({ circleId: s.circleId === c.id ? null : c.id }))}>
+              <Pill key={c.id} active={store.circleId === c.id} onClick={() => updateStore(() => ({ circleId: c.id }))}>
                 {c.name}
               </Pill>
             ))}
           </div>
+          )}
           {circle && circle.id !== "circolo-luna" && (
             <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
               Gli incantesimi del Circolo della Terra sono sempre preparati gratuitamente e non contano nel numero di {caster.label.toLowerCase()}.
