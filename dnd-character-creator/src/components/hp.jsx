@@ -4,12 +4,16 @@
 // Tiri Salvezza contro la Morte (DeathSaveTracker).
 import { useState } from "react";
 import { C } from "../theme";
-import { Divider, Pill, GhostButton, GoldButton, HpBar } from "./primitives";
-import { Sword, Heart, Shield, Plus, Minus } from "../icons";
+import { Divider, GhostButton, GoldButton, HpBar } from "./primitives";
+import { ChevronRight, Dices, Equal, Heart, Minus, Pencil, Plus, Shield, Sword } from "../icons";
 import { CLASSES } from "../data/classes";
 import { SPELLS } from "../data/spells";
 import { fmtMod } from "../lib/format";
-import { getHitDieAverage, getClassEntries, getAllClassResources, getChosenSubclassId } from "../lib/character";
+import { getHitDieAverage, getClassEntries, getAllClassResources, getChosenSubclassId, getHpEntryDie, getHpEntryMethod } from "../lib/character";
+
+function rollDie(sides) {
+  return 1 + Math.floor(Math.random() * sides);
+}
 
 function rollD20() {
   return 1 + Math.floor(Math.random() * 20);
@@ -28,114 +32,145 @@ function getConcentrationSpellOptions(draft) {
 
 const DEFAULT_DEATH_SAVES = { successes: 0, failures: 0, stable: false, dead: false };
 
-export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "Gestione PF per livello" }) {
+// Modalità dei PF di un livello: stesso linguaggio dei toggle del tracker PF in Combattimento
+// (tre bottoni di pari larghezza con icona), così la scelta si legge a colpo d'occhio.
+const HP_METHODS = [
+  { key: "avg", label: "Media", icon: Equal },
+  { key: "rolled", label: "Tira", icon: Dices },
+  { key: "manual", label: "Scrivo io", icon: Pencil },
+];
+
+function HpMethodToggle({ method, onPick, hitDie, compact }) {
+  return (
+    <div role="radiogroup" style={{ display: "flex", gap: 6 }}>
+      {HP_METHODS.map(({ key, label, icon: MethodIcon }) => {
+        const active = method === key;
+        return (
+          <button
+            key={key}
+            role="radio"
+            aria-checked={active}
+            onClick={() => onPick(key)}
+            title={key === "rolled" ? (active ? `Ritira il d${hitDie}` : `Tira il d${hitDie}`) : undefined}
+            style={{
+              flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: compact ? 2 : 3,
+              fontFamily: "'Cinzel', serif", fontSize: compact ? 12 : 12.5, letterSpacing: 0.2, minHeight: 44, whiteSpace: "nowrap",
+              padding: "0.45rem 0.3rem", borderRadius: 6, cursor: "pointer", transition: "all 120ms ease",
+              border: `1px solid ${active ? C.wine : C.parchmentLine}`,
+              background: active ? `linear-gradient(180deg, ${C.wine}, ${C.wineDeep})` : "rgba(255,255,255,0.35)",
+              color: active ? C.cream : C.textOnParchment,
+            }}
+          >
+            <MethodIcon size={16} />
+            {key === "rolled" && active ? "Ritira" : label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// Valore del dado per il livello: numero grande, oppure il campo da compilare in "Scrivo io".
+function HpDieValue({ method, die, hitDie, onManual, big }) {
+  const size = big ? 40 : 22;
+  if (method === "manual") {
+    return (
+      <input
+        type="number" inputMode="numeric" min={1} max={hitDie} value={die}
+        aria-label={`Valore del d${hitDie}`}
+        onChange={(e) => {
+          const val = Number(e.target.value);
+          if (Number.isInteger(val) && val >= 1 && val <= hitDie) onManual(val);
+        }}
+        className="stepper-input"
+        style={{
+          width: big ? 72 : 52, textAlign: "center", fontFamily: "'Cinzel', serif", fontSize: big ? 30 : 18, fontWeight: 600,
+          padding: "0.15rem", borderRadius: 6, border: `2px solid ${C.wine}`, background: "#fff", color: C.wineDeep,
+        }}
+      />
+    );
+  }
+  return (
+    <span style={{ fontFamily: "'Cinzel', serif", fontSize: size, fontWeight: 600, lineHeight: 1, color: method === "rolled" ? C.wineDeep : C.textOnParchment }}>
+      {die}
+    </span>
+  );
+}
+
+// PF guadagnati a un livello: scelta della modalità (media / tiro / valore scritto a mano) e
+// risultato esplicito "dado + COS = PF guadagnati". Con un solo livello e `totals` (popup di
+// livello) mostra il risultato in grande e i PF massimi prima → dopo; con più livelli (scheda)
+// una riga compatta per livello.
+export function HpLevelManager({ cls, hpPerLevel, onSetMethod, levels, title = "Punti Ferita per livello", conMod = 0, totals }) {
   const avg = getHitDieAverage(cls.hitDie);
+  const big = levels.length === 1 && !!totals;
 
-  // Funzione per tirare un dado
-  const rollHitDie = (sides) => {
-    return 1 + Math.floor(Math.random() * sides);
+  const pick = (lvl, entry, key) => {
+    if (key === "avg") onSetMethod(lvl, "avg");
+    else if (key === "rolled") onSetMethod(lvl, rollDie(cls.hitDie)); // anche se già "Tira": ritira
+    else onSetMethod(lvl, { manual: getHpEntryDie(entry, cls.hitDie) });
   };
 
-  // Determina lo stato attuale del livello
-  const getLevelState = (entry) => {
-    if (entry === undefined || entry === "avg") return "avg";
-    if (Number.isInteger(entry) && entry > 0) return "rolled";
-    return "manual";
-  };
+  const sumLine = (die, fontSize) => (
+    <span style={{ fontFamily: "'Spectral', serif", fontSize, color: C.textMuted, whiteSpace: "nowrap" }}>
+      {conMod !== 0 && <>{fmtMod(conMod)} COS </>}
+      <b style={{ fontFamily: "'Cinzel', serif", color: C.forestDeep }}>= +{Math.max(1, die + conMod)} PF</b>
+    </span>
+  );
 
   return (
     <div style={{ marginBottom: 18 }}>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
-        {title}
-      </h3>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>{title}</h3>
       <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
-        Dado vita d{cls.hitDie} (media {avg} + mod. Costituzione per livello). Scegli "Media", "🎲 Tiro" o "Manuale".
+        Dado Vita d{cls.hitDie}: puoi prendere la media ({avg}), tirarlo qui, o scrivere il risultato di un dado vero.
       </p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <div style={{ display: "grid", gap: 8 }}>
         {levels.map((lvl) => {
           const entry = hpPerLevel?.[lvl];
-          const state = getLevelState(entry);
-          const displayValue = state === "avg" ? avg : (entry || "");
+          const method = getHpEntryMethod(entry);
+          const die = getHpEntryDie(entry, cls.hitDie);
+          const onManual = (v) => onSetMethod(lvl, { manual: v });
+
+          if (big) {
+            return (
+              <div key={lvl} style={{ border: `1px solid ${C.goldSoft}`, borderRadius: 8, background: "#fbf5e4", padding: "0.8rem" }}>
+                <HpMethodToggle method={method} onPick={(k) => pick(lvl, entry, k)} hitDie={cls.hitDie} />
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap", margin: "14px 0 10px" }}>
+                  <span style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+                    <HpDieValue method={method} die={die} hitDie={cls.hitDie} onManual={onManual} big />
+                    <span style={{ fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+                      {method === "avg" ? `media d${cls.hitDie}` : method === "rolled" ? `tiro d${cls.hitDie}` : `d${cls.hitDie} (1–${cls.hitDie})`}
+                    </span>
+                  </span>
+                  {sumLine(die, 18)}
+                </div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, paddingTop: 10, borderTop: `1px solid ${C.parchmentLine}`, fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment }}>
+                  <Heart size={16} color={C.wine} />
+                  PF massimi
+                  <b style={{ fontFamily: "'Cinzel', serif", color: C.textMuted }}>{totals.before}</b>
+                  <ChevronRight size={14} color={C.textMuted} />
+                  <b style={{ fontFamily: "'Cinzel', serif", fontSize: 18, color: C.wineDeep }}>{totals.after}</b>
+                </div>
+                {totals.after - totals.before !== Math.max(1, die + conMod) && (
+                  <p style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 13, color: C.textMuted, margin: "6px 0 0", textAlign: "center" }}>
+                    La differenza include anche tratti e talenti che danno PF a ogni livello (es. Robustezza nanica, Robusto) o un aumento di Costituzione.
+                  </p>
+                )}
+              </div>
+            );
+          }
 
           return (
-            <div key={lvl} style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              border: `1px solid ${C.parchmentLine}`,
-              borderRadius: 6,
-              padding: "0.3rem 0.5rem",
-              flexWrap: "wrap",
-              background: state !== "avg" ? "rgba(125, 31, 56, 0.04)" : "transparent",
-            }}>
-              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13, color: C.textOnParchment, minWidth: 42 }}>
-                Liv. {lvl}
+            <div key={lvl} style={{ display: "flex", alignItems: "center", gap: "8px 12px", flexWrap: "wrap", border: `1px solid ${C.parchmentLine}`, borderRadius: 8, padding: "0.5rem 0.6rem" }}>
+              <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, fontWeight: 600, color: C.wineDeep, minWidth: 48 }}>Liv. {lvl}</span>
+              <div style={{ flex: "1 1 230px" }}>
+                <HpMethodToggle method={method} onPick={(k) => pick(lvl, entry, k)} hitDie={cls.hitDie} compact />
+              </div>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
+                <HpDieValue method={method} die={die} hitDie={cls.hitDie} onManual={onManual} />
+                {sumLine(die, 14)}
               </span>
-
-              {/* Pulsante Media */}
-              <Pill
-                active={state === "avg"}
-                onClick={() => onSetMethod(lvl, "avg")}
-              >
-                Media ({avg})
-              </Pill>
-
-              {/* Pulsante Tiro */}
-              <Pill
-                active={state === "rolled"}
-                onClick={() => {
-                  const roll = rollHitDie(cls.hitDie);
-                  onSetMethod(lvl, roll);
-                }}
-              >
-                🎲 Tiro
-              </Pill>
-
-              {/* Pulsante Manuale */}
-              <Pill
-                active={state === "manual"}
-                onClick={() => onSetMethod(lvl, state === "manual" ? entry : avg)}
-              >
-                Manuale
-              </Pill>
-
-              {/* Input per il valore manuale o visualizzazione del valore tirato */}
-              {state !== "avg" && (
-                <input
-                  type="number"
-                  min={1}
-                  max={cls.hitDie}
-                  value={displayValue}
-                  onChange={(e) => {
-                    const val = Number(e.target.value);
-                    if (!isNaN(val) && val >= 1 && val <= cls.hitDie) {
-                      onSetMethod(lvl, val);
-                    }
-                  }}
-                  style={{
-                    width: 44,
-                    fontFamily: "'Spectral', serif",
-                    fontSize: 14,
-                    padding: "0.25rem",
-                    borderRadius: 6,
-                    border: `1px solid ${state === "rolled" ? C.gold : C.parchmentLine}`,
-                    background: state === "rolled" ? "rgba(201, 162, 39, 0.08)" : "#fff",
-                    color: state === "rolled" ? C.gold : C.textOnParchment,
-                  }}
-                />
-              )}
-
-              {state === "rolled" && (
-                <span style={{
-                  fontFamily: "'Spectral', serif",
-                  fontSize: 12.5,
-                  color: C.gold,
-                  marginLeft: 2
-                }}>
-                  🎲
-                </span>
-              )}
             </div>
           );
         })}

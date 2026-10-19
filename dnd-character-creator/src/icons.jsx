@@ -147,3 +147,7 @@ export default {
   Download,
   Upload,
 };
+
+export const Equal = (props) => (
+  <Icon {...props}><path d="M5 9h14M5 15h14" /></Icon>
+);

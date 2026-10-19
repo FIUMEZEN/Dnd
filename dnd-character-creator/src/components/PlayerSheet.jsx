@@ -581,6 +581,8 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
 
       {levelUpInfo && levelUpInfo.target === "primary" && cls && (
         <LevelUpModal
+          draft={draft}
+          target="primary"
           clsId={cls.id}
           className={cls.name}
           fromLevel={levelUpInfo.changes.fromLevel}
@@ -597,6 +599,8 @@ export function PlayerSheet({ character, onBack, onSaveChanges, campaignSyncStat
       )}
       {levelUpInfo && levelUpInfo.target === "secondary" && mcCls && (
         <LevelUpModal
+          draft={draft}
+          target="secondary"
           clsId={mcCls.id}
           className={mcCls.name}
           fromLevel={levelUpInfo.changes.fromLevel}

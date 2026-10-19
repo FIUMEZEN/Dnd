@@ -637,13 +637,28 @@ export function getHitDieAverage(hitDie) {
   return Math.floor(hitDie / 2) + 1;
 }
 
+// PF per livello (hpPerLevel[lvl]): "avg"/assente = media del dado, numero = risultato di un
+// tiro, { manual: n } = valore scritto a mano (es. tirato con un dado vero al tavolo). Prima il
+// valore manuale era un numero come il tiro, quindi le due modalità non si distinguevano.
+export function getHpEntryMethod(entry) {
+  if (entry === undefined || entry === null || entry === "avg") return "avg";
+  if (typeof entry === "object") return "manual";
+  return "rolled";
+}
+export function getHpEntryDie(entry, hitDie) {
+  const avg = getHitDieAverage(hitDie);
+  const raw = typeof entry === "object" && entry !== null ? entry.manual : entry;
+  const n = Number(raw);
+  return getHpEntryMethod(entry) === "avg" || !Number.isInteger(n) || n < 1 ? avg : Math.min(n, hitDie);
+}
+
 export function computeMaxHp(draft, cls, race, conMod) {
   if (!cls) return null;
   const level = draft.level || 1;
   let hp = cls.hitDie + conMod;
   for (let lvl = 2; lvl <= level; lvl += 1) {
     const entry = draft.hpPerLevel && draft.hpPerLevel[lvl];
-    const roll = entry === undefined || entry === "avg" ? getHitDieAverage(cls.hitDie) : (Number(entry) || getHitDieAverage(cls.hitDie));
+    const roll = getHpEntryDie(entry, cls.hitDie);
     hp += roll + conMod;
   }
   if (cls.id === "stregone" && draft.subclassId === "progenie-draconica") hp += level;
@@ -658,7 +673,7 @@ export function computeMaxHp(draft, cls, race, conMod) {
       mcLevel = mc.level || 1;
       for (let lvl = 1; lvl <= mcLevel; lvl += 1) {
         const entry = mc.hpPerLevel && mc.hpPerLevel[lvl];
-        const roll = entry === undefined || entry === "avg" ? getHitDieAverage(mcCls.hitDie) : (Number(entry) || getHitDieAverage(mcCls.hitDie));
+        const roll = getHpEntryDie(entry, mcCls.hitDie);
         hp += roll + conMod;
       }
       if (mcCls.id === "stregone" && mc.subclassId === "progenie-draconica") hp += mcLevel;

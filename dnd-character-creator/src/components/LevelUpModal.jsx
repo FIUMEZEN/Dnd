@@ -4,7 +4,9 @@ import { Divider, GoldButton, OptionCard } from "./primitives";
 import { AsiPicker, ElementalDisciplinePicker, FightingStyleSelector, InvocationPicker, ManeuverPicker, MetamagicPicker, PactBoonPicker } from "./pickers";
 import { HpLevelManager } from "./hp";
 import { CLASSES } from "../data/classes";
-import { getFightingStyleCount, getSubclassUnlockLevel } from "../lib/character";
+import { computeFinalScores, computeMaxHp, getFightingStyleCount, getSubclassUnlockLevel } from "../lib/character";
+import { RACES } from "../data/races";
+import { mod } from "../lib/format";
 import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCount, getMetamagicKnownCount } from "../lib/casting";
 
 /* ---------------------------------- LEVEL UP MODAL ---------------------------------- */
@@ -16,8 +18,21 @@ import { getDisciplinesKnownCount, getInvocationsKnownCount, getManeuversKnownCo
 export function LevelUpModal({
   clsId, className, fromLevel, toLevel, store, updateStore,
   subclassOptions, chosenSubclassId, onChooseSubclass, changes, onCancel, onConfirm,
+  draft, target = "primary",
 }) {
   const cls = CLASSES.find((c) => c.id === clsId);
+  // PF massimi prima/dopo questo livello, calcolati sul personaggio intero (il popup lavora su
+  // `store`, che per la classe secondaria è solo draft.multiclass).
+  const primaryCls = draft ? CLASSES.find((c) => c.id === draft.classId) : null;
+  const race = draft ? RACES.find((r) => r.id === draft.raceId) : null;
+  const conMod = draft ? mod(computeFinalScores(draft).con) : 0;
+  const draftBefore = draft && (target === "primary"
+    ? { ...draft, level: fromLevel }
+    : { ...draft, multiclass: { ...draft.multiclass, level: fromLevel } });
+  const hpTotals = draft && primaryCls ? {
+    before: computeMaxHp(draftBefore, primaryCls, race, mod(computeFinalScores(draftBefore).con)),
+    after: computeMaxHp(draft, primaryCls, race, conMod),
+  } : undefined;
   // Vale per tutte le classi: onChooseSubclass scrive già nel campo giusto (subclassId, oppure
   // circleId/oathId/domainId/patronId), quindi anche il Druido al 2° livello e il Paladino al
   // 3° vedono qui la scelta del Circolo/Giuramento invece di doverla cercare altrove.
@@ -49,7 +64,7 @@ export function LevelUpModal({
           </button>
         </div>
         <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textMuted, margin: "0 0 6px" }}>
-          Completa qui le scelte sbloccate da questo livello. La ✕ in alto annulla il livellamento (torni al livello {fromLevel} senza modifiche); "Fatto" conferma — potrai comunque rivedere le scelte più in basso nella scheda.
+          Fai le scelte di questo livello e premi "Fatto". La ✕ annulla e ti riporta al livello {fromLevel}.
         </p>
 
         {subclassJustUnlocked && (
@@ -72,6 +87,8 @@ export function LevelUpModal({
           onSetMethod={(lvl, val) => updateStore((s) => ({ hpPerLevel: { ...s.hpPerLevel, [lvl]: val } }))}
           levels={[toLevel]}
           title={`Punti Ferita — Livello ${toLevel}`}
+          conMod={conMod}
+          totals={hpTotals}
         />
 
         <AsiPicker store={store} updateStore={updateStore} clsId={clsId} classLevel={toLevel} onlyLevels={[toLevel]} />

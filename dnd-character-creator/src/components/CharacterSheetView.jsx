@@ -569,7 +569,8 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           hpPerLevel={draft.hpPerLevel}
           onSetMethod={(lvl, val) => setDraft((d) => ({ ...d, hpPerLevel: { ...d.hpPerLevel, [lvl]: val } }))}
           levels={Array.from({ length: draft.level - 1 }, (_, i) => i + 2)}
-          title={mcCls ? `Gestione PF per livello — ${cls.name} (primaria)` : "Gestione PF per livello"}
+          title={mcCls ? `Punti Ferita per livello — ${cls.name} (primaria)` : "Punti Ferita per livello"}
+          conMod={mod(finalScores.con)}
         />
       )}
 
@@ -579,7 +580,8 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
           hpPerLevel={mc.hpPerLevel}
           onSetMethod={(lvl, val) => mcUpdateStore((s) => ({ hpPerLevel: { ...s.hpPerLevel, [lvl]: val } }))}
           levels={Array.from({ length: mc.level }, (_, i) => i + 1)}
-          title={`Gestione PF per livello — ${mcCls.name} (secondaria)`}
+          title={`Punti Ferita per livello — ${mcCls.name} (secondaria)`}
+          conMod={mod(finalScores.con)}
         />
       )}
 
