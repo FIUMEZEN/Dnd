@@ -2,9 +2,9 @@
 // Lo step Incantesimi vive in components/spells.jsx (SpellManager), lo step Riepilogo in
 // components/CharacterSheetView.jsx (StepReview, che incorpora la scheda completa).
 import { useState, useMemo } from "react";
-import { Dices } from "../icons";
+import { Check, ChevronDown, ChevronRight, Crown, Dices, Users, Zap } from "../icons";
 import { C } from "../theme";
-import { Divider, GhostButton, OptionCard, Pill, ProficiencyChoicePicker } from "./primitives";
+import { ChoiceSection, Divider, GhostButton, OptionCard, Pill, ProficiencyChoicePicker } from "./primitives";
 import { AsiPicker, FightingStyleSelector } from "./pickers";
 import { InventoryManager } from "./inventory";
 import { ClassEquipmentKit, BackgroundEquipmentKit } from "./equipmentKit";
@@ -112,10 +112,13 @@ export function StepRace({ draft, setDraft }) {
           </ul>
 
           {race.extraAbilityChoice && (
-            <div style={{ marginTop: 10 }}>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
-                Scegli {race.extraAbilityChoice.count} caratteristiche a cui assegnare +1.
-              </p>
+            <ChoiceSection
+              icon={Zap}
+              title="Bonus di caratteristica (+1)"
+              hint={`Scegli ${race.extraAbilityChoice.count} caratteristiche a cui assegnare +1.`}
+              status={(draft.raceAbilityPicks || []).length >= race.extraAbilityChoice.count ? "done" : "todo"}
+              count={`${(draft.raceAbilityPicks || []).length}/${race.extraAbilityChoice.count}`}
+            >
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {ABILITIES.filter((a) => !(race.extraAbilityChoice.exclude || []).includes(a.key)).map((a) => {
                   const picks = draft.raceAbilityPicks || [];
@@ -124,20 +127,23 @@ export function StepRace({ draft, setDraft }) {
                   return <Pill key={a.key} active={picked} onClick={() => { if (disabled) return; setDraft((d) => ({ ...d, raceAbilityPicks: picked ? (d.raceAbilityPicks || []).filter((k) => k !== a.key) : [...(d.raceAbilityPicks || []), a.key] })); }}>{a.name}</Pill>;
                 })}
               </div>
-            </div>
+            </ChoiceSection>
           )}
           {race.extraSkillChoice && (
-            <div style={{ marginTop: 10 }}>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
-                Scegli {race.extraSkillChoice.count} abilità aggiuntive.
-              </p>
+            <ChoiceSection
+              icon={Dices}
+              title="Abilità aggiuntive"
+              hint={`Scegli ${race.extraSkillChoice.count} abilità in cui sei competente.`}
+              status={(draft.raceSkillPicks || []).length >= race.extraSkillChoice.count ? "done" : "todo"}
+              count={`${(draft.raceSkillPicks || []).length}/${race.extraSkillChoice.count}`}
+            >
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {Object.keys(SKILL_ABILITY).map((skill) => {
                   const picks = draft.raceSkillPicks || []; const picked = picks.includes(skill); const disabled = !picked && picks.length >= race.extraSkillChoice.count;
                   return <Pill key={skill} active={picked} onClick={() => { if (disabled) return; setDraft((d) => ({ ...d, raceSkillPicks: picked ? (d.raceSkillPicks || []).filter((k) => k !== skill) : [...(d.raceSkillPicks || []), skill], classSkills: picked ? d.classSkills : (d.classSkills || []).filter((s) => s !== skill) })); }}>{skill}</Pill>;
                 })}
               </div>
-            </div>
+            </ChoiceSection>
           )}
           {(race.proficiencyChoices || []).map((spec) => (
             <ProficiencyChoicePicker
@@ -148,10 +154,13 @@ export function StepRace({ draft, setDraft }) {
             />
           ))}
           {race.extraFeatChoice && (
-            <div style={{ marginTop: 10 }}>
-              <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
-                Scegli un talento (bonus di razza).
-              </p>
+            <ChoiceSection
+              icon={Crown}
+              title="Talento di razza"
+              hint="Scegli un talento dall'elenco: la descrizione compare qui sotto."
+              status={draft.raceFeatId && (!raceFeat?.abilityChoice || raceFeat.abilityChoice.optional || draft.raceFeatAbilityChoice) ? "done" : "todo"}
+              count={draft.raceFeatId ? "1/1" : "0/1"}
+            >
               <select
                 value={draft.raceFeatId || ""}
                 onChange={(e) => setDraft((d) => ({ ...d, raceFeatId: e.target.value || null, raceFeatAbilityChoice: null }))}
@@ -190,7 +199,7 @@ export function StepRace({ draft, setDraft }) {
                   ))}
                 </select>
               )}
-            </div>
+            </ChoiceSection>
           )}
         </div>
       )}
@@ -259,10 +268,14 @@ export function StepClass({ draft, setDraft }) {
             <b>Armi:</b> {cls.weapons}
           </p>
 
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
-            Scegli {cls.skillChoices} competenze ({draft.classSkills.length}/{cls.skillChoices}):
-          </p>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <ChoiceSection
+            icon={Dices}
+            title="Competenze di classe"
+            hint={`Scegli ${cls.skillChoices} abilità dall'elenco di ${cls.name}.`}
+            status={draft.classSkills.length >= cls.skillChoices ? "done" : "todo"}
+            count={`${draft.classSkills.length}/${cls.skillChoices}`}
+          >
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {cls.skillOptions.map((s) => {
               const grantedByRace = raceGrantedSkills.includes(s);
               return (
@@ -278,6 +291,7 @@ export function StepClass({ draft, setDraft }) {
               );
             })}
           </div>
+          </ChoiceSection>
 
           {/* <-- QUI INSERISCI IL FIGHTING STYLE SELECTOR --> */}
           {cls && hasFightingStyles(cls.id) && (
@@ -494,36 +508,67 @@ export function StepAbilities({ draft, setDraft }) {
 // Campo di testo libero per un aspetto "flavour" del personaggio (tratto, ideale, legame,
 // difetto): il giocatore può scrivere liberamente, oppure cliccare un suggerimento tratto
 // dalla tabella del background per riempire il campo con un solo click.
-export function FlavorField({ label, value, onChange, suggestions }) {
+// Campo di personalità (tratto/ideale/legame/difetto): testo libero, con due scorciatoie in
+// alto — "Tira" (un suggerimento a caso, come le tabelle del Manuale del Giocatore) e "Idee"
+// (i suggerimenti del background, a scomparsa invece che sempre aperti come muro di pillole).
+export function FlavorField({ label, value, onChange, suggestions, avoid }) {
+  const [open, setOpen] = useState(false);
+  const has = !!(value || "").trim();
+  const pool = (suggestions || []).filter((x) => x !== avoid);
+  const roll = () => {
+    const options = pool.filter((x) => x !== value);
+    const list = options.length ? options : pool;
+    if (list.length) onChange(list[Math.floor(Math.random() * list.length)]);
+  };
+  const smallBtn = {
+    display: "inline-flex", alignItems: "center", gap: 4, cursor: "pointer", fontFamily: "'Spectral', serif", fontSize: 13,
+    padding: "0.25rem 0.55rem", borderRadius: 5, border: `1px solid ${C.parchmentLine}`, background: "#fff", color: C.textOnParchment, minHeight: 32,
+  };
   return (
-    <div style={{ marginBottom: 14 }}>
-      <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14, color: C.wineDeep, margin: "0 0 6px" }}>{label}</p>
+    <div style={{ border: `1px solid ${has ? `${C.forest}55` : C.parchmentLine}`, borderRadius: 6, padding: "0.6rem 0.7rem", background: "rgba(255,255,255,0.55)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 6 }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Cinzel', serif", fontSize: 14.5, fontWeight: 600, color: C.wineDeep, flex: "1 1 120px" }}>
+          {has && <Check size={14} color={C.forest} />}{label}
+        </span>
+        {pool.length > 0 && (
+          <span style={{ display: "inline-flex", gap: 6, marginLeft: "auto" }}>
+            <button onClick={roll} title="Scegli un suggerimento a caso" style={smallBtn}><Dices size={13} /> Tira</button>
+            <button onClick={() => setOpen((o) => !o)} aria-expanded={open} style={smallBtn}>
+              {open ? <ChevronDown size={13} /> : <ChevronRight size={13} />} Idee
+            </button>
+          </span>
+        )}
+      </div>
       <textarea
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         rows={2}
-        placeholder="Scrivi liberamente, oppure scegli un suggerimento qui sotto…"
+        placeholder="Scrivi liberamente, oppure usa Tira / Idee…"
         style={{
           width: "100%", fontFamily: "'Spectral', serif", fontSize: 14.5, padding: "0.5rem 0.6rem",
           borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", resize: "vertical", boxSizing: "border-box",
         }}
       />
-      {suggestions && suggestions.length > 0 && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
-          {suggestions.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => onChange(s)}
-              title="Usa questo suggerimento"
-              style={{
-                cursor: "pointer", textAlign: "left", fontFamily: "'Spectral', serif", fontSize: 13,
-                padding: "0.3rem 0.55rem", borderRadius: 5, border: `1px solid ${C.parchmentLine}`,
-                background: "rgba(255,255,255,0.5)", color: C.textMuted, maxWidth: 260,
-              }}
-            >
-              {s}
-            </button>
-          ))}
+      {open && pool.length > 0 && (
+        <div style={{ display: "grid", gap: 6, marginTop: 6 }}>
+          {pool.map((sug, i) => {
+            const active = sug === value;
+            return (
+              <button
+                key={i}
+                onClick={() => { onChange(sug); setOpen(false); }}
+                style={{
+                  cursor: "pointer", textAlign: "left", fontFamily: "'Spectral', serif", fontSize: 14, lineHeight: 1.35,
+                  padding: "0.45rem 0.6rem", borderRadius: 5,
+                  border: `1px solid ${active ? C.wine : C.parchmentLine}`,
+                  borderLeft: `3px solid ${active ? C.wine : C.goldSoft}`,
+                  background: active ? "#f5efdf" : "#fff", color: C.textOnParchment,
+                }}
+              >
+                {sug}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
@@ -591,10 +636,15 @@ export function StepBackground({ draft, setDraft }) {
             style={{ width: "100%", fontFamily: "'Spectral', serif", fontSize: 15, padding: "0.45rem 0.6rem", borderRadius: 6, border: `1px solid ${C.parchmentLine}`, background: "#fff", marginBottom: 12, boxSizing: "border-box" }}
           />
 
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 8 }}>
-            Scegli 2 competenze ({(draft.customBackgroundSkills || []).length}/2).
-          </p>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+          <ChoiceSection
+            icon={Dices}
+            title="Competenze del background"
+            hint="Scegli 2 abilità non già ottenute da razza o classe."
+            status={(draft.customBackgroundSkills || []).length >= 2 ? "done" : "todo"}
+            count={`${(draft.customBackgroundSkills || []).length}/2`}
+            style={{ marginTop: 0, marginBottom: 12 }}
+          >
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
             {Object.keys(SKILL_ABILITY).map((skill) => {
               const granted = alreadyGrantedSkills.includes(skill);
               return (
@@ -610,6 +660,8 @@ export function StepBackground({ draft, setDraft }) {
               );
             })}
           </div>
+          </ChoiceSection>
+
 
           <p style={{ fontFamily: "'Spectral', serif", fontSize: 14.5, color: C.textOnParchment, marginBottom: 4 }}>
             Corredo di partenza (una voce per riga)
@@ -668,22 +720,57 @@ export function StepBackground({ draft, setDraft }) {
         </div>
       )}
 
-      {bg && (
-        <div style={{ marginTop: "1.25rem" }}>
-          <Divider />
-          <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 4px" }}>
-            Personalità
-          </p>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 12px" }}>
-            Facoltativo, ma dà spessore al personaggio: due tratti della personalità, un ideale, un legame e un difetto.
-          </p>
-          <FlavorField label="Tratto della personalità 1" value={draft.personalityTrait1} onChange={(v) => setDraft((d) => ({ ...d, personalityTrait1: v }))} suggestions={bg.personalityTraits} />
-          <FlavorField label="Tratto della personalità 2" value={draft.personalityTrait2} onChange={(v) => setDraft((d) => ({ ...d, personalityTrait2: v }))} suggestions={bg.personalityTraits} />
-          <FlavorField label="Ideale" value={draft.ideal} onChange={(v) => setDraft((d) => ({ ...d, ideal: v }))} suggestions={bg.ideals} />
-          <FlavorField label="Legame" value={draft.bond} onChange={(v) => setDraft((d) => ({ ...d, bond: v }))} suggestions={bg.bonds} />
-          <FlavorField label="Difetto" value={draft.flaw} onChange={(v) => setDraft((d) => ({ ...d, flaw: v }))} suggestions={bg.flaws} />
-        </div>
-      )}
+      {bg && (() => {
+        const fields = [
+          { key: "personalityTrait1", label: "Tratto della personalità", suggestions: bg.personalityTraits, avoid: draft.personalityTrait2 },
+          { key: "personalityTrait2", label: "Secondo tratto", suggestions: bg.personalityTraits, avoid: draft.personalityTrait1 },
+          { key: "ideal", label: "Ideale", suggestions: bg.ideals },
+          { key: "bond", label: "Legame", suggestions: bg.bonds },
+          { key: "flaw", label: "Difetto", suggestions: bg.flaws },
+        ];
+        const filled = fields.filter((f) => (draft[f.key] || "").trim()).length;
+        // "Tira i vuoti": riempie solo i campi ancora vuoti, senza toccare ciò che hai scritto.
+        const rollEmpty = () => setDraft((d) => {
+          const next = { ...d };
+          fields.forEach((f) => {
+            if ((next[f.key] || "").trim()) return;
+            const other = f.key === "personalityTrait1" ? next.personalityTrait2 : f.key === "personalityTrait2" ? next.personalityTrait1 : null;
+            const pool = (f.suggestions || []).filter((x) => x !== other);
+            if (pool.length) next[f.key] = pool[Math.floor(Math.random() * pool.length)];
+          });
+          return next;
+        });
+        return (
+          <div style={{ marginTop: "1.25rem" }}>
+            <Divider />
+            <ChoiceSection
+              icon={Users}
+              title="Personalità"
+              hint="Facoltativa, ma dà spessore al personaggio e aiuta a interpretarlo al tavolo."
+              status={filled === fields.length ? "done" : "optional"}
+              count={`${filled}/${fields.length}`}
+              action={filled < fields.length && (
+                <GhostButton icon={Dices} onClick={rollEmpty} style={{ borderColor: C.wine, color: C.wineDeep, padding: "0.3rem 0.65rem", fontSize: 13 }}>
+                  Tira i vuoti
+                </GhostButton>
+              )}
+            >
+              <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: 10 }}>
+                {fields.map((f) => (
+                  <FlavorField
+                    key={f.key}
+                    label={f.label}
+                    value={draft[f.key]}
+                    onChange={(v) => setDraft((d) => ({ ...d, [f.key]: v }))}
+                    suggestions={f.suggestions}
+                    avoid={f.avoid}
+                  />
+                ))}
+              </div>
+            </ChoiceSection>
+          </div>
+        );
+      })()}
     </div>
   );
 }

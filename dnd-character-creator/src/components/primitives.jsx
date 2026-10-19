@@ -1,6 +1,8 @@
 // Piccoli componenti UI riutilizzati in tutta l'app: contenitori, bottoni, pillole di scelta,
 // card selezionabili. Nessuno di questi ha stato proprio oltre eventuali hover locali.
 import { C } from "../theme";
+import { Backpack, Check, Dices, Feather, Sparkles } from "../icons";
+import { isOptionalProfChoice } from "../lib/character";
 
 export function Frame({ children, style, className = "" }) {
   return (
@@ -203,27 +205,82 @@ export function OptionCard({ selected, onClick, title, subtitle, children, dimme
   );
 }
 
+// Riquadro riconoscibile per ogni "scelta da fare" (lingue, strumenti, abilità, talento, tratti
+// di personalità...): fascia laterale colorata, icona, titolo leggibile e un badge di stato a
+// destra. Prima queste scelte erano una riga di testo piccola sopra una fila di pillole e
+// passavano inosservate.
+//   status: "todo" (obbligatoria, da fare) | "optional" (facoltativa, non ancora fatta) | "done"
+//   count: testo del contatore (es. "1/2"), mostrato accanto al badge
+export function ChoiceSection({ icon: Icon, title, hint, status = "todo", count, action, children, style }) {
+  const tone = status === "done"
+    ? { bar: C.forest, border: `${C.forest}66`, bg: "#eef3ec", badgeBg: C.forest, badgeFg: C.cream, label: "Fatto" }
+    : status === "optional"
+      ? { bar: C.goldSoft, border: C.goldSoft, bg: "#fbf5e4", badgeBg: "transparent", badgeFg: C.textMuted, label: "Facoltativo" }
+      : { bar: C.wine, border: `${C.wine}88`, bg: "#fbf1ea", badgeBg: C.wine, badgeFg: C.cream, label: "Da scegliere" };
+  return (
+    <section
+      style={{
+        marginTop: 14, marginBottom: 6, padding: "0.8rem 0.9rem 0.9rem 1rem", borderRadius: 8,
+        border: `1px solid ${tone.border}`, borderLeft: `5px solid ${tone.bar}`, background: tone.bg,
+        ...style,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "6px 10px", flexWrap: "wrap", marginBottom: hint ? 4 : 10 }}>
+        {Icon && (
+          <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 30, height: 30, borderRadius: "50%", background: `${tone.bar}22`, color: status === "optional" ? C.wineDeep : tone.bar, flexShrink: 0 }}>
+            <Icon size={16} />
+          </span>
+        )}
+        <h4 style={{ fontFamily: "'Cinzel', serif", fontSize: 16, fontWeight: 600, color: C.wineDeep, margin: 0, flex: "1 1 160px", minWidth: 0 }}>{title}</h4>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: "auto" }}>
+          {count && <span style={{ fontFamily: "'Cinzel', serif", fontSize: 13.5, fontWeight: 600, color: C.textOnParchment }}>{count}</span>}
+          <span
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "'Spectral', serif", fontSize: 12.5,
+              padding: "1px 8px", borderRadius: 999, background: tone.badgeBg, color: tone.badgeFg,
+              border: status === "optional" ? `1px solid ${C.parchmentLine}` : "none", whiteSpace: "nowrap",
+            }}
+          >
+            {status === "done" && <Check size={12} />}{tone.label}
+          </span>
+          {action}
+        </span>
+      </div>
+      {hint && (
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>{hint}</p>
+      )}
+      {children}
+    </section>
+  );
+}
+
 // Picker generico "pill capped at count" per le proficiencyChoices (lingue/strumenti/abilità
 // a scelta) definite su razze, background e sottoclassi. `selected` è l'array già scelto per
-// questa `spec` (spec.key); `onToggle` riceve il singolo valore cliccato.
+// questa `spec` (spec.key); `onToggle` riceve il singolo valore cliccato. Icona e "facoltativo"
+// derivano dal tipo della scelta (lingua/strumento facoltativi, abilità obbligatoria).
+const PROF_CHOICE_ICONS = { language: Feather, tool: Backpack, skill: Dices };
 export function ProficiencyChoicePicker({ spec, selected, onToggle }) {
+  const icon = PROF_CHOICE_ICONS[spec.type] || Sparkles;
+  const optional = isOptionalProfChoice(spec);
+  const done = selected.length >= spec.count;
+  const status = done ? "done" : optional ? "optional" : "todo";
+  const hint = done
+    ? null
+    : `Scegline ${spec.count === 1 ? "una" : spec.count}${optional ? " — puoi anche lasciarlo per dopo, non blocca la creazione." : "."}`;
   return (
-    <div style={{ marginTop: 10 }}>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 15, color: C.textOnParchment, marginBottom: 8 }}>
-        {spec.label} ({selected.length}/{spec.count}):
-      </p>
+    <ChoiceSection icon={icon} title={spec.label} hint={hint} status={status} count={`${selected.length}/${spec.count}`}>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {spec.options.map((opt) => {
           const picked = selected.includes(opt);
-          const disabled = !picked && selected.length >= spec.count;
+          const disabled = !picked && selected.length >= spec.count && spec.count > 1;
           return (
-            <Pill key={opt} active={picked} onClick={() => { if (disabled) return; onToggle(opt); }}>
+            <Pill key={opt} active={picked} disabled={disabled} onClick={() => { if (disabled) return; onToggle(opt); }}>
               {opt}
             </Pill>
           );
         })}
       </div>
-    </div>
+    </ChoiceSection>
   );
 }
 

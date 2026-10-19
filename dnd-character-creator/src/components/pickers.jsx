@@ -2,7 +2,8 @@
 // dono del patto, invocazioni occulte, discipline elementali) riusati da più step della
 // creazione, dalla scheda personaggio e dal popup di level up.
 import { C } from "../theme";
-import { Divider, Pill, OptionCard } from "./primitives";
+import { ChoiceSection, Divider, Pill, OptionCard } from "./primitives";
+import { Crown, Sparkles, Sword, Wand2, Zap } from "../icons";
 import { ABILITIES } from "../data/core";
 import { FEATS } from "../data/feats";
 import { METAMAGIC_OPTIONS, PACT_BOONS, WARLOCK_INVOCATIONS, ELEMENTAL_DISCIPLINES, MANEUVERS } from "../data/spells";
@@ -163,12 +164,15 @@ export function FightingStyleSelector({ store, updateStore, clsId, classLevel, l
 
   return (
     <div style={{ marginTop: 12, marginBottom: 12 }}>
-      <p style={{ fontFamily: "'Cinzel', serif", fontSize: 14.5, color: C.wineDeep, margin: "0 0 8px" }}>
-        {label} ({selectedStyles.length}/{maxStyles} scelti)
-      </p>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.textMuted, margin: "0 0 8px" }}>
-        Scegli fino a {maxStyles} stile{maxStyles > 1 ? "i" : ""} di combattimento.
-      </p>
+      <ChoiceSection
+        icon={Sword}
+        title={label}
+        hint={`Scegli ${maxStyles === 1 ? "uno stile" : `fino a ${maxStyles} stili`} di combattimento.`}
+        status={selectedStyles.length >= maxStyles ? "done" : "todo"}
+        count={`${selectedStyles.length}/${maxStyles}`}
+        style={{ marginTop: 0 }}
+      >
+      
       <div style={{ display: "grid", gridTemplateColumns: "var(--g2)", gap: "0.5rem" }}>
         {availableStyles.map((style) => {
           const isSelected = selectedStyles.includes(style.id);
@@ -190,6 +194,7 @@ export function FightingStyleSelector({ store, updateStore, clsId, classLevel, l
           );
         })}
       </div>
+      </ChoiceSection>
     </div>
   );
 }
@@ -207,12 +212,14 @@ export function MetamagicPicker({ store, updateStore, level }) {
   return (
     <>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
-        Metamagia — scegline {known} ({chosen.length}/{known})
-      </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
-        Modifica un incantesimo lanciato spendendo Punti Stregoneria. Puoi usare una sola opzione di Metamagia per incantesimo, a meno che la descrizione non dica altrimenti.
-      </p>
+      <ChoiceSection
+        icon={Sparkles}
+        title="Metamagia"
+        hint="Modifica un incantesimo lanciato spendendo Punti Stregoneria. Puoi usare una sola opzione di Metamagia per incantesimo, a meno che la descrizione non dica altrimenti."
+        status={chosen.length >= known ? "done" : "todo"}
+        count={`${chosen.length}/${known}`}
+      >
+      
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "0.5rem 1rem" }}>
         {METAMAGIC_OPTIONS.map((m) => {
           const active = chosen.includes(m.id);
@@ -231,6 +238,7 @@ export function MetamagicPicker({ store, updateStore, level }) {
           );
         })}
       </div>
+      </ChoiceSection>
     </>
   );
 }
@@ -240,7 +248,13 @@ export function PactBoonPicker({ store, updateStore, level }) {
   return (
     <>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 8px" }}>Dono del Patto</h3>
+      <ChoiceSection
+        icon={Crown}
+        title="Dono del Patto"
+        status={store.pactBoonId ? "done" : "todo"}
+        count={store.pactBoonId ? "1/1" : "0/1"}
+      >
+      
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
         {PACT_BOONS.map((p) => (
           <Pill key={p.id} active={store.pactBoonId === p.id} onClick={() => updateStore((s) => ({ pactBoonId: s.pactBoonId === p.id ? null : p.id }))}>
@@ -253,6 +267,7 @@ export function PactBoonPicker({ store, updateStore, level }) {
           {PACT_BOONS.find((p) => p.id === store.pactBoonId)?.desc}
         </p>
       )}
+      </ChoiceSection>
     </>
   );
 }
@@ -271,12 +286,14 @@ export function InvocationPicker({ store, updateStore, level }) {
   return (
     <>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
-        Invocazioni Occulte — scegline {known} ({chosen.length}/{known})
-      </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
-        Alcune invocazioni richiedono un Dono del Patto specifico: verifica il prerequisito indicato prima di sceglierle.
-      </p>
+      <ChoiceSection
+        icon={Wand2}
+        title="Invocazioni Occulte"
+        hint="Alcune invocazioni richiedono un Dono del Patto specifico: verifica il prerequisito indicato prima di sceglierle."
+        status={chosen.length >= known ? "done" : "todo"}
+        count={`${chosen.length}/${known}`}
+      >
+      
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "0.5rem 1rem" }}>
         {available.map((i) => {
           const active = chosen.includes(i.id);
@@ -297,6 +314,7 @@ export function InvocationPicker({ store, updateStore, level }) {
           );
         })}
       </div>
+      </ChoiceSection>
     </>
   );
 }
@@ -316,12 +334,14 @@ export function ElementalDisciplinePicker({ store, updateStore, level, title = "
   return (
     <div style={{ marginBottom: 18 }}>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
-        {title} — scegline {known} ({chosen.length}/{known})
-      </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
-        Conosci sempre {automatic.map((d) => d.name).join(", ")} (gratuita, non conta nel totale). Le altre discipline costano Punti Ki ogni volta che le usi.
-      </p>
+      <ChoiceSection
+        icon={Zap}
+        title={title}
+        hint={`Conosci sempre ${automatic.map((d) => d.name).join(", ")} (gratuita, non conta nel totale). Le altre discipline costano Punti Ki ogni volta che le usi.`}
+        status={chosen.length >= known ? "done" : "todo"}
+        count={`${chosen.length}/${known}`}
+      >
+      
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "0.5rem 1rem" }}>
         {available.map((d) => {
           const active = chosen.includes(d.id);
@@ -340,6 +360,7 @@ export function ElementalDisciplinePicker({ store, updateStore, level, title = "
           );
         })}
       </div>
+      </ChoiceSection>
     </div>
   );
 }
@@ -357,12 +378,14 @@ export function ManeuverPicker({ store, updateStore, level, title = "Manovre —
   return (
     <div style={{ marginBottom: 18 }}>
       <Divider />
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15.5, color: C.wineDeep, margin: "0 0 4px" }}>
-        {title} — scegline {known} ({chosen.length}/{known})
-      </h3>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
-        Ogni manovra si attiva spendendo un Dado Superiorità. Quando impone un tiro salvezza, la CD è 8 + bonus di competenza + modificatore di Forza o Destrezza (a tua scelta, in base all'arma usata).
-      </p>
+      <ChoiceSection
+        icon={Sword}
+        title={title}
+        hint="Ogni manovra si attiva spendendo un Dado Superiorità. Quando impone un tiro salvezza, la CD è 8 + bonus di competenza + modificatore di Forza o Destrezza (a tua scelta, in base all'arma usata)."
+        status={chosen.length >= known ? "done" : "todo"}
+        count={`${chosen.length}/${known}`}
+      >
+      
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "0.5rem 1rem" }}>
         {MANEUVERS.map((m) => {
           const active = chosen.includes(m.id);
@@ -380,6 +403,7 @@ export function ManeuverPicker({ store, updateStore, level, title = "Manovre —
           );
         })}
       </div>
+      </ChoiceSection>
     </div>
   );
 }

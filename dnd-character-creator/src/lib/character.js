@@ -398,7 +398,7 @@ export function getBackgroundValidationErrors(draft) {
     }
   } else {
     const bg = BACKGROUNDS.find((b) => b.id === draft.backgroundId);
-    (bg?.proficiencyChoices || []).forEach((spec) => {
+    (bg?.proficiencyChoices || []).filter((spec) => !isOptionalProfChoice(spec)).forEach((spec) => {
       if (((draft.profChoices && draft.profChoices[spec.key]) || []).length !== spec.count) {
         errors.push(`Scegli ${spec.count} opzioni per "${spec.label}".`);
       }
@@ -1179,10 +1179,18 @@ export function isStepFullyComplete(key, draft) {
   }
 }
 
+// Strumenti e lingue a scelta sono facoltativi: contano di rado al tavolo (e spesso li decide
+// il Master sul momento), quindi non bloccano la creazione né finiscono tra le "scelte da
+// completare". Restano sceglibili quando si vuole. Le abilità a scelta invece restano
+// obbligatorie, perché cambiano i numeri della scheda.
+export function isOptionalProfChoice(spec) {
+  return spec.type === "tool" || spec.type === "language";
+}
+
 // Il picker "Scegli N opzioni" richiede questi requisiti soddisfatti prima di considerare
 // completo uno step (razza/classe/background/incantesimi con proficiencyChoices pendenti).
 export function areProfChoicesSatisfied(specs, profChoices) {
-  return (specs || []).every((spec) => ((profChoices && profChoices[spec.key]) || []).length === spec.count);
+  return (specs || []).filter((spec) => !isOptionalProfChoice(spec)).every((spec) => ((profChoices && profChoices[spec.key]) || []).length === spec.count);
 }
 
 // Aggiorna draft.profChoices[spec.key] con un toggle capped at spec.count, seguendo lo stesso
@@ -1192,7 +1200,8 @@ export function toggleProfChoice(updateStore, spec, value) {
     const current = (s.profChoices && s.profChoices[spec.key]) || [];
     const has = current.includes(value);
     if (has) return { profChoices: { ...s.profChoices, [spec.key]: current.filter((v) => v !== value) } };
-    if (current.length >= spec.count) return {};
+    // Scelta singola: un tocco su un'altra opzione la sostituisce (niente "togli prima").
+    if (current.length >= spec.count) return spec.count === 1 ? { profChoices: { ...s.profChoices, [spec.key]: [value] } } : {};
     return { profChoices: { ...s.profChoices, [spec.key]: [...current, value] } };
   });
 }

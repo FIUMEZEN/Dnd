@@ -21,7 +21,7 @@ function Icon({ children, size = 16, ...props }) {
         display: 'inline-block',
         verticalAlign: 'middle',
         flexShrink: 0,
-        color: 'inherit',
+        color: props.color || 'inherit',
         opacity: 0.96,
         ...props.style,
       }}

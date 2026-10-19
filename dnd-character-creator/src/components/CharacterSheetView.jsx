@@ -11,7 +11,7 @@
 import React, { useState, useMemo } from "react";
 import { Backpack, BookOpen, Dices, Loader2, Save, ScrollText, Sword, Wand2 } from "../icons";
 import { C } from "../theme";
-import { Divider, GhostButton, GoldButton, MetricBox } from "./primitives";
+import { Divider, GhostButton, GoldButton, MetricBox, ProficiencyChoicePicker } from "./primitives";
 import { AsiPicker, ElementalDisciplinePicker, ManeuverPicker } from "./pickers";
 import { WildShapeForms } from "./wildShape";
 import { InventoryManager } from "./inventory";
@@ -31,7 +31,7 @@ import {
   getFightingStyleProtection, getFightingStyleTwoWeapon, getGrantedProficiencies, getRaceBonus,
   getSelectedBackground, getSelectedFightingStyles, getSubclass, getTotalCharacterLevel, getUnlockedSubclassFeatures,
   getVersatileDamage, hasFightingStyles, isProficientWithWeapon, validateCharacter,
-  getInitiativeMod, getSpeed, hasFeat,
+  getInitiativeMod, getSpeed, hasFeat, isOptionalProfChoice, toggleProfChoice,
 } from "../lib/character";
 
 // Sezioni disponibili in gioco, nell'ordine in cui compaiono anche nel Riepilogo di creazione.
@@ -919,6 +919,19 @@ export function CharacterSheetView({ draft, setDraft, showPlayTools = false, pla
               </p>
             )}
           </div>
+          {/* Strumenti e lingue a scelta sono facoltativi in creazione: in gioco restano
+              sceglibili (o modificabili) qui, invece di costringere a riaprire la creazione. */}
+          {showPlayTools && [race?.proficiencyChoices, bg?.proficiencyChoices, subclass?.proficiencyChoices]
+            .flatMap((specs) => specs || [])
+            .filter(isOptionalProfChoice)
+            .map((spec) => (
+              <ProficiencyChoicePicker
+                key={spec.key}
+                spec={spec}
+                selected={(draft.profChoices && draft.profChoices[spec.key]) || []}
+                onToggle={(value) => toggleProfChoice((fn) => setDraft((d) => ({ ...d, ...fn(d) })), spec, value)}
+              />
+            ))}
         </>
       )}
     </>
