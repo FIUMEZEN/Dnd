@@ -21,39 +21,124 @@ import {
   getClassEntries, getEffectiveSpellSlots, getSubclass, toggleProfChoice, computeFinalScores,
 } from "../lib/character";
 
-export function SpellRow({ spell, selected, disabled, onToggle }) {
+// Concentrazione: dal flag dei dati SRD quando c'è, altrimenti dal testo della durata
+// (incantesimi presenti solo nell'app).
+export function spellNeedsConcentration(spell) {
+  return spell.concentration ?? /^concentrazione/i.test(spell.duration || "");
+}
+
+const tagStyle = { fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0 6px", whiteSpace: "nowrap" };
+
+// Etichette "Conc." / "Rituale": le due informazioni che al tavolo cambiano come si lancia.
+function SpellTags({ spell }) {
   return (
-    <button
-      onClick={onToggle}
-      disabled={disabled && !selected}
+    <>
+      {spellNeedsConcentration(spell) && <span title="Richiede concentrazione" style={{ ...tagStyle, color: C.wineDeep, borderColor: C.goldSoft }}>Conc.</span>}
+      {spell.ritual && <span title="Si può lanciare come rituale (+10 minuti, senza slot)" style={{ ...tagStyle, color: C.forestDeep, borderColor: C.forest }}>Rituale</span>}
+    </>
+  );
+}
+
+// Testo completo dell'incantesimo (SRD): descrizione a paragrafi, "ai livelli superiori",
+// innesco delle reazioni, componente materiale e dati di lancio.
+export function SpellDetails({ spell }) {
+  const paragraphs = (spell.fullDesc || spell.desc || "").split(/\n+/).filter((x) => x.trim());
+  const text = { fontFamily: "'Spectral', serif", fontSize: 14, lineHeight: 1.5, color: C.textOnParchment, margin: "0 0 8px" };
+  return (
+    <div>
+      {spell.crunch && (
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 8px", fontWeight: 600, padding: "0.35rem 0.55rem", borderRadius: 6, background: "#f8f1e0", border: `1px solid ${C.goldSoft}` }}>
+          <b style={{ fontFamily: "'Cinzel', serif" }}>In breve:</b> {spell.crunch}
+        </p>
+      )}
+      {spell.trigger && (
+        <p style={{ ...text, fontStyle: "italic", color: C.textMuted }}><b>Reazione</b> {spell.trigger}.</p>
+      )}
+      {paragraphs.map((t, i) => <p key={i} style={text}>{t}</p>)}
+      {spell.higherLevels && (
+        <p style={{ ...text, padding: "0.4rem 0.6rem", borderLeft: `3px solid ${C.wine}`, background: "rgba(125,31,56,0.05)" }}>
+          <b style={{ fontFamily: "'Cinzel', serif", fontSize: 13 }}>Ai livelli superiori.</b> {spell.higherLevels.replace(/\n+/g, " ")}
+        </p>
+      )}
+      <div style={{ display: "flex", gap: "4px 14px", flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+        <span><b>Scuola:</b> {SCHOOLS[spell.school]}</span>
+        <span><b>Tempo:</b> {spell.time}</span>
+        <span><b>Gittata:</b> {spell.range}</span>
+        <span><b>Componenti:</b> {spell.comp}{spell.material ? ` (${spell.material})` : ""}</span>
+        <span><b>Durata:</b> {spell.duration}</span>
+      </div>
+    </div>
+  );
+}
+
+// Riga di un incantesimo nelle liste di scelta e nel Compendio: la parte superiore seleziona
+// (quando la lista è selezionabile), "Testo completo" apre il testo SRD sotto senza selezionare.
+export function SpellRow({ spell, selected, disabled, onToggle, selectable = true }) {
+  const [open, setOpen] = useState(false);
+  const blocked = disabled && !selected;
+  const hasFull = !!(spell.fullDesc || spell.higherLevels);
+  return (
+    <div
       style={{
-        textAlign: "left", width: "100%", padding: "0.7rem 0.9rem", marginBottom: 6, borderRadius: 6,
+        marginBottom: 6, borderRadius: 6,
         border: `1px solid ${selected ? C.wine : C.parchmentLine}`,
         borderLeft: selected ? `4px solid ${C.wine}` : "4px solid transparent",
         background: selected ? "#f5efdf" : "transparent",
-        cursor: disabled && !selected ? "not-allowed" : "pointer",
-        opacity: disabled && !selected ? 0.55 : 1,
+        opacity: blocked ? 0.55 : 1,
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "baseline" }}>
-        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: selected ? C.wineDeep : C.textOnParchment }}>
-          {spell.name} <span style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 13, color: C.textMuted }}>— {SCHOOLS[spell.school]}</span>
-        </span>
-        {selected && <Check size={14} color={C.wine} style={{ flexShrink: 0 }} />}
-      </div>
-      <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "3px 0 6px" }}>{spell.desc}</p>
-      {spell.crunch && (
-        <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 6px", fontWeight: 600 }}>
-          <b style={{ fontFamily: "'Cinzel', serif", fontWeight: 700 }}>Meccanica:</b> {spell.crunch}
-        </p>
+      <button
+        onClick={selectable ? onToggle : () => setOpen((o) => !o)}
+        disabled={selectable && blocked}
+        aria-pressed={selectable ? !!selected : undefined}
+        aria-expanded={selectable ? undefined : open}
+        style={{
+          all: "unset", boxSizing: "border-box", display: "block", width: "100%", textAlign: "left",
+          padding: "0.7rem 0.9rem 0.5rem", cursor: selectable && blocked ? "not-allowed" : "pointer",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", gap: "4px 10px", alignItems: "baseline", flexWrap: "wrap" }}>
+          <span style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: selected ? C.wineDeep : C.textOnParchment, flex: "1 1 160px", minWidth: 0 }}>
+            {spell.name} <span style={{ fontFamily: "'Spectral', serif", fontStyle: "italic", fontSize: 13, color: C.textMuted }}>— {SCHOOLS[spell.school]}</span>
+          </span>
+          <span style={{ display: "inline-flex", gap: 5, alignItems: "center", flexWrap: "wrap" }}>
+            <SpellTags spell={spell} />
+            {selected && <Check size={14} color={C.wine} />}
+          </span>
+        </div>
+        <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "3px 0 6px" }}>{spell.desc}</p>
+        {spell.crunch && (
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 6px", fontWeight: 600 }}>
+            <b style={{ fontFamily: "'Cinzel', serif", fontWeight: 700 }}>Meccanica:</b> {spell.crunch}
+          </p>
+        )}
+        <div style={{ display: "flex", gap: "2px 14px", flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
+          <span><b>Tempo:</b> {spell.time}</span>
+          <span><b>Gittata:</b> {spell.range}</span>
+          <span><b>Componenti:</b> {spell.comp}</span>
+          <span><b>Durata:</b> {spell.duration}</span>
+        </div>
+      </button>
+      {hasFull && (
+        <div style={{ padding: "0 0.9rem 0.6rem" }}>
+          {selectable && (
+            <button
+              onClick={() => setOpen((o) => !o)}
+              aria-expanded={open}
+              style={{ all: "unset", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "'Spectral', serif", fontSize: 13, color: C.wine, minHeight: 32 }}
+            >
+              {open ? <ChevronDown size={13} /> : <ChevronRight size={13} />} {open ? "Chiudi il testo" : "Testo completo"}
+            </button>
+          )}
+          {!selectable && !open && (
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "'Spectral', serif", fontSize: 13, color: C.wine }}>
+              <ChevronRight size={13} /> Tocca per il testo completo
+            </span>
+          )}
+          {open && <div style={{ marginTop: 6, paddingTop: 8, borderTop: `1px solid ${C.parchmentLine}` }}><SpellDetails spell={spell} /></div>}
+        </div>
       )}
-      <div style={{ display: "flex", gap: 14, flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
-        <span><b>Tempo:</b> {spell.time}</span>
-        <span><b>Gittata:</b> {spell.range}</span>
-        <span><b>Componenti:</b> {spell.comp}</span>
-        <span><b>Durata:</b> {spell.duration}</span>
-      </div>
-    </button>
+    </div>
   );
 }
 
@@ -243,8 +328,7 @@ export function ResourceTracker({ resource, used, onSetUsed }) {
 // essenziali (tempo, gittata, concentrazione); il testo completo si apre con un tocco.
 function SpellCard({ spell, note }) {
   const [open, setOpen] = useState(false);
-  const concentration = /concentrazione/i.test(spell.duration || "");
-  const chip = { fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textOnParchment, border: `1px solid ${C.parchmentLine}`, borderRadius: 6, padding: "0 6px", whiteSpace: "nowrap" };
+  const chip = tagStyle;
   return (
     <div style={{ border: `1px solid ${C.parchmentLine}`, borderRadius: 6, marginBottom: 6, background: open ? "#f8f1e0" : "transparent" }}>
       <button
@@ -257,7 +341,7 @@ function SpellCard({ spell, note }) {
           <span style={{ minWidth: 0 }}>{spell.name}</span>
         </span>
         <span style={{ display: "flex", gap: 5, flexWrap: "wrap", marginLeft: "auto" }}>
-          {concentration && <span title="Richiede concentrazione" style={{ ...chip, color: C.wineDeep, borderColor: C.goldSoft }}>Conc.</span>}
+          <SpellTags spell={spell} />
           {note && <span style={{ ...chip, color: C.forestDeep, borderColor: C.forest }}>{note}</span>}
           <span style={chip}>{spell.time}</span>
           <span style={chip}>{spell.range}</span>
@@ -265,15 +349,7 @@ function SpellCard({ spell, note }) {
       </button>
       {open && (
         <div style={{ padding: "0 0.8rem 0.7rem" }}>
-          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 6px" }}>{spell.desc}</p>
-          {spell.crunch && (
-            <p style={{ fontFamily: "'Spectral', serif", fontSize: 13.5, color: C.wineDeep, margin: "0 0 6px", fontWeight: 600 }}>{spell.crunch}</p>
-          )}
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", fontFamily: "'Spectral', serif", fontSize: 12.5, color: C.textMuted }}>
-            <span><b>Scuola:</b> {SCHOOLS[spell.school]}</span>
-            <span><b>Componenti:</b> {spell.comp}</span>
-            <span><b>Durata:</b> {spell.duration}</span>
-          </div>
+          <SpellDetails spell={spell} />
         </div>
       )}
     </div>
@@ -510,6 +586,19 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
   const cantripOptions = SPELLS.filter((s) => s.level === 0 && s.classes.includes(spellClassId));
   const spellOptions = SPELLS.filter((s) => s.level >= 1 && s.level <= dataMax && !subclassSpellIds.includes(s.id) && (s.classes.includes(spellClassId) || patronSpellIds.includes(s.id)));
   const subclassSpellObjects = subclassSpellIds.map((id) => SPELLS.find((s) => s.id === id)).filter(Boolean);
+
+  // Incantesimi conosciuti che nessuna classe del personaggio ha più in lista (es. scelti quando
+  // le liste di classe dell'app erano sbagliate, prima dell'allineamento con l'SRD): restano nel
+  // personaggio e si mostrano a parte, una sola volta (nella sezione della classe primaria),
+  // così si possono vedere e togliere invece di sparire in silenzio dai conteggi.
+  const orphanSpells = entry.isPrimary ? draft.spellsKnown
+    .map((id) => SPELLS.find((sp) => sp.id === id)).filter(Boolean)
+    .filter((sp) => !getClassEntries(draft).some((e) => {
+      const cid = isThirdCaster(e.classId, e.subclassId) ? "mago" : e.classId;
+      if (sp.classes.includes(cid)) return true;
+      if (e.classId === "warlock") return getPatronSpellIds(e.store.patronId, 9).includes(sp.id);
+      return false;
+    })) : [];
 
   const selectedCantrips = draft.spellsKnown.filter((id) => cantripOptions.some((s) => s.id === id));
   const selectedSpells = draft.spellsKnown.filter((id) => spellOptions.some((s) => s.id === id));
@@ -751,6 +840,18 @@ export function ClassSpellSection({ draft, setDraft, entry, showPlayTools, spell
       )}
 
       <Divider />
+
+      {orphanSpells.length > 0 && (
+        <div style={{ border: `1px solid ${C.danger}66`, borderLeft: `5px solid ${C.danger}`, background: "#fbf1ea", borderRadius: 8, padding: "0.7rem 0.8rem", marginBottom: 16 }}>
+          <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 15, color: C.wineDeep, margin: "0 0 4px" }}>Fuori dalla lista di classe</h3>
+          <p style={{ fontFamily: "'Spectral', serif", fontSize: 14, color: C.textMuted, margin: "0 0 10px" }}>
+            Le liste degli incantesimi per classe ora seguono quelle ufficiali: questi incantesimi, scelti in precedenza, non appartengono alle classi del personaggio. Puoi tenerli d'accordo con il Master, oppure toccarli per toglierli e scegliere al loro posto.
+          </p>
+          {orphanSpells.map((sp) => (
+            <SpellRow key={sp.id} spell={sp} selected disabled={false} onToggle={() => setDraft((d) => ({ ...d, spellsKnown: d.spellsKnown.filter((id) => id !== sp.id) }))} />
+          ))}
+        </div>
+      )}
 
       {cantripsCount > 0 && filteredCantripOptions.length > 0 && (
         <>

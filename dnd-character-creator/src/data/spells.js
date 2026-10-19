@@ -1,4 +1,7 @@
+import { mergeSrdSpells } from "./srdSpells";
+
 export const CANTRIPS_STANDARD = [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
+
 export const BARDO_CANTRIPS = [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4];
 export const STREGONE_CANTRIPS = [4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6];
 export const WARLOCK_CANTRIPS = [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4];
@@ -196,7 +199,7 @@ export const SCHOOLS = {
   necromanzia: "Necromanzia", trasmutazione: "Trasmutazione",
 };
 
-export const SPELLS = [
+const BASE_SPELLS = [
   { id: "mano-magica", name: "Mano Magica", level: 0, school: "invocazione", classes: ["mago", "bardo", "stregone", "warlock"], time: "1 azione", range: "9 m", comp: "V, S", duration: "Concentrazione, fino a 1 minuto", desc: "Crea una mano spettrale che sposta o manipola piccoli oggetti a distanza.", crunch: "Nessun danno: la mano può portare fino a 4,5 kg, aprire/chiudere/frugare cose non ancorate, entro 9 m da te." },
   { id: "luce", name: "Luce", level: 0, school: "invocazione", classes: ["mago", "bardo", "stregone"], time: "1 azione", range: "Contatto", comp: "V, M", duration: "1 ora", desc: "Rende un oggetto toccato una fonte di luce brillante per un'ora.", crunch: "Nessun danno: luce intensa in 6 m di raggio (+6 m di luce fioca) per 1 ora." },
   { id: "raggio-di-gelo", name: "Raggio di Gelo", level: 0, school: "invocazione", classes: ["mago", "stregone"], time: "1 azione", range: "18 m", comp: "V, S", duration: "Istantanea", desc: "Un raggio gelido infligge danno freddo e riduce la velocità del bersaglio.", crunch: "1d8 danno freddo (2d8 al 5°, 3d8 all'11°, 4d8 al 17°), tiro per colpire con incantesimi; se colpisce, la velocità del bersaglio è ridotta di 3 m fino al tuo prossimo turno." },
@@ -545,6 +548,10 @@ export const SPELLS = [
 
   { id: "metamorfosi-pura", name: "Metamorfosi Pura", level: 9, school: "trasmutazione", classes: ["bardo", "mago", "warlock"], time: "1 azione", range: "9 m", comp: "V, S, M", duration: "Concentrazione, fino a 1 ora", desc: "Trasforma permanentemente una creatura o un oggetto in una forma completamente diversa.", crunch: "Nessun danno: TS Saggezza nega se non consenziente; se fallito, il bersaglio (creatura o oggetto) assume una nuova forma per la durata; se mantieni la concentrazione per l'intera durata, la trasformazione diventa permanente." },
 ];
+
+// Dati base dell'app arricchiti con l'SRD in italiano (testo completo, classi ufficiali,
+// rituale/concentrazione, livelli superiori): vedi srdSpells.js.
+export const SPELLS = mergeSrdSpells(BASE_SPELLS);
 
 export const WARLOCK_PATRONS = [
   { id: "arcifatato", name: "Arcifatato", spells: { 1: ["fuoco-fatato", "sonno"], 2: ["calma-delle-emozioni", "immagine-fantasma"], 3: ["sfarfallio", "crescita-delle-piante"], 4: ["dominare-bestia", "invisibilita-superiore"], 5: ["dominare-persona", "sembianza"] } },

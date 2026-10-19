@@ -84,7 +84,7 @@ export function SpellCompendium({ onBack }) {
                 {spellLevelLabel(lvl)} ({byLevel[lvl].length})
               </h3>
               {[...byLevel[lvl]].sort(sortByName).map((s) => (
-                <SpellRow key={s.id} spell={s} selected={false} disabled={false} onToggle={() => {}} />
+                <SpellRow key={s.id} spell={s} selected={false} disabled={false} selectable={false} />
               ))}
             </div>
           ))

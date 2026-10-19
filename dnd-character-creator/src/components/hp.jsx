@@ -22,7 +22,8 @@ function rollD20() {
 // Un incantesimo "in corso" richiede Concentrazione se la sua durata (testo libero nei dati)
 // inizia con "Concentrazione" — è così che il regolamento 2014 lo segnala in ogni statblock.
 function requiresConcentration(spell) {
-  return typeof spell?.duration === "string" && spell.duration.startsWith("Concentrazione");
+  if (!spell) return false;
+  return spell.concentration ?? (typeof spell.duration === "string" && spell.duration.startsWith("Concentrazione"));
 }
 
 function getConcentrationSpellOptions(draft) {
